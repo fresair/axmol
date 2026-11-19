@@ -9,7 +9,7 @@
 Install PowerShell 7, a C++23 compiler and the tools for your target platform. Android builds use NDK r27d. Clone the JS branch and run the setup script from the engine checkout. [Platform setup guide](docs/DevSetup.md)
 
 ```sh
-git clone --branch axmol-js https://github.com/fresair/axmol-js.git
+git clone https://github.com/fresair/axmol-js.git
 cd axmol-js
 pwsh ./setup.ps1
 ```
