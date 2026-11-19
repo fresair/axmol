@@ -1,47 +1,23 @@
 # Contributing to axmol-js
 
-Send native JavaScript changes to the `axmol-js` branch of `fresair/axmol`. This includes the SpiderMonkey runtime, bindings, project template, debugger and Cocos2d-x v3 compatibility tests. For changes intended for the upstream engine, follow the upstream branch and contributor rules. [Fork pull requests](https://github.com/fresair/axmol/pulls) · [Upstream Axmol contribution guide](https://github.com/axmolengine/axmol/blob/dev/CONTRIBUTING.md)
+Open pull requests for the JavaScript runtime, bindings, debugger, templates and v3 compatibility tests against **`fresair/axmol:axmol-js`**. [Pull requests](https://github.com/fresair/axmol/pulls)
 
-## Describe the change
+## Submit a change
 
-Include the commit or branch you tested, the smallest reproduction, the expected result and what you observed. For a device-specific issue, include the platform, architecture and build configuration. For a regression in the original v3 test app, give the menu category and scene name so a reviewer can open the same scene. General engine questions and bugs reproducible on upstream Axmol can use the upstream community channels. [Upstream FAQ](https://github.com/axmolengine/axmol/wiki/FAQ) · [Upstream discussions](https://github.com/axmolengine/axmol/discussions) · [Upstream issues](https://github.com/axmolengine/axmol/issues)
-
-## Submit a pull request
-
-1. Create a fork or personal copy that you can push to. In your clone, use `origin` for your copy and add the repository that maintains the JS branch as `upstream`.
+1. Create a personal fork or copy and clone it as `origin`. Add this repository as `upstream`, then start a topic branch from `axmol-js`.
 
    ```sh
    git remote add upstream https://github.com/fresair/axmol.git
    git fetch upstream axmol-js
-   git switch -c my-js-change upstream/axmol-js
+   git switch --no-track -c my-js-change upstream/axmol-js
    ```
 
-2. Make a focused change and run the checks for the affected code. Use the runtime regressions for VM, bindings or callback changes. For graphics or input, open the affected scene in the test app and report what you saw on the target platform. [Runtime tests](tests/js-runtime-tests/README.md) · [Original v3 test app](tests/js-tests/README.md) · [Binding generation](tools/js-bindings/README.md)
+2. Make the change and run the checks for the affected code. For VM, object lifetime and callback changes, use the runtime suite. For rendering or input, open the relevant category and scene in the v3 test app. Binding generator changes should also cover the generated output. [Runtime tests](tests/js-runtime-tests/README.md) · [Interactive test app](tests/js-tests/README.md) · [Binding generation](tools/js-bindings/README.md) · [C++ coding style](docs/CODING_STYLE.md)
 
-3. Push your topic branch to your copy and open a pull request. In GitHub, set the **base repository** to `fresair/axmol` and the **base branch** to `axmol-js`. Describe which checks you ran and any platforms you could not test.
+3. Commit your changes and run `git push -u origin my-js-change`. When opening the pull request, check the base repository and branch shown above. Describe the problem, how to reproduce it and what changed. Include the commands or scene you tested, the platform and architecture, the build configuration, and any relevant coverage gaps.
 
-   ```sh
-   git push -u origin my-js-change
-   ```
+## Attribution and upstream contributions
 
-## Review checklist
+Keep applicable copyright, attribution and license notices with reused code and assets. Use accurate authorship and the applicable SPDX identifier for new project-owned source files. The Ye Liangqi notice covers Ye Liangqi's original contributions and modifications to axmol-js. [License](LICENSE) · [Authors](AUTHORS.md)
 
--   For C++ code follow the [axmol C++ Coding Style](docs/CODING_STYLE.md)
--   Describe what the patch does and why.
--   Include regression or unit tests when applicable.
--   Run the relevant C++23 build, test, and formatting checks using the Axmol CLI or the documented CMake workflow.
--   List the platforms and compilers you tested.
--   Must not degrade performance, break existing tests, break CI, or introduce avoidable backward incompatibility.
--   Must compile without warnings in the configurations tested.
--   New APIs must be easy to use, familiar to Axmol users, documented with Doxygen, and easy to extend and maintain.
--   Tools must include a README.md describing how to use them.
--   Keep implementations efficient and avoid duplicating existing code unless the new code deliberately deprecates or replaces it.
--   Large refactors of key components should be coordinated with maintainers and are generally reserved for the next major version.
-
-## Copyright and attribution
-
-For contributions to this fork, preserve applicable upstream and third-party notices and use the appropriate copyright and SPDX notice for new project-owned files. The Ye Liangqi notice identifies the original work and modifications that Ye Liangqi contributed to axmol-js. See the project and component licenses when reusing code, fixtures or artwork. [License](LICENSE) · [Authors](AUTHORS.md)
-
-### Contributions sent upstream
-
-Upstream Axmol maintains a contributor agreement and a copyright-assignment process for pull requests submitted to `axmolengine/axmol`. Its agreement assigns economic copyright rights for incoming contributions to Simdsoft Limited. Follow the upstream project's current CLA and source-header guidance when submitting a change there. Historical code from contributors who did not assign those rights retains its original MIT notices. [Upstream contribution and copyright policy](https://github.com/axmolengine/axmol/blob/dev/CONTRIBUTING.md)
+If you also submit a change to `axmolengine/axmol`, follow that project's target-branch, source-header and contributor agreement requirements. [Upstream contribution guide](https://github.com/axmolengine/axmol/blob/dev/CONTRIBUTING.md)
