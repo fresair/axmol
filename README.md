@@ -1,24 +1,46 @@
 <p align="center"><a href="https://axmol.dev"><img width="160" src="https://axmol.dev/assets/img/logo.png" alt="Axmol logo"></a></p>
 
-# Axmol
+# Axmol with native JavaScript
 
-Axmol is an MIT-licensed, cross-platform game engine for 2D and 3D games. Build with C++ or Lua for mobile, desktop, WebAssembly, and Xbox via UWP.
+The `axmol-js` branch of `fresair/axmol` adds native JavaScript to the Axmol 2D and 3D game engine alongside C++ and Lua. It uses SpiderMonkey 33.1 and provides Cocos2d-x v3-style APIs for existing scripts, including `cc`, `ccui`, `ccs`, `sp` and `jsb`. JavaScript targets are Android ARM64, macOS on Apple silicon, and iOS on ARM64 devices and simulators. [JavaScript project guide](templates/js/README.md) · [简体中文](README_CN.md)
 
-The `axmol-js` branch is a derivative of [Axmol](https://github.com/axmolengine/axmol). Copyright (c) 2026 Ye Liangqi for original contributions and modifications made for axmol-js. These contributions follow the project's [MIT License](LICENSE). Upstream and third-party code retain their existing copyright notices and applicable licenses; see [AUTHORS.md](AUTHORS.md) and the component license files.
+This branch derives from Axmol. Ye Liangqi holds copyright in the original contributions and modifications made for axmol-js in 2026. Project-owned changes use the MIT License. Upstream work, third-party components and sample assets retain their own notices. [Upstream Axmol](https://github.com/axmolengine/axmol) · [License](LICENSE) · [Authors](AUTHORS.md)
 
-[Try it online](#try-it-online) · [Get started](#get-started) · [Games made with Axmol](https://github.com/axmolengine/axmol/wiki/Made-in-Axmol) · [简体中文](README_CN.md)
+## Get started
 
-[![Build status](https://github.com/axmolengine/axmol/workflows/build/badge.svg)](https://github.com/axmolengine/axmol/actions?query=workflow%3Abuild)
-[![Latest stable release](https://img.shields.io/github/v/release/axmolengine/axmol?label=latest%20stable)](https://github.com/axmolengine/axmol/releases)
-[![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![C++23 on v3 dev](https://img.shields.io/badge/v3%20dev-C%2B%2B23-8A2BE2.svg)](https://github.com/axmolengine/axmol/blob/dev/cmake/Modules/AXConfigDefine.cmake)
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/axmolengine/axmol)
+Install a C++23 compiler, PowerShell 7 and the tools for your target platform. Clone this branch and run setup from the checkout. [Platform setup guide](docs/DevSetup.md)
 
-## Try it online
+```sh
+git clone --branch axmol-js https://github.com/fresair/axmol.git
+cd axmol
+pwsh ./setup.ps1
+```
 
-Run the [Axmol WebAssembly tests](https://axmol.netlify.app/wasm/cpp-tests/cpp-tests) or the [FairyGUI demo](https://axmol.netlify.app/wasm/fairygui-tests/fairygui-tests) in your browser. Explore [games and other projects made with Axmol](https://github.com/axmolengine/axmol/wiki/Made-in-Axmol).
+Restart your terminal, return to the checkout, then create and build a JavaScript game. This example targets an Apple silicon Mac.
 
-## Toward v3 beta1
+```sh
+axmol new -p dev.axmol.hellojs -d ./projects -l js HelloJs
+cd ./projects/HelloJs
+axmol build -p osx -a arm64
+```
+
+Open `Content/main.js` to see how the game starts. On the first JS build, CMake prepares the pinned SpiderMonkey package if needed. Subsequent builds reuse the validated package. Use `-l cpp` or `-l lua` to create a C++ or Lua project. [Runtime prerequisites and cache](3rdparty/spidermonkey/README.md)
+
+## Run the JavaScript tests
+
+From the engine checkout, build the original Cocos2d-x v3 test app and open it to explore the scenes from its default menu. The following command targets an Apple silicon Mac.
+
+```sh
+axmol build -d tests/js-tests -t js-tests -p osx -a arm64
+```
+
+The separate runtime suite checks VM and native binding behavior. For example, a change to object lifetime belongs in the runtime tests, while a rendering change can also be exercised in the corresponding menu scene. [Test app](tests/js-tests/README.md) · [Runtime regressions](tests/js-runtime-tests/README.md) · [VS Code debugger](tools/js-debugger/README.md) · [Contributing](CONTRIBUTING.md)
+
+## Upstream Axmol demos
+
+Try the upstream C++ WebAssembly tests or the FairyGUI demo in your browser. [WebAssembly tests](https://axmol.netlify.app/wasm/cpp-tests/cpp-tests) · [FairyGUI demo](https://axmol.netlify.app/wasm/fairygui-tests/fairygui-tests) · [Games made with Axmol](https://github.com/axmolengine/axmol/wiki/Made-in-Axmol)
+
+## Upstream Axmol v3 development
 
 Major feature development for v3 beta1 is largely complete on `dev`. Current work focuses on final cleanup and release preparation.
 
@@ -37,47 +59,16 @@ The following rendering backends are enabled by default on `dev`. A build can in
 
 GL refers to OpenGL or OpenGL ES depending on the platform. WebAssembly uses WebGL. See [rendering build options](CMakeOptions.md) for configuration and the [v3 roadmap](https://github.com/axmolengine/axmol/discussions/2650) for progress. These v3 capabilities do not describe the stable v2 release.
 
-## Choose a version
+## Upstream Axmol branches
 
 | Branch | Use it for | C++ standard |
 | --- | --- | --- |
 | [`dev`](https://github.com/axmolengine/axmol/tree/dev) (default) | v3 development and trying new features; APIs and experimental features may change | C++23 |
 | [`release/2.x`](https://github.com/axmolengine/axmol/tree/release/2.x) | Stable v2 LTS releases and production projects | C++20 |
 
-v3 beta1 is in preparation, and `dev` remains the v3 pre-release branch. The [latest stable release](https://github.com/axmolengine/axmol/releases) is from v2 LTS. Contribution and branch rules are in [CONTRIBUTING.md](CONTRIBUTING.md).
+v3 beta1 is in preparation, and `dev` remains the v3 pre-release branch. The [latest stable release](https://github.com/axmolengine/axmol/releases) is from v2 LTS. For changes intended for upstream, see its [contribution guide](https://github.com/axmolengine/axmol/blob/dev/CONTRIBUTING.md).
 
-## Get started
-
-Install a C++23 compiler and [PowerShell 7](https://github.com/PowerShell/PowerShell/releases), then follow the [setup and building guide](docs/DevSetup.md) for platform-specific prerequisites. To try v3 from the default `dev` branch:
-
-```sh
-git clone https://github.com/axmolengine/axmol.git
-cd axmol
-./setup.ps1
-```
-
-Restart your terminal after setup, return to the cloned Axmol directory, then create and build a C++ project:
-
-```sh
-axmol new -p dev.axmol.hellocpp -d ./projects -l cpp HelloCpp
-cd ./projects/HelloCpp
-axmol
-```
-
-Use `-l lua` to create a Lua project. On this `axmol-js` branch, use `-l js` for a native JavaScript project with the same setup and build commands; for example, on an Apple Silicon Mac:
-
-```sh
-axmol new -p dev.axmol.hellojs -d ./projects -l js HelloJs
-cd ./projects/HelloJs
-axmol build -p osx -a arm64
-```
-
-The first JS build prepares the pinned SpiderMonkey dependency automatically if its package is missing; later builds reuse the validated package. See the [JavaScript guide](templates/js/README.md) for supported ARM64 targets, prerequisites and cache options.
-
-
-For a production project on stable v2 LTS, clone `release/2.x` instead; it requires C++20. See the [full guide](docs/DevSetup.md) for Windows setup, other targets, and troubleshooting.
-
-## What you can build
+## Upstream engine capabilities
 
 - **Across platforms:** iOS, Android, Windows, Linux, macOS, tvOS, WebAssembly, and Xbox through UWP.
 - **2D and 3D:** graphics and scene APIs, with Box2D v3 for 2D physics and Jolt for 3D physics on v3 dev.
@@ -89,18 +80,18 @@ See the [documentation](https://axmol.dev/manual/latest/), [tutorials](https://g
 
 Axmol began in November 2019 as a fork of Cocos2d-x v4.0 and has continued to evolve with its contributors. If you have an existing Cocos2d-x project, see the [migration guide](https://github.com/axmolengine/axmol/wiki/Cocos2d%E2%80%90x-migration-guide) and [major changes from Cocos2d-x v4.0 to Axmol v3](https://github.com/axmolengine/axmol/wiki/Axmol-v3-VS-Cocos2d%E2%80%90x-4.0).
 
-## Community and support
+## Upstream community and support
 
 [![Discord](https://img.shields.io/discord/1099599084895088670?label=discord)](https://discord.gg/QjaQBhFVay)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](CONTRIBUTING.md)
 
-Ask questions in [GitHub Discussions](https://github.com/axmolengine/axmol/discussions), join [Discord](https://discord.gg/QjaQBhFVay), or read the [contribution guide](CONTRIBUTING.md) and [contributors list](AUTHORS.md). If Axmol is useful to you, a GitHub star helps others discover it. You can also [support development](https://axmol.dev/sponsor).
+Ask questions in [GitHub Discussions](https://github.com/axmolengine/axmol/discussions), join [Discord](https://discord.gg/QjaQBhFVay), or browse the [upstream contributors list](https://github.com/axmolengine/axmol/blob/dev/AUTHORS.md). If Axmol is useful to you, a GitHub star helps others discover it. You can also [support development](https://axmol.dev/sponsor).
 
-### Corporate Patron
+### Upstream corporate patron
 
 <a href="https://scorewarrior.com/?utm_source=axmol"><img src="https://cdn.prod.website-files.com/633da33305ac754156026dd8/63566f1edf5f0712f94f7f1b_sw-triangle-821890.svg" height="96" alt="Scorewarrior"></a>
 
-## Project activity
+## Upstream project activity
 
 Explore [awesome-cpp](https://github.com/fffaraz/awesome-cpp).
 

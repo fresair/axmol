@@ -1,84 +1,36 @@
-# Contributing to Axmol
+# Contributing to axmol-js
 
-## General considerations
+Send native JavaScript changes to the `axmol-js` branch of `fresair/axmol`. This includes the SpiderMonkey runtime, bindings, project template, debugger and Cocos2d-x v3 compatibility tests. For changes intended for the upstream engine, follow the upstream branch and contributor rules. [Fork pull requests](https://github.com/fresair/axmol/pulls) · [Upstream Axmol contribution guide](https://github.com/axmolengine/axmol/blob/dev/CONTRIBUTING.md)
 
-### Providing correct and relevant information is key
+## Describe the change
 
-When asking a question, reporting a bug, or submitting a patch, it is **very important** to write down clearly all the relevant information the reviewer may need. For a bug report, provide the steps to reproduce it; for a pull request, outline the changes made and the reasons behind them. This will assist the reviewers and make the process of improving Axmol smoother for everybody.
+Include the commit or branch you tested, the smallest reproduction, the expected result and what you observed. For a device-specific issue, include the platform, architecture and build configuration. For a regression in the original v3 test app, give the menu category and scene name so a reviewer can open the same scene. General engine questions and bugs reproducible on upstream Axmol can use the upstream community channels. [Upstream FAQ](https://github.com/axmolengine/axmol/wiki/FAQ) · [Upstream discussions](https://github.com/axmolengine/axmol/discussions) · [Upstream issues](https://github.com/axmolengine/axmol/issues)
 
-## For questions
+## Submit a pull request
 
-Please revise our [FAQ](https://github.com/axmolengine/axmol/wiki/FAQ) and check the [GitHub Discussions](https://github.com/axmolengine/axmol/discussions), your question may have been already answered.
+1. Create a fork or personal copy that you can push to. In your clone, use `origin` for your copy and add the repository that maintains the JS branch as `upstream`.
 
-If that is not the case, you can ask general questions by using:
+   ```sh
+   git remote add upstream https://github.com/fresair/axmol.git
+   git fetch upstream axmol-js
+   git switch -c my-js-change upstream/axmol-js
+   ```
 
--   Forum (preferred way): https://github.com/axmolengine/axmol/discussions
+2. Make a focused change and run the checks for the affected code. Use the runtime regressions for VM, bindings or callback changes. For graphics or input, open the affected scene in the test app and report what you saw on the target platform. [Runtime tests](tests/js-runtime-tests/README.md) · [Original v3 test app](tests/js-tests/README.md) · [Binding generation](tools/js-bindings/README.md)
 
-## Reporting bugs
+3. Push your topic branch to your copy and open a pull request. In GitHub, set the **base repository** to `fresair/axmol` and the **base branch** to `axmol-js`. Describe which checks you ran and any platforms you could not test.
 
-To report bugs, please use the [Issue Tracker](https://github.com/axmolengine/axmol/issues).
+   ```sh
+   git push -u origin my-js-change
+   ```
 
-Steps to report a bug:
-* Open the [issues url](https://github.com/axmolengine/axmol/issues/new)
-* Add all the needed information to reproduce the bug, the information include
-    * engine version
-    * steps to reproduce the bug
-    * some pseudocode
-    * resources link if needed
-
-
-## Submitting patches
-
-If you want to contribute code, please follow these steps:
-
-If you are new to Git or GitHub, read [Pro Git](https://git-scm.com/book/en/v2/Git-on-the-Server-Contributing-to-a-Project), especially the section on contributing to a public project.
-
-
-### One-time repository setup
-
-- Fork Axmol on GitHub to your own account.
-- Clone your fork:
-```
-git clone https://github.com/<your-github-account>/axmol.git
-```
-- Add the canonical Axmol repository as `upstream`:
-```
-cd axmol
-git remote add upstream https://github.com/axmolengine/axmol.git
-```
-
-### For each pull request
-
-- Update your local view of the upstream repository:
-```
-git fetch upstream
-```
-- Create a focused branch from the current v3 development branch:
-```
-git switch -c <branch-name> --track upstream/dev
-```
-- Make focused changes, run the relevant checks, and use short descriptive commit messages.
-```
-git commit
-```
-- Push the branch to your fork:
-```
-git push -u origin <branch-name>
-```
-- Open a pull request against `axmolengine/axmol`, normally targeting `dev`.
-- Target `release/2.x` only for an applicable critical or security fix; new v3 features belong on `dev`.
-- Do not run whole-file `clang-format` or make unrelated formatting changes in `release/2.x` pull requests; they create avoidable merge conflicts with `dev`.
-- Complete the pull-request description and checklist before requesting review.
-
-## Only _complete_ patches will be merged
-
-The patch must be _complete_. And by that, we mean:
+## Review checklist
 
 -   For C++ code follow the [axmol C++ Coding Style](docs/CODING_STYLE.md)
 -   Describe what the patch does and why.
 -   Include regression or unit tests when applicable.
--   Run the relevant C++23 build, test, and formatting checks; use the Axmol CLI or the documented CMake workflow.
--   Test every platform available to you and report the actual platform/compiler matrix in the pull request. If a platform cannot be tested, say so explicitly [*].
+-   Run the relevant C++23 build, test, and formatting checks using the Axmol CLI or the documented CMake workflow.
+-   List the platforms and compilers you tested.
 -   Must not degrade performance, break existing tests, break CI, or introduce avoidable backward incompatibility.
 -   Must compile without warnings in the configurations tested.
 -   New APIs must be easy to use, familiar to Axmol users, documented with Doxygen, and easy to extend and maintain.
@@ -86,32 +38,10 @@ The patch must be _complete_. And by that, we mean:
 -   Keep implementations efficient and avoid duplicating existing code unless the new code deliberately deprecates or replaces it.
 -   Large refactors of key components should be coordinated with maintainers and are generally reserved for the next major version.
 
-[*]: If you don't have access to test your code in all the supported platforms, let us know.
+## Copyright and attribution
 
-## Copyright and Intellectual Property
+For contributions to this fork, preserve applicable upstream and third-party notices and use the appropriate copyright and SPDX notice for new project-owned files. The Ye Liangqi notice identifies the original work and modifications that Ye Liangqi contributed to axmol-js. See the project and component licenses when reusing code, fixtures or artwork. [License](LICENSE) · [Authors](AUTHORS.md)
 
-By submitting contributions you agree to the Axmol Contributor Agreement.
+### Contributions sent upstream
 
-Source‑file headers state the copyright holder of assigned economic rights (Simdsoft Limited).
-Original author attribution is preserved in Git commit history, CLA signing records, AUTHORS.md and the root `LICENSE` file.
-
-- Newly created project-owned source files should use the current MIT/SPDX header style. They do not need historical attribution that does not apply to the new file:
-
-  ```cpp
-  /****************************************************************************
-   Copyright (c) 2019-present Simdsoft Limited.
-
-   https://axmol.dev/
-
-   SPDX-License-Identifier: MIT
-   ****************************************************************************/
-  #pragma once
-  ```
-- When modifying an existing file, preserve its applicable historical copyright and author notices, and add the current project notice when appropriate.
-- New pull requests must complete CLA signing before being merged. The CLA assigns economic copyright rights for incoming contributions to Simdsoft Limited.
-- Some historical code segments are from former external contributors who are inactive and cannot sign the CLA. Those contributions are licensed under the original MIT license; Simdsoft does not hold assigned copyright ownership over those code segments.
-- The root `LICENSE` lists `Simdsoft Limited and other Axmol contributors` as the overall project copyright holders.
-
-## About branch management
-
-Please read [this announcement](https://github.com/axmolengine/axmol/discussions/1271).
+Upstream Axmol maintains a contributor agreement and a copyright-assignment process for pull requests submitted to `axmolengine/axmol`. Its agreement assigns economic copyright rights for incoming contributions to Simdsoft Limited. Follow the upstream project's current CLA and source-header guidance when submitting a change there. Historical code from contributors who did not assign those rights retains its original MIT notices. [Upstream contribution and copyright policy](https://github.com/axmolengine/axmol/blob/dev/CONTRIBUTING.md)
