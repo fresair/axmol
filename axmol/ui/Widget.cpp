@@ -2,6 +2,7 @@
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -158,6 +159,7 @@ Widget::Widget()
     , _layoutParameterType(LayoutParameter::Type::NONE)
     , _focused(false)
     , _focusEnabled(true)
+    , _swallowPointerEvents(true)
     , _callbackType("")
     , _callbackName("")
 {}
@@ -728,7 +730,8 @@ bool Widget::onPointerDown(PointerEvent* event)
 
     pushDownEvent();
 
-    event->stopPropagation();
+    if (_swallowPointerEvents)
+        event->stopPropagation();
 
     return true;
 }
@@ -1345,6 +1348,7 @@ void Widget::copyProperties(Widget* widget)
     _focused                = widget->_focused;
     _focusEnabled           = widget->_focusEnabled;
     _propagatePointerEvents = widget->_propagatePointerEvents;
+    setSwallowPointerEvents(widget->isSwallowPointerEvents());
 
     copySpecialProperties(widget);
 

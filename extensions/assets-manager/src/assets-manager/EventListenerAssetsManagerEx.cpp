@@ -1,6 +1,7 @@
 /****************************************************************************
  Copyright (c) 2014-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -55,6 +56,8 @@ EventListenerAssetsManagerEx* EventListenerAssetsManagerEx::create(
 bool EventListenerAssetsManagerEx::init(const AssetsManagerEx* AssetsManagerEx,
                                         const std::function<void(EventAssetsManagerEx*)>& callback)
 {
+    if (!AssetsManagerEx || !callback)
+        return false;
     bool ret = false;
 
     _AssetsManagerEx        = AssetsManagerEx;
@@ -62,7 +65,9 @@ bool EventListenerAssetsManagerEx::init(const AssetsManagerEx* AssetsManagerEx,
 
     auto func = [this](CustomEvent* event) -> void {
         EventAssetsManagerEx* eventAssetsManagerEx = dynamic_cast<EventAssetsManagerEx*>(event);
-        _onAssetsManagerExEvent(eventAssetsManagerEx);
+        const auto* manager = _AssetsManagerEx.get();
+        if (manager && eventAssetsManagerEx && eventAssetsManagerEx->getAssetsManagerEx() == manager)
+            _onAssetsManagerExEvent(eventAssetsManagerEx);
     };
     std::string pointer = fmt::format("{}", fmt::ptr(AssetsManagerEx));
     if (CustomEventListener::init(LISTENER_ID + pointer, func))
@@ -75,7 +80,7 @@ bool EventListenerAssetsManagerEx::init(const AssetsManagerEx* AssetsManagerEx,
 EventListenerAssetsManagerEx* EventListenerAssetsManagerEx::clone()
 {
     EventListenerAssetsManagerEx* ret = new EventListenerAssetsManagerEx();
-    if (ret->init(_AssetsManagerEx, _onAssetsManagerExEvent))
+    if (ret->init(_AssetsManagerEx.get(), _onAssetsManagerExEvent))
     {
         ret->autorelease();
     }
@@ -89,7 +94,7 @@ EventListenerAssetsManagerEx* EventListenerAssetsManagerEx::clone()
 bool EventListenerAssetsManagerEx::checkAvailable()
 {
     bool ret = false;
-    if (EventListener::checkAvailable() && _AssetsManagerEx != nullptr && _onAssetsManagerExEvent != nullptr)
+    if (EventListener::checkAvailable() && !_AssetsManagerEx.expired() && _onAssetsManagerExEvent != nullptr)
     {
         ret = true;
     }

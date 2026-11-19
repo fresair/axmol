@@ -1,6 +1,7 @@
 /****************************************************************************
  Copyright (c) 2015-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -117,6 +118,9 @@ Pass* Pass::clone() const
 
     auto clonedPS = _programState->clone();
     pass->setProgramState(clonedPS);
+    // ProgramState shares its reflected Program. Preserve the per-pass choice
+    // separately from any builtin alias installed on that shared Program.
+    pass->_locTexture = _locTexture;
     clonedPS->release();
 
     pass->_vertexInputBinding = _vertexInputBinding;
@@ -275,6 +279,11 @@ void Pass::setVertexInputBinding(VertexInputBinding* binding)
 VertexInputBinding* Pass::getVertexAttributeBinding() const
 {
     return _vertexInputBinding;
+}
+
+void Pass::setAutomaticDiffuseTextureBindingEnabled(bool enabled)
+{
+    _locTexture = enabled && _programState ? _programState->getUniformLocation("u_tex0") : rhi::UniformLocation{};
 }
 
 void Pass::setUniformTexture(uint32_t slot, rhi::Texture* tex)

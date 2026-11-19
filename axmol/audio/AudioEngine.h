@@ -2,6 +2,7 @@
  Copyright (c) 2014-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -117,6 +118,15 @@ public:
      * @return The default profile of audio instances.
      */
     static AudioProfile* getDefaultProfile();
+
+    /** Lifetime checks for borrowed profiles. Call on the AudioEngine owner thread.
+     * A generation ends at end(), even though named profiles remain cached.
+     * Validation never dereferences the supplied (possibly expired) pointer.
+     * @script{ignore}
+     */
+    static uint64_t getProfileGeneration();
+    /** @script{ignore} */
+    static bool isProfileValid(const AudioProfile* profile, uint64_t generation);
 
     /**
      * Play 2d sound.
@@ -506,7 +516,9 @@ protected:
     static tlx::string_map<std::list<AudioId>> _audioPathIDMap;
 
     // profileName,ProfileHelper
-    static tlx::string_map<ProfileHelper> _audioPathProfileHelperMap;
+    // AudioInfo and script wrappers borrow these helpers. Flat-map insertion
+    // can move existing values even without rehash; nodes must stay put.
+    static tlx::stl_string_map<ProfileHelper> _audioPathProfileHelperMap;
 
     static AudioEngineSettings _settings;
 

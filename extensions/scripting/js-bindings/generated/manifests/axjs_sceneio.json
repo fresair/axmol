@@ -1,0 +1,307 @@
+{
+  "formatVersion": 1,
+  "language": "js",
+  "engine": "SpiderMonkey 33.1",
+  "module": "sceneio",
+  "registrationName": "ax_sceneio",
+  "targetNamespace": "ccs",
+  "conditionalExpression": null,
+  "classes": [
+    {
+      "nativeName": "CSLoader",
+      "qualifiedName": "ax::CSLoader",
+      "jsName": "CSLoader",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [],
+      "methods": [
+        {
+          "nativeName": "bindCallback",
+          "jsName": "bindCallback",
+          "declaringType": "ax::CSLoader",
+          "returnType": "bool",
+          "parameterTypes": [
+            "std::string_view",
+            "std::string_view",
+            "ax::ui::Widget *",
+            "ax::Node *"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "createNode",
+          "jsName": "createNode",
+          "declaringType": "ax::CSLoader",
+          "returnType": "ax::Node *",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "createNode",
+          "jsName": "createNode",
+          "declaringType": "ax::CSLoader",
+          "returnType": "ax::Node *",
+          "parameterTypes": [
+            "std::string_view",
+            "const std::function\u003Cvoid (ax::Object *)\u003E \u0026"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "createNodeFromJson",
+          "jsName": "createNodeFromJson",
+          "declaringType": "ax::CSLoader",
+          "returnType": "ax::Node *",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "createNodeWithFlatBuffersFile",
+          "jsName": "createNodeWithFlatBuffersFile",
+          "declaringType": "ax::CSLoader",
+          "returnType": "ax::Node *",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "createNodeWithFlatBuffersForSimulator",
+          "jsName": "createNodeWithFlatBuffersForSimulator",
+          "declaringType": "ax::CSLoader",
+          "returnType": "ax::Node *",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "createNodeWithVisibleSize",
+          "jsName": "createNodeWithVisibleSize",
+          "declaringType": "ax::CSLoader",
+          "returnType": "ax::Node *",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "createNodeWithVisibleSize",
+          "jsName": "createNodeWithVisibleSize",
+          "declaringType": "ax::CSLoader",
+          "returnType": "ax::Node *",
+          "parameterTypes": [
+            "std::string_view",
+            "const std::function\u003Cvoid (ax::Object *)\u003E \u0026"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "createTimeline",
+          "jsName": "createTimeline",
+          "declaringType": "ax::CSLoader",
+          "returnType": "ax::ext::timeline::ActionTimeline *",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getInstance",
+          "jsName": "getInstance",
+          "declaringType": "ax::CSLoader",
+          "returnType": "ax::CSLoader *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getJsonPath",
+          "jsName": "getJsonPath",
+          "declaringType": "ax::CSLoader",
+          "returnType": "std::string",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "init",
+          "jsName": "init",
+          "declaringType": "ax::CSLoader",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "isRecordJsonPath",
+          "jsName": "isRecordJsonPath",
+          "declaringType": "ax::CSLoader",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "loadNodeWithContent",
+          "jsName": "loadNodeWithContent",
+          "declaringType": "ax::CSLoader",
+          "returnType": "ax::Node *",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "loadNodeWithFile",
+          "jsName": "loadNodeWithFile",
+          "declaringType": "ax::CSLoader",
+          "returnType": "ax::Node *",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "nodeWithFlatBuffersFile",
+          "jsName": "nodeWithFlatBuffersFile",
+          "declaringType": "ax::CSLoader",
+          "returnType": "ax::Node *",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setJsonPath",
+          "jsName": "setJsonPath",
+          "declaringType": "ax::CSLoader",
+          "returnType": "void",
+          "parameterTypes": [
+            "std::string"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setRecordJsonPath",
+          "jsName": "setRecordJsonPath",
+          "declaringType": "ax::CSLoader",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "createNode",
+          "returnType": "ax::Node *",
+          "parameterTypes": [
+            "const ax::Data \u0026"
+          ]
+        },
+        {
+          "nativeName": "createNode",
+          "returnType": "ax::Node *",
+          "parameterTypes": [
+            "const ax::Data \u0026",
+            "const std::function\u003Cvoid (ax::Object *)\u003E \u0026"
+          ]
+        },
+        {
+          "nativeName": "createTimeline",
+          "returnType": "ax::ext::timeline::ActionTimeline *",
+          "parameterTypes": [
+            "const ax::Data \u0026",
+            "std::string_view"
+          ]
+        },
+        {
+          "nativeName": "registReaderObject",
+          "returnType": "void",
+          "parameterTypes": [
+            "std::string_view",
+            "ax::Object *(*)()"
+          ]
+        }
+      ]
+    }
+  ],
+  "enums": []
+}

@@ -4,6 +4,7 @@ Copyright (c) 2010-2012 cocos2d-x.org
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -94,11 +95,12 @@ bool GridBase::initWithSize(const Vec2& gridSize, const ax::Rect& rect)
 
     texture->initWithSpec(desc, Texture2D::DEFAULT_SLICE_DATA);
 
-    initWithSize(gridSize, texture, false, rect);
+    const bool initialized = initWithSize(gridSize, texture, false, rect);
+    _internallyGeneratedTexture = initialized;
 
     texture->release();
 
-    return true;
+    return initialized;
 }
 
 bool GridBase::initWithSize(const Vec2& gridSize, Texture2D* texture, bool flipped)
@@ -114,8 +116,11 @@ bool GridBase::initWithSize(const Vec2& gridSize, Texture2D* texture, bool flipp
     _reuseGrid = 0;
     _gridSize  = gridSize;
 
+    AX_SAFE_RELEASE(_renderTarget);
+    AX_SAFE_RETAIN(texture);
+    AX_SAFE_RELEASE(_texture);
     _texture = texture;
-    AX_SAFE_RETAIN(_texture);
+    _internallyGeneratedTexture = false;
     _isTextureFlipped = rhi::GraphicsCore::isOpenGL() ? flipped : !flipped;
 
     if (rect.equals(Rect::zero))
@@ -131,6 +136,7 @@ bool GridBase::initWithSize(const Vec2& gridSize, Texture2D* texture, bool flipp
     _step.y = _gridRect.size.height / _gridSize.height;
 
     AX_SAFE_RELEASE(_programState);
+    AX_SAFE_RELEASE(_vertexLayout);
     auto* program = axpm->getBuiltinProgram(rhi::ProgramType::POSITION_TEXTURE);
     _programState = new rhi::ProgramState(program);
     Object::assign(_vertexLayout, program->getVertexLayout());
@@ -165,6 +171,7 @@ GridBase::~GridBase()
     AX_SAFE_RELEASE(_texture);
 
     AX_SAFE_RELEASE(_programState);
+    AX_SAFE_RELEASE(_vertexLayout);
 }
 
 // properties
@@ -187,10 +194,36 @@ void GridBase::setGridRect(const ax::Rect& rect)
     _gridRect = rect;
 }
 
+void GridBase::setCaptureSourceOverAlpha(bool enabled)
+{
+    if (_internallyGeneratedTexture)
+    {
+        _texture->setPremultipliedAlpha(enabled);
+        updateBlendState();
+    }
+}
+
 void GridBase::beforeDraw()
 {
-    AX_SAFE_RELEASE(_renderTarget);
-    _renderTarget = axdrv->createRenderTarget(_texture->getRHITexture());
+    beforeDrawWithAlphaPolicy(false);
+}
+
+void GridBase::beforeDrawWithAlphaPolicy(bool sourceOverAlpha)
+{
+    // The texture and target are shared by sequential capture/blit pairs, but
+    // their lifetime must not end when another view records a pass this frame.
+    if (!_renderTarget)
+        _renderTarget = axdrv->createRenderTarget(_texture->getRHITexture());
+
+    // RGB source-over into transparent black accumulates PMA color. Only
+    // these owned captures change representation; external texture overloads
+    // retain the caller's declared PMA flag. Keep this capture's selection even
+    // if legacy policy changes while child traversal is collecting commands.
+    setCaptureSourceOverAlpha(sourceOverAlpha);
+    // Standard source-over capture produces PMA pixels even when its external
+    // target retains a straight-alpha declaration. Composite this capture once;
+    // leave the external metadata and subsequent direct blits unchanged.
+    _captureBlendFunc = sourceOverAlpha ? BlendFunc::ALPHA_PREMULTIPLIED : _blendFunc;
 
     if (!_renderTexturePass)
     {
@@ -199,6 +232,7 @@ void GridBase::beforeDraw()
     }
 
     _renderTexturePass->setTarget(_renderTarget);
+    _renderTexturePass->setGridCaptureSourceOverAlpha(sourceOverAlpha);
     _renderTexturePass->setViewport(
         Viewport(0, 0, static_cast<int>(_texture->getWidth()), static_cast<int>(_texture->getHeight())));
     _renderTexturePass->begin();
@@ -208,16 +242,63 @@ void GridBase::beforeDraw()
 
 void GridBase::afterDraw(ax::Node* /*target*/, const SceneRenderState& state)
 {
-    auto renderer = Director::getInstance()->getRenderer();
-
     if (_renderTexturePass && _renderTexturePass->isActive())
         _renderTexturePass->end();
 
-    renderer->addCallbackCommand([this]() -> void { beforeBlit(); });
-
+    // Custom Grid subclasses that use the protected command keep the same
+    // hooks. Built-in grids attach them to each independent pending draw.
+    _drawCommand.setBeforeCallback([this]() { beforeBlit(); });
+    _drawCommand.setAfterCallback([this]() { afterBlit(); });
     blit(state);
+    _captureBlendFunc.reset();
+}
 
-    renderer->addCallbackCommand([this]() -> void { afterBlit(); });
+void GridBase::enqueueBlit(const SceneRenderState& state,
+                           const void* vertices,
+                           size_t vertexCount,
+                           const unsigned short* indices,
+                           size_t indexCount)
+{
+    BlitCommand* draw = nullptr;
+    for (const auto& entry : _blitCommands)
+    {
+        if (!entry->pending)
+        {
+            draw = entry.get();
+            break;
+        }
+    }
+    if (!draw)
+    {
+        draw = _blitCommands.emplace_back(std::make_unique<BlitCommand>()).get();
+        draw->command.setOwnPSVL(_programState->clone(), _vertexLayout, RenderCommand::ADOPT_FLAG_PS);
+    }
+
+    auto& command = draw->command;
+    if (command.getVertexCapacity() != vertexCount)
+        command.createVertexBuffer(sizeof(Vec3) + sizeof(Vec2), vertexCount, CustomCommand::BufferUsage::DYNAMIC);
+    if (command.getIndexCapacity() != indexCount)
+        command.createIndexBuffer(CustomCommand::IndexFormat::U_SHORT, indexCount, CustomCommand::BufferUsage::DYNAMIC);
+    command.updateVertexBuffer(vertices, vertexCount * (sizeof(Vec3) + sizeof(Vec2)));
+    command.updateIndexBuffer(indices, indexCount * sizeof(unsigned short));
+    command.init(GRID_BLIT_ORDER, _captureBlendFunc.value_or(_blendFunc));
+
+    auto* programState = command.unsafePS();
+    const auto& projection = state.getViewProjectionMatrix();
+    programState->setUniform(_mvpMatrixLocation, projection.m, sizeof(projection.m));
+    programState->setTexture(_textureLocation, 0, _texture->getRHITexture());
+    command.setBeforeCallback([this]() { beforeBlit(); });
+    command.setAfterCallback([this, draw]() {
+        afterBlit();
+        draw->pending = false;
+    });
+    draw->pending = true;
+
+    auto* renderer = state.getRenderer();
+    renderer->addCommand(&command);
+    // Keep native state alive through the draw without a Grid/command ownership
+    // cycle. State bracketing belongs to the actual draw callbacks above.
+    renderer->addCallbackCommand([self = RefPtr<GridBase>(this)]() mutable { self.reset(); }, GRID_BLIT_ORDER);
 }
 
 void GridBase::setScreenProjectionForBlit(const Mat4* projection, const Vec2& size)
@@ -336,12 +417,8 @@ void Grid3D::afterBlit()
 void Grid3D::blit(const SceneRenderState& state)
 {
     updateVertexBuffer();
-    _drawCommand.init(GRID_BLIT_ORDER, _blendFunc);
-    Director::getInstance()->getRenderer()->addCommand(&_drawCommand);
-    ax::Mat4 projectionMat = state.getViewProjectionMatrix();
-    auto programState      = _drawCommand.unsafePS();
-    programState->setUniform(_mvpMatrixLocation, projectionMat.m, sizeof(projectionMat.m));
-    programState->setTexture(_textureLocation, 0, _texture->getRHITexture());
+    enqueueBlit(state, _vertexBuffer, static_cast<size_t>((_gridSize.width + 1) * (_gridSize.height + 1)), _indices,
+                static_cast<size_t>(_gridSize.width * _gridSize.height * 6));
 }
 
 void Grid3D::calculateVertexPoints()
@@ -500,11 +577,6 @@ void Grid3D::updateVertexBuffer()
             memcpy((char*)_vertexBuffer + offset + sizeof(Vec3), &tempTexPointer[i], sizeof(Vec2));
         }
     }
-    _drawCommand.updateVertexBuffer(_vertexBuffer,
-                                    (unsigned int)(numOfPoints * sizeof(Vec3) + numOfPoints * sizeof(Vec2)));
-
-    _drawCommand.updateIndexBuffer(
-        _indices, static_cast<unsigned int>(_gridSize.width * _gridSize.height * 6 * sizeof(unsigned short)));
 }
 
 void Grid3D::updateVertexAndTexCoordinate()
@@ -518,13 +590,6 @@ void Grid3D::updateVertexAndTexCoordinate()
         memcpy((char*)_vertexBuffer + offset, &tempVecPointer[i], sizeof(Vec3));
         memcpy((char*)_vertexBuffer + offset + sizeof(Vec3), &tempTexPointer[i], sizeof(Vec2));
     }
-    _drawCommand.createVertexBuffer((unsigned int)(sizeof(Vec3) + sizeof(Vec2)), numOfPoints,
-                                    CustomCommand::BufferUsage::DYNAMIC);
-    _drawCommand.updateVertexBuffer(_vertexBuffer, numOfPoints * sizeof(Vec3) + numOfPoints * sizeof(Vec2));
-
-    unsigned int capacity = (unsigned int)(_gridSize.width * _gridSize.height) * 6;
-    _drawCommand.createIndexBuffer(CustomCommand::IndexFormat::U_SHORT, capacity, CustomCommand::BufferUsage::DYNAMIC);
-    _drawCommand.updateIndexBuffer(_indices, capacity * sizeof(unsigned short));
 }
 
 // implementation of TiledGrid3D
@@ -535,6 +600,7 @@ TiledGrid3D::~TiledGrid3D()
     AX_SAFE_FREE(_vertices);
     AX_SAFE_FREE(_originalVertices);
     AX_SAFE_FREE(_indices);
+    AX_SAFE_FREE(_vertexBuffer);
 }
 
 TiledGrid3D* TiledGrid3D::create(const Vec2& gridSize)
@@ -608,12 +674,8 @@ TiledGrid3D* TiledGrid3D::create(const Vec2& gridSize, Texture2D* texture, bool 
 void TiledGrid3D::blit(const SceneRenderState& state)
 {
     updateVertexBuffer();
-    _drawCommand.init(GRID_BLIT_ORDER, _blendFunc);
-    Director::getInstance()->getRenderer()->addCommand(&_drawCommand);
-    ax::Mat4 projectionMat = state.getViewProjectionMatrix();
-    auto programState      = _drawCommand.unsafePS();
-    programState->setUniform(_mvpMatrixLocation, projectionMat.m, sizeof(projectionMat.m));
-    programState->setTexture(_textureLocation, 0, _texture->getRHITexture());
+    const auto gridSize = static_cast<size_t>(_gridSize.width * _gridSize.height);
+    enqueueBlit(state, _vertexBuffer, gridSize * 4, _indices, gridSize * 6);
 }
 
 void TiledGrid3D::calculateVertexPoints()
@@ -771,10 +833,6 @@ void TiledGrid3D::updateVertexBuffer()
             memcpy((char*)_vertexBuffer + offset + sizeof(Vec3), &tempTexPointer[i], sizeof(Vec2));
         }
     }
-    _drawCommand.updateVertexBuffer(_vertexBuffer,
-                                    (unsigned int)(numOfPoints * sizeof(Vec3) + numOfPoints * sizeof(Vec2)));
-
-    _drawCommand.updateIndexBuffer(_indices, gradSize * 6 * sizeof(unsigned short));
 }
 
 void TiledGrid3D::updateVertexAndTexCoordinate()
@@ -789,12 +847,6 @@ void TiledGrid3D::updateVertexAndTexCoordinate()
         memcpy((char*)_vertexBuffer + offset, &tempVecPointer[i], sizeof(Vec3));
         memcpy((char*)_vertexBuffer + offset + sizeof(Vec3), &tempTexPointer[i], sizeof(Vec2));
     }
-    _drawCommand.createVertexBuffer((sizeof(Vec3) + sizeof(Vec2)), numOfPoints, CustomCommand::BufferUsage::DYNAMIC);
-    _drawCommand.updateVertexBuffer(_vertexBuffer, numOfPoints * sizeof(Vec3) + numOfPoints * sizeof(Vec2));
-
-    _drawCommand.createIndexBuffer(CustomCommand::IndexFormat::U_SHORT, gradSize * 6,
-                                   CustomCommand::BufferUsage::DYNAMIC);
-    _drawCommand.updateIndexBuffer(_indices, gradSize * 6 * sizeof(unsigned short));
 }
 
 }  // namespace ax

@@ -2,6 +2,7 @@
  Copyright (c) 2013-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -56,6 +57,65 @@ namespace ax
 
 namespace
 {
+struct LegacyPointerRegistration
+{
+    WeakPtr<PointerEventListener> listener{nullptr};
+    int type{};
+    bool swallow{};
+    bool owned{};
+    std::function<void(intptr_t, bool)> releaseClaim;
+};
+using LegacyPointerRegistrations = std::unordered_map<const PointerEventListener*, LegacyPointerRegistration>;
+struct LegacyPointerDispatchState
+{
+    WeakPtr<EventDispatcher> dispatcher{nullptr};
+    LegacyPointerRegistrations listeners;
+    std::unordered_map<uint64_t, WeakPtr<PointerEventListener>> swallowed;
+};
+std::unordered_map<const EventDispatcher*, LegacyPointerDispatchState> legacyPointerRegistrations;
+
+int legacyPointerType(const EventDispatcher* dispatcher, const PointerEventListener* listener)
+{
+    auto owner = legacyPointerRegistrations.find(dispatcher);
+    if (owner == legacyPointerRegistrations.end())
+        return 0;
+    auto entry = owner->second.listeners.find(listener);
+    return entry != owner->second.listeners.end() && entry->second.listener.get() == listener ? entry->second.type : 0;
+}
+
+void pruneLegacyPointerRegistrations(const EventDispatcher* dispatcher)
+{
+    auto owner = legacyPointerRegistrations.find(dispatcher);
+    if (owner == legacyPointerRegistrations.end())
+        return;
+    std::erase_if(owner->second.listeners, [](const auto& entry) { return !entry.second.listener.get(); });
+    std::erase_if(owner->second.swallowed, [](const auto& entry) { return !entry.second.get(); });
+    if (owner->second.listeners.empty())
+        legacyPointerRegistrations.erase(owner);
+}
+
+void registerLegacyPointerOwner(EventDispatcher* dispatcher, PointerEventListener* listener)
+{
+    // A legacy class keeps its dispatch semantics when attached through the
+    // public generated API to a dispatcher other than Director's singleton.
+    std::optional<LegacyPointerRegistration> metadata;
+    for (const auto& owner : legacyPointerRegistrations)
+    {
+        auto entry = owner.second.listeners.find(listener);
+        if (entry != owner.second.listeners.end() && entry->second.listener.get() == listener)
+        {
+            metadata = entry->second;
+            break;
+        }
+    }
+    if (!metadata)
+        return;
+    metadata->owned = true;
+    auto& state = legacyPointerRegistrations[dispatcher];
+    state.dispatcher = WeakPtr<EventDispatcher>{dispatcher};
+    state.listeners.insert_or_assign(listener, std::move(*metadata));
+}
+
 constexpr uint64_t CAPTURE_BUTTON_BITS  = 8;
 constexpr uint64_t CAPTURE_BUTTON_MASK  = (1ull << CAPTURE_BUTTON_BITS) - 1ull;
 constexpr uint64_t CAPTURE_POINTER_MASK = ~CAPTURE_BUTTON_MASK;
@@ -273,6 +333,9 @@ EventDispatcher::~EventDispatcher()
     // so removeAllEventListeners would clean internal custom listeners.
     _internalCustomListenerIDs.clear();
     removeAllEventListeners();
+    // Removal retires private legacy claims before dropping the weak metadata.
+    // A retained JS listener may be reattached to another dispatcher afterward.
+    legacyPointerRegistrations.erase(this);
 }
 
 void EventDispatcher::visitTarget(Node* node, bool isRootNode)
@@ -565,6 +628,8 @@ void EventDispatcher::dissociateNodeAndEventListener(Node* node, EventListener* 
 
 void EventDispatcher::addEventListener(EventListener* listener)
 {
+    if (listener->getType() == EventListener::Type::POINTER)
+        registerLegacyPointerOwner(this, static_cast<PointerEventListener*>(listener));
     if (_inDispatch == 0)
     {
         forceAddEventListener(listener);
@@ -977,6 +1042,63 @@ bool EventDispatcher::hasEventListener(std::string_view listenerID) const
     return getListeners(listenerID) != nullptr;
 }
 
+void EventDispatcher::setLegacyPointerDispatchType(PointerEventListener* listener, int legacyType,
+    bool swallow, const std::function<void(intptr_t, bool)>& releaseClaim)
+{
+    if (!listener)
+        return;
+    AXASSERT(legacyType == 0 || legacyType == 1 || legacyType == 2 || legacyType == 4,
+             "Invalid legacy pointer listener type");
+    if (legacyType != 1 && legacyType != 2 && legacyType != 4)
+    {
+        clearLegacyPointerDispatchType(listener);
+        return;
+    }
+    pruneLegacyPointerRegistrations(this);
+    auto& state = legacyPointerRegistrations[this];
+    state.dispatcher = WeakPtr<EventDispatcher>{this};
+    auto previous = state.listeners.find(listener);
+    const bool owned = previous != state.listeners.end() && previous->second.listener.get() == listener && previous->second.owned;
+    state.listeners.insert_or_assign(listener,
+        LegacyPointerRegistration{WeakPtr<PointerEventListener>{listener}, legacyType, swallow, owned, releaseClaim});
+}
+
+bool EventDispatcher::isLegacyPointerListenerAttached(PointerEventListener* listener) const
+{
+    auto owner = legacyPointerRegistrations.find(this);
+    if (owner == legacyPointerRegistrations.end())
+        return false;
+    auto entry = owner->second.listeners.find(listener);
+    return entry != owner->second.listeners.end() && entry->second.listener.get() == listener &&
+        entry->second.owned && listener->isAttached();
+}
+
+void EventDispatcher::clearLegacyPointerDispatchType(PointerEventListener* listener)
+{
+    std::vector<WeakPtr<EventDispatcher>> owners;
+    // Remove metadata first. Native listener removal may destroy callbacks or
+    // detach other listeners; snapshots use weak native generations throughout.
+    for (auto owner = legacyPointerRegistrations.begin(); owner != legacyPointerRegistrations.end();)
+    {
+        auto entry = owner->second.listeners.find(listener);
+        if (entry != owner->second.listeners.end() && entry->second.listener.get() == listener)
+        {
+            if (entry->second.owned)
+                owners.push_back(owner->second.dispatcher);
+            owner->second.listeners.erase(entry);
+        }
+        std::erase_if(owner->second.swallowed,
+            [listener](const auto& item) { return item.second.get() == listener; });
+        if (owner->second.listeners.empty())
+            owner = legacyPointerRegistrations.erase(owner);
+        else
+            ++owner;
+    }
+    for (const auto& owner : owners)
+        if (auto* dispatcher = owner.get())
+            dispatcher->removeEventListener(listener);
+}
+
 bool EventDispatcher::dispatchClaimedPointerEvent(PointerEvent* event)
 {
     struct PointerClaimDispatchEntry
@@ -1038,11 +1160,32 @@ bool EventDispatcher::dispatchClaimedPointerEvent(PointerEvent* event)
         }
     };
 
-    auto deliverClaimedEvent = [event](const PointerClaimDispatchEntry& entry) -> bool {
+    auto deliverClaimedEvent = [this, event](const PointerClaimDispatchEntry& entry) -> bool {
         auto listener = entry.listener.get();
         if (!listener || !listener->isAttached())
             return false;
 
+        // Legacy explicit stopPropagation also stops later legacy one-by-one
+        // callbacks for terminal events. Modern captured targets still receive
+        // the existing unconditional terminal cleanup delivery.
+        const auto legacyType = legacyPointerType(this, listener);
+        if (legacyType == 2 || legacyType == 4)
+            return false;
+        if (legacyType == 1 && (event->isStopped() || !listener->isEnabled() || listener->isPaused()))
+        {
+            if (event->getPhase() == InputPhase::PointerUp || event->getPhase() == InputPhase::PointerCancel)
+            {
+                auto owner = legacyPointerRegistrations.find(this);
+                if (owner != legacyPointerRegistrations.end())
+                {
+                    auto metadata = owner->second.listeners.find(listener);
+                    if (metadata != owner->second.listeners.end() && metadata->second.listener.get() == listener &&
+                        metadata->second.releaseClaim)
+                        metadata->second.releaseClaim(event->getPointerId(), false);
+                }
+            }
+            return false;
+        }
         auto target = listener->getAssociatedNode();
         event->setCurrentTarget(target);
         event->setCaptureBits(entry.captureBits);
@@ -1194,7 +1337,7 @@ bool EventDispatcher::dispatchClaimedPointerEvent(PointerEvent* event)
     }
 }
 
-void EventDispatcher::dispatchUnclaimedPointerEvent(PointerEvent* event, PointerCaptureId captureId)
+void EventDispatcher::dispatchUnclaimedPointerEvent(PointerEvent* event, PointerCaptureId captureId, int legacyType)
 {
     sortEventListeners(PointerEventListener::LISTENER_ID);
 
@@ -1205,11 +1348,14 @@ void EventDispatcher::dispatchUnclaimedPointerEvent(PointerEvent* event, Pointer
     const auto captureBits = makePointerCaptureBits(event);
 
     //  Helper lambda to deliver an unclaimed PointerEvent to a single listener
-    auto deliverUnclaimedEvent = [this, event, captureId, captureBits](EventListener* l) -> bool {
+    auto deliverUnclaimedEvent = [this, event, captureId, captureBits, legacyType](EventListener* l) -> bool {
         auto listener = static_cast<PointerEventListener*>(l);
         if (!listener || !listener->isAttached())
             return false;
 
+        const auto type = legacyPointerType(this, listener);
+        if (legacyType == 0 ? (type == 2 || type == 4) : type != legacyType)
+            return false;
         event->setCurrentTarget(listener->getAssociatedNode());
 
         bool claimed = false;
@@ -1218,9 +1364,20 @@ void EventDispatcher::dispatchUnclaimedPointerEvent(PointerEvent* event, Pointer
         case InputPhase::PointerDown:
             if (listener->onPointerDown)
                 claimed = listener->onPointerDown(event);
-            if (claimed && listener && listener->isAttached())
+            if (legacyType == 0 && claimed && listener && listener->isAttached())
             {
                 const auto captureBits = makePointerCaptureBits(event);
+
+                if (auto owner = legacyPointerRegistrations.find(this); owner != legacyPointerRegistrations.end())
+                {
+                    const auto entry = owner->second.listeners.find(listener);
+                    const bool legacySwallow = entry != owner->second.listeners.end() &&
+                        entry->second.listener.get() == listener && entry->second.type == 1 && entry->second.swallow;
+                    // Modern consumers may stop Down and omit stop on Up.
+                    // Preserve legacy exclusion through every capture phase.
+                    if (legacySwallow || (type == 0 && event->isStopped()))
+                        owner->second.swallowed.insert_or_assign(captureId, WeakPtr<PointerEventListener>{listener});
+                }
 
                 auto [entryIt, inserted] =
                     _claimedPointerListeners.try_emplace(captureId, PointerClaimEntry{{}, captureBits});
@@ -1254,6 +1411,16 @@ void EventDispatcher::dispatchUnclaimedPointerEvent(PointerEvent* event, Pointer
         case InputPhase::PointerMove:
             if (listener->onPointerMove)
                 listener->onPointerMove(event);
+            break;
+
+        case InputPhase::PointerUp:
+            if (legacyType != 0 && listener->onPointerUp)
+                listener->onPointerUp(event);
+            break;
+
+        case InputPhase::PointerCancel:
+            if (legacyType != 0 && listener->onPointerCancel)
+                listener->onPointerCancel(event);
             break;
 
         case InputPhase::PointerScroll:
@@ -1335,6 +1502,9 @@ void EventDispatcher::dispatchUnclaimedPointerEvent(PointerEvent* event, Pointer
                 continue;
 
             auto pointerListener = static_cast<PointerEventListener*>(l);
+            const auto type = legacyPointerType(this, pointerListener);
+            if (legacyType == 0 ? (type == 2 || type == 4) : type != legacyType)
+                continue;
             auto hitCamera       = findHitCameraForListener(event, pointerListener, cameras);
             if (!hitCamera)
                 continue;
@@ -1379,11 +1549,64 @@ void EventDispatcher::dispatchPointerEvent(PointerEvent* event)
     // Avoid carrying stale camera context into fixed-priority listeners or non-hit paths.
     event->setCamera(nullptr);
 
-    if (dispatchClaimedPointerEvent(event))
-        return;
-
+    pruneLegacyPointerRegistrations(this);
     const auto captureId = makePointerCaptureId(event->getPointerId(), event->getButton());
-    dispatchUnclaimedPointerEvent(event, captureId);
+    bool swallowed = false;
+    if (auto owner = legacyPointerRegistrations.find(this); owner != legacyPointerRegistrations.end())
+    {
+        std::erase_if(owner->second.swallowed, [](const auto& entry) {
+            auto* listener = entry.second.get();
+            return !listener || !listener->isAttached();
+        });
+        if (event->getPhase() == InputPhase::PointerDown)
+            owner->second.swallowed.erase(captureId);
+        else
+        {
+            for (const auto& entry : owner->second.swallowed)
+            {
+                const bool sameSlot = event->getPhase() == InputPhase::PointerCancel ?
+                    isPointerCaptureIdForPointer(entry.first, event->getPointerId()) :
+                    event->getPhase() == InputPhase::PointerMove && event->getPointerType() == PointerType::Mouse ?
+                    entry.first == makePointerCaptureId(event->getPointerId(), InputButton::Primary) :
+                    entry.first == captureId;
+                auto* listener = entry.second.get();
+                if (sameSlot && listener && listener->isAttached())
+                    swallowed = true;
+            }
+        }
+    }
+    if (!dispatchClaimedPointerEvent(event))
+        dispatchUnclaimedPointerEvent(event, captureId);
+
+    if (legacyPointerRegistrations.find(this) == legacyPointerRegistrations.end())
+        return; // Existing modern path when no legacy listener opted in.
+
+    if (auto owner = legacyPointerRegistrations.find(this); owner != legacyPointerRegistrations.end())
+    {
+        if (event->getPhase() == InputPhase::PointerUp)
+            owner->second.swallowed.erase(captureId);
+        else if (event->getPhase() == InputPhase::PointerCancel)
+            std::erase_if(owner->second.swallowed, [event](const auto& entry) {
+                return isPointerCaptureIdForPointer(entry.first, event->getPointerId());
+            });
+    }
+
+    // The original native touch dispatcher completes every one-by-one
+    // listener before all-at-once, regardless of their mutual scene z order.
+    // Native stop/swallow and an explicit legacy stop suppress this touch's
+    // all-at-once phase. Non-swallowing capture does not suppress it.
+    if (!swallowed && !event->isStopped() && event->getPhase() != InputPhase::PointerScroll)
+        dispatchUnclaimedPointerEvent(event, captureId, 2);
+
+    // Desktop v3 creates a distinct MouseEvent after its touch event. A touch
+    // listener stopping/swallowing must not suppress the mouse event, nor may
+    // a mouse listener stopping replace the modern input's hit/capture state.
+    if (event->getPointerType() == PointerType::Mouse)
+    {
+        PointerEvent mouseEvent;
+        mouseEvent.copyDispatchStateFrom(*event);
+        dispatchUnclaimedPointerEvent(&mouseEvent, captureId, 4);
+    }
 }
 
 void EventDispatcher::updateListeners(Event* event)
@@ -1870,6 +2093,20 @@ void EventDispatcher::removeClaimedPointerListener(EventListener* listener)
 {
     if (listener == nullptr || listener->getType() != EventListener::Type::POINTER)
         return;
+    // Removal terminates ownership and the old capture exclusion. The weak
+    // class metadata remains available for a later legitimate reattachment.
+    if (auto owner = legacyPointerRegistrations.find(this); owner != legacyPointerRegistrations.end())
+    {
+        auto entry = owner->second.listeners.find(static_cast<PointerEventListener*>(listener));
+        if (entry != owner->second.listeners.end() && entry->second.listener.get() == listener)
+        {
+            if (entry->second.type == 1 && entry->second.releaseClaim)
+                entry->second.releaseClaim(0, true);
+            entry->second.owned = false;
+        }
+        std::erase_if(owner->second.swallowed,
+            [listener](const auto& item) { return item.second.get() == listener; });
+    }
 
     for (auto iter = _claimedPointerListeners.begin(); iter != _claimedPointerListeners.end();)
     {
@@ -1990,6 +2227,9 @@ PointerHitResult EventDispatcher::hitTestPointerEvent(PointerEvent* event)
             continue;
 
         auto pointerListener = static_cast<PointerEventListener*>(listener);
+        const auto type = legacyPointerType(this, pointerListener);
+        if (type == 2 || type == 4) // These compatibility phases never capture.
+            continue;
         if (!findHitCameraForListener(event, pointerListener, cameras))
             continue;
 

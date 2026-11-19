@@ -2,6 +2,7 @@
  Copyright (c) 2013-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -232,6 +233,36 @@ public:
      */
     [[internal]] void setPointerInfo(InputPhase phase, Vec2 point, const PointerInputState& inputState);
     [[internal]] void setCaptureBits(CaptureBits bits) { _captureBits = bits; }
+
+    // Copy input state into a new transient event with its own native Object
+    // identity. Legacy desktop MouseEvent dispatch is independent of touch
+    // stopPropagation and must not mutate the original modern event's state.
+    [[internal]] void copyDispatchStateFrom(const PointerEvent& source)
+    {
+        _isStopped = false;
+        _currentTarget = nullptr;
+        _camera = nullptr;
+        _ray = source._ray;
+        _previousRay = source._previousRay;
+        _rayContext = source._rayContext;
+        _hasRayContext = source._hasRayContext;
+        _hitResult = {};
+        _previousHitPoint = source._previousHitPoint;
+        _startHitPoint = source._startHitPoint;
+        _pointerId = source._pointerId;
+        _phase = source._phase;
+        _pointerType = source._pointerType;
+        _button = source._button;
+        _pressedButtons = source._pressedButtons;
+        _startPoint = source._startPoint;
+        _point = source._point;
+        _prevPoint = source._prevPoint;
+        _scrollDelta = source._scrollDelta;
+        _pressure = source._pressure;
+        _captureBits = CAPTURE_NONE;
+        _startPointCaptured = source._startPointCaptured;
+        _primary = source._primary;
+    }
 
     /** Set mouse scroll data.
      *

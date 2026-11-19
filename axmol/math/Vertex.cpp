@@ -3,6 +3,7 @@
  Copyright (c) 2011 ForzeField Studios S.L
  Copyright (c) 2013-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -88,8 +89,8 @@ void vertexLineToPolygon(Vec2* points, float stroke, V2F_T2F_C4B* vertices, unsi
 
         const auto& p1 = vertices[idx].position;
         const auto& p2 = vertices[idx + 1].position;
-        const auto& p3 = vertices[idx1].position;
-        const auto& p4 = vertices[idx1 + 1].position;
+        const auto p3 = vertices[idx1].position;
+        const auto p4 = vertices[idx1 + 1].position;
 
         float s;
         // BOOL fixVertex = !ccpLineIntersect(Vec2(p1.x, p1.y), Vec2(p4.x, p4.y), Vec2(p2.x, p2.y), Vec2(p3.x, p3.y),

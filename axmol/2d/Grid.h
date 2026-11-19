@@ -4,6 +4,7 @@ Copyright (c) 2010-2012 cocos2d-x.org
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -18,6 +19,10 @@ SPDX-License-Identifier: MIT
 #include "axmol/renderer/GroupCommand.h"
 #include "axmol/renderer/CustomCommand.h"
 #include "axmol/renderer/CallbackCommand.h"
+
+#include <memory>
+#include <optional>
+#include <vector>
 
 namespace ax
 {
@@ -128,24 +133,38 @@ protected:
      *  the capture camera while still drawing with the grid ortho camera.
      */
     void setScreenProjectionForBlit(const Mat4* projection, const Vec2& size);
+    void setCaptureSourceOverAlpha(bool enabled);
+    void beforeDrawWithAlphaPolicy(bool sourceOverAlpha);
 
     void updateBlendState();
+    void enqueueBlit(const SceneRenderState& state,
+                     const void* vertices,
+                     size_t vertexCount,
+                     const unsigned short* indices,
+                     size_t indexCount);
 
     bool _active   = false;
     int _reuseGrid = 0;
     Vec2 _gridSize;
     Texture2D* _texture = nullptr;
+    bool _internallyGeneratedTexture = false;
     Vec2 _step;
     bool _isTextureFlipped = false;
     Rect _gridRect;
 
     Color _clearColor = {0, 0, 0, 0};
 
+    // Retained for custom Grid subclasses; built-in grids use per-visit slots.
     CustomCommand _drawCommand;
-    // CallbackCommand _beforeDrawCommand;
-    // CallbackCommand _afterDrawCommand;
-    // CallbackCommand _beforeBlitCommand;
-    // CallbackCommand _afterBlitCommand;
+
+    struct BlitCommand
+    {
+        CustomCommand command;
+        bool pending = false;
+    };
+    // A Grid may be visited more than once before rendering (for example by
+    // multiple views). Each pending draw owns its GPU buffers and uniforms.
+    std::vector<std::unique_ptr<BlitCommand>> _blitCommands;
 
     rhi::RenderTarget* _renderTarget = nullptr;
     RefPtr<RenderTexturePass> _renderTexturePass;
@@ -156,6 +175,7 @@ protected:
     rhi::VertexLayout* _vertexLayout = nullptr;
 
     BlendFunc _blendFunc;
+    std::optional<BlendFunc> _captureBlendFunc;
 
     bool _screenProjectionForBlitEnabled = false;
     Mat4 _screenProjectionForBlit        = Mat4::identity;

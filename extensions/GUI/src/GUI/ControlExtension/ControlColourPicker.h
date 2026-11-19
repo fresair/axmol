@@ -9,6 +9,7 @@
  * http://yannickloriot.com
  *
  * Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+ * Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -66,6 +67,13 @@ public:
     void setColor(const Color32& colorValue) override;
     void setEnabled(bool bEnabled) override;
 
+    /** Enables the v3 native picker contract and its actual child controls.
+     * @script {ignore}
+     */
+    void setLegacyCompatibilityEnabled(bool enabled);
+    /** @script {ignore} */
+    bool isLegacyCompatibilityEnabled() const { return _legacyCompatibilityEnabled; }
+
     // virtual ~ControlColourPicker();
     void hueSliderValueChanged(Object* sender, Control::EventType controlEvent);
     void colourSliderValueChanged(Object* sender, Control::EventType controlEvent);
@@ -76,9 +84,25 @@ protected:
     bool onPointerDown(PointerEvent* event) override;
 
     HSV _hsv;
-    AX_SYNTHESIZE_RETAIN(ControlSaturationBrightnessPicker*, _colourPicker, colourPicker)
-    AX_SYNTHESIZE_RETAIN(ControlHuePicker*, _huePicker, HuePicker)
+
+private:
+    ControlSaturationBrightnessPicker* _colourPicker;
+
+public:
+    virtual ControlSaturationBrightnessPicker* getcolourPicker() const { return _colourPicker; }
+    virtual void setcolourPicker(ControlSaturationBrightnessPicker* picker);
+
+private:
+    ControlHuePicker* _huePicker;
+
+public:
+    virtual ControlHuePicker* getHuePicker() const { return _huePicker; }
+    virtual void setHuePicker(ControlHuePicker* picker);
+
     AX_SYNTHESIZE_RETAIN(Sprite*, _background, Background)
+
+private:
+    bool _legacyCompatibilityEnabled{false};
 };
 
 // end of GUI group

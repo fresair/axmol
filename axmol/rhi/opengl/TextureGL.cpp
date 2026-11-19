@@ -1,6 +1,7 @@
 /****************************************************************************
  Copyright (c) 2018-2019 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -84,6 +85,7 @@ void TextureImpl::invalidate()
 
 void TextureImpl::updateSamplerDesc(const SamplerDesc& desc)
 {
+    _desc.samplerDesc = desc;
     this->_nativeSampler = static_cast<GLuint>(SamplerRegistry::getInstance()->getSampler(desc));
 }
 

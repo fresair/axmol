@@ -1,0 +1,1629 @@
+{
+  "compiler": "axslcc v4.0.1\n\nAxslcc suite maintiained and supported by axmol community (axmol.dev)",
+  "upstreamRevision": "e4b6a5ef8fcdc99a7ebea606312b67fe4c534b9f",
+  "bridge": {
+    "glslc": "shaderc v2026.4 unknown hash, 2026-09-11\nspirv-tools v2026.4 v2022.4-1347-gef96ed76\nglslang 11.1.0-1566-ge1b562a8\n\nTarget: SPIR-V 1.0",
+    "spirvCrossTag": "vulkan-sdk-1.4.350.0",
+    "spirvCrossCommit": "1a6169566c73d3da552748fc372fe2bbb856e46e"
+  },
+  "targets": [
+    "vk-100",
+    "gl-330",
+    "gles-300",
+    "mtl-20000"
+  ],
+  "metalPlatforms": [
+    "macOS",
+    "iOS-device",
+    "iOS-simulator"
+  ],
+  "samplerModel": "texture-owned-combined",
+  "vulkanCompiler": "axslcc HLSL normally; glslc normalized GLSL for texture-owned combined samplers",
+  "sources": [
+    {
+      "source": "res/resjs/Shaders/example_Blur.fsh",
+      "sourceSha256": "c9870ac913533a1303cfb57a21ddd2714343eb0443a4e70599e51ede5f36d11d",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "1fc9e06c0b659f702940f39f6feef95ef552212cbb52c74a98f6dc141fef1f26",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/c9870ac913533a1303cfb57a21ddd2714343eb0443a4e70599e51ede5f36d11d.frag.sc",
+      "compiled": true,
+      "hlslSha256": "d7269437854f05f53cfa64e46ffdca0201152ce5510615cafbac18d5b1e06dd8",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "glslc-normalized-glsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "a14b043b7aa69ac87fa56ca84b13a0a92ce01748f5dcd5fafc816c05394db1d8"
+    },
+    {
+      "source": "res/resjs/Shaders/example_ColorBars.fsh",
+      "sourceSha256": "89b7188ae7bc27ddbe255b83af1b6401575e97efe4b5e5dbd731bc81114bd850",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "f4f44e7ef0d8ea80ed572220b07e6ca1159d7ae66d7a22388676e07113d89a8d",
+      "legacyFragmentCoordinates": true,
+      "archive": "script/legacy-gl/shaders/89b7188ae7bc27ddbe255b83af1b6401575e97efe4b5e5dbd731bc81114bd850.frag.sc",
+      "compiled": true,
+      "hlslSha256": "54474457b4f7249d9a6a9b4a6f35d54f5579dab1204e09ca941e6de6c3bdf88d",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "glslc-normalized-glsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "17359a4d7a8a9ebe82423cb4f40fb312899c94a0acdef94ffc56a7d4dcb00703"
+    },
+    {
+      "source": "res/resjs/Shaders/example_ColorBars.vsh",
+      "sourceSha256": "3d004129fbcc07bd82e2ef5e2becbf565c08eae2154c4ee7247595277e15fbd2",
+      "defines": "",
+      "stage": "vert",
+      "attributes": [
+        {
+          "name": "a_position",
+          "type": "vec4",
+          "location": 0
+        },
+        {
+          "name": "a_texCoord",
+          "type": "vec2",
+          "location": 1
+        }
+      ],
+      "normalizedSha256": "a356143bde3471749355bc238674a1ecc77128ccaae0b3516f484dc1c4c5d2ea",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/3d004129fbcc07bd82e2ef5e2becbf565c08eae2154c4ee7247595277e15fbd2.vert.sc",
+      "compiled": true,
+      "hlslSha256": "111fde8929d2b3c96adc61a576390adb4792644bb755420175debea647e5d620",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "24af46cc9cd835fcb328798543db86e31b9ba5ffb534d27f98300c0a49669fe3"
+    },
+    {
+      "source": "res/resjs/Shaders/example_Flower.fsh",
+      "sourceSha256": "cf5fb5759f136a862a840d11032b20bca8137193f3e8da8b2eafe87a60791248",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "8ce7cd3e47dd6df5b3a876e18c1e7f3ea95793cd4642210595aae8e6afcbf285",
+      "legacyFragmentCoordinates": true,
+      "archive": "script/legacy-gl/shaders/cf5fb5759f136a862a840d11032b20bca8137193f3e8da8b2eafe87a60791248.frag.sc",
+      "compiled": true,
+      "hlslSha256": "104e2f81a24f7016fee51ed690c8ca93bad83a663abb98600ec10fa448e5d527",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "184bfcae589499141ef6a9b991e90ec2d6b96d040ca1afb566e367693aeafebd"
+    },
+    {
+      "source": "res/resjs/Shaders/example_Twist.vsh",
+      "sourceSha256": "731e6d50b0a4c7b1a5fb9fca48d282f50e4f9fe3917e67994c3dc555a217c9d3",
+      "defines": "",
+      "stage": "vert",
+      "attributes": [
+        {
+          "name": "a_position",
+          "type": "vec4",
+          "location": 0
+        }
+      ],
+      "normalizedSha256": "23fb84a3d198277bde72237d982b63bac0e3ac80f3839c23345458f05eaf273b",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/731e6d50b0a4c7b1a5fb9fca48d282f50e4f9fe3917e67994c3dc555a217c9d3.vert.sc",
+      "compiled": true,
+      "hlslSha256": "5f71f1dffc2780634cd2fb4820be972b0070966da26302f49a86a84157143b0e",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "29846371724fd204a300b81433d4ab66150c1eb7b0a4d11788297e14d83a8655"
+    },
+    {
+      "source": "res/resjs/Shaders/example_Heart.fsh",
+      "sourceSha256": "3ce8eba66f5a5bcccc5ae8b185542c544cb3ddfdfc4d70bc04bae6c9bd21b216",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "6b0671b3a7254d948275ba639cadb7f2947611645959abdec5119be7a0f67a41",
+      "legacyFragmentCoordinates": true,
+      "archive": "script/legacy-gl/shaders/3ce8eba66f5a5bcccc5ae8b185542c544cb3ddfdfc4d70bc04bae6c9bd21b216.frag.sc",
+      "compiled": true,
+      "hlslSha256": "23113f64cd4357f636135cfc9c3dce154efffa7ceb52e3d0bc7f176763e7f4f4",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "1805de84b6a0d7cd3bb53e28206a1fd7bb183435fd5f8b1af0a9f8c4f4cc61c5"
+    },
+    {
+      "source": "res/resjs/Shaders/example_Julia.fsh",
+      "sourceSha256": "38ab2a858cc1e06ce0f5f5e0348e87cc244668f411dc96ba832993375c79128d",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "7e5d512b0ef59d10f7f639f0d47440d9dfc8e54c70a5f99d86950b88b096a941",
+      "legacyFragmentCoordinates": true,
+      "archive": "script/legacy-gl/shaders/38ab2a858cc1e06ce0f5f5e0348e87cc244668f411dc96ba832993375c79128d.frag.sc",
+      "compiled": true,
+      "hlslSha256": "a8581924e4ea41648885978e24ba909982d1d012c0412d39d9a309b8454294b3",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "afdc75db8722303f79ff17aab5c667d44b972a801328fbc17b319b9326ab7527"
+    },
+    {
+      "source": "res/resjs/Shaders/example_Mandelbrot.fsh",
+      "sourceSha256": "c1b15149513d50dd03e4a3e641791969c39098ad489850e175ede2e137f11d24",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "a8b58e66a4783da3f2752e525ccfb61d4c6a47b353dd2e7199a083bfd8be192e",
+      "legacyFragmentCoordinates": true,
+      "archive": "script/legacy-gl/shaders/c1b15149513d50dd03e4a3e641791969c39098ad489850e175ede2e137f11d24.frag.sc",
+      "compiled": true,
+      "hlslSha256": "fd9d67e8441c14d90b812abfd42a98b28454b2e4050e7aaf6a19fbb3a0157cf0",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "db5c4e7b474296633f3834646431a76894fb9332f45e1c8662c3a1870955192c"
+    },
+    {
+      "source": "res/resjs/Shaders/example_Monjori.fsh",
+      "sourceSha256": "d64d2beea7e3bf4f8250ace9737aa3f4391fe43504e70f0083a2f8eb1abf809e",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "bbc2e82a30ce82b718748e3b0df765782100c8f894f3de0f9e2aafc36f659d9e",
+      "legacyFragmentCoordinates": true,
+      "archive": "script/legacy-gl/shaders/d64d2beea7e3bf4f8250ace9737aa3f4391fe43504e70f0083a2f8eb1abf809e.frag.sc",
+      "compiled": true,
+      "hlslSha256": "06889807e31199e1c0b72bb7ae7cff52fc2ce8aa2d4401c0d5ed08847cce5504",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "e006b783eb6853969ddcbc8c4cf6ecde123e8e63dec5f0ebaa899166e3a0cc57"
+    },
+    {
+      "source": "res/resjs/Shaders/example_Outline.fsh",
+      "sourceSha256": "d68bdf33278eeca06cac17ff37c4ffaa2fa5adfa106b3e0361f93075aa388f3e",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "aa13ecfc20575257f58118b77c9b6a6242b3a7a4b35a022ea397e4d04d2ce7c1",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/d68bdf33278eeca06cac17ff37c4ffaa2fa5adfa106b3e0361f93075aa388f3e.frag.sc",
+      "compiled": true,
+      "hlslSha256": "e04b3c95a8e8ad916fba6de1fcd43ba16fa50756a2a1049f827443e5cc5a6e71",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "glslc-normalized-glsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "f5953f60e3b7d9f8b6ac14b47c44673eaedb765fed626a3a0cc542d02e154435"
+    },
+    {
+      "source": "res/resjs/Shaders/example_Outline_noMVP.vsh",
+      "sourceSha256": "f6f761c3eb878b92bef2524fbed91f9fd0f2c36b5107c9b94756700d6f3ab633",
+      "defines": "",
+      "stage": "vert",
+      "attributes": [
+        {
+          "name": "a_position",
+          "type": "vec4",
+          "location": 0
+        },
+        {
+          "name": "a_texCoord",
+          "type": "vec2",
+          "location": 1
+        },
+        {
+          "name": "a_color",
+          "type": "vec4",
+          "location": 2
+        }
+      ],
+      "normalizedSha256": "d7e1912afe938bb3d5ceb168def4c45b432718175f33ee250a58f6f2f10c316b",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/f6f761c3eb878b92bef2524fbed91f9fd0f2c36b5107c9b94756700d6f3ab633.vert.sc",
+      "compiled": true,
+      "hlslSha256": "9cd6a97b6ba58c48b2a05010070d7de4992f69b344c03c672d29a228c466389c",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "f1d89d9c42078974d2611b3fcffe49666a80ee1130a783d74a60dc23fca34bd8"
+    },
+    {
+      "source": "res/resjs/Shaders/example_Plasma.fsh",
+      "sourceSha256": "8a80840a9440a31b7f3f6f094b737bc48133ef9b812c5610ff36ea3f4973945c",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "72bb0e79b4b2ff67f4986368199c9d44ac8aaea7231560725314791f23a9a6de",
+      "legacyFragmentCoordinates": true,
+      "archive": "script/legacy-gl/shaders/8a80840a9440a31b7f3f6f094b737bc48133ef9b812c5610ff36ea3f4973945c.frag.sc",
+      "compiled": true,
+      "hlslSha256": "8b1a50c4ff9ad83fe455beb5c6da4306959bc9fef1fd788640aba0e134687be2",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "4653d9c54fd315ab25390a907e93b5e7ba5730e2b32bdd8739a639377d09ce64"
+    },
+    {
+      "source": "res/resjs/Shaders/example_Twist.fsh",
+      "sourceSha256": "e3a9b5492088fdedc9233de60cf1d34a8407fd1486d759d7fa78746cb1adabe1",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "bec4c5ce9558fd9e04a9ec1284e2e060c0e948b95c091f06b13b43a3ffca7186",
+      "legacyFragmentCoordinates": true,
+      "archive": "script/legacy-gl/shaders/e3a9b5492088fdedc9233de60cf1d34a8407fd1486d759d7fa78746cb1adabe1.frag.sc",
+      "compiled": false,
+      "diagnostic": "<temporary>/e3a9b5492088fdedc9233de60cf1d34a8407fd1486d759d7fa78746cb1adabe1.frag:24: error: '' :  syntax error, unexpected SEMICOLON, expecting RIGHT_PAREN or COMMA\n1 error generated.\n"
+    },
+    {
+      "source": "res/Shaders3D/3d_color_normal_tex.frag",
+      "sourceSha256": "1ecef5c1be02f5ab782a03a75486222a30d3b246924b4c5f8da28b60625545e5",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "6815497a133d12723696fe0cf63710a36b15943346d07eb943885da5b6b33987",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/1ecef5c1be02f5ab782a03a75486222a30d3b246924b4c5f8da28b60625545e5.frag.sc",
+      "compiled": true,
+      "hlslSha256": "92a34ad39be3fb81ea03fac4709c73d5abd4b463a41dd7dec3f79ebef8f9e20e",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "glslc-normalized-glsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "8635156e6a817e0731e204eb37456de5bb4e2084a5533b9d9005281be2a76be7"
+    },
+    {
+      "source": "res/Shaders3D/3d_color_tex.frag",
+      "sourceSha256": "965e1a8bfc7917a2027c8e523cbc862e80c4f70169869c8471b9889e97203018",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "0461bcdb59c196adeb38c71ab339536fd40eb477692e5be06a6701ddc993c2d3",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/965e1a8bfc7917a2027c8e523cbc862e80c4f70169869c8471b9889e97203018.frag.sc",
+      "compiled": true,
+      "hlslSha256": "8be62785094c2453f10f8198c631956d504134e1b5fbaa07defb4b9650a6bfb4",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "glslc-normalized-glsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "69d91d648a925c500df679031f3121c6522ae1f8767502e16f76d17b1040f47d"
+    },
+    {
+      "source": "res/Shaders3D/3d_position_normal_tex.vert",
+      "sourceSha256": "f644a6d9b50fdd8f8302864efd64d1e5928549742446ddffb065de71047f25c7",
+      "defines": "",
+      "stage": "vert",
+      "attributes": [
+        {
+          "name": "a_position",
+          "type": "vec4",
+          "location": 0
+        },
+        {
+          "name": "a_texCoord",
+          "type": "vec2",
+          "location": 1
+        },
+        {
+          "name": "a_normal",
+          "type": "vec3",
+          "location": 3
+        }
+      ],
+      "normalizedSha256": "dfbc285a1c10412af18f6828b28804f218752c0b420c9b8d08f55a55a5178dd3",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/f644a6d9b50fdd8f8302864efd64d1e5928549742446ddffb065de71047f25c7.vert.sc",
+      "compiled": true,
+      "hlslSha256": "f82e3f118784c836912dcadb4e72d1465e51a52f91ad886c0aeffeb0036a272f",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "3352fa53cffebc322c7ab105bad53337a6d7f48154d950cabd98215cc84f7929"
+    },
+    {
+      "source": "res/Shaders3D/3d_position_skin_tex.vert",
+      "sourceSha256": "5a6a9f6d7e79348ba2a62eeb92300dcfa9e62d56a807b4910a8bac1bd3cbd639",
+      "defines": "",
+      "stage": "vert",
+      "attributes": [
+        {
+          "name": "a_position",
+          "type": "vec3",
+          "location": 0
+        },
+        {
+          "name": "a_blendWeight",
+          "type": "vec4",
+          "location": 4
+        },
+        {
+          "name": "a_blendIndex",
+          "type": "vec4",
+          "location": 5
+        },
+        {
+          "name": "a_texCoord",
+          "type": "vec2",
+          "location": 1
+        }
+      ],
+      "normalizedSha256": "53023f36eaba3654e253b07e1abe41c3743ab0f4bd337ebbe63f26f863e4f5a7",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/5a6a9f6d7e79348ba2a62eeb92300dcfa9e62d56a807b4910a8bac1bd3cbd639.vert.sc",
+      "compiled": true,
+      "hlslSha256": "0bb9db426b3d0362adccc4e31bf7a27c374fdab070e6d41318b5a9d02bd90278",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "01589f98bcfc9b62804fb91c666ea6a93ba1e16aa42fcad4041b28f5346a925d"
+    },
+    {
+      "source": "res/Shaders3D/3d_position_tex.vert",
+      "sourceSha256": "02730c74ac3b005b3bd783731b59575f3e2d3d9bd1cddb8f8847a5b8cdcb194d",
+      "defines": "",
+      "stage": "vert",
+      "attributes": [
+        {
+          "name": "a_position",
+          "type": "vec4",
+          "location": 0
+        },
+        {
+          "name": "a_texCoord",
+          "type": "vec2",
+          "location": 1
+        }
+      ],
+      "normalizedSha256": "0f075db69daf37cf357353368aea3530b69c0758fd63a49728d21c87338c5d8f",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/02730c74ac3b005b3bd783731b59575f3e2d3d9bd1cddb8f8847a5b8cdcb194d.vert.sc",
+      "compiled": true,
+      "hlslSha256": "c25d296f2b80a597fde1bae33ae8938ad7ded47312749cf2b0bdf0121a07309e",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "74a5f323876b5877d152ccb05c0296483eab2f22879fc1c1e0e200c3c6373f9e"
+    },
+    {
+      "source": "res/Shaders3D/Normal.frag",
+      "sourceSha256": "e2f194b342075f44e8c933a46bca98ae44421389b54019e9432b51253e7848bb",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "f156484390049d3735d5b51fbb6c32446443eac30c20b1620c9851db4f8d6291",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/e2f194b342075f44e8c933a46bca98ae44421389b54019e9432b51253e7848bb.frag.sc",
+      "compiled": true,
+      "hlslSha256": "d0dd3a24959b24d385bd47f26215928ec3b8b74b7fb968f1f8833d4049c6623e",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "glslc-normalized-glsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "664b6efb4fa1a7d84072aa20cb17364e1045a27a6b1cd86fe7f8541d0997eae7"
+    },
+    {
+      "source": "res/Shaders3D/OutLine.frag",
+      "sourceSha256": "638988b631538b0af1a01fd569191f7ab9cb135897be5cb8e5e4e949ef30a151",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "433210ad34386b549c0549c2860958e6785c93c81351e5affaa8612b0b5bbeb8",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/638988b631538b0af1a01fd569191f7ab9cb135897be5cb8e5e4e949ef30a151.frag.sc",
+      "compiled": true,
+      "hlslSha256": "cc7162eca7d8c7da99c8b6b23d29289ffd1c5740d7e53be7fffbfeed3d17de09",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "64b2ce8a27d4cfd0326230b431a10516f1b0a6ebea481c82abb081f9b8895af2"
+    },
+    {
+      "source": "res/Shaders3D/OutLine.vert",
+      "sourceSha256": "cc7d5d938176488483a6f856ff57528ac1924cb84a3d6b3f38888ecddcf9b2b7",
+      "defines": "",
+      "stage": "vert",
+      "attributes": [
+        {
+          "name": "a_position",
+          "type": "vec4",
+          "location": 0
+        },
+        {
+          "name": "a_normal",
+          "type": "vec3",
+          "location": 3
+        }
+      ],
+      "normalizedSha256": "cc2edbbffeeb35f2bc40c16e9ff57f5df4bcb99154584f518e03c7c844cebd49",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/cc7d5d938176488483a6f856ff57528ac1924cb84a3d6b3f38888ecddcf9b2b7.vert.sc",
+      "compiled": true,
+      "hlslSha256": "9eb345b340ed5d302dc5567eaa095cbf14148e163fa90d24751f0049b7945886",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "33f7384e7ad66b9bf7a6980ebdc8522a0e40d618a9656a6617c74f652ab4e0ee"
+    },
+    {
+      "source": "res/Shaders3D/SkinnedOutline.vert",
+      "sourceSha256": "2de243145804fd2f1c44a0814051a62aca4c80a98af159a23ee75789bab43056",
+      "defines": "",
+      "stage": "vert",
+      "attributes": [
+        {
+          "name": "a_position",
+          "type": "vec3",
+          "location": 0
+        },
+        {
+          "name": "a_normal",
+          "type": "vec3",
+          "location": 3
+        },
+        {
+          "name": "a_blendWeight",
+          "type": "vec4",
+          "location": 4
+        },
+        {
+          "name": "a_blendIndex",
+          "type": "vec4",
+          "location": 5
+        },
+        {
+          "name": "a_texCoord",
+          "type": "vec2",
+          "location": 1
+        }
+      ],
+      "normalizedSha256": "3ba13e3991ac2d2f86e390278ac01dadd7df09faefb079b140094d6e33340ac8",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/2de243145804fd2f1c44a0814051a62aca4c80a98af159a23ee75789bab43056.vert.sc",
+      "compiled": true,
+      "hlslSha256": "172dafffee08b0941b5db837216b91789095e3a351dbdf6d977d0fe2e0c03850",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": [
+          "a_texCoord"
+        ]
+      },
+      "archiveSha256": "683949e2d834579a0155ff5588e02539f176bfb4cf449050ac08d27d85c602cf"
+    },
+    {
+      "source": "res/Shaders/example_Simple.vsh",
+      "sourceSha256": "dbef6dd777926397bda34be0efd198334105866570d758b9fc3ccf2e0060d4b5",
+      "defines": "THIS_IS_AN_EXAMPLE=1;TOMORROW_IS_HOLIDAY=2",
+      "stage": "vert",
+      "attributes": [
+        {
+          "name": "a_position",
+          "type": "vec4",
+          "location": 0
+        },
+        {
+          "name": "a_texCoord",
+          "type": "vec2",
+          "location": 1
+        },
+        {
+          "name": "a_color",
+          "type": "vec4",
+          "location": 2
+        }
+      ],
+      "normalizedSha256": "d7e1912afe938bb3d5ceb168def4c45b432718175f33ee250a58f6f2f10c316b",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/a0dd1eb7b4035062fe47621c55a87fcfa91b8bdbe6899d918a5a9988995b782e.vert.sc",
+      "compiled": true,
+      "hlslSha256": "9cd6a97b6ba58c48b2a05010070d7de4992f69b344c03c672d29a228c466389c",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "ae01485cdc61a01daa24cef23b8098227c63d69f945f99082aa311199736d6ef"
+    },
+    {
+      "source": "res/Shaders/example_Blur.fsh",
+      "sourceSha256": "c9870ac913533a1303cfb57a21ddd2714343eb0443a4e70599e51ede5f36d11d",
+      "defines": "THIS_IS_AN_EXAMPLE=1;TOMORROW_IS_HOLIDAY=2",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "1fc9e06c0b659f702940f39f6feef95ef552212cbb52c74a98f6dc141fef1f26",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/3d589c675802b06bf83dfd6422d3d1fcf7a97a2d75414536a84c753a5c11e321.frag.sc",
+      "compiled": true,
+      "hlslSha256": "d7269437854f05f53cfa64e46ffdca0201152ce5510615cafbac18d5b1e06dd8",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "glslc-normalized-glsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "675cdde198b43eeb5eb953e431f06ebf694bcd7aaafda00645a1037e2ace87b3"
+    },
+    {
+      "source": "res/Shaders/example_Simple.vsh",
+      "sourceSha256": "dbef6dd777926397bda34be0efd198334105866570d758b9fc3ccf2e0060d4b5",
+      "defines": "",
+      "stage": "vert",
+      "attributes": [
+        {
+          "name": "a_position",
+          "type": "vec4",
+          "location": 0
+        },
+        {
+          "name": "a_texCoord",
+          "type": "vec2",
+          "location": 1
+        },
+        {
+          "name": "a_color",
+          "type": "vec4",
+          "location": 2
+        }
+      ],
+      "normalizedSha256": "d7e1912afe938bb3d5ceb168def4c45b432718175f33ee250a58f6f2f10c316b",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/dbef6dd777926397bda34be0efd198334105866570d758b9fc3ccf2e0060d4b5.vert.sc",
+      "compiled": true,
+      "hlslSha256": "9cd6a97b6ba58c48b2a05010070d7de4992f69b344c03c672d29a228c466389c",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "70c0dd59ba1b055fba3c4d6184d4ca4dd80990cf60f303719840f7335806b03d"
+    },
+    {
+      "source": "res/Shaders/example_Outline.fsh",
+      "sourceSha256": "d58fa1651368894dac8cf55dd2c3d403c7da2ba80504c1c98725cacdb1a27f7a",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "a7fe56ef2fd29c473abe2fc37e569f1097299489bf77e66e90f2707b13fbeeb6",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/d58fa1651368894dac8cf55dd2c3d403c7da2ba80504c1c98725cacdb1a27f7a.frag.sc",
+      "compiled": true,
+      "hlslSha256": "4dc49edfd8d38dbe7ee5d07b3f30ed4696765353e100845b8563e05d2775d18b",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "glslc-normalized-glsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "555afbbaf390ed44db8045e58ee0454eb72efe2011f50b815473bddbf1655f7c"
+    },
+    {
+      "source": "res/Shaders/example_Noisy.fsh",
+      "sourceSha256": "f1711fcf1951e185920e3fc2a5f5d686ab59122eec9c79d72ea2f38baec84a07",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "f39eccdc3fc4a1536e8794394cd40f5c27b9c7727ed85a7e2614a7472049c60b",
+      "legacyFragmentCoordinates": true,
+      "archive": "script/legacy-gl/shaders/f1711fcf1951e185920e3fc2a5f5d686ab59122eec9c79d72ea2f38baec84a07.frag.sc",
+      "compiled": true,
+      "hlslSha256": "310ac55501f6a3f4f58fcc459bf2718e39ac644efc4f63c64a8836f02e184ac3",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "glslc-normalized-glsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "0ac94c1bc24035b6fa02f245518862b327ff0b7782e7c5be920116dd68a0eb85"
+    },
+    {
+      "source": "res/Shaders/example_EdgeDetection.fsh",
+      "sourceSha256": "f92326ee97bbf90acc1cf9b02b630b77432cd599d1e4530e4c15d974f99675c8",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "7dfebf020e5c6d5de1c07f73bffa9c07ea38aae2f984a23a44bf9ecdba873bbd",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/f92326ee97bbf90acc1cf9b02b630b77432cd599d1e4530e4c15d974f99675c8.frag.sc",
+      "compiled": true,
+      "hlslSha256": "fa50255056279c9e389fb9c5ae7c30e22761aac6f1648ab8d534ff0131168c12",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "glslc-normalized-glsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "4f761804aef2a78b8cffe6a8892dc02131350099b275a13babf955422da48cb7"
+    },
+    {
+      "source": "res/Shaders3D/3d_position_normal_tex.vert",
+      "sourceSha256": "f644a6d9b50fdd8f8302864efd64d1e5928549742446ddffb065de71047f25c7",
+      "defines": "MAX_DIRECTIONAL_LIGHT_NUM=1;MAX_POINT_LIGHT_NUM=1;MAX_SPOT_LIGHT_NUM=1",
+      "stage": "vert",
+      "attributes": [
+        {
+          "name": "a_position",
+          "type": "vec4",
+          "location": 0
+        },
+        {
+          "name": "a_texCoord",
+          "type": "vec2",
+          "location": 1
+        },
+        {
+          "name": "a_normal",
+          "type": "vec3",
+          "location": 3
+        }
+      ],
+      "normalizedSha256": "dfbc285a1c10412af18f6828b28804f218752c0b420c9b8d08f55a55a5178dd3",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/9da855ea2bb36524bef7d270f1d59f8251a17fd041e0263ab37e54e5a4dc50c9.vert.sc",
+      "compiled": true,
+      "hlslSha256": "f82e3f118784c836912dcadb4e72d1465e51a52f91ad886c0aeffeb0036a272f",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "69a72931d94071798768d90e46de5efb9133cc0c98a4332253358412f9cec2e4"
+    },
+    {
+      "source": "res/Shaders3D/3d_color_normal_tex.frag",
+      "sourceSha256": "1ecef5c1be02f5ab782a03a75486222a30d3b246924b4c5f8da28b60625545e5",
+      "defines": "MAX_DIRECTIONAL_LIGHT_NUM=1;MAX_POINT_LIGHT_NUM=1;MAX_SPOT_LIGHT_NUM=1",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "6815497a133d12723696fe0cf63710a36b15943346d07eb943885da5b6b33987",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/5abdaff644179965a6b6174f254424285407713b948e8573462f96be8b2b38af.frag.sc",
+      "compiled": true,
+      "hlslSha256": "92a34ad39be3fb81ea03fac4709c73d5abd4b463a41dd7dec3f79ebef8f9e20e",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "glslc-normalized-glsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "2c77c71f5037b85e97a83e6b8933fe2755a0784066204bebe31ee5fc5b650026"
+    },
+    {
+      "source": "res/Sprite3DTest/VertexColor.frag",
+      "sourceSha256": "c9eecee553f08ebd6616dc9bd5fab5fb4b36ab59f3a83cdda08899a209d41a41",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "ff08fb47f270f8ccb0146d98c25c5101a1d8f2f4060004b9bfad9e7d3c5b319d",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/c9eecee553f08ebd6616dc9bd5fab5fb4b36ab59f3a83cdda08899a209d41a41.frag.sc",
+      "compiled": true,
+      "hlslSha256": "955ca189fc22839d9bd4ddc9e725bd242f68551e6a23a7f6c69ebb1b661f6231",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "a0b857cdc4ea2138ce7a0c2285899b7c1f7ceb63cd2da62d6972fb12788bebbd"
+    },
+    {
+      "source": "res/Sprite3DTest/VertexColor.vert",
+      "sourceSha256": "2bba6978935ccc495bc849edd9abbafb6c84efa0d30357ed654fff6dbc1e3e12",
+      "defines": "",
+      "stage": "vert",
+      "attributes": [
+        {
+          "name": "a_position",
+          "type": "vec4",
+          "location": 0
+        },
+        {
+          "name": "a_color",
+          "type": "vec4",
+          "location": 2
+        }
+      ],
+      "normalizedSha256": "9c5da68a44a43d7e0a87014640087f5458c369908b1d5153508973ce944683f5",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/2bba6978935ccc495bc849edd9abbafb6c84efa0d30357ed654fff6dbc1e3e12.vert.sc",
+      "compiled": true,
+      "hlslSha256": "0748beefa4899d2356a2fdbd8d1ae058ee3beb37ff3aed3b216df2d7705b5869",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "dabf92eb9ae76802168a8ea62dbf30bb3bb12a6d985b33ca684456685d2c8197"
+    },
+    {
+      "source": "res/Sprite3DTest/cube_map.frag",
+      "sourceSha256": "df21d283a92285f20a74e154595d14245b55630920ae73c59cb643549754d97e",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "1a768c6311ae11d32d7a3973afcc53515d2214e39d034508a9b579475f68da04",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/df21d283a92285f20a74e154595d14245b55630920ae73c59cb643549754d97e.frag.sc",
+      "compiled": true,
+      "hlslSha256": "3d805512f3a6638550ab8bd60bb4a333fa33331b317f115b58b1feed3c2a0d2e",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "glslc-normalized-glsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "6b5a421c6d0c248c7d21144c220ca3de93815f9fd11764515442b8a8e599113f"
+    },
+    {
+      "source": "res/Sprite3DTest/cube_map.vert",
+      "sourceSha256": "12b7f83bc0b846ce2923ee704e401cb2944f98aa891d7a9dcec73ca12f77a3d8",
+      "defines": "",
+      "stage": "vert",
+      "attributes": [
+        {
+          "name": "a_position",
+          "type": "vec4",
+          "location": 0
+        },
+        {
+          "name": "a_normal",
+          "type": "vec3",
+          "location": 3
+        }
+      ],
+      "normalizedSha256": "e88659660c9c7c3b0dfe5ad7ff7354e3dd8327f84bd1f797b7fccf4d2b408c4b",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/12b7f83bc0b846ce2923ee704e401cb2944f98aa891d7a9dcec73ca12f77a3d8.vert.sc",
+      "compiled": true,
+      "hlslSha256": "b8ec4b1de025402f3009aa8cc32f2d24e69ead550db595019eb4064f57498a21",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "75e23cdd09d3943c3a891c70cee7515cb059ff321d06cc8f5eb415a7735f7f82"
+    },
+    {
+      "source": "res/Sprite3DTest/cylinder.frag",
+      "sourceSha256": "373f3e5b42ad118a4ea610db3527f82cbfe22d19880486e6b5ba096f69f6eaff",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "8247f3d5ce9b408fca7e2240db9570f4ae1760425a940f41ef41d8eebf01aefd",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/373f3e5b42ad118a4ea610db3527f82cbfe22d19880486e6b5ba096f69f6eaff.frag.sc",
+      "compiled": true,
+      "hlslSha256": "34f698837223644ebb75cde080dbbd1eca5312711e2e91c62f40b5b4d3a2252b",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "glslc-normalized-glsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "1ab8d03ee626c14fe109ace619f71380c8cfbf09c69c0f4fbc7f6db10e0dbfb6"
+    },
+    {
+      "source": "res/Sprite3DTest/cylinder.vert",
+      "sourceSha256": "697c59b6b55bc475b3dde98ec15321ae0095ea7f90b85fffcce80363cf3abde3",
+      "defines": "",
+      "stage": "vert",
+      "attributes": [
+        {
+          "name": "a_position",
+          "type": "vec4",
+          "location": 0
+        },
+        {
+          "name": "a_texCoord",
+          "type": "vec2",
+          "location": 1
+        }
+      ],
+      "normalizedSha256": "1e31aaf3d2b3da3160d2a4f93bf587f531d82501250f9e41fdbfe771d8975fb9",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/697c59b6b55bc475b3dde98ec15321ae0095ea7f90b85fffcce80363cf3abde3.vert.sc",
+      "compiled": true,
+      "hlslSha256": "7ccbb2bdb2f0522d0398fd70a7447509b10119eb834e6322bf65ee259870787f",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "cf224c016aa83ea520cd55157a29ce0c5cf40ec34910f1d6a1508f7764d05bb6"
+    },
+    {
+      "source": "res/Sprite3DTest/fog.frag",
+      "sourceSha256": "661406ccc2116caba2102cb3a30743a1b6a79248ab26fe0fb80aec7ee059c420",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "73b9f8d481d5b11845add8560ab4e816a2b5c28d226d4cec366309d3ed6717dd",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/661406ccc2116caba2102cb3a30743a1b6a79248ab26fe0fb80aec7ee059c420.frag.sc",
+      "compiled": true,
+      "hlslSha256": "96ebe4fe48454f20879841cfe3b568983eb9433bc7714154a7138cc2f23c9263",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "glslc-normalized-glsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "c4a1843ddeeee27d04f610ef7beb8ef860a1625cf2da44752614712625dcfb3c"
+    },
+    {
+      "source": "res/Sprite3DTest/fog.vert",
+      "sourceSha256": "983f9e0ae195ae0928cff22643d7c53a457e8f13189a0e51fa55d46e9bc3d7f8",
+      "defines": "",
+      "stage": "vert",
+      "attributes": [
+        {
+          "name": "a_position",
+          "type": "vec4",
+          "location": 0
+        },
+        {
+          "name": "a_texCoord",
+          "type": "vec2",
+          "location": 1
+        }
+      ],
+      "normalizedSha256": "84bdc0bc5f82a846fac359996263422ff9e93842c1af23153a006a621944f892",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/983f9e0ae195ae0928cff22643d7c53a457e8f13189a0e51fa55d46e9bc3d7f8.vert.sc",
+      "compiled": true,
+      "hlslSha256": "5610771724c22abfb4efdf6e2eec1ff12847380abe1d7751d3a0d506031b51a0",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "1ebbfcc17b203d0ec83f16750f0cf28475bafe784842ff266818267c90fb1b81"
+    },
+    {
+      "source": "res/Sprite3DTest/simple_shadow.frag",
+      "sourceSha256": "24dbc36ad34a0e1bdab425411147809e9e56f16a0d7b3aae6d819cfefeeaf4a3",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "151ea8eecdb231f83f98bb98cb78d958eac2ad1255904b7c6c934277fcf192cc",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/24dbc36ad34a0e1bdab425411147809e9e56f16a0d7b3aae6d819cfefeeaf4a3.frag.sc",
+      "compiled": true,
+      "hlslSha256": "610ff327b4b9fa8d674dccbdea932684c28a11d5cca29f7a917f58bafdc7fd76",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "glslc-normalized-glsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "32bab220de5fec6d693f8bb5d9411156d8d31602255bd4160b10bfd4bbaf52f3"
+    },
+    {
+      "source": "res/Sprite3DTest/simple_shadow.vert",
+      "sourceSha256": "b47907ecbe10a965052b6c5f8554de06e458350926d51b902c68c929022ccea5",
+      "defines": "",
+      "stage": "vert",
+      "attributes": [
+        {
+          "name": "a_position",
+          "type": "vec4",
+          "location": 0
+        },
+        {
+          "name": "a_texCoord",
+          "type": "vec2",
+          "location": 1
+        }
+      ],
+      "normalizedSha256": "6da3b2ae2cdaae96c4e3310bf034adcd89d2ea8c984a8f3f13f905166dd0b736",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/b47907ecbe10a965052b6c5f8554de06e458350926d51b902c68c929022ccea5.vert.sc",
+      "compiled": true,
+      "hlslSha256": "e98f0cd43240af56ab44e0725a43bb924f587bc2c6b8b4d33fb4d8460542cafa",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "d7e467a28c467a73a8f5294c4cc5fba2b04ef041fb9e5e2ead1995345451c03d"
+    },
+    {
+      "source": "res/Sprite3DTest/toon.frag",
+      "sourceSha256": "f37bccd6fc40301bdb34280cefede74e749cb7c58212b10f368e33682a5c80f7",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "b13839516f9b0c5b4400cd1a45d2e9dec0271602f10016ec5a3aef3d24a2440f",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/f37bccd6fc40301bdb34280cefede74e749cb7c58212b10f368e33682a5c80f7.frag.sc",
+      "compiled": true,
+      "hlslSha256": "05ade9ced97f314b630e94e98a49568aff1bf76e8b009dd156163a548948835c",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "glslc-normalized-glsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "6f9c0dbb57a9e70008fc3d3979141568f319a0f7862b51898188181089f75eb8"
+    },
+    {
+      "source": "res/Sprite3DTest/toon.vert",
+      "sourceSha256": "f82f7439e7ac404cba888bebe60a246c9de77b54cd3854bb8a6d70be4840cff3",
+      "defines": "",
+      "stage": "vert",
+      "attributes": [
+        {
+          "name": "a_position",
+          "type": "vec4",
+          "location": 0
+        },
+        {
+          "name": "a_texCoord",
+          "type": "vec2",
+          "location": 1
+        },
+        {
+          "name": "a_normal",
+          "type": "vec3",
+          "location": 3
+        }
+      ],
+      "normalizedSha256": "976bc58578315000451d2be4a16188cc57ab90255dd9fc1116e3fadef0e08ab3",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/f82f7439e7ac404cba888bebe60a246c9de77b54cd3854bb8a6d70be4840cff3.vert.sc",
+      "compiled": true,
+      "hlslSha256": "1b7da472072c21a6f42381f09c0bf034bf8471bf364e1e70c52f887b9b87232a",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "237ca4ed6160b642d3d57320fc05cf31a0eac9e7f6d8456a27bb9eede1816470"
+    },
+    {
+      "source": "tools/bindings-generator/js/legacy-gl/builtins/position-texture-color-alpha-test.frag",
+      "sourceSha256": "2aa34a9fe20f36d0fc870c279c8409f54cbc2b9b66c7fba955b2e76fcd3ca574",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "29d8f5f1766efa95779225aabf81b2d89f2084476b3ed9b9fb382180614d2c9c",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/2aa34a9fe20f36d0fc870c279c8409f54cbc2b9b66c7fba955b2e76fcd3ca574.frag.sc",
+      "compiled": true,
+      "hlslSha256": "7ff921fa0e15427bf95eeae104d8d64aba8e0009df3be772bf8f0ccd5cbd5be3",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "glslc-normalized-glsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "1d0686bc68934b106fb08db2a677fd535bf880f19259cceee7361499865fe2e5"
+    },
+    {
+      "source": "tools/bindings-generator/js/legacy-gl/builtins/position-texture-color-no-mvp.frag",
+      "sourceSha256": "0e87a8216ff2cf519bc4013ddcce6fcd92152e14771c05a7a1a0b069a29b61f6",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "a496b0ee49e2ebab285ce5e619bfc2d56e1a0f98403089cf6095122b89eb83a8",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/0e87a8216ff2cf519bc4013ddcce6fcd92152e14771c05a7a1a0b069a29b61f6.frag.sc",
+      "compiled": true,
+      "hlslSha256": "a54633e39c58fae0cad76ece2e3211422f0271b94f5d2daec6095b914d3dc796",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "glslc-normalized-glsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "541ff6d2b5dba6bf9faa53f7b64a5f26de5f4b5d10a22a9e1922b127a751a88b"
+    },
+    {
+      "source": "tools/bindings-generator/js/legacy-gl/builtins/position-texture-color-no-mvp.vert",
+      "sourceSha256": "05179dfeb30ef6bddb0cda19e249c6ccc741889c5f08dc196e5e5c748a2fefbc",
+      "defines": "",
+      "stage": "vert",
+      "attributes": [
+        {
+          "name": "a_position",
+          "type": "vec4",
+          "location": 0
+        },
+        {
+          "name": "a_texCoord",
+          "type": "vec2",
+          "location": 1
+        },
+        {
+          "name": "a_color",
+          "type": "vec4",
+          "location": 2
+        }
+      ],
+      "normalizedSha256": "33469c536071be099492c7c5ff840220388e276edfe3feeb42a6ac7a36fe65bb",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/05179dfeb30ef6bddb0cda19e249c6ccc741889c5f08dc196e5e5c748a2fefbc.vert.sc",
+      "compiled": true,
+      "hlslSha256": "9cd6a97b6ba58c48b2a05010070d7de4992f69b344c03c672d29a228c466389c",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "f0e70457da4dbd6ca9449a511ea8742b0b076e570f06fc7512120445996f78fd"
+    },
+    {
+      "source": "tools/bindings-generator/js/legacy-gl/builtins/position-texture-color.frag",
+      "sourceSha256": "9671f524399c534750b812823e45a87a8de3fc31d12580e22b4198545fe09622",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "75ec1c611768c60a184f7aaaf264945170af20f9f4ebb737cc6a086a76964cf3",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/9671f524399c534750b812823e45a87a8de3fc31d12580e22b4198545fe09622.frag.sc",
+      "compiled": true,
+      "hlslSha256": "a54633e39c58fae0cad76ece2e3211422f0271b94f5d2daec6095b914d3dc796",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "glslc-normalized-glsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "98834288fc761cf3628f9337f2c56a1e468f378427895e936631dfcf4a05c435"
+    },
+    {
+      "source": "tools/bindings-generator/js/legacy-gl/builtins/position-texture-color.vert",
+      "sourceSha256": "70e6a2184274b161351d44a5160676469e9f29021ac7e1152b2d1f9014e802b8",
+      "defines": "",
+      "stage": "vert",
+      "attributes": [
+        {
+          "name": "a_position",
+          "type": "vec4",
+          "location": 0
+        },
+        {
+          "name": "a_texCoord",
+          "type": "vec2",
+          "location": 1
+        },
+        {
+          "name": "a_color",
+          "type": "vec4",
+          "location": 2
+        }
+      ],
+      "normalizedSha256": "33469c536071be099492c7c5ff840220388e276edfe3feeb42a6ac7a36fe65bb",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/70e6a2184274b161351d44a5160676469e9f29021ac7e1152b2d1f9014e802b8.vert.sc",
+      "compiled": true,
+      "hlslSha256": "9cd6a97b6ba58c48b2a05010070d7de4992f69b344c03c672d29a228c466389c",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "9d533d22c2fb344b9b2aae019241aa428dd197035bc776584e6a1aa86d14becd"
+    },
+    {
+      "source": "tools/bindings-generator/js/legacy-gl/builtins/position-texture-gray-alpha-no-mvp.frag",
+      "sourceSha256": "502e40f355a4fbbe6176a8e991837b00353569b29b2a8ab4814cf2d366951419",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "ce304d3ef4880dfe6767f69c3110f264f7dbe241a3ab67b61a02e9f9ea388ca7",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/502e40f355a4fbbe6176a8e991837b00353569b29b2a8ab4814cf2d366951419.frag.sc",
+      "compiled": true,
+      "hlslSha256": "61d9d3b2d88b97a70d4e1edcfdb8133e8c12bfdb1ed2becdc728be1ad74f32ad",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "glslc-normalized-glsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "1074abf00d554518c2e6ea6f561007765a359a9739a42e30506020800dd07eaa"
+    },
+    {
+      "source": "tools/bindings-generator/js/legacy-gl/builtins/position-texture-gray-no-mvp.frag",
+      "sourceSha256": "b29af33d79daac66dd3ec4adeaea2af4f13fa2c447c45edf51a05576e039fe84",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "a2fc5470a18be04797f53c94f49fdecb8ac72cd9b66160cde2c02966120b0d46",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/b29af33d79daac66dd3ec4adeaea2af4f13fa2c447c45edf51a05576e039fe84.frag.sc",
+      "compiled": true,
+      "hlslSha256": "7cdefd4b7e190a24322cc2439fdb67a7e91ff87c3f62a87794ff86423adfde09",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "glslc-normalized-glsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "1d42bb8087e4e45a4a9f60460c2b1a7dd5564daa9d66d8921842c620f64daf9a"
+    },
+    {
+      "source": "tools/bindings-generator/js/legacy-gl/builtins/position-texture.frag",
+      "sourceSha256": "0f12c41f2d8208c8832d535048146b13689749f71dcc3fd7086e21f369d050e6",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "2e0a5e3d45a67269214b200d5c014594b062f270ba3e995b075d6aa993710d8c",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/0f12c41f2d8208c8832d535048146b13689749f71dcc3fd7086e21f369d050e6.frag.sc",
+      "compiled": true,
+      "hlslSha256": "45717a190f7108531732db8a3f3493a74643fb190feeb566eb245960ca4316e2",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "glslc-normalized-glsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "ffd1d84a6489695d4831f497a039e599c519c954c78d6c99b9f050773a86b494"
+    },
+    {
+      "source": "tools/bindings-generator/js/legacy-gl/builtins/position-texture.vert",
+      "sourceSha256": "549b2bb5620016b25a8614ec4b3d201f7839e28e56bdad7581b0dbf071d4af5c",
+      "defines": "",
+      "stage": "vert",
+      "attributes": [
+        {
+          "name": "a_position",
+          "type": "vec4",
+          "location": 0
+        },
+        {
+          "name": "a_texCoord",
+          "type": "vec2",
+          "location": 1
+        }
+      ],
+      "normalizedSha256": "57520b8a91f5b4087bbe76dbe6d4fdebd5141f241b848d4e81d53f5b051134ef",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/549b2bb5620016b25a8614ec4b3d201f7839e28e56bdad7581b0dbf071d4af5c.vert.sc",
+      "compiled": true,
+      "hlslSha256": "111fde8929d2b3c96adc61a576390adb4792644bb755420175debea647e5d620",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "494ce765162949589cb942c8da24dc265ff063ddd25988ea62e1bad318a37e09"
+    },
+    {
+      "source": "src/OpenGLTest/OpenGLTest.js:vsh",
+      "sourceSha256": "bb50b477bf890a90b08746843d2c3825818aabda26da7c5ae2b548861d49e77b",
+      "defines": "",
+      "stage": "vert",
+      "attributes": [
+        {
+          "name": "aVertexPosition",
+          "type": "vec3",
+          "location": 0
+        },
+        {
+          "name": "aVertexColor",
+          "type": "vec4",
+          "location": 2
+        }
+      ],
+      "normalizedSha256": "99fae430e649d5157f3c296d8c017c5c4f0f565e6694d44c23c4e1a352824f06",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/bb50b477bf890a90b08746843d2c3825818aabda26da7c5ae2b548861d49e77b.vert.sc",
+      "compiled": true,
+      "hlslSha256": "6819e9737a5a9fd5053a34ecba729c63f2d5fee690353403619e899e41dc3b5f",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "ff67804b8c52b8a426ec0f800f580d2e23999620a4b79a3f9d47fcf053458db9"
+    },
+    {
+      "source": "src/OpenGLTest/OpenGLTest.js:fsh",
+      "sourceSha256": "86391f59bcfd1904525ddcfe79a01d207a2a54395979f3f7a541b37cd801608e",
+      "defines": "",
+      "stage": "frag",
+      "attributes": [],
+      "normalizedSha256": "40ee23afd12b1bd035e911b9ae5b65065e583c1bd5212a375e01737acfb909ee",
+      "legacyFragmentCoordinates": false,
+      "archive": "script/legacy-gl/shaders/86391f59bcfd1904525ddcfe79a01d207a2a54395979f3f7a541b37cd801608e.frag.sc",
+      "compiled": true,
+      "hlslSha256": "4837ef10035d2d8e1378cc27b6abdca40ab9b9190557fe973e46aee51b5c9826",
+      "archiveVersion": [
+        4,
+        0,
+        1
+      ],
+      "samplerModel": "texture-owned-combined",
+      "vulkanCodeSource": "axslcc-hlsl",
+      "inactiveDeclarations": {
+        "inactiveUniforms": [],
+        "inactiveTextures": [],
+        "inactiveAttributes": []
+      },
+      "archiveSha256": "493228886c64935e7ae57319d8ab704fc8573d9be9abc62fa630032e4d36f769"
+    }
+  ]
+}

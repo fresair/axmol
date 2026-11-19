@@ -1,11 +1,15 @@
 #!/bin/bash
+# Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
+# SPDX-License-Identifier: MIT
 ` # \
 # PowerShell Param statement : every line must end in #\ except the last line must with <#\
 # And, you can't use backticks in this section        #\
 # refer https://gist.github.com/ryanmaclean/a1f3135f49c1ab3fa7ec958ac3f8babe #\
 param( [switch]$updateAdt,                    #\
     [string]$gradleMirror,                     #\
-    [switch]$hub #\
+    [switch]$hub, #\
+    [switch]$checkOnly,                       #\
+    [switch]$exactNdk                         #\
 )                                                <#\
 #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `
 #vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
@@ -34,6 +38,12 @@ function println($message) { Write-Host "axmol: $message" }
 . (Join-Path $PSScriptRoot '1k/extensions.ps1')
 
 [VersionEx]$pwshVersion = $pwsh_ver
+
+# Read-only prerequisite validation is also available before profile/tool setup.
+if ($checkOnly) {
+    . (Join-Path $PSScriptRoot '1k/1kiss.ps1') -setupOnly -checkOnly -exactNdk:$exactNdk -prefix (Join-Path $PSScriptRoot 'tools/external') @args
+    return
+}
 
 function mkdirs([string]$path) {
     if (!(Test-Path $path -PathType Container)) {
@@ -461,7 +471,7 @@ if (!(Test-Path $prefix -PathType Container)) {
 }
 
 # setup toolchains: glslcc, cmake, ninja, ndk, jdk, ...
-. $1k_script -setupOnly -prefix $prefix @args
+. $1k_script -setupOnly -exactNdk:$exactNdk -prefix $prefix @args
 
 if ($updateAdt) {
     [System.Threading.Thread]::CurrentThread.CurrentCulture = 'en-US'
@@ -512,7 +522,7 @@ if ($updateAdt) {
         Copy-Item (Join-Path $aproj_source_root 'gradlew.bat') $aproj_root -Force
     }
 
-    $testList = @('cpp-tests', 'fairygui-tests', 'live2d-tests', 'lua-tests', 'unit-tests')
+    $testList = @('cpp-tests', 'fairygui-tests', 'live2d-tests', 'lua-tests', 'js-tests', 'unit-tests')
     foreach ($testName in $testList) {
         update_gradle_for_test($testName)
     }

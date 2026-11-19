@@ -6,6 +6,7 @@ Copyright (c) 2011      Zynga Inc.
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -266,6 +267,12 @@ bool Node::initLayer()
 
 void Node::cleanup()
 {
+#if AX_ENABLE_SCRIPT_BINDING
+    if (hasScriptBindingExposure())
+        if (auto* engine = ScriptEngineManager::getScriptEngineIfExists();
+            engine && engine->dispatchNodeLifecycle(this, "cleanup"))
+            return;
+#endif
     if (_onCleanupCallback)
         _onCleanupCallback();
 
@@ -1379,6 +1386,12 @@ Mat4 Node::transform(const Mat4& parentTransform)
 
 void Node::onEnter()
 {
+#if AX_ENABLE_SCRIPT_BINDING
+    if (hasScriptBindingExposure())
+        if (auto* engine = ScriptEngineManager::getScriptEngineIfExists();
+            engine && engine->dispatchNodeLifecycle(this, "onEnter"))
+            return;
+#endif
     if (!_running)
     {
         ++__attachedNodeCount;
@@ -1404,6 +1417,12 @@ void Node::onEnter()
 
 void Node::onEnterTransitionDidFinish()
 {
+#if AX_ENABLE_SCRIPT_BINDING
+    if (hasScriptBindingExposure())
+        if (auto* engine = ScriptEngineManager::getScriptEngineIfExists();
+            engine && engine->dispatchNodeLifecycle(this, "onEnterTransitionDidFinish"))
+            return;
+#endif
     if (_onEnterTransitionDidFinishCallback)
         _onEnterTransitionDidFinishCallback();
 
@@ -1414,6 +1433,12 @@ void Node::onEnterTransitionDidFinish()
 
 void Node::onExitTransitionDidStart()
 {
+#if AX_ENABLE_SCRIPT_BINDING
+    if (hasScriptBindingExposure())
+        if (auto* engine = ScriptEngineManager::getScriptEngineIfExists();
+            engine && engine->dispatchNodeLifecycle(this, "onExitTransitionDidStart"))
+            return;
+#endif
     if (_onExitTransitionDidStartCallback)
         _onExitTransitionDidStartCallback();
 
@@ -1423,6 +1448,12 @@ void Node::onExitTransitionDidStart()
 
 void Node::onExit()
 {
+#if AX_ENABLE_SCRIPT_BINDING
+    if (hasScriptBindingExposure())
+        if (auto* engine = ScriptEngineManager::getScriptEngineIfExists();
+            engine && engine->dispatchNodeLifecycle(this, "onExit"))
+            return;
+#endif
     if (_running)
     {
         --__attachedNodeCount;
@@ -1642,6 +1673,12 @@ void Node::pause()
 // override me
 void Node::update(float fDelta)
 {
+#if AX_ENABLE_SCRIPT_BINDING
+    if (hasScriptBindingExposure())
+        if (auto* engine = ScriptEngineManager::getScriptEngineIfExists();
+            engine && engine->dispatchNodeUpdate(this, fDelta))
+            return;
+#endif
     if (_componentContainer && !_componentContainer->isEmpty())
     {
         _componentContainer->visit(fDelta);

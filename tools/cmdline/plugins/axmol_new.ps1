@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
+# SPDX-License-Identifier: MIT
 param(
     $packageName,
     $directory,
@@ -46,7 +48,7 @@ if ($packageName.Contains('-')) {
 $sourcePath = Join-Path $env:AX_ROOT "templates/$lang"
 
 if (!(Test-Path $sourcePath)) {
-    throw 'Invalid lang, valid is cpp or lua'
+    throw 'Invalid lang, valid values are cpp, lua or js'
 }
 
 $destinationPath = Join-Path $directory $projectName
@@ -227,10 +229,36 @@ if ($isolated) {
             continue
         }
         if (Test-Path $source_path -PathType Container) {
-            Copy-Item $source_path $_ax_root -Container -Recurse -Force
+            $dest_parent = Split-Path $dest_path -Parent
+            New-Item $dest_parent -ItemType Directory -Force | Out-Null
+            Copy-Item $source_path $dest_parent -Container -Recurse -Force
         }
         else {
             Copy-Item $source_path $_ax_root -Force
+        }
+    }
+    if ($lang -eq 'js') {
+        # SpiderMonkey's production recipe and build inputs are already included
+        # through 3rdparty/spidermonkey above. Keep only old command launchers and
+        # the debugger here; exclude runtime audits, test results and caches.
+        $_ax_js_tool_files = @(
+            'tools/js-runtime/build.py'
+            'tools/js-runtime/bootstrap-python2.py'
+            'tools/js-runtime/README.md'
+            'tools/js-debugger/package.json'
+            'tools/js-debugger/package-vsix.py'
+            'tools/js-debugger/README.md'
+            'tools/js-debugger/LICENSE'
+        )
+        $_ax_js_tool_files += Get-ChildItem (Join-Path $AX_ROOT 'tools/js-debugger/src') -File -Filter '*.js' |
+            ForEach-Object { 'tools/js-debugger/src/' + $_.Name }
+        $_ax_js_tool_files += 'tools/js-debugger/templates/launch.json'
+        foreach ($path in $_ax_js_tool_files) {
+            $source_path = Join-Path $AX_ROOT $path
+            $dest_path = Join-Path $_ax_root $path
+            if ($repair -and (Test-Path -LiteralPath $dest_path)) { continue }
+            New-Item (Split-Path $dest_path -Parent) -ItemType Directory -Force | Out-Null
+            Copy-Item -LiteralPath $source_path -Destination $dest_path -Force
         }
     }
 }

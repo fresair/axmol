@@ -3,6 +3,7 @@
  Copyright (c) 2013-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -92,12 +93,19 @@ static CGFloat maxMeasureDimension()
 static PlatformFont* createFont(const char* fontName, CGFloat fontSize)
 {
     NSString* name = [NSString stringWithUTF8String:fontName];
+    // Legacy CCB files refer to registered system fonts by a path or a .ttf name.
+    // Preserve valid modern names before trying the old basename convention.
+    NSString* legacyName = [[name lastPathComponent] stringByDeletingPathExtension];
 
 #if AX_TARGET_PLATFORM == AX_PLATFORM_MAC
     PlatformFont* font = [NSFont fontWithName:name size:fontSize];
+    if (!font && legacyName.length && ![legacyName isEqualToString:name])
+        font = [NSFont fontWithName:legacyName size:fontSize];
     return font ?: [NSFont systemFontOfSize:fontSize];
 #else
     PlatformFont* font = [UIFont fontWithName:name size:fontSize];
+    if (!font && legacyName.length && ![legacyName isEqualToString:name])
+        font = [UIFont fontWithName:legacyName size:fontSize];
     return font ?: [UIFont systemFontOfSize:fontSize];
 #endif
 }

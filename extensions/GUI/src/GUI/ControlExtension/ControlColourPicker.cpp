@@ -9,6 +9,7 @@
  * http://yannickloriot.com
  *
  * Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+ * Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,6 +35,7 @@
 #include "ControlColourPicker.h"
 #include "axmol/2d/SpriteFrameCache.h"
 #include "axmol/2d/SpriteBatchNode.h"
+#include "axmol/platform/FileUtils.h"
 
 NS_AX_EXT_BEGIN
 
@@ -50,11 +52,24 @@ bool ControlColourPicker::init()
 {
     if (Control::init())
     {
-        // Cache the sprites
-        SpriteFrameCache::getInstance()->addSpriteFramesWithFile("extensions/ControlColourPickerSpriteSheet.plist");
+        // Older Cocos2d-x projects ship the same atlas with the CC prefix.
+        // Prefer the current names when present; do not mask corrupt assets.
+        auto* files = FileUtils::getInstance();
+        const char* plist = "extensions/ControlColourPickerSpriteSheet.plist";
+        const char* image = "extensions/ControlColourPickerSpriteSheet.png";
+        if (!files->isFileExist(plist))
+            plist = "extensions/CCControlColourPickerSpriteSheet.plist";
+        if (!files->isFileExist(image))
+            image = "extensions/CCControlColourPickerSpriteSheet.png";
+        if (!files->isFileExist(plist) || !files->isFileExist(image))
+            return false;
 
         // Create the sprite batch node
-        SpriteBatchNode* spriteSheet = SpriteBatchNode::create("extensions/ControlColourPickerSpriteSheet.png");
+        SpriteBatchNode* spriteSheet = SpriteBatchNode::create(image);
+        if (!spriteSheet || !spriteSheet->getTexture())
+            return false;
+        // Both the atlas frames and the batch must use this actual texture.
+        SpriteFrameCache::getInstance()->addSpriteFramesWithFile(plist, spriteSheet->getTexture());
         addChild(spriteSheet);
 
         // MIPMAP
@@ -86,11 +101,13 @@ bool ControlColourPicker::init()
         float colourShift = 28;
 
         _huePicker = new ControlHuePicker();
-        _huePicker->initWithTargetAndPos(spriteSheet,
-                                         Vec2(backgroundPointZero.x + hueShift, backgroundPointZero.y + hueShift));
+        if (!_huePicker->initWithTargetAndPos(
+                spriteSheet, Vec2(backgroundPointZero.x + hueShift, backgroundPointZero.y + hueShift)))
+            return false;
         _colourPicker = new ControlSaturationBrightnessPicker();
-        _colourPicker->initWithTargetAndPos(
-            spriteSheet, Vec2(backgroundPointZero.x + colourShift, backgroundPointZero.y + colourShift));
+        if (!_colourPicker->initWithTargetAndPos(
+                spriteSheet, Vec2(backgroundPointZero.x + colourShift, backgroundPointZero.y + colourShift)))
+            return false;
 
         // Setup events
         _huePicker->addTargetWithActionForControlEvents(
@@ -99,6 +116,7 @@ bool ControlColourPicker::init()
             this, cccontrol_selector(ControlColourPicker::colourSliderValueChanged), Control::EventType::VALUE_CHANGED);
 
         // Set defaults
+        setLegacyCompatibilityEnabled(_legacyCompatibilityEnabled);
         updateHueAndControlPicker();
         addChild(_huePicker);
         addChild(_colourPicker);
@@ -114,9 +132,13 @@ bool ControlColourPicker::init()
 ControlColourPicker* ControlColourPicker::create()
 {
     ControlColourPicker* pRet = new ControlColourPicker();
-    pRet->init();
-    pRet->autorelease();
-    return pRet;
+    if (pRet->init())
+    {
+        pRet->autorelease();
+        return pRet;
+    }
+    delete pRet;
+    return nullptr;
 }
 
 void ControlColourPicker::setColor(const Color32& color)
@@ -147,6 +169,39 @@ void ControlColourPicker::setEnabled(bool enabled)
     }
 }
 
+void ControlColourPicker::setLegacyCompatibilityEnabled(bool enabled)
+{
+    _legacyCompatibilityEnabled = enabled;
+    if (_huePicker)
+        _huePicker->setLegacyCompatibilityEnabled(enabled);
+    if (_colourPicker)
+        _colourPicker->setLegacyCompatibilityEnabled(enabled);
+}
+
+void ControlColourPicker::setcolourPicker(ControlSaturationBrightnessPicker* picker)
+{
+    if (_colourPicker != picker)
+    {
+        AX_SAFE_RETAIN(picker);
+        AX_SAFE_RELEASE(_colourPicker);
+        _colourPicker = picker;
+    }
+    if (_legacyCompatibilityEnabled && _colourPicker)
+        _colourPicker->setLegacyCompatibilityEnabled(true);
+}
+
+void ControlColourPicker::setHuePicker(ControlHuePicker* picker)
+{
+    if (_huePicker != picker)
+    {
+        AX_SAFE_RETAIN(picker);
+        AX_SAFE_RELEASE(_huePicker);
+        _huePicker = picker;
+    }
+    if (_legacyCompatibilityEnabled && _huePicker)
+        _huePicker->setLegacyCompatibilityEnabled(true);
+}
+
 // need two events to prevent an infinite loop! (can't update huePicker when the huePicker triggers the callback due to
 // Control::EventType::VALUE_CHANGED)
 void ControlColourPicker::updateControlPicker()
@@ -169,7 +224,11 @@ void ControlColourPicker::hueSliderValueChanged(Object* sender, Control::EventTy
     // Update the value
     RGBA rgba = ControlUtils::RGBfromHSV(_hsv);
     // FIXME: fixed me if not correct
-    Control::setColor(Color32(rgba));
+    if (_legacyCompatibilityEnabled)
+        Control::setColor(Color32(static_cast<uint8_t>(rgba.r * 255.0f), static_cast<uint8_t>(rgba.g * 255.0f),
+                                 static_cast<uint8_t>(rgba.b * 255.0f), getOpacity()));
+    else
+        Control::setColor(Color32(rgba));
 
     // Send Control callback
     sendActionsForControlEvents(Control::EventType::VALUE_CHANGED);
@@ -184,7 +243,11 @@ void ControlColourPicker::colourSliderValueChanged(Object* sender, Control::Even
     // Update the value
     RGBA rgba = ControlUtils::RGBfromHSV(_hsv);
     // FIXME: fixed me if not correct
-    Control::setColor(Color32(rgba));
+    if (_legacyCompatibilityEnabled)
+        Control::setColor(Color32(static_cast<uint8_t>(rgba.r * 255.0f), static_cast<uint8_t>(rgba.g * 255.0f),
+                                 static_cast<uint8_t>(rgba.b * 255.0f), getOpacity()));
+    else
+        Control::setColor(Color32(rgba));
 
     // Send Control callback
     sendActionsForControlEvents(Control::EventType::VALUE_CHANGED);

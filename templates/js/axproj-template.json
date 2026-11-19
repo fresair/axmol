@@ -1,0 +1,136 @@
+{
+    "do_default": [
+        {
+            "action": "cp",
+            "from": "$env:AX_ROOT/templates/common/*",
+            "to": "${projectDir}/",
+            "is_dir": true
+        },
+        {
+            "action": "cp",
+            "from": "$env:AX_ROOT/templates/js/cmake/modules/*",
+            "to": "${projectDir}/cmake/modules/",
+            "is_dir": true
+        },
+        {
+            "action": "cp",
+            "from": "$env:AX_ROOT/templates/js/proj.android/app/proguard-rules.pro",
+            "to": "${projectDir}/proj.android/app/proguard-rules.pro"
+        },
+        {
+            "action": "cp",
+            "from": "$env:AX_ROOT/.clang-format",
+            "to": "${projectDir}/.clang-format"
+        },
+        {
+            "action": "cp",
+            "from": "$env:AX_ROOT/.editorconfig",
+            "to": "${projectDir}/.editorconfig"
+        },
+        {
+            "action": "cp",
+            "from": "$env:AX_ROOT/.gitignore",
+            "to": "${projectDir}/.gitignore"
+        },
+        {
+            "action": "rep",
+            "from": "Dummy",
+            "to": "${projectName}",
+            "files": [
+                "proj.android/settings.gradle",
+                "proj.android/app/res/values/strings.xml",
+                "proj.android/app/AndroidManifest.xml",
+                "proj.winrt/Package.appxmanifest",
+                "proj.winrt/App.xaml",
+                "CMakeLists.txt",
+                "Source/AppDelegate.cpp",
+                "config.json"
+            ]
+        },
+        {
+            "action": "rep",
+            "from": "dev.axmol.dummy",
+            "to": "${packageName}",
+            "files": [
+                "proj.android/app/build.gradle",
+                "cmake/modules/AXGamePlatformSetup.cmake"
+            ]
+        },
+        {
+            "action": "cp",
+            "from": "$env:AX_ROOT/extensions/scripting/js-bindings/script",
+            "to": "${projectDir}/Content/script",
+            "is_dir": true
+        },
+        {
+            "action": "cp",
+            "from": "$env:AX_ROOT/tools/js-debugger/templates/launch.json",
+            "to": "${projectDir}/.vscode/launch.json"
+        },
+        {
+            "action": "rep",
+            "from": "HelloJs",
+            "to": "${projectName}",
+            "files": [".vscode/launch.json"]
+        },
+        {
+            "action": "del",
+            "files": ["axproj-template.json"]
+        }
+    ],
+    "do_portrait": [
+        {
+            "action": "rep",
+            "pattern": "\\\"isLandscape\\\": true",
+            "to": "`\"isLandscape`\": false",
+            "files": ["config.json"]
+        },
+        {
+            "action": "rep",
+            "pattern": "\\\"width\\\": 960",
+            "to": "`\"width`\": 640",
+            "files": ["Content/project.json", "config.json"]
+        },
+        {
+            "action": "rep",
+            "pattern": "\\\"height\\\": 640",
+            "to": "`\"height`\": 960",
+            "files": ["Content/project.json", "config.json"]
+        },
+        {
+            "action": "rep",
+            "from": "960, 640",
+            "to": "640, 960",
+            "files": ["Content/main.js", "Source/AppDelegate.cpp"]
+        },
+        {
+            "action": "rep",
+            "from": "UIInterfaceOrientationLandscapeRight",
+            "to": "UIInterfaceOrientationPortrait",
+            "files": ["proj.ios_mac/ios/targets/ios/Info.plist"]
+        },
+        {
+            "action": "rep",
+            "from": "UIInterfaceOrientationLandscapeLeft",
+            "to": "UIInterfaceOrientationPortraitUpsideDown",
+            "files": ["proj.ios_mac/ios/targets/ios/Info.plist"]
+        },
+        {
+            "action": "rep",
+            "pattern": "android:screenOrientation=\\\"sensorLandscape\\\"",
+            "to": "android:screenOrientation=`\"portrait`\"",
+            "files": ["proj.android/app/AndroidManifest.xml"]
+        },
+        {
+            "action": "rep",
+            "pattern": "orientation=\\\".*\\\"",
+            "to": "orientation=`\"portrait`\"",
+            "files": ["proj.ios_mac/ios/targets/ios/LaunchScreen.storyboard"]
+        },
+        {
+            "action": "cp",
+            "from": "${projectDir}/proj.ios_mac/ios/targets/ios/LaunchScreenBackgroundPortrait.png",
+            "to": "${projectDir}/proj.ios_mac/ios/targets/ios/LaunchScreenBackground.png"
+        }
+    ]
+}

@@ -1,5 +1,7 @@
 /*
  * Copyright (C) 2016 The Android Open Source Project
+ * Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
+ * Modified for axmol-js by Ye Liangqi in 2026.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +30,9 @@ import android.media.MediaCodec;
 import android.media.MediaCodecInfo.CodecCapabilities;
 import android.media.MediaCrypto;
 import android.media.MediaFormat;
+import android.os.Build;
 import android.os.Handler;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.media3.common.C;
@@ -37,6 +41,7 @@ import androidx.media3.common.util.TraceUtil;
 import androidx.media3.common.util.UnstableApi;
 import androidx.media3.exoplayer.DecoderReuseEvaluation;
 import androidx.media3.exoplayer.ExoPlaybackException;
+import androidx.media3.exoplayer.mediacodec.AxmolByteBufferCodecInfo;
 import androidx.media3.exoplayer.mediacodec.MediaCodecAdapter;
 import androidx.media3.exoplayer.mediacodec.MediaCodecInfo;
 import androidx.media3.exoplayer.mediacodec.MediaCodecSelector;
@@ -291,8 +296,19 @@ public class ByteBufferVideoRenderer
             mediaFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT, colorFormat);
         }
         mediaFormat.setInteger(MediaFormat.KEY_ALLOW_FRAME_DROP, 0);
+        // Keep selection and capability checks on the original info. API 35+ codec adapter
+        // factories may otherwise treat this null Surface as detached Surface output.
+        MediaCodecInfo byteBufferCodecInfo =
+            AxmolByteBufferCodecInfo.withoutDetachedSurface(codecInfo);
+        String diagnosticCodecName = codecInfo.name.length() > 128
+            ? codecInfo.name.substring(0, 128) : codecInfo.name;
+        Log.d("AxmolVideo", "ByteBufferCodecConfig candidateDetachedSurfaceOff=true codec="
+            + diagnosticCodecName + " api=" + Build.VERSION.SDK_INT
+            + " originalDetached=" + codecInfo.detachedSurfaceSupported
+            + " effectiveDetached=" + byteBufferCodecInfo.detachedSurfaceSupported
+            + " surface=null branchProofPending=true");
         return MediaCodecAdapter.Configuration.createForVideoDecoding(
-            codecInfo,
+            byteBufferCodecInfo,
             mediaFormat,
             format,
             /* surface= */ null,
@@ -325,15 +341,29 @@ public class ByteBufferVideoRenderer
             initialPositionUs = positionUs;
         }
 
-        if (isDecodeOnlyBuffer && !isLastBuffer) {
+        boolean isStarted = getState() == STATE_STARTED;
+        // Paused previews must be actual presentation frames. Drain even a final
+        // decode-only buffer while paused rather than retaining it indefinitely.
+        if (isDecodeOnlyBuffer && (!isLastBuffer || !isStarted)) {
             skipOutputBuffer(codec, bufferIndex, presentationTimeUs);
             return true;
         }
 
-        boolean isStarted = getState() == STATE_STARTED;
         long earlyUs = calculateEarlyTimeUs(positionUs, elapsedRealtimeUs, bufferPresentationTimeUs);
         long elapsedSinceLastRenderUs =
             lastRenderRealtimeUs == C.TIME_UNSET ? Long.MAX_VALUE : elapsedRealtimeUs - lastRenderRealtimeUs;
+
+        // One initial/post-seek frame is available even before playback starts.
+        // Subsequent frames stay queued while paused; lateness cannot advance them.
+        if (!hasRenderedFrameSinceReset) {
+            renderOutputBuffer(codec, bufferIndex, presentationTimeUs, format);
+            updateVideoFrameProcessingOffsetCounters(earlyUs);
+            return true;
+        }
+
+        if (!isStarted) {
+            return false;
+        }
 
         if (shouldForceRenderOutputBuffer(earlyUs, elapsedSinceLastRenderUs)) {
             renderOutputBuffer(codec, bufferIndex, presentationTimeUs, format);
@@ -341,13 +371,7 @@ public class ByteBufferVideoRenderer
             return true;
         }
 
-        if (isStarted && !hasRenderedFrameSinceReset) {
-            renderOutputBuffer(codec, bufferIndex, presentationTimeUs, format);
-            updateVideoFrameProcessingOffsetCounters(earlyUs);
-            return true;
-        }
-
-        if (!isStarted || positionUs == initialPositionUs) {
+        if (positionUs == initialPositionUs) {
             return false;
         }
 
@@ -372,11 +396,12 @@ public class ByteBufferVideoRenderer
         MediaCodecAdapter codec, int index, long presentationTimeUs, Format format) {
         @Nullable VideoFrameProcessor output = this.output;
         try {
+            // Establish this output buffer's format before the processor reads its row layout.
+            long releaseTimeNs = getClock().nanoTime();
+            notifyFrameMetadataListener(presentationTimeUs, releaseTimeNs, format);
             if (output != null) {
                 output.processVideoFrame(codec, index, presentationTimeUs);
             }
-            long releaseTimeNs = getClock().nanoTime();
-            notifyFrameMetadataListener(presentationTimeUs, releaseTimeNs, format);
         } finally {
             renderOutputBufferInternal(codec, index, presentationTimeUs);
         }

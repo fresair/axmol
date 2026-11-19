@@ -1,5 +1,6 @@
 /****************************************************************************
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -9,6 +10,7 @@ package dev.axmol.lib;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 
 import javax.microedition.khronos.egl.EGL10;
@@ -26,6 +28,20 @@ public class AxmolSurfaceViewGL extends dev.axmol.lib.GLSurfaceView {
 
     private AxmolPlayer mPlayer;
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // The render surface owns focus; forward the player's supported keys
+        // through its existing engine-thread dispatch.
+        if (mPlayer != null && mPlayer.onKeyDown(keyCode, event)) return true;
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (mPlayer != null && mPlayer.onKeyUp(keyCode, event)) return true;
+        return super.onKeyUp(keyCode, event);
+    }
+
     public AxmolSurfaceViewGL(AxmolPlayer player) {
         super(player.getContext());
         init(player);
@@ -40,6 +56,8 @@ public class AxmolSurfaceViewGL extends dev.axmol.lib.GLSurfaceView {
         setEGLContextClientVersion(3);
         setEGLContextFactory(new AxmolEGLContextFactory());
         setFocusableInTouchMode(true);
+        // Keep the first navigation key from being consumed to establish focus.
+        requestFocus();
         setPreserveEGLContextOnPause(true);
 
         setRenderer(new GLSurfaceView.Renderer() {

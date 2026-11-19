@@ -1,6 +1,7 @@
 /****************************************************************************
 Copyright (c) 2012 cocos2d-x.org
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -29,6 +30,8 @@ NS_AX_EXT_BEGIN
 
 Sprite* ControlUtils::addSpriteToTargetWithPosAndAnchor(const char* spriteName, Node* target, Vec2 pos, Vec2 anchor)
 {
+    if (!target)
+        return nullptr;
     Sprite* sprite = Sprite::createWithSpriteFrameName(spriteName);
 
     if (!sprite)

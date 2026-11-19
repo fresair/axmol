@@ -6,6 +6,7 @@ Copyright (c) 2011 HKASoftware
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 
 https://axmol.dev/
@@ -30,6 +31,7 @@ SPDX-License-Identifier: MIT
 #include "axmol/renderer/TextureCache.h"
 #include "axmol/renderer/Renderer.h"
 #include "axmol/renderer/Shaders.h"
+#include "axmol/renderer/ProgramManager.h"
 #include "axmol/rhi/GraphicsCore.h"
 #include "axmol/rhi/Buffer.h"
 #include "axmol/base/Director.h"
@@ -38,6 +40,50 @@ SPDX-License-Identifier: MIT
 
 namespace ax
 {
+
+namespace
+{
+Program* tilemapProgram(Texture2D* texture, bool alphaTest)
+{
+    const auto& sampler = texture->getRHITexture()->getSamplerDesc();
+    const bool point = sampler.minFilter == rhi::SamplerFilter::MIN_NEAREST &&
+                       sampler.magFilter == rhi::SamplerFilter::MAG_NEAREST;
+    if (alphaTest)
+    {
+        if (point)
+            return axpm->loadProgram(positionTextureColor_vs, "positionTextureColorAlphaTest_fs_1",
+                                     VertexLayoutKind::Sprite);
+        return axpm->getBuiltinProgram(rhi::ProgramType::POSITION_TEXTURE_COLOR_ALPHA_TEST);
+    }
+    return axpm->getBuiltinProgram(point ? rhi::ProgramType::POSITION_TEXTURE_COLOR_ALIAS
+                                        : rhi::ProgramType::POSITION_TEXTURE_COLOR);
+}
+
+bool configureTilemapProgram(TilesetBatch& batch, CustomCommand* command, Program* program,
+                            bool alphaTest, float alphaValue)
+{
+    if (!program)
+    {
+        AXLOGE("FastTMXLayer could not load its tile sampling program");
+        return false;
+    }
+
+    auto* ps = command->unsafePS();
+    if (!ps || ps->getProgram() != program)
+    {
+        ps = new ProgramState(program);
+        command->setOwnPSVL(ps, program->getVertexLayout(), RenderCommand::ADOPT_FLAG_PS);
+        batch.mvpMatrixLocation = ps->getUniformLocation("u_MVPMatrix");
+        batch.textureLocation   = ps->getUniformLocation("u_tex0");
+        ps->setTexture(batch.textureLocation, 0, batch.texture->getRHITexture());
+        if (alphaTest)
+            batch.alphaValueLocation = ps->getUniformLocation("u_alpha_value");
+    }
+    if (alphaTest)
+        ps->setUniform(batch.alphaValueLocation, &alphaValue, sizeof(alphaValue));
+    return true;
+}
+}  // namespace
 
 const int FastTMXLayer::FAST_TMX_ORIENTATION_ORTHO = 0;
 const int FastTMXLayer::FAST_TMX_ORIENTATION_HEX   = 1;
@@ -108,6 +154,8 @@ bool FastTMXLayer::initWithTilesets(std::span<TMXTilesetInfo* const> tilesets,
     _layerOrientation = mapInfo->getOrientation();
     _staggerAxis      = mapInfo->getStaggerAxis();
     _staggerIndex     = mapInfo->getStaggerIndex();
+    _hexSideLength    = mapInfo->getHexSideLength();
+    _staggerTileOffset = layerInfo->_offset;
 
     Vec2 offset = this->calculateLayerOffset(layerInfo->_offset);
     this->setPosition(AX_POINT_PIXELS_TO_POINTS(offset));
@@ -139,6 +187,41 @@ FastTMXLayer::~FastTMXLayer()
     }
     AX_SAFE_FREE(_tiles);
     AX_SAFE_RELEASE(_vertexBuffer);
+}
+
+void FastTMXLayer::releaseMap()
+{
+    if (!_tiles)
+        return;
+
+    // Bake geometry while the IDs still exist. Culling uses the retained
+    // tile-to-quad/batch mappings, so freeing the IDs cannot remove the map
+    // from the scene or change its GPU geometry.
+    updateTotalQuads();
+    if (_tileAnimManager)
+        _tileAnimManager->stopAll();
+    _animTileCoord.clear();
+    AX_SAFE_FREE(_tiles);
+}
+
+bool FastTMXLayer::setLegacyTilesetOffsetPolicy(bool legacy)
+{
+    if (_legacyTilesetOffsetPolicy == legacy)
+        return true;
+    if (!_spriteContainer.empty() || (!_tiles && !_totalQuads.empty()))
+        return false;
+    _legacyTilesetOffsetPolicy = legacy;
+    _quadsDirty = true;
+    _dirty = true;
+    return true;
+}
+
+Vec2 FastTMXLayer::effectiveTilesetOffset(const TMXTilesetInfo* tileset) const
+{
+    if (!tileset || (_legacyTilesetOffsetPolicy &&
+        (_layerOrientation == FAST_TMX_ORIENTATION_ISO || _layerOrientation == FAST_TMX_ORIENTATION_ORTHO)))
+        return Vec2::zero;
+    return tileset->_tileOffset;
 }
 
 void FastTMXLayer::setTileSet(TMXTilesetInfo* info)
@@ -231,10 +314,17 @@ void FastTMXLayer::draw(const SceneRenderState& state, const Mat4& transform, ui
     // overlay/object tiles (high GIDs) that share the same vertexZ.
     for (auto it = _batches.rbegin(); it != _batches.rend(); ++it)
     {
+        if (!it->texture || it->customCommands.empty())
+            continue;
+        auto* program = tilemapProgram(it->texture, _useAutomaticVertexZ);
         for (const auto& [_, cmd] : it->customCommands)
         {
             if (cmd->getIndexDrawCount() > 0)
             {
+                // The texture's filter can change without changing the camera
+                // or tile geometry. Fixed HLSL samplers must follow that change.
+                if (!configureTilemapProgram(*it, cmd, program, _useAutomaticVertexZ, _alphaFuncValue))
+                    continue;
                 // All commands in a batch share the same program, so the cached location is valid.
                 cmd->unsafePS()->setUniform(it->mvpMatrixLocation, finalMat.m, sizeof(finalMat.m));
                 state.getRenderer()->addCommand(cmd);
@@ -249,49 +339,82 @@ void FastTMXLayer::updateTiles(const Rect& culledRect)
     Vec2 mapTileSize         = AX_SIZE_PIXELS_TO_POINTS(_mapTileSize);
     Vec2 tileSize            = AX_SIZE_PIXELS_TO_POINTS(_maxTileSize);
     Mat4 nodeToTileTransform = _tileToNodeTransform.getInversed();
+    const bool staggered = isStaggeredLayout();
+    if (staggered)
+    {
+        // Find possible tile origins, including tiles that extend into the viewport
+        // from outside it. Keep the affine inverse for the regular spacing and
+        // expand for both parity shifts, arbitrary tileset offsets and large tiles.
+        const float csf = AX_CONTENT_SCALE_FACTOR();
+        const float maxSize = std::max(tileSize.width, tileSize.height);
+        Vec2 minOffset;
+        Vec2 maxExtent(maxSize, maxSize);
+        for (const auto& batch : _batches)
+        {
+            const auto* ts = batch.tilesetInfo;
+            const auto rawOffset = effectiveTilesetOffset(ts);
+            const Vec2 offset(rawOffset.x / csf, -rawOffset.y / csf);
+            const float extent = std::max(ts->_tileSize.width, ts->_tileSize.height) / csf;
+            minOffset.x = std::min(minOffset.x, offset.x);
+            minOffset.y = std::min(minOffset.y, offset.y);
+            maxExtent.x = std::max(maxExtent.x, offset.x + extent);
+            maxExtent.y = std::max(maxExtent.y, offset.y + extent);
+        }
+        const float sign = _staggerIndex == TMXStaggerIndex_Odd ? 1.f : -1.f;
+        const float shift = _staggerAxis == TMXStaggerAxis_X ? -sign * mapTileSize.height / 2
+                                                          : sign * mapTileSize.width / 2;
+        const int offsetParity = static_cast<int>(_staggerAxis == TMXStaggerAxis_X ? _staggerTileOffset.x
+                                                                                 : _staggerTileOffset.y) & 1;
+        const float minShift = std::min(-offsetParity * shift, (1 - offsetParity) * shift);
+        const float maxShift = std::max(-offsetParity * shift, (1 - offsetParity) * shift);
+        Vec2 minOrigin(culledRect.getMinX() - maxExtent.x, culledRect.getMinY() - maxExtent.y);
+        Vec2 maxOrigin(culledRect.getMaxX() - minOffset.x, culledRect.getMaxY() - minOffset.y);
+        if (_staggerAxis == TMXStaggerAxis_X)
+        {
+            minOrigin.y -= maxShift;
+            maxOrigin.y -= minShift;
+        }
+        else
+        {
+            minOrigin.x -= maxShift;
+            maxOrigin.x -= minShift;
+        }
+        visibleTiles = Rect(minOrigin, maxOrigin - minOrigin);
+    }
+    else
+    {
+        // Convert the viewport to possible tile origins, including large or
+        // flipped images. Nonzero offsets can move a tile into view even when
+        // its unshifted origin is outside the viewport.
+        Vec2 minOffset;
+        const float maxSize = std::max(tileSize.width, tileSize.height);
+        Vec2 maxExtent(maxSize, maxSize);
+        const float csf = AX_CONTENT_SCALE_FACTOR();
+        for (const auto& batch : _batches)
+        {
+            const auto rawOffset = effectiveTilesetOffset(batch.tilesetInfo);
+            const Vec2 offset(rawOffset.x / csf, -rawOffset.y / csf);
+            minOffset.x = std::min(minOffset.x, offset.x);
+            minOffset.y = std::min(minOffset.y, offset.y);
+            const auto* ts = batch.tilesetInfo;
+            const float extent = std::max(ts->_tileSize.width, ts->_tileSize.height) / csf;
+            maxExtent.x = std::max(maxExtent.x, offset.x + extent);
+            maxExtent.y = std::max(maxExtent.y, offset.y + extent);
+        }
+        visibleTiles.origin -= maxExtent;
+        visibleTiles.size += maxExtent - minOffset;
+    }
     // transform to tile
     visibleTiles = RectApplyTransform(visibleTiles, nodeToTileTransform);
-    // tile coordinate is upside-down, so we need to make the tile coordinate use top-left for the start point.
-    visibleTiles.origin.y += 1;
+    // Include boundary origins after floating point inversion and integer rounding.
+    visibleTiles.origin -= Vec2(1, 1);
+    visibleTiles.size += Vec2(2, 2);
 
     // if x=0.7, width=9.5, we need to draw number 0~10 of tiles, and so is height.
     visibleTiles.size.width  = ceil(visibleTiles.origin.x + visibleTiles.size.width) - floor(visibleTiles.origin.x);
     visibleTiles.size.height = ceil(visibleTiles.origin.y + visibleTiles.size.height) - floor(visibleTiles.origin.y);
     visibleTiles.origin.x    = floor(visibleTiles.origin.x);
     visibleTiles.origin.y    = floor(visibleTiles.origin.y);
-
-    // for the bigger tiles.
-    int tilesOverX = 0;
-    int tilesOverY = 0;
-    // for diagonal orientation tiles
-    float tileSizeMax = std::max(tileSize.width, tileSize.height);
-    if (_layerOrientation == FAST_TMX_ORIENTATION_ORTHO)
-    {
-        tilesOverX = (int)ceil(tileSizeMax / mapTileSize.width) - 1;
-        tilesOverY = (int)ceil(tileSizeMax / mapTileSize.height) - 1;
-
-        if (tilesOverX < 0)
-            tilesOverX = 0;
-        if (tilesOverY < 0)
-            tilesOverY = 0;
-    }
-    else if (_layerOrientation == FAST_TMX_ORIENTATION_ISO)
-    {
-        Rect overTileRect(0, 0, tileSizeMax - mapTileSize.width, tileSizeMax - mapTileSize.height);
-        if (overTileRect.size.width < 0)
-            overTileRect.size.width = 0;
-        if (overTileRect.size.height < 0)
-            overTileRect.size.height = 0;
-        overTileRect = RectApplyTransform(overTileRect, nodeToTileTransform);
-
-        tilesOverX = (int)(ceil(overTileRect.origin.x + overTileRect.size.width) - floor(overTileRect.origin.x));
-        tilesOverY = (int)(ceil(overTileRect.origin.y + overTileRect.size.height) - floor(overTileRect.origin.y));
-    }
-    else
-    {
-        // do nothing, do not support
-        // AXASSERT(0, "TMX invalid value");
-    }
 
     for (auto& batch : _batches)
     {
@@ -300,19 +423,24 @@ void FastTMXLayer::updateTiles(const Rect& culledRect)
             batch.indicesVertexZNumber[vz] = offset;
     }
 
-    int yBegin = static_cast<int>(std::max(0.f, visibleTiles.origin.y - tilesOverY));
+    int yBegin = static_cast<int>(std::max(0.f, visibleTiles.origin.y));
     int yEnd =
-        static_cast<int>(std::min(_layerSize.height, visibleTiles.origin.y + visibleTiles.size.height + tilesOverY));
-    int xBegin = static_cast<int>(std::max(0.f, visibleTiles.origin.x - tilesOverX));
+        static_cast<int>(std::min(_layerSize.height, visibleTiles.origin.y + visibleTiles.size.height));
+    int xBegin = static_cast<int>(std::max(0.f, visibleTiles.origin.x));
     int xEnd =
-        static_cast<int>(std::min(_layerSize.width, visibleTiles.origin.x + visibleTiles.size.width + tilesOverX));
+        static_cast<int>(std::min(_layerSize.width, visibleTiles.origin.x + visibleTiles.size.width));
 
     for (int y = yBegin; y < yEnd; ++y)
     {
-        for (int x = xBegin; x < xEnd; ++x)
+        const bool staggerColumns = staggered && _staggerAxis == TMXStaggerAxis_X;
+        const int firstParity = (_staggerIndex == TMXStaggerIndex_Odd ? 0 : 1) ^
+                                (static_cast<int>(_staggerTileOffset.x) & 1);
+        for (int pass = 0; pass < (staggerColumns ? 2 : 1); ++pass)
+        for (int x = staggerColumns ? xBegin + ((xBegin & 1) != (firstParity ^ pass)) : xBegin;
+             x < xEnd; x += staggerColumns ? 2 : 1)
         {
             int tileIndex = getTileIndexByPos(x, y);
-            if (_tiles[tileIndex] == 0)
+            if (_tileToQuadIndex[tileIndex] < 0)
                 continue;
 
             int bi = _tilesetBatchIndex[tileIndex];
@@ -415,6 +543,16 @@ void FastTMXLayer::setupTiles()
         _screenGridSize.height = ceil(screenSize.height / (_mapTileSize.height / 2)) + 4;
         break;
     case FAST_TMX_ORIENTATION_HEX:
+    case TMXOrientationStaggered:
+    {
+        const float side = _layerOrientation == FAST_TMX_ORIENTATION_HEX ? _hexSideLength : 0.f;
+        const float csf = AX_CONTENT_SCALE_FACTOR();
+        const float stepX = (_staggerAxis == TMXStaggerAxis_X ? (_mapTileSize.width + side) / 2 : _mapTileSize.width) / csf;
+        const float stepY = (_staggerAxis == TMXStaggerAxis_Y ? (_mapTileSize.height + side) / 2 : _mapTileSize.height) / csf;
+        _screenGridSize.width = ceil(screenSize.width / stepX) + 2;
+        _screenGridSize.height = ceil(screenSize.height / stepY) + 2 + maxTileHeight / (stepY * csf);
+        break;
+    }
     default:
         AXLOGE("FastTMX does not support type {}", _layerOrientation);
         break;
@@ -434,28 +572,9 @@ void FastTMXLayer::setupTiles()
         {
             for (int x = 0; x < _layerSize.width; x++)
             {
-                int newX = x;
-                // fix correct render ordering in Hexagonal maps when stagger axis == x
-                if (_staggerAxis == TMXStaggerAxis_X && _layerOrientation == TMXOrientationHex)
-                {
-                    if (_staggerIndex == TMXStaggerIndex_Odd)
-                    {
-                        if (x >= _layerSize.width / 2)
-                            newX = (x - std::ceil(_layerSize.width / 2)) * 2 + 1;
-                        else
-                            newX = x * 2;
-                    }
-                    else
-                    {
-                        // TMXStaggerIndex_Even
-                        if (x >= static_cast<int>(_layerSize.width / 2))
-                            newX = (x - static_cast<int>(_layerSize.width / 2)) * 2;
-                        else
-                            newX = x * 2 + 1;
-                    }
-                }
-
-                int pos        = static_cast<int>(newX + _layerSize.width * y);
+                // Animation lookup uses tile coordinates; draw ordering is applied
+                // when assembling the visible index buffer, not by permuting IDs.
+                int pos        = static_cast<int>(x + _layerSize.width * y);
                 uint32_t gid   = _tiles[pos];
                 uint32_t flags = 0;
 
@@ -475,7 +594,7 @@ void FastTMXLayer::setupTiles()
                     int bi = batchIndexForGID(gid);
                     if (bi >= 0 && _batches[bi].tilesetInfo->_animationInfo.find(gid) !=
                                        _batches[bi].tilesetInfo->_animationInfo.end())
-                        _animTileCoord[gid].emplace_back(TMXTileAnimFlag{Vec2(newX, y), flags});
+                        _animTileCoord[gid].emplace_back(TMXTileAnimFlag{Vec2(x, y), flags});
                 }
             }
         }
@@ -510,8 +629,15 @@ Mat4 FastTMXLayer::tileToNodeTransform()
         return _tileToNodeTransform;
     }
     case FAST_TMX_ORIENTATION_HEX:
+    case TMXOrientationStaggered:
     {
-        _tileToNodeTransform = Mat4(h * sqrtf(0.75), 0, 0, 0, -h / 2, -h, 0, offY, 0, 0, 1, 0, 0, 0, 0, 1);
+        const float side = _layerOrientation == FAST_TMX_ORIENTATION_HEX ? _hexSideLength / AX_CONTENT_SCALE_FACTOR() : 0.f;
+        const float stepX = _staggerAxis == TMXStaggerAxis_X ? (w + side) / 2 : w;
+        const float stepY = _staggerAxis == TMXStaggerAxis_Y ? (h + side) / 2 : h;
+        // This matrix is the regular spacing used for conservative culling.
+        // The alternating half-tile offset is applied by tilePosition().
+        _tileToNodeTransform = Mat4(stepX, 0, 0, 0, 0, -stepY, 0, (_layerSize.height - 1) * stepY,
+                                    0, 0, 1, 0, 0, 0, 0, 1);
         return _tileToNodeTransform;
     }
     default:
@@ -520,6 +646,34 @@ Mat4 FastTMXLayer::tileToNodeTransform()
         return _tileToNodeTransform;
     }
     }
+}
+
+bool FastTMXLayer::isStaggeredLayout() const
+{
+    return _layerOrientation == FAST_TMX_ORIENTATION_HEX || _layerOrientation == TMXOrientationStaggered;
+}
+
+Vec2 FastTMXLayer::tilePosition(const Vec2& pos) const
+{
+    Vec2 result = PointApplyTransform(pos, _tileToNodeTransform);
+    if (isStaggeredLayout())
+    {
+        const float csf = AX_CONTENT_SCALE_FACTOR();
+        const float sign = _staggerIndex == TMXStaggerIndex_Odd ? 1.f : -1.f;
+        if (_staggerAxis == TMXStaggerAxis_X)
+        {
+            const int originParity = static_cast<int>(_staggerTileOffset.x) & 1;
+            const int tileParity = static_cast<int>(pos.x + _staggerTileOffset.x) & 1;
+            result.y -= (tileParity - originParity) * sign * _mapTileSize.height / (2 * csf);
+        }
+        else
+        {
+            const int originParity = static_cast<int>(_staggerTileOffset.y) & 1;
+            const int tileParity = static_cast<int>(pos.y + _staggerTileOffset.y) & 1;
+            result.x += (tileParity - originParity) * sign * _mapTileSize.width / (2 * csf);
+        }
+    }
+    return result;
 }
 
 void FastTMXLayer::updatePrimitives()
@@ -552,28 +706,12 @@ void FastTMXLayer::updatePrimitives()
                 command->setIndexBuffer(batch.indexBuffer, indexFormat);
                 command->setIndexDrawInfo(start * 6, count * 6);
 
-                ProgramState* ps{nullptr};
-                VertexLayout* vl{nullptr};
-                if (_useAutomaticVertexZ)
+                auto* program = tilemapProgram(batch.texture, _useAutomaticVertexZ);
+                if (!configureTilemapProgram(batch, command, program, _useAutomaticVertexZ, _alphaFuncValue))
                 {
-                    auto* program = axpm->getBuiltinProgram(rhi::ProgramType::POSITION_TEXTURE_COLOR_ALPHA_TEST);
-                    ps            = new rhi::ProgramState(program);
-                    vl            = program->getVertexLayout();
-                    batch.alphaValueLocation = ps->getUniformLocation("u_alpha_value");
-                    ps->setUniform(batch.alphaValueLocation, &_alphaFuncValue, sizeof(_alphaFuncValue));
+                    delete command;
+                    continue;
                 }
-                else
-                {
-                    auto* program = axpm->getBuiltinProgram(rhi::ProgramType::POSITION_TEXTURE_COLOR);
-                    ps            = new rhi::ProgramState(program);
-                    vl            = program->getVertexLayout();
-                }
-
-                command->setOwnPSVL(ps, vl, RenderCommand::ADOPT_FLAG_PS);
-
-                batch.mvpMatrixLocation = ps->getUniformLocation("u_MVPMatrix");
-                batch.textureLocation   = ps->getUniformLocation("u_tex0");
-                ps->setTexture(batch.textureLocation, 0, batch.texture->getRHITexture());
                 command->init(_globalZOrder, blendfunc);
 
                 batch.customCommands[vertexZ] = command;
@@ -597,6 +735,41 @@ void FastTMXLayer::updateTotalQuads()
     if (!_quadsDirty)
         return;
 
+    if (!_tiles)
+    {
+        // releaseMap retains baked UV/position data. Opacity changes still
+        // update those quads using the original per-texture premultiplication
+        // rule, without reading freed IDs or rebuilding tile geometry.
+        const uint8_t opacity = getDisplayedOpacity();
+        std::vector<Color32> colors(_batches.size(), Color32::white);
+        for (size_t i = 0; i < _batches.size(); ++i)
+        {
+            auto& color = colors[i];
+            color.a = opacity;
+            if (_batches[i].texture && _batches[i].texture->hasPremultipliedAlpha())
+                color.r = color.g = color.b = opacity;
+        }
+        for (size_t i = 0; i < _tileToQuadIndex.size(); ++i)
+        {
+            const int index = _tileToQuadIndex[i];
+            const int batch = _tilesetBatchIndex[i];
+            if (index < 0 || batch < 0)
+                continue;
+            auto& quad = _totalQuads[index];
+            quad.bl.color = quad.br.color = quad.tl.color = quad.tr.color = colors[batch];
+        }
+        updateVertexBuffer();
+        _quadsDirty = false;
+        return;
+    }
+
+    buildTileQuads();
+    updateVertexBuffer();
+    _quadsDirty = false;
+}
+
+void FastTMXLayer::buildTileQuads()
+{
     const int tileCount = (int)(_layerSize.width * _layerSize.height);
     _tileToQuadIndex.assign(tileCount, -1);
     _tilesetBatchIndex.assign(tileCount, -1);
@@ -632,8 +805,9 @@ void FastTMXLayer::updateTotalQuads()
             c.g           = static_cast<uint8_t>(c.g * a);
             c.b           = static_cast<uint8_t>(c.b * a);
         }
+        const auto rawOffset = effectiveTilesetOffset(ts);
         batchCache[i] = {AX_SIZE_PIXELS_TO_POINTS(ts->_tileSize),
-                         Vec2(ts->_tileOffset.x / csf, -ts->_tileOffset.y / csf), ts->_imageSize, c};
+                         Vec2(rawOffset.x / csf, -rawOffset.y / csf), ts->_imageSize, c};
     }
 
     // Cache the last resolved batch index and its GID range to skip re-scanning for
@@ -678,8 +852,7 @@ void FastTMXLayer::updateTotalQuads()
             auto& batch    = _batches[bi];
             const auto& bc = batchCache[bi];
 
-            Vec3 nodePos(float(x), float(y), 0);
-            _tileToNodeTransform.transformPoint(&nodePos);
+            const Vec2 nodePos = tilePosition(Vec2(static_cast<float>(x), static_cast<float>(y)));
 
             int zPos    = getVertexZForPos(Vec2((float)x, (float)y));
             float z     = (float)zPos;
@@ -763,8 +936,6 @@ void FastTMXLayer::updateTotalQuads()
         }
     }
 
-    updateVertexBuffer();
-    _quadsDirty = false;
 }
 
 // removing / getting tiles
@@ -844,7 +1015,7 @@ int FastTMXLayer::getTileGIDAt(const Vec2& tileCoordinate, TMXTileFlags* flags /
 
 Vec2 FastTMXLayer::getPositionAt(const Vec2& pos)
 {
-    return PointApplyTransform(pos, _tileToNodeTransform);
+    return tilePosition(pos);
 }
 
 int FastTMXLayer::getVertexZForPos(const Vec2& pos)
@@ -967,6 +1138,18 @@ Vec2 FastTMXLayer::calculateLayerOffset(const Vec2& pos)
         ret.set((_mapTileSize.width / 2) * (pos.x - pos.y), (_mapTileSize.height / 2) * (-pos.x - pos.y));
         break;
     case FAST_TMX_ORIENTATION_HEX:
+    case TMXOrientationStaggered:
+    {
+        const float side = _layerOrientation == FAST_TMX_ORIENTATION_HEX ? _hexSideLength : 0.f;
+        const float sign = _staggerIndex == TMXStaggerIndex_Odd ? 1.f : -1.f;
+        if (_staggerAxis == TMXStaggerAxis_X)
+            ret.set(pos.x * (_mapTileSize.width + side) / 2,
+                    -pos.y * _mapTileSize.height - (static_cast<int>(pos.x) & 1) * sign * _mapTileSize.height / 2);
+        else
+            ret.set(pos.x * _mapTileSize.width + (static_cast<int>(pos.y) & 1) * sign * _mapTileSize.width / 2,
+                    -pos.y * (_mapTileSize.height + side) / 2);
+        break;
+    }
     default:
         AXASSERT(pos.isZero(), "offset for this map not implemented yet");
         break;
@@ -1023,10 +1206,7 @@ void FastTMXLayer::setTileGID(int gid, const Vec2& tileCoordinate, TMXTileFlags 
 
             sprite->setTextureRect(rect, false, rect.size);
             this->reorderChild(sprite, z);
-            if (flags)
-            {
-                setupTileSprite(sprite, tileCoordinate, gidAndFlags);
-            }
+            setupTileSprite(sprite, tileCoordinate, gidAndFlags);
 
             it->second.second = gidAndFlags;
         }
@@ -1048,11 +1228,14 @@ void FastTMXLayer::setupTileSprite(Sprite* sprite, const Vec2& pos, uint32_t gid
     // fix issue #1283 too;  put the anchor in the middle for ease of rotation.
     sprite->setAnchorPoint(Vec2(0.5f, 0.5f));
     int bi                        = batchIndexForGID(gid);
-    const Vec2 tileOff            = (bi >= 0) ? _batches[bi].tilesetInfo->_tileOffset : Vec2::zero;
+    const Vec2 tileOff            = effectiveTilesetOffset((bi >= 0) ? _batches[bi].tilesetInfo : nullptr);
     const float spriteTileOffsetX = tileOff.x / AX_CONTENT_SCALE_FACTOR();
     const float spriteTileOffsetY = -tileOff.y / AX_CONTENT_SCALE_FACTOR();
-    sprite->setPosition(tempPosAt.x + std::roundf(tempSpriteContentSize.height / 2) + spriteTileOffsetX,
-                        tempPosAt.y + std::roundf(tempSpriteContentSize.width / 2) + spriteTileOffsetY);
+    const bool diagonal = (gid & kTMXTileDiagonalFlag) != 0;
+    const Vec2 extent = diagonal ? Vec2(tempSpriteContentSize.height, tempSpriteContentSize.width)
+                               : tempSpriteContentSize;
+    sprite->setPosition(tempPosAt.x + extent.width / 2 + spriteTileOffsetX,
+                        tempPosAt.y + extent.height / 2 + spriteTileOffsetY);
 
     // issue 1264, flip can be undone as well
     sprite->setFlippedX(false);
@@ -1130,7 +1313,7 @@ TMXTileAnimManager* TMXTileAnimManager::create(FastTMXLayer* layer)
 
 void TMXTileAnimManager::startAll()
 {
-    if (_started || _tasks.empty())
+    if (_started || _tasks.empty() || !_layer || !_layer->getTiles())
         return;
     _started = true;
     for (auto&& task : _tasks)

@@ -1,6 +1,7 @@
 /****************************************************************************
  Copyright (c) 2018 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -9,6 +10,7 @@
 
 #include "axmol/rhi/ShaderCache.h"
 #include "axmol/rhi/GraphicsCore.h"
+#include "axmol/rhi/axslc-spec.h"
 
 #include "xxhash/xxhash.h"
 
@@ -61,6 +63,9 @@ rhi::ShaderModule* ShaderCache::acquireComputeShaderModule(Data& shaderSource)
 
 rhi::ShaderModule* ShaderCache::acquireShaderModule(rhi::ShaderStage stage, Data& data)
 {
+    if (data.size() < 2 * sizeof(uint32_t) + sizeof(axslc::sc_chunk))
+        return nullptr;
+
     const auto key  = XXH64(data.data(), data.size(), 0);
     const auto iter = _cachedShaders.find(key);
 
@@ -71,6 +76,13 @@ rhi::ShaderModule* ShaderCache::acquireShaderModule(rhi::ShaderStage stage, Data
     }
 
     ShaderModule* const shader = axdrv->createShaderModule(stage, data);
+    if (!shader || !shader->isCompiled())
+    {
+        // Failed modules must not be reflected, retained by the cache, or
+        // returned as usable shaders on a subsequent acquisition.
+        AX_SAFE_RELEASE(shader);
+        return nullptr;
+    }
     shader->setHashValue(key);
     _cachedShaders.emplace(key, shader);
 

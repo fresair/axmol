@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
+# SPDX-License-Identifier: MIT
 set(target_name spine)
 
 file(GLOB_RECURSE _AX_SPINE_SRC
@@ -23,7 +25,7 @@ target_compile_definitions(spine PRIVATE SPINE_NO_FILE_IO)
 
 target_include_directories(
   ${target_name} PUBLIC "runtime/include"
-  ${target_name} PUBLIC src
+  PUBLIC src
 )
 
 ax_add_shader_target_for(${target_name} PATH "${CMAKE_CURRENT_LIST_DIR}/Shaders")

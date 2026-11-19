@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
+// SPDX-License-Identifier: MIT
 #pragma once
 #include "axmol/scene/Component.h"
 #include "axmol/physics/ContactEventBits.h"
@@ -41,7 +43,7 @@ public:
 
     int getActorType() const { return _actorType; }
 
-    void setSyncFlag(SyncFlag flag) { _syncFlag = flag; }
+    void setSyncFlag(SyncFlag flag);
     SyncFlag getSyncFlag() const { return _syncFlag; }
 
     void setTag(unsigned int tag) { _tag = tag; }

@@ -1,5 +1,6 @@
 /****************************************************************************
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -13,6 +14,9 @@ namespace Axmol.LuaBindings;
 
 public sealed class GenerationRequest
 {
+    // Kept separate from the declaration model so Lua generation remains the
+    // default and both languages use the same Clang collection path.
+    public string Language { get; init; } = "lua";
     public required string RepositoryRoot { get; init; }
     public required string OutputDirectory { get; init; }
     public required string Module { get; init; }

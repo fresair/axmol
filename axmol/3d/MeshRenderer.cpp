@@ -2,6 +2,7 @@
  Copyright (c) 2014-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -80,6 +81,17 @@ void MeshRenderer::createAsync(std::string_view modelPath,
                                const std::function<void(MeshRenderer*, void*)>& callback,
                                void* callbackparam)
 {
+    createAsync(modelPath, texturePath, callback, callbackparam, nullptr);
+}
+
+void MeshRenderer::createAsync(std::string_view modelPath,
+                               std::string_view texturePath,
+                               const std::function<void(MeshRenderer*, void*)>& callback,
+                               void* callbackparam,
+                               const std::shared_ptr<CancellationState>& cancellation)
+{
+    if (cancellation && cancellation->cancelRequested.load(std::memory_order_relaxed))
+        return;
     MeshRenderer* meshRenderer = new MeshRenderer();
     if (meshRenderer->loadFromCache(modelPath))
     {
@@ -99,11 +111,26 @@ void MeshRenderer::createAsync(std::string_view modelPath,
     meshRenderer->_asyncLoadParam.nodeDatas         = new NodeDatas();
 
     auto director = Director::getInstance();
-    director->runAsync([meshRenderer] {
-        auto& loadParam  = meshRenderer->_asyncLoadParam;
-        loadParam.result = meshRenderer->loadFromFile(loadParam.modelFullPath, loadParam.nodeDatas, loadParam.meshdatas,
-                                                      loadParam.materialdatas);
-    }, [meshRenderer] { meshRenderer->afterAsyncLoad(&meshRenderer->_asyncLoadParam); });
+    // Do not cancel the JobHandle itself: its completion owns native cleanup,
+    // and Director::runAsync would not post that completion for a skipped job.
+    director->runAsync([meshRenderer, cancellation] {
+        auto& loadParam = meshRenderer->_asyncLoadParam;
+        loadParam.result = false;
+        if (!cancellation || !cancellation->cancelRequested.load(std::memory_order_relaxed))
+            loadParam.result = meshRenderer->loadFromFile(loadParam.modelFullPath, loadParam.nodeDatas,
+                                                          loadParam.meshdatas, loadParam.materialdatas);
+    }, [meshRenderer, cancellation] {
+        if (cancellation && cancellation->cancelRequested.load(std::memory_order_relaxed))
+        {
+            auto& loadParam = meshRenderer->_asyncLoadParam;
+            AX_SAFE_DELETE(loadParam.meshdatas);
+            AX_SAFE_DELETE(loadParam.materialdatas);
+            AX_SAFE_DELETE(loadParam.nodeDatas);
+            meshRenderer->release();
+            return;
+        }
+        meshRenderer->afterAsyncLoad(&meshRenderer->_asyncLoadParam);
+    });
 }
 
 void MeshRenderer::afterAsyncLoad(void* param)
@@ -153,6 +180,9 @@ void MeshRenderer::afterAsyncLoad(void* param)
         }
         else
         {
+            AX_SAFE_DELETE(asyncParam->meshdatas);
+            AX_SAFE_DELETE(asyncParam->materialdatas);
+            AX_SAFE_DELETE(asyncParam->nodeDatas);
             AXLOGW("file load failed: {}\n", asyncParam->modelPath);
         }
         asyncParam->afterLoadCallback(this, asyncParam->callbackParam);

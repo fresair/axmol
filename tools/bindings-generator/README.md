@@ -1,4 +1,16 @@
-# Axmol Lua binding generator
+# Axmol native binding generator
+
+The C# libclang collector serves both Lua and SpiderMonkey JavaScript. Lua
+remains the default: `axmol genbindings` generates the existing Lua modules,
+and `axmol genbindings -l js` selects the independent JS configuration and
+emitter. The historical assembly and managed API namespace
+`Axmol.LuaBindings` are retained so existing generator deployments keep working.
+
+JavaScript modules, manual adapter policy, generation commands, and manifest
+details are documented in [`tools/js-bindings/README.md`](../js-bindings/README.md).
+The Lua emission path and configuration files remain independent of the JS
+backend. Both backends share declaration collection, native type resolution,
+skip validation, and transactional module output.
 
 Lua API changes and application migration notes are documented in
 [`extensions/scripting/lua-bindings/MIGRATION.md`](../../extensions/scripting/lua-bindings/MIGRATION.md).

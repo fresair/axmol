@@ -1,5 +1,6 @@
 /****************************************************************************
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -437,6 +438,10 @@ protected:
     // InputDelegate interface
     void insertText(std::string_view text) override;
     void deleteBackward(unsigned int numChars) override;
+    bool getIMETextState(IMETextState& state) const override;
+    bool applyIMETextState(std::string_view text, int selectionStart, int selectionEnd,
+                           bool submitNewline, IMETextState& actual) override;
+    void setIMESelection(int selectionStart, int selectionEnd) override;
 
     void handleDeleteKeyEvent();
 
@@ -538,6 +543,8 @@ protected:
     Vec2 measureText(std::string_view text) const;
 
     void rebuildLineMetrics();
+    bool rebuildLegacySystemLineMetrics();
+    bool usesLegacySystemLineMetricsPolicy() const;
     void rebuildCharByteOffsets();
 
     std::string makePasswordString();
@@ -557,6 +564,15 @@ protected:
         std::vector<float>
             charXOffsets;  // length = (endCharIndex - startCharIndex + 1)
                            // charXOffsets[i] = x-offset from line start to the *end* of the i-th character
+        // Actual bitmap layout coordinates, expressed in InputField local units.
+        // Only the legacy VM-owned Android system-font path sets this flag.
+        float visualOriginX = 0.0f;
+        float visualBottom  = 0.0f;
+        float visualTop     = 0.0f;
+        bool fromVisualLayout = false;
+        // Track the requested policy even when an unsupported layout falls
+        // back, so entering/revoking an owner invalidates cached geometry once.
+        bool usesLegacySystemPolicy = false;
     };
 
     std::vector<LineMetrics> _lineMetrics;  // single-line mode: size() == 1

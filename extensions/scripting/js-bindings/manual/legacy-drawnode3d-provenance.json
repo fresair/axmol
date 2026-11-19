@@ -1,0 +1,12 @@
+[
+  {
+    "source": "tests/cpp-tests/Source/MeshRendererTest/DrawNode3D.h",
+    "sha256": "6080a2d46df328c189c0451a8bf8afd12e52fcdabf3e2cf3237d44d495b9d9e7",
+    "changes": "Renamed and isolated in axjs namespace; renderer implementation retained."
+  },
+  {
+    "source": "tests/cpp-tests/Source/MeshRendererTest/DrawNode3D.cpp",
+    "sha256": "aae6547136a85fc684a085bb4c1f4ca9cad9982534c9f206e65b3bd1dc50a69c",
+    "changes": "Renamed and isolated in axjs namespace; renderer implementation retained."
+  }
+]

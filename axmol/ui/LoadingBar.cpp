@@ -2,6 +2,7 @@
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -328,7 +329,15 @@ void LoadingBar::barRendererScaleChangedWithSize()
     {
         //_barRenderer->setPreferredSize(_contentSize);
         _totalLength = _contentSize.width;
-        this->setPercent(_percent);
+        if (_scale9Enabled)
+        {
+            // A size change must refresh the renderer even if the percent is unchanged.
+            this->setScale9Scale();
+        }
+        else
+        {
+            this->setPercent(_percent);
+        }
     }
     else if (_autoSize)
     {

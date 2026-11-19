@@ -6,6 +6,7 @@ Copyright (c) 2011      Zynga Inc.
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -24,10 +25,19 @@ namespace ax
 struct ActionHandle
 {
     Vector<Action*> actions;
+    // Parallel IDs distinguish a callback's new/re-added action from an old
+    // batch-removal candidate, even when its address and target are unchanged.
+    std::vector<uint64_t> actionRegistrations;
     int actionIndex;
     Action* currentAction;
     bool currentActionSalvaged;
     bool paused;
+    // Stable across unordered_map rehashes. Every registration is linked,
+    // including registrations made before a legacy-order lease is acquired.
+    Node* target{};
+    ActionHandle* previous{};
+    ActionHandle* next{};
+    uint64_t registration{};
 };
 
 /**
@@ -176,6 +186,22 @@ public:
      */
     virtual void update(float dt);
 
+    /** Opt in to v3 target registration order for this manager. Default is
+     * unordered traversal. Each VM must release only its own lease. A frame
+     * snapshots the mode, so releasing a lease in a callback takes effect on
+     * the following update. Mixed native/script targets share this policy.
+     * @lua NA
+     * @script{ignore}
+     */
+    void acquireLegacyTargetOrder() { ++_legacyTargetOrderLeases; }
+    /** @lua NA @script{ignore} */
+    void releaseLegacyTargetOrder()
+    {
+        AXASSERT(_legacyTargetOrderLeases != 0, "Unbalanced legacy action order lease");
+        if (_legacyTargetOrderLeases)
+            --_legacyTargetOrderLeases;
+    }
+
 protected:
     // declared in ActionManager.m
     void removeTargetActionHandle(std::unordered_map<Node*, ActionHandle>::iterator& actionIt);
@@ -187,11 +213,21 @@ protected:
     void reserveActionCapacity(ActionHandle& element);
 
     void eraseTargetActionHandle(std::unordered_map<Node*, ActionHandle>::iterator& actionIt);
+    void updateTarget(ActionHandle& element, float dt);
+    void removeActionsMatching(Node* target, uint32_t selector, bool byTag);
 
 protected:
     std::unordered_map<Node*, ActionHandle> _targets;
     ActionHandle* _currentTarget;
     bool _currentTargetSalvaged;
+    ActionHandle* _firstRegisteredTarget{};
+    ActionHandle* _lastRegisteredTarget{};
+    // Deletion/release callbacks can erase the next target while advancing.
+    ActionHandle* _nextOrderedTarget{};
+    size_t _legacyTargetOrderLeases{};
+    uint64_t _nextTargetRegistration{};
+    uint64_t _nextActionRegistration{};
+    bool _destroying{};
 };
 
 // end of actions group

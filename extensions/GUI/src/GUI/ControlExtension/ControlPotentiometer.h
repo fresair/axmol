@@ -6,6 +6,7 @@
  * http://yannickloriot.com
  *
  * Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+ * Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -78,6 +79,7 @@ public:
     float getMaximumValue();
 
     // Overrides
+    bool onPointerHitTest(PointerEvent* event, Vec3* outHitPoint) override;
     bool isTouchInside(PointerEvent* event) override;
     void setEnabled(bool enabled) override;
     bool onPointerDown(PointerEvent* event) override;

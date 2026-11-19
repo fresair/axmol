@@ -3,6 +3,7 @@ Copyright (c) 2010-2013 cocos2d-x.org
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -524,6 +525,29 @@ void FileUtils::purgeCachedEntries()
     _fullPathCacheDir.clear();
 }
 
+void FileUtils::setFilenameLookupDictionary(const ValueMap& filenames)
+{
+    _filenameLookup.clear();
+    for (const auto& [name, value] : filenames)
+        if (value.getType() == Value::Type::STRING)
+            _filenameLookup.emplace(name, value.asString());
+    purgeCachedEntries();
+}
+
+void FileUtils::loadFilenameLookup(std::string_view filename)
+{
+    const auto dictionary = getValueMapFromFile(filename);
+    auto metadata = dictionary.find("metadata");
+    auto filenames = dictionary.find("filenames");
+    if (metadata == dictionary.end() || metadata->second.getType() != Value::Type::MAP ||
+        filenames == dictionary.end() || filenames->second.getType() != Value::Type::MAP)
+        return;
+    const auto& values = metadata->second.asValueMap();
+    auto version = values.find("version");
+    if (version != values.end() && version->second.asInt() == 1)
+        setFilenameLookupDictionary(filenames->second.asValueMap());
+}
+
 std::string FileUtils::getStringFromFile(std::string_view filename) const
 {
     std::string s;
@@ -621,10 +645,19 @@ std::string FileUtils::fullPathForFilename(std::string_view filename) const
     }
 
     std::string fullpath;
+    // Alias only once, matching the original native filename lookup contract.
+    // Cache against the requested name so changing the dictionary can invalidate it.
+    const auto alias = _filenameLookup.find(filename);
+    const std::string_view resolved = alias == _filenameLookup.end() ? filename : alias->second;
+    if (isAbsolutePath(resolved))
+    {
+        _fullPathCache.emplace(filename, resolved);
+        return std::string{resolved};
+    }
 
     for (const auto& searchIt : _searchPathArray)
     {
-        fullpath = this->getPathForFilename(filename, searchIt);
+        fullpath = this->getPathForFilename(resolved, searchIt);
 
         if (!fullpath.empty())
         {

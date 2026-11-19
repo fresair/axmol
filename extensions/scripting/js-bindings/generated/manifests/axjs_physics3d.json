@@ -1,0 +1,2508 @@
+{
+  "formatVersion": 1,
+  "language": "js",
+  "engine": "SpiderMonkey 33.1",
+  "module": "physics3d",
+  "registrationName": "ax_physics3d",
+  "targetNamespace": "cc",
+  "conditionalExpression": "defined(AX_ENABLE_PHYSICS_3D)",
+  "classes": [
+    {
+      "nativeName": "BoxCollider3D",
+      "qualifiedName": "ax::BoxCollider3D",
+      "jsName": "BoxCollider3D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Collider3D",
+        "ax::PhysicsActor",
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::BoxCollider3D",
+          "returnType": "ax::BoxCollider3D *",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026",
+            "const ax::PhysicsMaterial \u0026"
+          ],
+          "defaultValues": [
+            null,
+            "ax::DEFAULT_PHYSICS_MATERIAL"
+          ],
+          "isStatic": true,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "CapsuleCollider3D",
+      "qualifiedName": "ax::CapsuleCollider3D",
+      "jsName": "CapsuleCollider3D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Collider3D",
+        "ax::PhysicsActor",
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::CapsuleCollider3D",
+          "returnType": "ax::CapsuleCollider3D *",
+          "parameterTypes": [
+            "float",
+            "float",
+            "const ax::PhysicsMaterial \u0026"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            "ax::DEFAULT_PHYSICS_MATERIAL"
+          ],
+          "isStatic": true,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "Collider3D",
+      "qualifiedName": "ax::Collider3D",
+      "jsName": "Collider3D",
+      "isAbstract": true,
+      "constructors": [],
+      "bases": [
+        "ax::PhysicsActor",
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "getMaterial",
+          "jsName": "getMaterial",
+          "declaringType": "ax::Collider3D",
+          "returnType": "const ax::PhysicsMaterial \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getType",
+          "jsName": "getType",
+          "declaringType": "ax::Collider3D",
+          "returnType": "ax::Collider3D::Type",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getWorld",
+          "jsName": "getWorld",
+          "declaringType": "ax::Collider3D",
+          "returnType": "ax::PhysicsWorld3D *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "hasOwnBody",
+          "jsName": "hasOwnBody",
+          "declaringType": "ax::Collider3D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isAttached",
+          "jsName": "isAttached",
+          "declaringType": "ax::Collider3D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isAttachedToWorld",
+          "jsName": "isAttachedToWorld",
+          "declaringType": "ax::Collider3D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isSensor",
+          "jsName": "isSensor",
+          "declaringType": "ax::Collider3D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isValid",
+          "jsName": "isValid",
+          "declaringType": "ax::Collider3D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "setMaterial",
+          "jsName": "setMaterial",
+          "declaringType": "ax::Collider3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::PhysicsMaterial \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setSensor",
+          "jsName": "setSensor",
+          "declaringType": "ax::Collider3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "ConeTwistJoint3D",
+      "qualifiedName": "ax::ConeTwistJoint3D",
+      "jsName": "ConeTwistJoint3D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Joint3D",
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "clearLimits",
+          "jsName": "clearLimits",
+          "declaringType": "ax::ConeTwistJoint3D",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::ConeTwistJoint3D",
+          "returnType": "ax::ConeTwistJoint3D *",
+          "parameterTypes": [
+            "ax::Rigidbody3D *"
+          ],
+          "defaultValues": [
+            "nullptr"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "createInWorldSpace",
+          "jsName": "createInWorldSpace",
+          "declaringType": "ax::ConeTwistJoint3D",
+          "returnType": "ax::ConeTwistJoint3D *",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026",
+            "const ax::Vec3 \u0026",
+            "ax::Rigidbody3D *"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            "nullptr"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getPointForAngle",
+          "jsName": "getPointForAngle",
+          "declaringType": "ax::ConeTwistJoint3D",
+          "returnType": "ax::Vec3",
+          "parameterTypes": [
+            "float",
+            "float"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "hasLimits",
+          "jsName": "hasLimits",
+          "declaringType": "ax::ConeTwistJoint3D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isUseSwingMotor",
+          "jsName": "isUseSwingMotor",
+          "declaringType": "ax::ConeTwistJoint3D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isUseTwistMotor",
+          "jsName": "isUseTwistMotor",
+          "declaringType": "ax::ConeTwistJoint3D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "setUseLimits",
+          "jsName": "setUseLimits",
+          "declaringType": "ax::ConeTwistJoint3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setUseSwingMotor",
+          "jsName": "setUseSwingMotor",
+          "declaringType": "ax::ConeTwistJoint3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setUseTwistMotor",
+          "jsName": "setUseTwistMotor",
+          "declaringType": "ax::ConeTwistJoint3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "getLimits",
+          "returnType": "const ax::TwistLimits \u0026",
+          "parameterTypes": []
+        },
+        {
+          "nativeName": "getSwingMotor",
+          "returnType": "const ax::JointMotor \u0026",
+          "parameterTypes": []
+        },
+        {
+          "nativeName": "getSwingSpring",
+          "returnType": "const ax::JointSpring \u0026",
+          "parameterTypes": []
+        },
+        {
+          "nativeName": "getTwistMotor",
+          "returnType": "const ax::JointMotor \u0026",
+          "parameterTypes": []
+        },
+        {
+          "nativeName": "getTwistSpring",
+          "returnType": "const ax::JointSpring \u0026",
+          "parameterTypes": []
+        },
+        {
+          "nativeName": "setLimits",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::TwistLimits \u0026"
+          ]
+        },
+        {
+          "nativeName": "setSwingMotor",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::JointMotor \u0026"
+          ]
+        },
+        {
+          "nativeName": "setSwingSpring",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::JointSpring \u0026"
+          ]
+        },
+        {
+          "nativeName": "setTwistMotor",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::JointMotor \u0026"
+          ]
+        },
+        {
+          "nativeName": "setTwistSpring",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::JointSpring \u0026"
+          ]
+        }
+      ]
+    },
+    {
+      "nativeName": "ContactEvent3D",
+      "qualifiedName": "ax::ContactEvent3D",
+      "jsName": "ContactEvent3D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::CustomEvent",
+        "ax::Event",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "getActorA",
+          "jsName": "getActorA",
+          "declaringType": "ax::ContactEvent3D",
+          "returnType": "ax::PhysicsActor *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getActorB",
+          "jsName": "getActorB",
+          "declaringType": "ax::ContactEvent3D",
+          "returnType": "ax::PhysicsActor *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getEventCode",
+          "jsName": "getEventCode",
+          "declaringType": "ax::ContactEvent3D",
+          "returnType": "ax::ContactEvent3D::EventCode",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "getContactInfo",
+          "returnType": "const ax::ContactInfo3D \u0026",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "nativeName": "ContactEventListener3D",
+      "qualifiedName": "ax::ContactEventListener3D",
+      "jsName": "ContactEventListener3D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::CustomEventListener",
+        "ax::EventListener",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::ContactEventListener3D",
+          "returnType": "ax::ContactEventListener3D *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        }
+      ],
+      "fields": [
+        {
+          "nativeName": "onCollisionHit",
+          "jsName": "onCollisionHit",
+          "fieldType": "std::function\u003Cvoid (ax::ContactEvent3D *)\u003E"
+        },
+        {
+          "nativeName": "onContactBegin",
+          "jsName": "onContactBegin",
+          "fieldType": "std::function\u003Cvoid (ax::ContactEvent3D *)\u003E"
+        },
+        {
+          "nativeName": "onContactEnd",
+          "jsName": "onContactEnd",
+          "fieldType": "std::function\u003Cvoid (ax::ContactEvent3D *)\u003E"
+        },
+        {
+          "nativeName": "onContactFilter",
+          "jsName": "onContactFilter",
+          "fieldType": "std::function\u003Cbool (ax::ContactEvent3D *)\u003E"
+        },
+        {
+          "nativeName": "onSensorBegin",
+          "jsName": "onSensorBegin",
+          "fieldType": "std::function\u003Cvoid (ax::ContactEvent3D *)\u003E"
+        },
+        {
+          "nativeName": "onSensorEnd",
+          "jsName": "onSensorEnd",
+          "fieldType": "std::function\u003Cvoid (ax::ContactEvent3D *)\u003E"
+        }
+      ],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "ConvexCollider3D",
+      "qualifiedName": "ax::ConvexCollider3D",
+      "jsName": "ConvexCollider3D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Collider3D",
+        "ax::PhysicsActor",
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::ConvexCollider3D",
+          "returnType": "ax::ConvexCollider3D *",
+          "parameterTypes": [
+            "std::span\u003Cconst ax::Vec3\u003E",
+            "const ax::PhysicsMaterial \u0026"
+          ],
+          "defaultValues": [
+            null,
+            "ax::DEFAULT_PHYSICS_MATERIAL"
+          ],
+          "isStatic": true,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "CylinderCollider3D",
+      "qualifiedName": "ax::CylinderCollider3D",
+      "jsName": "CylinderCollider3D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Collider3D",
+        "ax::PhysicsActor",
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::CylinderCollider3D",
+          "returnType": "ax::CylinderCollider3D *",
+          "parameterTypes": [
+            "float",
+            "float",
+            "const ax::PhysicsMaterial \u0026"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            "ax::DEFAULT_PHYSICS_MATERIAL"
+          ],
+          "isStatic": true,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "HeightFieldCollider3D",
+      "qualifiedName": "ax::HeightFieldCollider3D",
+      "jsName": "HeightFieldCollider3D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Collider3D",
+        "ax::PhysicsActor",
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::HeightFieldCollider3D",
+          "returnType": "ax::HeightFieldCollider3D *",
+          "parameterTypes": [
+            "int",
+            "int",
+            "std::span\u003Cconst float\u003E",
+            "float",
+            "float",
+            "float",
+            "bool",
+            "bool",
+            "const ax::PhysicsMaterial \u0026"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            "ax::DEFAULT_PHYSICS_MATERIAL"
+          ],
+          "isStatic": true,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "HingeJoint3D",
+      "qualifiedName": "ax::HingeJoint3D",
+      "jsName": "HingeJoint3D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Joint3D",
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "clearLimits",
+          "jsName": "clearLimits",
+          "declaringType": "ax::HingeJoint3D",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::HingeJoint3D",
+          "returnType": "ax::HingeJoint3D *",
+          "parameterTypes": [
+            "ax::Rigidbody3D *"
+          ],
+          "defaultValues": [
+            "nullptr"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "createInWorldSpace",
+          "jsName": "createInWorldSpace",
+          "declaringType": "ax::HingeJoint3D",
+          "returnType": "ax::HingeJoint3D *",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026",
+            "const ax::Vec3 \u0026",
+            "ax::Rigidbody3D *"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            "nullptr"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getAngle",
+          "jsName": "getAngle",
+          "declaringType": "ax::HingeJoint3D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getVelocity",
+          "jsName": "getVelocity",
+          "declaringType": "ax::HingeJoint3D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "hasLimits",
+          "jsName": "hasLimits",
+          "declaringType": "ax::HingeJoint3D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isUseMotor",
+          "jsName": "isUseMotor",
+          "declaringType": "ax::HingeJoint3D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "setUseLimits",
+          "jsName": "setUseLimits",
+          "declaringType": "ax::HingeJoint3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setUseMotor",
+          "jsName": "setUseMotor",
+          "declaringType": "ax::HingeJoint3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "getLimits",
+          "returnType": "const ax::JointLimits \u0026",
+          "parameterTypes": []
+        },
+        {
+          "nativeName": "getMotor",
+          "returnType": "ax::JointMotor",
+          "parameterTypes": []
+        },
+        {
+          "nativeName": "getSpring",
+          "returnType": "const ax::JointSpring \u0026",
+          "parameterTypes": []
+        },
+        {
+          "nativeName": "setLimits",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::JointLimits \u0026"
+          ]
+        },
+        {
+          "nativeName": "setMotor",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::JointMotor \u0026"
+          ]
+        },
+        {
+          "nativeName": "setSpring",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::JointSpring \u0026"
+          ]
+        }
+      ]
+    },
+    {
+      "nativeName": "Joint3D",
+      "qualifiedName": "ax::Joint3D",
+      "jsName": "Joint3D",
+      "isAbstract": true,
+      "constructors": [],
+      "bases": [
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "getAnchor",
+          "jsName": "getAnchor",
+          "declaringType": "ax::Joint3D",
+          "returnType": "const ax::Vec3 \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getAttachedBody",
+          "jsName": "getAttachedBody",
+          "declaringType": "ax::Joint3D",
+          "returnType": "ax::Rigidbody3D *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getAxis",
+          "jsName": "getAxis",
+          "declaringType": "ax::Joint3D",
+          "returnType": "const ax::Vec3 \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getConnectedAnchor",
+          "jsName": "getConnectedAnchor",
+          "declaringType": "ax::Joint3D",
+          "returnType": "const ax::Vec3 \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getConnectedAxis",
+          "jsName": "getConnectedAxis",
+          "declaringType": "ax::Joint3D",
+          "returnType": "const ax::Vec3 \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getConnectedBody",
+          "jsName": "getConnectedBody",
+          "declaringType": "ax::Joint3D",
+          "returnType": "ax::Rigidbody3D *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getCoordinateSpace",
+          "jsName": "getCoordinateSpace",
+          "declaringType": "ax::Joint3D",
+          "returnType": "ax::Joint3D::CoordinateSpace",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getWorld",
+          "jsName": "getWorld",
+          "declaringType": "ax::Joint3D",
+          "returnType": "ax::PhysicsWorld3D *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isAttached",
+          "jsName": "isAttached",
+          "declaringType": "ax::Joint3D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "onEnter",
+          "jsName": "onEnter",
+          "declaringType": "ax::Joint3D",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "onExit",
+          "jsName": "onExit",
+          "declaringType": "ax::Joint3D",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setAnchor",
+          "jsName": "setAnchor",
+          "declaringType": "ax::Joint3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setAnchors",
+          "jsName": "setAnchors",
+          "declaringType": "ax::Joint3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026",
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setAnchorsInWorldSpace",
+          "jsName": "setAnchorsInWorldSpace",
+          "declaringType": "ax::Joint3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setAxes",
+          "jsName": "setAxes",
+          "declaringType": "ax::Joint3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026",
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setAxesInWorldSpace",
+          "jsName": "setAxesInWorldSpace",
+          "declaringType": "ax::Joint3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setAxis",
+          "jsName": "setAxis",
+          "declaringType": "ax::Joint3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setConnectedAnchor",
+          "jsName": "setConnectedAnchor",
+          "declaringType": "ax::Joint3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setConnectedAxis",
+          "jsName": "setConnectedAxis",
+          "declaringType": "ax::Joint3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setConnectedBody",
+          "jsName": "setConnectedBody",
+          "declaringType": "ax::Joint3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Rigidbody3D *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setCoordinateSpace",
+          "jsName": "setCoordinateSpace",
+          "declaringType": "ax::Joint3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Joint3D::CoordinateSpace"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "MeshCollider3D",
+      "qualifiedName": "ax::MeshCollider3D",
+      "jsName": "MeshCollider3D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Collider3D",
+        "ax::PhysicsActor",
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::MeshCollider3D",
+          "returnType": "ax::MeshCollider3D *",
+          "parameterTypes": [
+            "std::span\u003Cconst ax::Vec3\u003E",
+            "const ax::PhysicsMaterial \u0026"
+          ],
+          "defaultValues": [
+            null,
+            "ax::DEFAULT_PHYSICS_MATERIAL"
+          ],
+          "isStatic": true,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "PhysicsActor",
+      "qualifiedName": "ax::PhysicsActor",
+      "jsName": "PhysicsActor",
+      "isAbstract": true,
+      "constructors": [],
+      "bases": [
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "getActorType",
+          "jsName": "getActorType",
+          "declaringType": "ax::PhysicsActor",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getSyncFlag",
+          "jsName": "getSyncFlag",
+          "declaringType": "ax::PhysicsActor",
+          "returnType": "ax::PhysicsActor::SyncFlag",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getTag",
+          "jsName": "getTag",
+          "declaringType": "ax::PhysicsActor",
+          "returnType": "unsigned int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getWorldTransform",
+          "jsName": "getWorldTransform",
+          "declaringType": "ax::PhysicsActor",
+          "returnType": "ax::Mat4",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isEventEnabled",
+          "jsName": "isEventEnabled",
+          "declaringType": "ax::PhysicsActor",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::ContactEventBits"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "postSimulate",
+          "jsName": "postSimulate",
+          "declaringType": "ax::PhysicsActor",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "preSimulate",
+          "jsName": "preSimulate",
+          "declaringType": "ax::PhysicsActor",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setEventEnabled",
+          "jsName": "setEventEnabled",
+          "declaringType": "ax::PhysicsActor",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::ContactEventBits",
+            "bool"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setSyncFlag",
+          "jsName": "setSyncFlag",
+          "declaringType": "ax::PhysicsActor",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::PhysicsActor::SyncFlag"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setTag",
+          "jsName": "setTag",
+          "declaringType": "ax::PhysicsActor",
+          "returnType": "void",
+          "parameterTypes": [
+            "unsigned int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "syncNodeToPhysics",
+          "jsName": "syncNodeToPhysics",
+          "declaringType": "ax::PhysicsActor",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "syncPhysicsToNode",
+          "jsName": "syncPhysicsToNode",
+          "declaringType": "ax::PhysicsActor",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "PhysicsWorld3D",
+      "qualifiedName": "ax::PhysicsWorld3D",
+      "jsName": "PhysicsWorld3D",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::Object",
+        "JPH::ContactListener",
+        "JPH::ObjectVsBroadPhaseLayerFilter",
+        "JPH::ObjectLayerPairFilter",
+        "JPH::BroadPhaseLayerInterface"
+      ],
+      "methods": [
+        {
+          "nativeName": "addPhysicsActor",
+          "jsName": "addPhysicsActor",
+          "declaringType": "ax::PhysicsWorld3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::PhysicsActor *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getGravity",
+          "jsName": "getGravity",
+          "declaringType": "ax::PhysicsWorld3D",
+          "returnType": "ax::Vec3",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isAutoStep",
+          "jsName": "isAutoStep",
+          "declaringType": "ax::PhysicsWorld3D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "isDebugDrawEnabled",
+          "jsName": "isDebugDrawEnabled",
+          "declaringType": "ax::PhysicsWorld3D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isGlobalEventEnabled",
+          "jsName": "isGlobalEventEnabled",
+          "declaringType": "ax::PhysicsWorld3D",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::ContactEventBits"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "release",
+          "jsName": "release",
+          "declaringType": "ax::PhysicsWorld3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::PhysicsWorld3D *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "removePhysicsActor",
+          "jsName": "removePhysicsActor",
+          "declaringType": "ax::PhysicsWorld3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::PhysicsActor *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setAutoStep",
+          "jsName": "setAutoStep",
+          "declaringType": "ax::PhysicsWorld3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setDebugDrawEnabled",
+          "jsName": "setDebugDrawEnabled",
+          "declaringType": "ax::PhysicsWorld3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setGlobalEventEnabled",
+          "jsName": "setGlobalEventEnabled",
+          "declaringType": "ax::PhysicsWorld3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::ContactEventBits",
+            "bool"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setGravity",
+          "jsName": "setGravity",
+          "declaringType": "ax::PhysicsWorld3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "stepSimulation",
+          "jsName": "stepSimulation",
+          "declaringType": "ax::PhysicsWorld3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "PivotJoint3D",
+      "qualifiedName": "ax::PivotJoint3D",
+      "jsName": "PivotJoint3D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Joint3D",
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::PivotJoint3D",
+          "returnType": "ax::PivotJoint3D *",
+          "parameterTypes": [
+            "ax::Rigidbody3D *"
+          ],
+          "defaultValues": [
+            "nullptr"
+          ],
+          "isStatic": true,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "Rigidbody3D",
+      "qualifiedName": "ax::Rigidbody3D",
+      "jsName": "Rigidbody3D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::PhysicsActor",
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "applyAngularImpulse",
+          "jsName": "applyAngularImpulse",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "applyForce",
+          "jsName": "applyForce",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026",
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "applyImpulse",
+          "jsName": "applyImpulse",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026",
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "applyTorque",
+          "jsName": "applyTorque",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "ax::Rigidbody3D *",
+          "parameterTypes": [
+            "ax::Collider3D *",
+            "float"
+          ],
+          "defaultValues": [
+            "nullptr",
+            "0"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getAngularDamping",
+          "jsName": "getAngularDamping",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getAngularVelocity",
+          "jsName": "getAngularVelocity",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "ax::Vec3",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getCollider",
+          "jsName": "getCollider",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "ax::Collider3D *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getCollisionDetectionMode",
+          "jsName": "getCollisionDetectionMode",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "ax::Rigidbody3D::CollisionDetectionMode",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getGravityScale",
+          "jsName": "getGravityScale",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getInertia",
+          "jsName": "getInertia",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "ax::Vec3",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getLinearDamping",
+          "jsName": "getLinearDamping",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getLinearVelocity",
+          "jsName": "getLinearVelocity",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "ax::Vec3",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMass",
+          "jsName": "getMass",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMaterial",
+          "jsName": "getMaterial",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "ax::PhysicsMaterial",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMotionType",
+          "jsName": "getMotionType",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "ax::Rigidbody3D::MotionType",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getPosition",
+          "jsName": "getPosition",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "ax::Vec3",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getRotation",
+          "jsName": "getRotation",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "ax::Quat",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getTotalForce",
+          "jsName": "getTotalForce",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "ax::Vec3",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getTotalTorque",
+          "jsName": "getTotalTorque",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "ax::Vec3",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getWorld",
+          "jsName": "getWorld",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "ax::PhysicsWorld3D *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isAllowSleeping",
+          "jsName": "isAllowSleeping",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isAttached",
+          "jsName": "isAttached",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isDynamic",
+          "jsName": "isDynamic",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isKinematic",
+          "jsName": "isKinematic",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isRotationEnabled",
+          "jsName": "isRotationEnabled",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "bool",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "local2World",
+          "jsName": "local2World",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "ax::Vec3",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setActive",
+          "jsName": "setActive",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setAllowSleeping",
+          "jsName": "setAllowSleeping",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setAngularDamping",
+          "jsName": "setAngularDamping",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setAngularVelocity",
+          "jsName": "setAngularVelocity",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setCollisionDetectionMode",
+          "jsName": "setCollisionDetectionMode",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Rigidbody3D::CollisionDetectionMode"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setDynamic",
+          "jsName": "setDynamic",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setGravityScale",
+          "jsName": "setGravityScale",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setInertia",
+          "jsName": "setInertia",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setKinematic",
+          "jsName": "setKinematic",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setLinearDamping",
+          "jsName": "setLinearDamping",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setLinearVelocity",
+          "jsName": "setLinearVelocity",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMass",
+          "jsName": "setMass",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMassData",
+          "jsName": "setMassData",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float",
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMaterial",
+          "jsName": "setMaterial",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::PhysicsMaterial \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMotionType",
+          "jsName": "setMotionType",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Rigidbody3D::MotionType"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setPosition",
+          "jsName": "setPosition",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026",
+            "bool"
+          ],
+          "defaultValues": [
+            null,
+            "false"
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setRotation",
+          "jsName": "setRotation",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Quat \u0026",
+            "bool"
+          ],
+          "defaultValues": [
+            null,
+            "false"
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "world2Local",
+          "jsName": "world2Local",
+          "declaringType": "ax::Rigidbody3D",
+          "returnType": "ax::Vec3",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "setRotationEnabled",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::bvec3"
+          ]
+        }
+      ]
+    },
+    {
+      "nativeName": "SixDofJoint3D",
+      "qualifiedName": "ax::SixDofJoint3D",
+      "jsName": "SixDofJoint3D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Joint3D",
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::SixDofJoint3D",
+          "returnType": "ax::SixDofJoint3D *",
+          "parameterTypes": [
+            "ax::Rigidbody3D *"
+          ],
+          "defaultValues": [
+            "nullptr"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "createInWorldSpace",
+          "jsName": "createInWorldSpace",
+          "declaringType": "ax::SixDofJoint3D",
+          "returnType": "ax::SixDofJoint3D *",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026",
+            "const ax::Vec3 \u0026",
+            "ax::Rigidbody3D *"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            "nullptr"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "isLimited",
+          "jsName": "isLimited",
+          "declaringType": "ax::SixDofJoint3D",
+          "returnType": "bool",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "getAngularLimits",
+          "returnType": "const ax::SixDofLimits \u0026",
+          "parameterTypes": []
+        },
+        {
+          "nativeName": "getLinearLimits",
+          "returnType": "const ax::SixDofLimits \u0026",
+          "parameterTypes": []
+        },
+        {
+          "nativeName": "setAngularLimits",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::SixDofLimits \u0026"
+          ]
+        },
+        {
+          "nativeName": "setLinearLimits",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::SixDofLimits \u0026"
+          ]
+        }
+      ]
+    },
+    {
+      "nativeName": "SliderJoint3D",
+      "qualifiedName": "ax::SliderJoint3D",
+      "jsName": "SliderJoint3D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Joint3D",
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "clearLimits",
+          "jsName": "clearLimits",
+          "declaringType": "ax::SliderJoint3D",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::SliderJoint3D",
+          "returnType": "ax::SliderJoint3D *",
+          "parameterTypes": [
+            "ax::Rigidbody3D *"
+          ],
+          "defaultValues": [
+            "nullptr"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "createInWorldSpace",
+          "jsName": "createInWorldSpace",
+          "declaringType": "ax::SliderJoint3D",
+          "returnType": "ax::SliderJoint3D *",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026",
+            "const ax::Vec3 \u0026",
+            "const ax::Vec3 \u0026",
+            "ax::Rigidbody3D *"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null,
+            "nullptr"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getVelocity",
+          "jsName": "getVelocity",
+          "declaringType": "ax::SliderJoint3D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "hasLimits",
+          "jsName": "hasLimits",
+          "declaringType": "ax::SliderJoint3D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isUseMotor",
+          "jsName": "isUseMotor",
+          "declaringType": "ax::SliderJoint3D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "setUseMotor",
+          "jsName": "setUseMotor",
+          "declaringType": "ax::SliderJoint3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "getLimits",
+          "returnType": "const ax::JointLimits \u0026",
+          "parameterTypes": []
+        },
+        {
+          "nativeName": "getMotor",
+          "returnType": "ax::JointMotor",
+          "parameterTypes": []
+        },
+        {
+          "nativeName": "getSpring",
+          "returnType": "const ax::JointSpring \u0026",
+          "parameterTypes": []
+        },
+        {
+          "nativeName": "setLimits",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::JointLimits \u0026"
+          ]
+        },
+        {
+          "nativeName": "setMotor",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::JointMotor \u0026"
+          ]
+        },
+        {
+          "nativeName": "setSpring",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::JointSpring \u0026"
+          ]
+        }
+      ]
+    },
+    {
+      "nativeName": "SphereCollider3D",
+      "qualifiedName": "ax::SphereCollider3D",
+      "jsName": "SphereCollider3D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Collider3D",
+        "ax::PhysicsActor",
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::SphereCollider3D",
+          "returnType": "ax::SphereCollider3D *",
+          "parameterTypes": [
+            "float",
+            "const ax::PhysicsMaterial \u0026"
+          ],
+          "defaultValues": [
+            null,
+            "ax::DEFAULT_PHYSICS_MATERIAL"
+          ],
+          "isStatic": true,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    }
+  ],
+  "enums": [
+    {
+      "nativeName": "Type",
+      "qualifiedName": "ax::Collider3D::Type",
+      "ownerQualifiedName": "ax::Collider3D",
+      "values": [
+        {
+          "name": "UNKNOWN",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "BOX",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "SPHERE",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "CYLINDER",
+          "signedValue": 3,
+          "unsignedValue": 3,
+          "isUnsigned": false
+        },
+        {
+          "name": "CAPSULE",
+          "signedValue": 4,
+          "unsignedValue": 4,
+          "isUnsigned": false
+        },
+        {
+          "name": "CONVEX",
+          "signedValue": 5,
+          "unsignedValue": 5,
+          "isUnsigned": false
+        },
+        {
+          "name": "MESH",
+          "signedValue": 6,
+          "unsignedValue": 6,
+          "isUnsigned": false
+        },
+        {
+          "name": "HEIGHT_FIELD",
+          "signedValue": 7,
+          "unsignedValue": 7,
+          "isUnsigned": false
+        },
+        {
+          "name": "COMPOUND",
+          "signedValue": 8,
+          "unsignedValue": 8,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "EventCode",
+      "qualifiedName": "ax::ContactEvent3D::EventCode",
+      "ownerQualifiedName": "ax::ContactEvent3D",
+      "values": [
+        {
+          "name": "None",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "ContactBegin",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "ContactEnd",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "CollisionHit",
+          "signedValue": 3,
+          "unsignedValue": 3,
+          "isUnsigned": false
+        },
+        {
+          "name": "SensorBegin",
+          "signedValue": 4,
+          "unsignedValue": 4,
+          "isUnsigned": false
+        },
+        {
+          "name": "SensorEnd",
+          "signedValue": 5,
+          "unsignedValue": 5,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "CoordinateSpace",
+      "qualifiedName": "ax::Joint3D::CoordinateSpace",
+      "ownerQualifiedName": "ax::Joint3D",
+      "values": [
+        {
+          "name": "Local",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "World",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "SyncFlag",
+      "qualifiedName": "ax::PhysicsActor::SyncFlag",
+      "ownerQualifiedName": "ax::PhysicsActor",
+      "values": [
+        {
+          "name": "NONE",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "NODE_TO_PHYSICS",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "PHYSICS_TO_NODE",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "NODE_AND_PHYSICS",
+          "signedValue": 3,
+          "unsignedValue": 3,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "CollisionDetectionMode",
+      "qualifiedName": "ax::Rigidbody3D::CollisionDetectionMode",
+      "ownerQualifiedName": "ax::Rigidbody3D",
+      "values": [
+        {
+          "name": "Discrete",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "Continuous",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "MotionType",
+      "qualifiedName": "ax::Rigidbody3D::MotionType",
+      "ownerQualifiedName": "ax::Rigidbody3D",
+      "values": [
+        {
+          "name": "Unspec",
+          "signedValue": -1,
+          "unsignedValue": 4294967295,
+          "isUnsigned": false
+        },
+        {
+          "name": "Static",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "Dynamic",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "Kinematic",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        }
+      ]
+    }
+  ]
+}

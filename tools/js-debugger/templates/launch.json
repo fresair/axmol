@@ -1,0 +1,24 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Attach Axmol JavaScript",
+      "type": "axmol-js",
+      "request": "attach",
+      "host": "127.0.0.1",
+      "port": 5086,
+      "sourceRoot": "${workspaceFolder}/Content",
+      "stopOnEntry": false
+    },
+    {
+      "name": "Launch Axmol JavaScript (macOS)",
+      "type": "axmol-js",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/bin/HelloJs/HelloJs.app/Contents/MacOS/HelloJs",
+      "cwd": "${workspaceFolder}",
+      "sourceRoot": "${workspaceFolder}/Content",
+      "stopOnEntry": true,
+      "env": { "AXMOL_JS_DEBUG": "1", "AXMOL_JS_DEBUG_WAIT": "1" }
+    }
+  ]
+}

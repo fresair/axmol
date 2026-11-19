@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "bundled_yasio_version": "4.4.1",
+  "engine_vendor_source_commit": "e2ccd896f94925cc226bbaf3c20150e4688e7de8",
+  "source_origin": "https://github.com/yasio/yasio",
+  "application": "Patch is already applied to the tracked bundled yasio/impl/openssl.hpp. CMake compiles the tracked io_service.cpp including that header; fresh checkout requires no cache mutation or second application.",
+  "original_sha256": "321eb343b5ae72bebcb343cc6d613d6575cd701a6a84ce6debe63e2115cad3a6",
+  "patched_sha256": "1482884c56e58cd2fbce9f9d83bb16538da940d5e915c27b648f58876aa060db",
+  "patch_sha256": "94db169b67b818ccb9759e98180d9c8bcd02c34a201d892de43339be02e17f53",
+  "files": [
+    "yasio/impl/openssl.hpp"
+  ],
+  "changes": [
+    "Explicit trust-file loading failure retains SSL_VERIFY_PEER.",
+    "Verified clients validate numeric IP SAN or DNS host identity in addition to SNI."
+  ],
+  "license": "MIT, existing source notice retained",
+  "baseline": "tests/js-runtime-tests/evidence/2026-10-13-wss-trust-red.txt"
+}

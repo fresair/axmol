@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
+// SPDX-License-Identifier: MIT
 #include "lua-bindings/runtime/axlua_runtime.h"
 
 template <>
@@ -1269,6 +1271,19 @@ int dispatch_callable(lua_State* state, int argumentCount, int contextUpvalue)
 
 int method_dispatch(lua_State* state)
 {
+    // sol2 can disable its native member receiver checks in Release builds.
+    // Check the Axmol class registry before entering that callable, including
+    // manual subclasses, expired userdata and calls using a class table.
+    const char* context=lua_tostring(state,lua_upvalueindex(2));
+    const std::string_view qualified=context!=nullptr ? context : "";
+    const auto separator=qualified.find(':');
+    if(separator==std::string_view::npos)
+        return luaL_error(state,"generated Lua binding has no receiver type");
+    lua_pushlstring(state,qualified.data(),separator);
+    const char* type=lua_tostring(state,-1);
+    if(lua_type(state,1)!=LUA_TUSERDATA || !adapter::is_usertype(state,1,type,0,nullptr))
+        return luaL_error(state,"%s: expected a live %s receiver",context,type);
+    lua_pop(state,1);
     return dispatch_callable(state, lua_gettop(state), 2);
 }
 
@@ -1335,6 +1350,16 @@ int dispatch_overload_callable(lua_State* state, int argumentStart, int contextU
 
 int overload_method_dispatch(lua_State* state)
 {
+    const char* context=lua_tostring(state,lua_upvalueindex(2));
+    const std::string_view qualified=context!=nullptr ? context : "";
+    const auto separator=qualified.find(':');
+    if(separator==std::string_view::npos)
+        return luaL_error(state,"generated Lua binding has no receiver type");
+    lua_pushlstring(state,qualified.data(),separator);
+    const char* type=lua_tostring(state,-1);
+    if(lua_type(state,1)!=LUA_TUSERDATA || !adapter::is_usertype(state,1,type,0,nullptr))
+        return luaL_error(state,"%s: expected a live %s receiver",context,type);
+    lua_pop(state,1);
     return dispatch_overload_callable(state, 2, 2);
 }
 

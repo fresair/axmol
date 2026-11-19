@@ -1,0 +1,183 @@
+{
+  "schema": 1,
+  "purpose": "Runtime-owned exact-byte fixtures, independent of the graphical js-tests application",
+  "upstream": {
+    "repository": "https://github.com/cocos2d/cocos2d-x",
+    "revision": "e4b6a5ef8fcdc99a7ebea606312b67fe4c534b9f",
+    "resource_layout": {
+      "res": "tests/cpp-tests/Resources",
+      "res/resjs": "tests/js-tests/resjs",
+      "res/ccs-res": "dumganhar/ccs-res pinned git submodule"
+    },
+    "ccs_res": {
+      "upstream": "https://github.com/dumganhar/ccs-res",
+      "revision": "5d65db4c5f18c0df1305ff32b076425ab228cc4a",
+      "available": true,
+      "archive_sha256": "0439730e70a77d09ab3635bfae2987feb09dcc9670053dbf6c93c37df3b1c642"
+    }
+  },
+  "files": [
+    {
+      "source": "tests/js-tests/Content/legacy/js-tests/src/BaseTestLayer/BaseTestLayer.js",
+      "fixture": "tests/js-runtime-tests/fixtures/v3/src/BaseTestLayer/BaseTestLayer.js",
+      "size": 9782,
+      "sha256": "a878f714b77768a0f65e3b6d1b0d8eab792fa658e733ab8fad020b678d8ec7ee"
+    },
+    {
+      "source": "tests/js-tests/Content/legacy/js-tests/src/tests_resources.js",
+      "fixture": "tests/js-runtime-tests/fixtures/v3/src/tests_resources.js",
+      "size": 24958,
+      "sha256": "7b7208ea0624f63c8a57da2e95982dd04014c806d53facb34aad65d007710210"
+    },
+    {
+      "source": "tests/js-tests/Content/legacy/js-tests/src/tests-main.js",
+      "fixture": "tests/js-runtime-tests/fixtures/v3/src/tests-main.js",
+      "size": 23281,
+      "sha256": "78e9a863ba94abc707376c51768549c4fe11ab971212178f85ee891e554c68ef"
+    },
+    {
+      "source": "tests/js-tests/Content/legacy/js-tests/src/ActionsTest/ActionsTest.js",
+      "fixture": "tests/js-runtime-tests/fixtures/v3/src/ActionsTest/ActionsTest.js",
+      "size": 89673,
+      "sha256": "f67fd55d623dfe2be0af269310816224b6dda6878e0736b99a5530297031bb5d"
+    },
+    {
+      "source": "tests/js-tests/Content/legacy/js-tests/src/Sprite3DTest/Sprite3DTest.js",
+      "fixture": "tests/js-runtime-tests/fixtures/v3/src/Sprite3DTest/Sprite3DTest.js",
+      "size": 61038,
+      "sha256": "b4df438f5b10ea887840e53940fe256d8e0a6e124ba8b3ee4d7e3536e4d1751d"
+    },
+    {
+      "source": "tests/js-tests/Content/legacy/js-tests/src/SchedulerTest/SchedulerTest.js",
+      "fixture": "tests/js-runtime-tests/fixtures/v3/src/SchedulerTest/SchedulerTest.js",
+      "size": 21366,
+      "sha256": "88614512a802ec6ab34cf9216be13f84db5e3ade3ed8e4ffc9f54994a5d6713e"
+    },
+    {
+      "source": "tests/js-tests/Content/src/BindingSmoke.js",
+      "fixture": "tests/js-runtime-tests/fixtures/smoke/BindingSmoke.js",
+      "size": 2010,
+      "sha256": "32d971beeeb4a973266fb93e4ac6cc89ed0a1436ad903400143c3f2bd208eb20"
+    },
+    {
+      "source": "tests/js-tests/Content/src/LifecycleSmoke.js",
+      "fixture": "tests/js-runtime-tests/fixtures/smoke/LifecycleSmoke.js",
+      "size": 5343,
+      "sha256": "1927fd6b61545bb2c1e5925045ee1748a675d9d98f025f48e28e0a9700e810f1"
+    },
+    {
+      "source": "tests/js-tests/Content/src/AssetsSmoke.js",
+      "fixture": "tests/js-runtime-tests/fixtures/smoke/AssetsSmoke.js",
+      "size": 1832,
+      "sha256": "54101f94b06218eb707870e21f85fa2f53bd9a13821fcb82bc3bf765a07e71c0"
+    },
+    {
+      "source": "tests/js-tests/Content/legacy/js-tests/res/TileMaps/hexa-test.tmx",
+      "fixture": "tests/js-runtime-tests/fixtures/v3/res/TileMaps/hexa-test.tmx",
+      "size": 589,
+      "sha256": "12f1ca1f120b61b00feae3b92ccdf430e6e3913ead0c21b96a961588afe77d8b"
+    },
+    {
+      "source": "tests/js-tests/Content/legacy/js-tests/res/ActionTimeline/Particles/Comet.plist",
+      "fixture": "tests/js-runtime-tests/fixtures/v3/res/ActionTimeline/Particles/Comet.plist",
+      "size": 9423,
+      "sha256": "00acdd99db4857304e180c62cb3116626de9788b152c0c92678701680a2f76db"
+    },
+    {
+      "source": "tests/js-tests/Content/legacy/js-tests/res/Images/BoilingFoam.plist",
+      "fixture": "tests/js-runtime-tests/fixtures/v3/res/Images/BoilingFoam.plist",
+      "size": 9216,
+      "sha256": "ed6d404e1f0cf217251dbe6505e4e59c268a5f799e237822b358dc2718909534"
+    },
+    {
+      "source": "tests/js-tests/Content/legacy/js-tests/res/Particles/BoilingFoam.plist",
+      "fixture": "tests/js-runtime-tests/fixtures/v3/res/Particles/BoilingFoam.plist",
+      "size": 9380,
+      "sha256": "00795f06066936ae21defdc7ad7d8de92bfb5490602f09989d1b00f25e6d5877"
+    },
+    {
+      "source": "tests/js-tests/Content/legacy/js-tests/res/Particles/BurstPipe.plist",
+      "fixture": "tests/js-runtime-tests/fixtures/v3/res/Particles/BurstPipe.plist",
+      "size": 9427,
+      "sha256": "76994704d4e7aba848921337485e32a7037ede350ff449d36cc3351e0b910317"
+    },
+    {
+      "source": "tests/js-tests/Content/legacy/js-tests/res/Particles/ButterFly.plist",
+      "fixture": "tests/js-runtime-tests/fixtures/v3/res/Particles/ButterFly.plist",
+      "size": 19563,
+      "sha256": "fef4166fb49d3402e0125b041f09f27e1271bd46b26a0b11cae805dc5e3979a8"
+    },
+    {
+      "source": "tests/js-tests/Content/legacy/js-tests/res/Particles/ButterFlyYFlipped.plist",
+      "fixture": "tests/js-runtime-tests/fixtures/v3/res/Particles/ButterFlyYFlipped.plist",
+      "size": 19573,
+      "sha256": "745dd2fcad9e1b5dd3b19d3922cf256fe402ff68ffa7936837760ab9c8257dec"
+    },
+    {
+      "source": "tests/js-tests/Content/legacy/js-tests/res/Particles/Comet.plist",
+      "fixture": "tests/js-runtime-tests/fixtures/v3/res/Particles/Comet.plist",
+      "size": 9423,
+      "sha256": "00acdd99db4857304e180c62cb3116626de9788b152c0c92678701680a2f76db"
+    },
+    {
+      "source": "tests/js-tests/Content/legacy/js-tests/res/Particles/ExplodingRing.plist",
+      "fixture": "tests/js-runtime-tests/fixtures/v3/res/Particles/ExplodingRing.plist",
+      "size": 9463,
+      "sha256": "b80eca57d0301d71ab2221ec381952bc68bb4094dc1643b9e116ad06774a458f"
+    },
+    {
+      "source": "tests/js-tests/Content/legacy/js-tests/res/Particles/LavaFlow.plist",
+      "fixture": "tests/js-runtime-tests/fixtures/v3/res/Particles/LavaFlow.plist",
+      "size": 9310,
+      "sha256": "ba6e4bda22576aa6ce638136a17971adca9563bfd39f2158d6c10d5044447d9b"
+    },
+    {
+      "source": "tests/js-tests/Content/legacy/js-tests/res/Particles/Phoenix.plist",
+      "fixture": "tests/js-runtime-tests/fixtures/v3/res/Particles/Phoenix.plist",
+      "size": 9542,
+      "sha256": "0f23b841b0d63e23ea58bfdecca3193b9db349628cc3cfa8f615d3e6284289c9"
+    },
+    {
+      "source": "tests/js-tests/Content/legacy/js-tests/res/Particles/SmallSun.plist",
+      "fixture": "tests/js-runtime-tests/fixtures/v3/res/Particles/SmallSun.plist",
+      "size": 9486,
+      "sha256": "156c2a06221d2dc2a233b8f907420b1fc16f8b217ab637c111863f43901e1977"
+    },
+    {
+      "source": "tests/js-tests/Content/legacy/js-tests/res/Particles/SpinningPeas.plist",
+      "fixture": "tests/js-runtime-tests/fixtures/v3/res/Particles/SpinningPeas.plist",
+      "size": 6603,
+      "sha256": "1f3549427cdba272de1b57113bcbe40135f248d8ebad79595849356fc1f293da"
+    },
+    {
+      "source": "tests/js-tests/Content/legacy/js-tests/res/Particles/SpookyPeas.plist",
+      "fixture": "tests/js-runtime-tests/fixtures/v3/res/Particles/SpookyPeas.plist",
+      "size": 6460,
+      "sha256": "a7e69b1d61113b7ac713248288fb0706f59819cad24ea1e23214392fee8c580d"
+    },
+    {
+      "source": "tests/js-tests/Content/legacy/js-tests/licenses/LICENSE_cocos2d-x.txt",
+      "fixture": "tests/js-runtime-tests/fixtures/v3/licenses/LICENSE_cocos2d-x.txt",
+      "size": 1168,
+      "sha256": "1596874c92682574236e3a5b1b3001e269ce53b0ebae7a46148514749eecd3c6"
+    },
+    {
+      "source": "tests/js-tests/Content/legacy/js-tests/licenses/LICENSE_artwork.txt",
+      "fixture": "tests/js-runtime-tests/fixtures/v3/licenses/LICENSE_artwork.txt",
+      "size": 1753,
+      "sha256": "22f72700f1685f3c219ca9d148a82bd973b0c2a65063ee16b04a77e317386b65"
+    },
+    {
+      "source": "tests/js-tests/Content/project.json",
+      "fixture": "tests/js-runtime-tests/fixtures/smoke/project.json",
+      "size": 139,
+      "sha256": "60273de7da89a1242b5fcc7771e2e87b906c67fce9b321dad4a1ad7f79c7f871"
+    },
+    {
+      "source": "tests/js-tests/Content/audio/js-smoke.wav",
+      "fixture": "tests/js-runtime-tests/fixtures/smoke/audio/js-smoke.wav",
+      "size": 8864,
+      "sha256": "b706a63eb6ffe7ecbab5ff8c9be3ec29e45ad787b1043ec0470c9fce7b7f7cf7"
+    }
+  ]
+}

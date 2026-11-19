@@ -1,6 +1,7 @@
 /****************************************************************************
  Copyright (c) 2018-2019 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -22,6 +23,8 @@
 #include "axmol/platform/Application.h"
 
 #include <algorithm>
+#include <cstdlib>
+#include <cstring>
 
 extern "C" void* objc_autoreleasePoolPush(void);
 extern "C" void objc_autoreleasePoolPop(void*);
@@ -196,6 +199,9 @@ GraphicsContextImpl::~GraphicsContextImpl()
 
 bool GraphicsContextImpl::updateSurface(SurfaceHandle /*surface*/, uint32_t width, uint32_t height)
 {
+    invalidateLegacyReadback();
+    _defaultColorTexture = nil;
+    _defaultColorWritten = false;
     [_mtlLayer setDrawableSize:CGSizeMake(width, height)];
     _screenRT->rebuildSwapchainAttachments();
     return true;
@@ -230,11 +236,24 @@ bool GraphicsContextImpl::beginFrame()
     dispatch_semaphore_wait(_frameBoundarySemaphore, DISPATCH_TIME_FOREVER);
 
     _currentCmdBuffer = [_mtlCmdQueue commandBuffer];
+    ++_readbackFrame;
+    _defaultColorTexture = nil;
+    _defaultColorWritten = false;
+    validateLegacyReadbackSurface();
     // [_currentCmdBuffer enqueue];
     // commit will enqueue automatically
 
     BufferManager::beginFrame();
     return true;
+}
+
+void GraphicsContextImpl::beginExplicitRenderPass(RenderTarget* renderTarget, const RenderPassDesc& renderPassDesc)
+{
+    // An explicit clear is a new pass, including when its target, clear color,
+    // and descriptor equal the preceding pass. Never consume it as a resume.
+    endEncoding();
+    _renderPassInterrupted = false;
+    beginRenderPass(renderTarget, renderPassDesc);
 }
 
 void GraphicsContextImpl::beginRenderPass(RenderTarget* renderTarget, const RenderPassDesc& renderPassDesc)
@@ -266,9 +285,25 @@ void GraphicsContextImpl::beginRenderPass(RenderTarget* renderTarget, const Rend
     }
     rtMTL->applyRenderPassAttachments(nativeRenderPassDesc, mtlDesc);
 
+    if (_legacyReadbackUsers && renderTarget->isDefaultRenderTarget())
+    {
+        // COLOR0 must survive the end of this pass for synchronous reads and
+        // the independent history copy. Resolve first when an MSAA attachment
+        // is in use; never preserve the multisample texture as screen pixels.
+        auto color = mtlDesc.colorAttachments[0];
+        color.storeAction = color.resolveTexture ? MTLStoreActionStoreAndMultisampleResolve : MTLStoreActionStore;
+    }
+
     _renderTargetWidth  = (unsigned int)mtlDesc.colorAttachments[0].texture.width;
     _renderTargetHeight = (unsigned int)mtlDesc.colorAttachments[0].texture.height;
     _mtlRenderEncoder   = [_currentCmdBuffer renderCommandEncoderWithDescriptor:mtlDesc];
+    if (_mtlRenderEncoder && renderTarget->isDefaultRenderTarget())
+    {
+        auto color = mtlDesc.colorAttachments[0];
+        _defaultColorTexture = color.resolveTexture ?: color.texture;
+        _defaultColorWritten = _defaultColorTexture != nil;
+        _defaultColorNeedsResolve = color.resolveTexture != nil;
+    }
     //    [_mtlRenderEncoder setFrontFacingWinding:MTLWindingCounterClockwise];
 }
 
@@ -414,7 +449,7 @@ bool GraphicsContextImpl::dispatch(const ComputeDispatchDesc& desc)
     {
         auto rtMTL = static_cast<RenderTargetImpl*>(_currentRT);
         for (size_t i = 0; i < rtMTL->getNativeColorFormats().size(); ++i)
-            [_mtlRenderEncoder setColorStoreAction:MTLStoreActionStore atIndex:i];
+            [_mtlRenderEncoder setColorStoreAction:interruptedColorStoreAction(rtMTL, i) atIndex:i];
         if (rtMTL->getDepthStencilAttachment())
         {
             [_mtlRenderEncoder setDepthStoreAction:MTLStoreActionStore];
@@ -512,13 +547,183 @@ void GraphicsContextImpl::readPixels(RenderTarget* rt, std::function<void(const 
     _captureCallbacks.emplace_back(texture, std::move(callback));
 }
 
+void GraphicsContextImpl::acquireLegacyDefaultFramebufferReadback()
+{
+    if (_legacyReadbackUsers++ == 0)
+    {
+        _legacyPreviousFramebufferOnly = _restoreFrameBufferOnlyAfterDrawable || _mtlLayer.framebufferOnly;
+        _restoreFrameBufferOnlyAfterDrawable = false;
+        _mtlLayer.framebufferOnly = NO;
+        invalidateLegacyReadback();
+        traceLegacyReadback("enable", "none", _currentDrawable.texture);
+    }
+}
+
+void GraphicsContextImpl::releaseLegacyDefaultFramebufferReadback()
+{
+    if (_legacyReadbackUsers && --_legacyReadbackUsers == 0)
+    {
+        invalidateLegacyReadback();
+        _mtlLayer.framebufferOnly = _legacyPreviousFramebufferOnly;
+        traceLegacyReadback("disable", "none", nil);
+    }
+}
+
+void GraphicsContextImpl::invalidateLegacyReadback()
+{
+    _legacyColorBacking = nil;
+    _legacyColorValid = false;
+    _legacyCopyFailed.reset();
+    ++_legacyColorGeneration;
+}
+
+void GraphicsContextImpl::validateLegacyReadbackSurface()
+{
+    if (_legacyColorBacking &&
+        (_legacyColorBacking.width != _mtlLayer.drawableSize.width ||
+         _legacyColorBacking.height != _mtlLayer.drawableSize.height ||
+         _legacyColorBacking.pixelFormat != _mtlLayer.pixelFormat))
+        invalidateLegacyReadback();
+}
+
+id<MTLTexture> GraphicsContextImpl::defaultReadbackSource()
+{
+    validateLegacyReadbackSurface();
+    if (_defaultColorWritten)
+    {
+        if (_defaultColorTexture && ![_defaultColorTexture isFramebufferOnly] &&
+            _defaultColorTexture.width == _mtlLayer.drawableSize.width &&
+            _defaultColorTexture.height == _mtlLayer.drawableSize.height &&
+            _defaultColorTexture.pixelFormat == _mtlLayer.pixelFormat)
+        {
+            traceLegacyReadback("read", "current", _defaultColorTexture);
+            return _defaultColorTexture;
+        }
+        // A late opt-in must not silently substitute the previous frame after
+        // this frame has rendered to a framebuffer-only drawable.
+        traceLegacyReadback("read-unavailable", "current", _defaultColorTexture);
+        return nil;
+    }
+    if (_legacyReadbackUsers && _legacyColorValid && _legacyColorBacking &&
+        _legacyCopyFailed && !_legacyCopyFailed->load())
+    {
+        traceLegacyReadback("read", "backing", _legacyColorBacking);
+        return _legacyColorBacking;
+    }
+    traceLegacyReadback("read-unavailable", "none", nil);
+    return nil;
+}
+
+bool GraphicsContextImpl::readPixelsSync(RenderTarget* rt, PixelBufferDesc& result)
+{
+    if (!_legacyReadbackUsers || !rt || !rt->isDefaultRenderTarget())
+        return GraphicsContext::readPixelsSync(rt, result);
+
+    result._data.clear();
+    result._width = result._height = 0;
+
+    // Do not ask RenderTarget::getColorAttachment here: that acquires a fresh,
+    // unrendered drawable when Scheduler runs before this frame's first pass.
+    auto source = defaultReadbackSource();
+    if (!source)
+        return false;
+    auto copyFailed = _legacyCopyFailed;
+    const bool backing = source == _legacyColorBacking;
+    auto submitted = _currentCmdBuffer;
+    submitCurrentFrameCommands(true);
+    if (submitted && submitted.status == MTLCommandBufferStatusError)
+        return false;
+    if (backing && copyFailed && copyFailed->load())
+        return false;
+    readPixels(source, 0, 0, source.width, source.height, result);
+    return static_cast<bool>(result);
+}
+
+void GraphicsContextImpl::preserveLegacyDefaultColor()
+{
+    if (!_legacyReadbackUsers || !_defaultColorWritten || !_currentCmdBuffer)
+        return;
+    auto source = _defaultColorTexture;
+    if (!source || [source isFramebufferOnly] || source.sampleCount != 1 ||
+        source.width != _mtlLayer.drawableSize.width || source.height != _mtlLayer.drawableSize.height ||
+        source.pixelFormat != _mtlLayer.pixelFormat)
+    {
+        invalidateLegacyReadback();
+        traceLegacyReadback("copy-unavailable", "current", source);
+        return;
+    }
+    validateLegacyReadbackSurface();
+    if (!_legacyColorBacking || _legacyColorBacking.width != source.width ||
+        _legacyColorBacking.height != source.height || _legacyColorBacking.pixelFormat != source.pixelFormat)
+    {
+        invalidateLegacyReadback();
+        auto desc = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:source.pixelFormat
+                                                                    width:source.width height:source.height mipmapped:NO];
+        desc.storageMode = MTLStorageModePrivate;
+        desc.usage = MTLTextureUsageShaderRead;
+        _legacyColorBacking = [source.device newTextureWithDescriptor:desc];
+    }
+    if (!_legacyColorBacking)
+        return;
+    auto encoder = [_currentCmdBuffer blitCommandEncoder];
+    if (!encoder)
+    {
+        invalidateLegacyReadback();
+        return;
+    }
+    [encoder copyFromTexture:source sourceSlice:0 sourceLevel:0 sourceOrigin:MTLOriginMake(0, 0, 0)
+                  sourceSize:MTLSizeMake(source.width, source.height, 1) toTexture:_legacyColorBacking
+           destinationSlice:0 destinationLevel:0 destinationOrigin:MTLOriginMake(0, 0, 0)];
+    [encoder endEncoding];
+    // The completion owns only this small token, never this context or a
+    // presented drawable. All resource lifetime is owned by the command buffer.
+    auto failed = std::make_shared<std::atomic<bool>>(false);
+    _legacyCopyFailed = failed;
+    [_currentCmdBuffer addCompletedHandler:^(id<MTLCommandBuffer> buffer) {
+        failed->store(buffer.status == MTLCommandBufferStatusError);
+    }];
+    _legacyColorFrame = _readbackFrame;
+    _legacyColorValid = true;
+    traceLegacyReadback("copy", "current-to-backing", source);
+}
+
+void GraphicsContextImpl::traceLegacyReadback(const char* event, const char* source, id<MTLTexture> texture) const
+{
+    static const bool enabled = [] { auto value = std::getenv("AXMOL_JS_METAL_READBACK_TRACE");
+                                    return value && std::strcmp(value, "1") == 0; }();
+    static std::atomic<unsigned int> count{0};
+    if (!enabled)
+        return;
+    const bool read = std::strncmp(event, "read", 4) == 0;
+    if (read)
+        _readbackTraceFrame = _readbackFrame;
+    // Preserve the small process budget for actual reads, their frame's
+    // copy/submit/present, startup, and sparse background snapshots.
+    const bool routine = std::strcmp(event, "copy") == 0 || std::strcmp(event, "present") == 0 ||
+                         std::strcmp(event, "submit") == 0;
+    if (routine && _readbackFrame > 2 && _readbackFrame != _readbackTraceFrame && _readbackFrame % 60 != 0)
+        return;
+    if (count.fetch_add(1) >= 32)
+        return;
+    AXLOGI("MetalLegacyReadback event={} source={} frame={} sourceFrame={} generation={} size={}x{} format={} "
+           "layerFramebufferOnly={} textureFramebufferOnly={} command={} drawable={} texture={} backing={}",
+           event, source, _readbackFrame, texture == _legacyColorBacking ? _legacyColorFrame : _readbackFrame,
+           _legacyColorGeneration, texture.width, texture.height, static_cast<unsigned long>(texture.pixelFormat),
+           static_cast<bool>(_mtlLayer.framebufferOnly), static_cast<bool>([texture isFramebufferOnly]),
+           (__bridge void*)_currentCmdBuffer, (__bridge void*)_currentDrawable,
+           (__bridge void*)texture, (__bridge void*)_legacyColorBacking);
+}
+
 void GraphicsContextImpl::endFrame()
 {
     [_mtlRenderEncoder endEncoding];
     _mtlRenderEncoder      = nil;
     _renderPassInterrupted = false;
 
+    preserveLegacyDefaultColor();
+
     auto drawable = acquireDrawable();
+    traceLegacyReadback("present", "current", _defaultColorTexture);
     [_currentCmdBuffer presentDrawable:drawable];
     [_currentCmdBuffer addCompletedHandler:^(id<MTLCommandBuffer> commandBuffer) {
       // GPU work is complete
@@ -529,6 +734,8 @@ void GraphicsContextImpl::endFrame()
     flush();
 
     releaseDrawable();
+    _defaultColorTexture = nil;
+    _defaultColorWritten = false;
     if (_autoreleasePool)
     {
         objc_autoreleasePoolPop(_autoreleasePool);
@@ -536,13 +743,38 @@ void GraphicsContextImpl::endFrame()
     }
 }
 
+MTLStoreAction GraphicsContextImpl::interruptedColorStoreAction(const RenderTarget* target, size_t index) const
+{
+    // A compute interruption may be the last render encoder before readback
+    // or presentation. Store the MSAA samples for a possible Load continuation
+    // AND resolve COLOR0 now, so its readback texture is current even when no
+    // later render encoder is created. Keep other paths' prior Store policy.
+    if (_legacyReadbackUsers && target && target->isDefaultRenderTarget() && index == 0 &&
+        _defaultColorNeedsResolve)
+        return MTLStoreActionStoreAndMultisampleResolve;
+    return MTLStoreActionStore;
+}
+
 void GraphicsContextImpl::submitCurrentFrameCommands(bool waitForCompletion)
 {
+    const bool interrupted = _mtlRenderEncoder != nil || _renderPassInterrupted;
+    if (_mtlRenderEncoder && _currentRT)
+    {
+        auto* target = static_cast<RenderTargetImpl*>(_currentRT);
+        for (size_t i = 0; i < target->getNativeColorFormats().size(); ++i)
+            [_mtlRenderEncoder setColorStoreAction:interruptedColorStoreAction(target, i) atIndex:i];
+        if (target->getDepthStencilAttachment())
+        {
+            [_mtlRenderEncoder setDepthStoreAction:MTLStoreActionStore];
+            [_mtlRenderEncoder setStencilStoreAction:MTLStoreActionStore];
+        }
+    }
     endEncoding();
 
     if (_currentCmdBuffer)
     {
         assert(_currentCmdBuffer.status != MTLCommandBufferStatusCommitted);
+        traceLegacyReadback("submit", "current", _defaultColorTexture);
         [_currentCmdBuffer commit];
         if (waitForCompletion)
             [_currentCmdBuffer waitUntilCompleted];
@@ -553,9 +785,9 @@ void GraphicsContextImpl::submitCurrentFrameCommands(bool waitForCompletion)
     }
 
     _currentCmdBuffer      = [_mtlCmdQueue commandBuffer];
-    _currentRenderPassDesc = {};
-    _currentRT             = nullptr;
-    _renderPassInterrupted = false;
+    // Keep attachment identity and resume with Load rather than repeating the
+    // original clear/discard when a synchronous read splits an active pass.
+    _renderPassInterrupted = interrupted;
 }
 
 void GraphicsContextImpl::endEncoding()
@@ -572,6 +804,7 @@ void GraphicsContextImpl::flush()
     if (_currentCmdBuffer)
     {
         assert(_currentCmdBuffer.status != MTLCommandBufferStatusCommitted);
+        traceLegacyReadback("submit", "current", _defaultColorTexture);
         [_currentCmdBuffer commit];
 
         flushCaptureCommands();
@@ -591,13 +824,14 @@ void GraphicsContextImpl::flushCaptureCommands()
         [_currentCmdBuffer waitUntilCompleted];
 
         PixelBufferDesc screenPixelData;
-        auto drawableTexture = acquireDrawable().texture;
+        id<MTLTexture> drawableTexture = nil;
         for (auto& cb : _captureCallbacks)
         {
             if (cb.first == nil)
             {  // screen capture
                 if (!screenPixelData)
                 {
+                    drawableTexture = _legacyReadbackUsers ? defaultReadbackSource() : _currentDrawable.texture;
                     readPixels(drawableTexture, 0, 0, [drawableTexture width], [drawableTexture height],
                                screenPixelData);
                 }
@@ -608,6 +842,7 @@ void GraphicsContextImpl::flushCaptureCommands()
                 PixelBufferDesc pixelData;
                 auto texture = cb.first;
                 assert(texture != nullptr);
+                traceLegacyReadback("read", "offscreen", static_cast<TextureImpl*>(texture)->internalHandle());
                 readPixels(static_cast<TextureImpl*>(texture)->internalHandle(), 0, 0, texture->getWidth(),
                            texture->getHeight(), pixelData);
                 AX_SAFE_RELEASE(texture);
@@ -646,6 +881,7 @@ void GraphicsContextImpl::prepareDrawing() const
 void GraphicsContextImpl::setTexturesAndSamplers() const
 {
     const auto program = _programState->getProgram();
+    const bool combinedSamplers = program->getActiveSamplerInfos().empty();
 
     // Phase 1: bind textures.
     for (const auto& [bindingIndex, bindingSet] : _programState->getTextureBindingSets())
@@ -657,6 +893,15 @@ void GraphicsContextImpl::setTexturesAndSamplers() const
             const auto slot  = bindingIndex + k;
             auto textureImpl = static_cast<TextureImpl*>(texs[k]);
             [_mtlRenderEncoder setFragmentTexture:textureImpl->internalHandle() atIndex:slot];
+            // Combined GLSL samplers use the texture slot for both bindings.
+            // Keep their dynamic texture parameters independent of any sampler
+            // state left on the encoder by a preceding separate-sampler draw.
+            if (combinedSamplers)
+            {
+                const auto samplerState = textureImpl->internalSampler();
+                AXASSERT(samplerState != nil, "missing Metal combined texture sampler");
+                [_mtlRenderEncoder setFragmentSamplerState:samplerState atIndex:slot];
+            }
         }
     }
 
@@ -776,6 +1021,10 @@ void GraphicsContextImpl::readPixels(id<MTLTexture> texture,
                                      size_t rectHeight,
                                      PixelBufferDesc& pbd)
 {
+    if (!texture || [texture isFramebufferOnly] || !rectWidth || !rectHeight ||
+        origX > texture.width || origY > texture.height || rectWidth > texture.width - origX ||
+        rectHeight > texture.height - origY || !getBitsPerElementMTL(texture.pixelFormat))
+        return;
     NSUInteger texWidth   = texture.width;
     NSUInteger texHeight  = texture.height;
     MTLRegion region      = MTLRegionMake2D(0, 0, texWidth, texHeight);
@@ -787,11 +1036,15 @@ void GraphicsContextImpl::readPixels(id<MTLTexture> texture,
                                                                                        mipmapped:NO];
     id<MTLDevice> device              = static_cast<GraphicsDeviceImpl*>(axdrv)->getMTLDevice();
     id<MTLTexture> readPixelsTexture  = [device newTextureWithDescriptor:textureDesc];
+    if (!readPixelsTexture)
+        return;
 
     auto oneOffBuffer = [_mtlCmdQueue commandBuffer];
     // [oneOffBuffer enqueue];
 
     id<MTLBlitCommandEncoder> blitCommandEncoder = [oneOffBuffer blitCommandEncoder];
+    if (!blitCommandEncoder)
+        return;
     [blitCommandEncoder copyFromTexture:texture
                             sourceSlice:0
                             sourceLevel:0
@@ -807,23 +1060,28 @@ void GraphicsContextImpl::readPixels(id<MTLTexture> texture,
 #endif
     [blitCommandEncoder endEncoding];
 
-    [oneOffBuffer addCompletedHandler:^(id<MTLCommandBuffer> commandBufferMTL) {
-      auto bytePerRow = rectWidth * getBitsPerElementMTL(texture.pixelFormat) / 8;
-      auto texelData  = pbd._data.resize(bytePerRow * rectHeight);
-      if (texelData != nullptr)
-      {
-          [readPixelsTexture getBytes:texelData bytesPerRow:bytePerRow fromRegion:imageRegion mipmapLevel:0];
-          UtilsMTL::swizzleImage(texelData, rectWidth, rectHeight, readPixelsTexture.pixelFormat);
-          pbd._width  = static_cast<int>(rectWidth);
-          pbd._height = static_cast<int>(rectHeight);
-      }
-    }];
     [oneOffBuffer commit];
     [oneOffBuffer waitUntilCompleted];
+    if (oneOffBuffer.status != MTLCommandBufferStatusCompleted)
+        return;
+    auto bytePerRow = rectWidth * getBitsPerElementMTL(texture.pixelFormat) / 8;
+    auto texelData  = pbd._data.resize(bytePerRow * rectHeight);
+    if (texelData != nullptr)
+    {
+        [readPixelsTexture getBytes:texelData bytesPerRow:bytePerRow fromRegion:imageRegion mipmapLevel:0];
+        UtilsMTL::swizzleImage(texelData, rectWidth, rectHeight, readPixelsTexture.pixelFormat);
+        pbd._width  = static_cast<int>(rectWidth);
+        pbd._height = static_cast<int>(rectHeight);
+    }
 }
 
 void GraphicsContextImpl::setFrameBufferOnly(bool frameBufferOnly)
 {
+    if (_legacyReadbackUsers)
+    {
+        _mtlLayer.framebufferOnly = NO;
+        return;
+    }
     [_mtlLayer setFramebufferOnly:frameBufferOnly];
     if (!frameBufferOnly)
         _restoreFrameBufferOnlyAfterDrawable = true;
@@ -831,6 +1089,8 @@ void GraphicsContextImpl::setFrameBufferOnly(bool frameBufferOnly)
 
 void GraphicsContextImpl::restoreFrameBufferOnly()
 {
+    if (_legacyReadbackUsers)
+        return;
     if (_restoreFrameBufferOnlyAfterDrawable)
     {
         [_mtlLayer setFramebufferOnly:YES];

@@ -4,6 +4,8 @@
 
 Axmol is an MIT-licensed, cross-platform game engine for 2D and 3D games. Build with C++ or Lua for mobile, desktop, WebAssembly, and Xbox via UWP.
 
+The `axmol-js` branch is a derivative of [Axmol](https://github.com/axmolengine/axmol). Copyright (c) 2026 Ye Liangqi for original contributions and modifications made for axmol-js. These contributions follow the project's [MIT License](LICENSE). Upstream and third-party code retain their existing copyright notices and applicable licenses; see [AUTHORS.md](AUTHORS.md) and the component license files.
+
 [Try it online](#try-it-online) · [Get started](#get-started) · [Games made with Axmol](https://github.com/axmolengine/axmol/wiki/Made-in-Axmol) · [简体中文](README_CN.md)
 
 [![Build status](https://github.com/axmolengine/axmol/workflows/build/badge.svg)](https://github.com/axmolengine/axmol/actions?query=workflow%3Abuild)
@@ -62,7 +64,18 @@ cd ./projects/HelloCpp
 axmol
 ```
 
-Use `-l lua` to create a Lua project. For a production project on stable v2 LTS, clone `release/2.x` instead; it requires C++20. See the [full guide](docs/DevSetup.md) for Windows setup, other targets, and troubleshooting.
+Use `-l lua` to create a Lua project. On this `axmol-js` branch, use `-l js` for a native JavaScript project with the same setup and build commands; for example, on an Apple Silicon Mac:
+
+```sh
+axmol new -p dev.axmol.hellojs -d ./projects -l js HelloJs
+cd ./projects/HelloJs
+axmol build -p osx -a arm64
+```
+
+The first JS build prepares the pinned SpiderMonkey dependency automatically if its package is missing; later builds reuse the validated package. See the [JavaScript guide](templates/js/README.md) for supported ARM64 targets, prerequisites and cache options.
+
+
+For a production project on stable v2 LTS, clone `release/2.x` instead; it requires C++20. See the [full guide](docs/DevSetup.md) for Windows setup, other targets, and troubleshooting.
 
 ## What you can build
 

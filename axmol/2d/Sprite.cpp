@@ -5,6 +5,7 @@ Copyright (c) 2011      Zynga Inc.
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -21,6 +22,7 @@ SPDX-License-Identifier: MIT
 #include "axmol/renderer/TextureCache.h"
 #include "axmol/renderer/Texture2D.h"
 #include "axmol/renderer/Renderer.h"
+#include "axmol/renderer/ProgramStateRegistry.h"
 #include "axmol/base/Director.h"
 #include "axmol/base/text_utils.h"
 #include "axmol/scene/Camera.h"
@@ -402,11 +404,13 @@ void Sprite::setTexture(Texture2D* texture)
         texture = _director->getTextureCache()->getWhiteTexture();
     }
 
+    const bool textureStateChanged =
+        _texture == nullptr || _texture->getSamplerFlags() != texture->getSamplerFlags() ||
+        _texture->getPixelFormat() != texture->getPixelFormat();
     bool needsUpdatePS =
         _autoUpdatePS &&
         ((!_programState || _programState->getProgram()->getProgramType() < rhi::ProgramType::CUSTOM_PROGRAM) &&
-         (_texture == nullptr || _texture->getSamplerFlags() != texture->getSamplerFlags() ||
-          _texture->getPixelFormat() != texture->getPixelFormat()));
+         textureStateChanged);
 
     if (_renderMode != RenderMode::QUAD_BATCHNODE)
     {
@@ -423,6 +427,18 @@ void Sprite::setTexture(Texture2D* texture)
     {
         auto programType = ProgramManager::chooseSpriteProgramType(_texture->getPixelFormat());
         setProgramState(programType);
+    }
+    else if (_autoUpdatePS && textureStateChanged && _programState)
+    {
+        // Only explicitly registered custom families participate. In particular,
+        // application shaders retain their ProgramState across texture changes.
+        auto* variant = ProgramStateRegistry::getInstance()->acquireTextureVariant(
+            _programState->getProgram(), ProgramManager::chooseSpriteProgramType(_texture->getPixelFormat()),
+            _texture->getSamplerFlags());
+        if (variant)
+            setProgramState(variant, true);
+        else
+            updateProgramStateTexture(_texture);
     }
     else
         updateProgramStateTexture(_texture);

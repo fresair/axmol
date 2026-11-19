@@ -1,5 +1,6 @@
 /****************************************************************************
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -240,7 +241,9 @@ void RenderTargetImpl::beginRenderPass(VkCommandBuffer cmd,
     if (_defaultRenderTarget)
     {
         VkClearValue& cv = _clearValues.emplace_back();
-        if (bitmask::any(renderPassDesc.flags.clear, getMRTColorFlag(imageIndex)))
+        // The acquired image is the physical backing for logical COLOR0.
+        // Both the load operation and its value use that same logical flag.
+        if (bitmask::any(renderPassDesc.flags.clear, TargetBufferFlags::COLOR0))
             cv.color = {renderPassDesc.clearColorValue[0], renderPassDesc.clearColorValue[1],
                         renderPassDesc.clearColorValue[2], renderPassDesc.clearColorValue[3]};
         else
@@ -414,9 +417,12 @@ void RenderTargetImpl::updateRenderPass(const RenderPassDesc& desc, uint32_t ima
             auto attachment     = getColorAttachment(static_cast<int>(i));
             const auto& attDesc = attachment->getDesc();
 
-            const bool clearColor   = bitmask::any(desc.flags.clear, getMRTColorFlag(i));
-            const bool discardStart = bitmask::any(desc.flags.discardStart, getMRTColorFlag(i));
-            const bool discardEnd   = bitmask::any(desc.flags.discardEnd, getMRTColorFlag(i));
+            // Swapchain image i is the screen's one logical COLOR0 attachment.
+            // MRT attachment indices only apply to offscreen render targets.
+            const auto colorFlag = getMRTColorFlag(isDefaultRT ? 0 : i);
+            const bool clearColor   = bitmask::any(desc.flags.clear, colorFlag);
+            const bool discardStart = bitmask::any(desc.flags.discardStart, colorFlag);
+            const bool discardEnd   = bitmask::any(desc.flags.discardEnd, colorFlag);
 
             const VkAttachmentLoadOp loadOp =
                 clearColor ? VK_ATTACHMENT_LOAD_OP_CLEAR

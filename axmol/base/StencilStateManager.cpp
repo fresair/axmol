@@ -2,6 +2,7 @@
  Copyright (c) 2010-2012 cocos2d-x.org
  Copyright (c) 2013-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -135,6 +136,10 @@ void StencilStateManager::onBeforeDrawQuadCmd()
     // manually save the depth test state
 
     _currentDepthWriteMask = renderer->getDepthWrite();
+    _currentDepthTestEnabled = renderer->getDepthTest();
+    _currentColorWriteMask = renderer->_stencilColorWriteMask;
+    _currentStencilDepthOverride = renderer->_stencilDepthOverride;
+    _alphaStencilActive = false;
 
     // disable update to the depth buffer while drawing the stencil,
     // as the stencil is not meant to be rendered in the real scene,
@@ -159,10 +164,25 @@ void StencilStateManager::onBeforeDrawQuadCmd()
 void StencilStateManager::onAfterDrawQuadCmd()
 {
     auto renderer = Director::getInstance()->getRenderer();
-    renderer->setStencilCompareFunc(rhi::CompareFunc::NEVER, _currentLayerMask, _currentLayerMask);
-
-    renderer->setStencilOp(!_inverted ? rhi::StencilOp::REPLACE : rhi::StencilOp::ZERO, rhi::StencilOp::KEEP,
-                           rhi::StencilOp::KEEP);
+    _alphaStencilActive = _alphaThreshold < 1.f;
+    if (_alphaStencilActive)
+    {
+        // A failing stencil test may suppress the fragment shader, including
+        // its alpha discard. Write this bit only for surviving fragments.
+        // Keep this policy out of the full-screen clear and non-alpha path.
+        renderer->_stencilColorWriteMask = rhi::ColorWriteMask::NONE;
+        renderer->_stencilDepthOverride = true;
+        renderer->setDepthTest(false);
+        renderer->setStencilCompareFunc(rhi::CompareFunc::ALWAYS, _currentLayerMask, _currentLayerMask);
+        renderer->setStencilOp(rhi::StencilOp::KEEP, rhi::StencilOp::KEEP,
+                               !_inverted ? rhi::StencilOp::REPLACE : rhi::StencilOp::ZERO);
+    }
+    else
+    {
+        renderer->setStencilCompareFunc(rhi::CompareFunc::NEVER, _currentLayerMask, _currentLayerMask);
+        renderer->setStencilOp(!_inverted ? rhi::StencilOp::REPLACE : rhi::StencilOp::ZERO, rhi::StencilOp::KEEP,
+                               rhi::StencilOp::KEEP);
+    }
 }
 
 void StencilStateManager::onAfterDrawStencil()
@@ -171,6 +191,12 @@ void StencilStateManager::onAfterDrawStencil()
     //    glDepthMask(_currentDepthWriteMask);
     auto renderer = Director::getInstance()->getRenderer();
     renderer->setDepthWrite(_currentDepthWriteMask);
+    if (_alphaStencilActive)
+    {
+        renderer->_stencilColorWriteMask = _currentColorWriteMask;
+        renderer->_stencilDepthOverride = _currentStencilDepthOverride;
+        renderer->setDepthTest(_currentDepthTestEnabled);
+    }
     // if (currentDepthTestEnabled) {
     //     glEnable(GL_DEPTH_TEST);
     // }

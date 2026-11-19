@@ -3,6 +3,7 @@
  * Copyright (c) 2013-2016 Chukong Technologies Inc.
  * Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  * Copyright (c) 2019-present Simdsoft Limited.
+ * Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
  *
  * SPDX-License-Identifier: MIT
  */
@@ -21,6 +22,7 @@
 #include "axmol/base/Types.h"
 #include "axmol/renderer/CustomCommand.h"
 #include "axmol/math/Math.h"
+#include <span>
 
 namespace ax
 {
@@ -559,6 +561,14 @@ public:
                            const Color& fillColor,
                            const Color& borderColor,
                            float thickness = 1.0f);
+
+    /** Append already tessellated legacy triangles, retaining their texture normals.
+     * Used by the native JavaScript compatibility adapter. Copies the vertices
+     * into this node's real triangle batch; does not change modern primitive
+     * thickness, local-transform settings or drawing defaults.
+     * @script{ignore}
+     */
+    bool appendLegacyTriangleVertices(std::span<const V2F_T2F_C4F> vertices);
 
     /** Clear the geometry in the node's buffer. */
     virtual void clear();

@@ -1,0 +1,34 @@
+{
+  "target_namespace": "cc",
+  "cpp_namespace": "ax::network",
+  "headers": [
+    "%(axdir)s/axmol/network/HttpClient.h",
+    "%(axdir)s/axmol/network/HttpCookie.h",
+    "%(axdir)s/axmol/network/Uri.h"
+  ],
+  "classes": [
+    "HttpClient",
+    "HttpCookie",
+    "Uri"
+  ],
+  "abstract_classes": [
+    "HttpClient"
+  ],
+  "classes_have_no_parents": [
+    "HttpClient",
+    "HttpCookie",
+    "Uri"
+  ],
+  "skip": [
+    {
+      "class": "HttpClient",
+      "methods": [
+        "^destroyInstance$",
+        "send"
+      ]
+    }
+  ],
+  "rename_functions": [],
+  "rename_classes": [],
+  "module": "ax_network"
+}

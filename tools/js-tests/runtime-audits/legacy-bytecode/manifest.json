@@ -1,0 +1,711 @@
+{
+  "schemaVersion": 1,
+  "historicalDependencies": {
+    "repository": "https://github.com/cocos2d/cocos2d-x-3rd-party-libs-bin",
+    "commit": "a85b979dcd6b5cb8aa2bf97e52b73a2d827b3cfb",
+    "referenceTag": "v3-deps-172",
+    "library": "spidermonkey/prebuilt/mac/libjs_static.a",
+    "headerDirectory": "spidermonkey/include/mac",
+    "reportedImplementation": "JavaScript-C33.1.1",
+    "upstreamSourceCommit": null,
+    "license": "MPL-2.0 (historical public-header notices)",
+    "artifacts": [
+      {
+        "path": "spidermonkey/CMakeLists.txt",
+        "gitBlobSha1": "d1efda8f35aedd9a909f2fd2290f4dcec80bc15b",
+        "bytes": 748,
+        "sha256": "56af29e7dafb1a49b5d7600a147889621c0dcb63f3bb6b891ee302c8b525380e"
+      },
+      {
+        "path": "spidermonkey/README.md",
+        "gitBlobSha1": "4ad76a67fac67e779f00becd349416c69feb7b32",
+        "bytes": 98,
+        "sha256": "dc6cb1bd3469da33c8223aee04aca61e28dcc845a13886bdf92116860ab82090"
+      },
+      {
+        "path": "spidermonkey/include/mac/js-config.h",
+        "gitBlobSha1": "d1974254e01d9d8f62ca8c076c626c7c2d80af2c",
+        "bytes": 1733,
+        "sha256": "38e30dc1fb62f410c5e57e1836929a5729c900e38c5e025da63f3bc75336e3df"
+      },
+      {
+        "path": "spidermonkey/include/mac/js.msg",
+        "gitBlobSha1": "d342ad45066c23eca249b43a0eb8fcbabdf39070",
+        "bytes": 42250,
+        "sha256": "9fada550b4a082e9ec4fb33fc686fd4daedbc14583bc9021d9bce99eb0cf726b"
+      },
+      {
+        "path": "spidermonkey/include/mac/js/Anchor.h",
+        "gitBlobSha1": "d9ed3fd75003084096307c320358a8a378097d3c",
+        "bytes": 7047,
+        "sha256": "05c8ed2ef2b1b30cc1f854e0a8a3ec0002eb6f6a2207e32d06143561245361bf"
+      },
+      {
+        "path": "spidermonkey/include/mac/js/CallArgs.h",
+        "gitBlobSha1": "3be3f1575a7d7d6a08f12cc2544cbafdb011aeac",
+        "bytes": 13203,
+        "sha256": "b652ee7a4e0597395d45b5c4668074a2ca270be5a9140d0ae48fa2a271378207"
+      },
+      {
+        "path": "spidermonkey/include/mac/js/CallNonGenericMethod.h",
+        "gitBlobSha1": "ad9a7f708c78dd9f292df8f40fcd9a2d7525132b",
+        "bytes": 4449,
+        "sha256": "edbfe8da088d1522499a5eb5b754fc628e2bb562a1ac23a994710f95ac6aa1c5"
+      },
+      {
+        "path": "spidermonkey/include/mac/js/CharacterEncoding.h",
+        "gitBlobSha1": "45c77761b3fdeee98dd3d821ba69bb16d04a52c8",
+        "bytes": 6943,
+        "sha256": "751533ce160cdc3f2f51f47aa2bbdaca1962df1ae8bb977d4151bf585a20bbe6"
+      },
+      {
+        "path": "spidermonkey/include/mac/js/Class.h",
+        "gitBlobSha1": "559cc65c856dea803c8b0f2dfa42eda16091a0fb",
+        "bytes": 23533,
+        "sha256": "67e00a4f5fe8f145d9f47700ccf162eb9b98ae4d6af7fd6376585b541f4f4d8e"
+      },
+      {
+        "path": "spidermonkey/include/mac/js/Date.h",
+        "gitBlobSha1": "6199f9eca5df02f830fa768b73457d28ce3cf2f2",
+        "bytes": 1190,
+        "sha256": "959913a5c867a4302751435c7469a8d9b3817b49ee59b99bda83236047780820"
+      },
+      {
+        "path": "spidermonkey/include/mac/js/GCAPI.h",
+        "gitBlobSha1": "c58d62d029b34c1a5146882732cb09e7d03703b1",
+        "bytes": 17121,
+        "sha256": "26330a8b64d612873d4412530b8f7fa3be07a3772a61e177b8698baf4694c5d3"
+      },
+      {
+        "path": "spidermonkey/include/mac/js/HashTable.h",
+        "gitBlobSha1": "4c27308b5eb52c4b399c013087c1f983830b53df",
+        "bytes": 53981,
+        "sha256": "ecefbc853311b57cc71913b8644dd9ebcf5f1ed8ea0e9c4e6a53ff51874f8424"
+      },
+      {
+        "path": "spidermonkey/include/mac/js/HeapAPI.h",
+        "gitBlobSha1": "bdd63c19374cb82d65ed8d58817ad57638bf00f9",
+        "bytes": 8763,
+        "sha256": "74a9a5fdeba6f1354d8e2a9ed11e656720795b8bb93d6390c726aec53a556417"
+      },
+      {
+        "path": "spidermonkey/include/mac/js/Id.h",
+        "gitBlobSha1": "11116f2efefab08c2155f15d725cd42adbef1616",
+        "bytes": 4802,
+        "sha256": "0adc4a1737c9893ae0f166088f2ca3259cc4a7b5b40c67841af13c8ef61fcacc"
+      },
+      {
+        "path": "spidermonkey/include/mac/js/LegacyIntTypes.h",
+        "gitBlobSha1": "2c8498c89e427e1c13a3f82db4956cab99e40b38",
+        "bytes": 2000,
+        "sha256": "b65a61fbdc2ed203703446f5cae4c2b72e757b51d2261551ff9e2e8545392e47"
+      },
+      {
+        "path": "spidermonkey/include/mac/js/MemoryMetrics.h",
+        "gitBlobSha1": "31e456baba317cca4fd583208f5db8c9009e936c",
+        "bytes": 21876,
+        "sha256": "60319b1fecd17a13e808d64e3c2a6f10f6e6d95ff892285b622619cc1c10478a"
+      },
+      {
+        "path": "spidermonkey/include/mac/js/OldDebugAPI.h",
+        "gitBlobSha1": "7117d754d94a8bad9689f9e2200429c25fc379ac",
+        "bytes": 11946,
+        "sha256": "c00865ef4ed92c7e2ea1e033369a798cf0a11ce5eeb22bab0129cc8bccdc1e02"
+      },
+      {
+        "path": "spidermonkey/include/mac/js/Principals.h",
+        "gitBlobSha1": "78d8c7e89310a5249d4e1312c749b525bbe57853",
+        "bytes": 3118,
+        "sha256": "af552c7eba7bc87079cf6ec28198edf661fd430eec58a669d29b6e97dfbebbad"
+      },
+      {
+        "path": "spidermonkey/include/mac/js/ProfilingStack.h",
+        "gitBlobSha1": "e82ce1c9d8a97e7fa6473db98677b59ab48c8f90",
+        "bytes": 5509,
+        "sha256": "a328e0aea7ebe6da3bb7cc78c977d58417dac0b9cdbdbe0135f0afba8e9a198e"
+      },
+      {
+        "path": "spidermonkey/include/mac/js/PropertyKey.h",
+        "gitBlobSha1": "1f90653b4027ffe57c5ebc5bae318721339b22f1",
+        "bytes": 2773,
+        "sha256": "0bc29eb46f108727cc46814a70991828c9e0a433e3ccb85b3f8ecdf713f5a0c9"
+      },
+      {
+        "path": "spidermonkey/include/mac/js/RequiredDefines.h",
+        "gitBlobSha1": "308fd7d625d745970a6546896f6799f70696aad4",
+        "bytes": 1306,
+        "sha256": "942af96cd5fba3ec8194a3b90ccf48f26651605d9332ca8afa837b9a6cb72414"
+      },
+      {
+        "path": "spidermonkey/include/mac/js/RootingAPI.h",
+        "gitBlobSha1": "621a1e4394b32f40934d24bcca9e13f0b27615e7",
+        "bytes": 38801,
+        "sha256": "63cce7a4ee9085c8d30f848c7b00b99675167a144a865ddd84a5f0517a4f2c00"
+      },
+      {
+        "path": "spidermonkey/include/mac/js/SliceBudget.h",
+        "gitBlobSha1": "7c602c5572ae7d523c3ef83955c1782fda78118d",
+        "bytes": 1756,
+        "sha256": "9dd63c6431e973dae32215757ab1d9c258ce4dd8554dae3640d45c7588739226"
+      },
+      {
+        "path": "spidermonkey/include/mac/js/StructuredClone.h",
+        "gitBlobSha1": "fa48ce045a9a0af844565f923c9e5ad633792f6b",
+        "bytes": 10550,
+        "sha256": "896fe4302f4adae76770c9ba48f3ba96bacb4ed0c9cf17b45e34c493c596a223"
+      },
+      {
+        "path": "spidermonkey/include/mac/js/TracingAPI.h",
+        "gitBlobSha1": "3c7fdbe1b11c5ef374989748d80359a638085435",
+        "bytes": 8207,
+        "sha256": "ac4319c06574fc7bca09e1ea897151f2ecb834b455c6531fabbb04e8d1451a00"
+      },
+      {
+        "path": "spidermonkey/include/mac/js/TypeDecls.h",
+        "gitBlobSha1": "3e1e8afc668eeaeb9d53c15665ddc2646bf0d3a4",
+        "bytes": 2628,
+        "sha256": "168a7bfee207164529d7b1f303b3da4860ce42f401dbd8fa4c41f635fb6f9247"
+      },
+      {
+        "path": "spidermonkey/include/mac/js/UbiNode.h",
+        "gitBlobSha1": "d2acc2e24289fb15a0498ce6b37dbfb550672a88",
+        "bytes": 18353,
+        "sha256": "6e1009f60bed639af42ac5bea4160d229a4e8d6f2089c8635b2f8c4783b77cac"
+      },
+      {
+        "path": "spidermonkey/include/mac/js/UbiNodeTraverse.h",
+        "gitBlobSha1": "6072cbc489c2faaa75d05f12f442f99fd2870af3",
+        "bytes": 8063,
+        "sha256": "fe695246d615992af16c7b2a35d663be7ca32638e2417aa87e5d6dda43ad301d"
+      },
+      {
+        "path": "spidermonkey/include/mac/js/Utility.h",
+        "gitBlobSha1": "89c495e411165f6a08d86356a065efea9ac8296b",
+        "bytes": 27344,
+        "sha256": "ad8996f95a09d79f9236291a297f205228779225fc672a04d721337fd8fe1a82"
+      },
+      {
+        "path": "spidermonkey/include/mac/js/Value.h",
+        "gitBlobSha1": "e7b89e684deaf6ce0dd6a08c5bcf78eface8c842",
+        "bytes": 55500,
+        "sha256": "57b524012e6dc0c8a9332192085fa459a495f05899ec72c6036f9f8e003b8646"
+      },
+      {
+        "path": "spidermonkey/include/mac/js/Vector.h",
+        "gitBlobSha1": "a2d24b10edab393df112e4d0b3108203e7c885f1",
+        "bytes": 2561,
+        "sha256": "0412c16a1dd4cbe5bc9afdd2f94cd2a05be7caba5e3752c357920121d2add101"
+      },
+      {
+        "path": "spidermonkey/include/mac/js/WeakMapPtr.h",
+        "gitBlobSha1": "f5822bef4b2863e1aa106740dcd57b1731fed805",
+        "bytes": 1483,
+        "sha256": "1e2cd725091b6167a4bd57f9048670f391d6ff8f1af9457278fcceec987565f1"
+      },
+      {
+        "path": "spidermonkey/include/mac/jsalloc.h",
+        "gitBlobSha1": "a1e547cec9425e92d4003e41fc909a2165c5d65a",
+        "bytes": 2558,
+        "sha256": "77eb0a6a5317c27ca120af413cef0275b264b534579fbf91747803783d67d28e"
+      },
+      {
+        "path": "spidermonkey/include/mac/jsapi.h",
+        "gitBlobSha1": "4b5a4ce1ff5bd53d53b412cc138433b6884921d2",
+        "bytes": 177186,
+        "sha256": "5c2b6fdeb53a6cdf8e737433bdee8427a842b36dcc0dbc3ff80c13564185ff58"
+      },
+      {
+        "path": "spidermonkey/include/mac/jsbytecode.h",
+        "gitBlobSha1": "8e4f4cf90b02588500c0741a3cc04bf6dcb4af7a",
+        "bytes": 440,
+        "sha256": "eed09d9978ba31c381d9a1f892767698dfd3a95a764a790942eb41308402cd89"
+      },
+      {
+        "path": "spidermonkey/include/mac/jsclist.h",
+        "gitBlobSha1": "23da9b8cd5190d62b4b99e4c642115c4840d4803",
+        "bytes": 2642,
+        "sha256": "8bffe2ad5b81dc082d6af87090e30e53e206839e546bb796bb101e505c5bf3ea"
+      },
+      {
+        "path": "spidermonkey/include/mac/jscpucfg.h",
+        "gitBlobSha1": "a7a00613bbe65abc3a9a92874d54a0d448610fae",
+        "bytes": 3160,
+        "sha256": "64eea50acda502f308bf9f991be89008157882d0aa18edf2fef72f90af7ec8a8"
+      },
+      {
+        "path": "spidermonkey/include/mac/jsfriendapi.h",
+        "gitBlobSha1": "674999eb62b497b6a8ec2546c0d8a3e99a424e41",
+        "bytes": 89716,
+        "sha256": "aec7214d6688b301ae9af15d1c9d3ba5d542c1f7c32b5baec047d384ebf60c3a"
+      },
+      {
+        "path": "spidermonkey/include/mac/jsperf.h",
+        "gitBlobSha1": "60c572f559d40f3a653756b8f6f537f66412da86",
+        "bytes": 4437,
+        "sha256": "1a335d0f8c27c42beb36f90248c9c3f84a68c8c6a0a4a8514aaa15e9ed7bb9d8"
+      },
+      {
+        "path": "spidermonkey/include/mac/jsprf.h",
+        "gitBlobSha1": "bfedf98ca8c255c70fc0f5f07347f92834312f99",
+        "bytes": 2406,
+        "sha256": "6e9adefeccd4e1ffde8facf0a8d45045f89a9a8c53df1c0a8d7a8aeb558d524d"
+      },
+      {
+        "path": "spidermonkey/include/mac/jsprototypes.h",
+        "gitBlobSha1": "1cb56bf8da0a2fb2199aea99e3d14032ae0ad890",
+        "bytes": 6443,
+        "sha256": "92f906e19fe7c99b8ed76afa1905ac1f848364e94b1308b9a1245d5e51c850f0"
+      },
+      {
+        "path": "spidermonkey/include/mac/jsproxy.h",
+        "gitBlobSha1": "b4588c4c2af50b32f48229bc7eeca65588080287",
+        "bytes": 24220,
+        "sha256": "efc6af3ef5b4f6a0809c15cc0f2c58ce93d4ed33b484e3591217bcc280ec3b9d"
+      },
+      {
+        "path": "spidermonkey/include/mac/jspubtd.h",
+        "gitBlobSha1": "ffd75e2e5c8eba22ecb6bb0b7f9cccb52a5f634a",
+        "bytes": 16212,
+        "sha256": "fc75121fd9545684b0917e745f4456d1c1bab4c37309c362d4d604bbc5cf0e25"
+      },
+      {
+        "path": "spidermonkey/include/mac/jstypes.h",
+        "gitBlobSha1": "e9927bca0d0ccb067dfe92b7a8b3073f2c037b30",
+        "bytes": 7939,
+        "sha256": "5bd1c9bf3468f6269988f7e92c29b2216f9c065286da1d72938e4b75c254ca97"
+      },
+      {
+        "path": "spidermonkey/include/mac/jsversion.h",
+        "gitBlobSha1": "1f31e40b5ea5c90da4824339ec467e86cff8bc94",
+        "bytes": 2267,
+        "sha256": "f34e0fc01ed0484fe9702453229ed9c035acb6a423a78c40d5b30e6aa9071fd5"
+      },
+      {
+        "path": "spidermonkey/include/mac/jswrapper.h",
+        "gitBlobSha1": "a8a510c4f7672601f3e45301ced04d81321909c0",
+        "bytes": 15332,
+        "sha256": "58156ce6dd5e8157d5d6914520ba224460290c19a743c0ca1e7323a38dc76a34"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/Alignment.h",
+        "gitBlobSha1": "0ac8a48779b8a3921041d1f94fee995543d7c1af",
+        "bytes": 3104,
+        "sha256": "82875d66595b3a343f489f4ec1bf4c9bc26fd3574a1450d663c77a5022b8bbe6"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/AllocPolicy.h",
+        "gitBlobSha1": "357c632a02bbc94c71080d42432eaf9efb669872",
+        "bytes": 2421,
+        "sha256": "6f8c53024ce0cafefd38caa7d0fd36ab37f9e6ea73cdc863d15178e28c4d92d5"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/Array.h",
+        "gitBlobSha1": "b2ab578d4b8a392967c2f4d8fca30c0883ae0579",
+        "bytes": 1149,
+        "sha256": "ddeb3647e800c3a8b40ea44c6ab4e088cbc551febf15184ad5a59d6c9e91045b"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/ArrayUtils.h",
+        "gitBlobSha1": "44f5980c44cc66ca9d5548719b27430bfb1de4f3",
+        "bytes": 4672,
+        "sha256": "9ab3c41fa1aa06aa018d8d0fac69fbec606ed9bbeb2e098c6dc8fb0389a3c223"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/Assertions.h",
+        "gitBlobSha1": "a463b2768d69b4801b06fe4158d5a80448fac81b",
+        "bytes": 19280,
+        "sha256": "2b406baa150e4cb8622a72cfb4e06e473e62894420bbd35922f5ba073ada4261"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/Atomics.h",
+        "gitBlobSha1": "71d95c61bac74e966432c0b6cd5af12b0b580009",
+        "bytes": 36468,
+        "sha256": "fd220f12a28eecc47bbb4937b3e298f89b1432a9e23b4fec15b8eb2d87625bb5"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/Attributes.h",
+        "gitBlobSha1": "cdce8c7717319ef9c64c91395a18f86a036feb43",
+        "bytes": 20378,
+        "sha256": "bd9779274fa4badb3732e603334098fe76bdc369e05808d0fa004b2553ebefcc"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/BinarySearch.h",
+        "gitBlobSha1": "c8f593d6a92abd2f91ec4ae6814b158c94e2a8a6",
+        "bytes": 2084,
+        "sha256": "347669ed8ce7c3eb70e456ad3d7244a2745ee9cf03092759f5f6d4be62e9b306"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/BloomFilter.h",
+        "gitBlobSha1": "6757e4118118628dbdf8ed8b909a0325c6bd1ead",
+        "bytes": 7610,
+        "sha256": "eaa55c515762549081f39ca98d7edd2dddc230dbca7e6b5294b3a64067d62ea3"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/Casting.h",
+        "gitBlobSha1": "dc449af6b695b6302ae91ec3beab3483b779e63c",
+        "bytes": 5472,
+        "sha256": "aa1801de74ab921a0a66d5400b25e1cad6f02d2916a5e5364eb725f8a27da5f8"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/ChaosMode.h",
+        "gitBlobSha1": "ff59f2c6ec5b2383f681905fc8d71c2e80d56bb5",
+        "bytes": 1092,
+        "sha256": "7ac1ff3482cc6b9579a3a3b89e214a8dda9d65a6d00fe4a2b0eccaa6acc053da"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/Char16.h",
+        "gitBlobSha1": "e54eb0d5c8d20885a61075f51f45187c13a5ef9e",
+        "bytes": 5778,
+        "sha256": "19d66246c84c52021488790cb17e462335aed0af83f5c07e427a07ce86cd476a"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/CheckedInt.h",
+        "gitBlobSha1": "ad4c5fef411bca73b6befee9b67f79f688f21889",
+        "bytes": 22448,
+        "sha256": "8066909f7133b70c7babb56f97a5c77a24b04d72407023cece65c3dfb925e98f"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/Compiler.h",
+        "gitBlobSha1": "50f127da862398eeb20b4952e17cb72e799be3ce",
+        "bytes": 4890,
+        "sha256": "9ebd18aa8f022b79ff0fff9def955c4d245b20c0298e5a470f55520d92374267"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/Compression.h",
+        "gitBlobSha1": "a764a1b5d547d7fd35186eed6ab44e75e1467749",
+        "bytes": 4423,
+        "sha256": "d2681ef0c8006cc08f340ac7864a6f0dd4325ad062d7189ec0043e82ad09a29c"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/Constants.h",
+        "gitBlobSha1": "86bbb6b3544c5f4f2e5eb94699ada8cb67c5c884",
+        "bytes": 504,
+        "sha256": "b5ad001e08663ad5b99067872dd30f6fd0c44b4c666b449c18e633524f269367"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/DebugOnly.h",
+        "gitBlobSha1": "5d0197b194ed024702886d4db187a717934ca33a",
+        "bytes": 2243,
+        "sha256": "96ecfdc8c91067f58702c56fc06023f24db80847ee5eafb23018b50686677210"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/Decimal.h",
+        "gitBlobSha1": "9f4926bd06a9a56c538e1df53703e6be01b68d5d",
+        "bytes": 7513,
+        "sha256": "83b60912cbe94c3b98a3a50c976ab9841c4c1fd0453bb262598d02ff74343ebd"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/Endian.h",
+        "gitBlobSha1": "e4e1ff8549a574501dd5bf426e8f197971abe62b",
+        "bytes": 19882,
+        "sha256": "280c4cb6bfbe367e7ee0ff28a1288f6dc471fdc54b704da89485b27b299088eb"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/EnumSet.h",
+        "gitBlobSha1": "8c78b2b442c4dcd07fb96f331f5f45a7d4de2e5c",
+        "bytes": 3771,
+        "sha256": "62a3cf5dd77697338af8c4a2b52b8c1f9f81aa1bda688a695981ae5bbf19854a"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/EnumeratedArray.h",
+        "gitBlobSha1": "7e8e89275feef09dc9bf506be30595f4b62d4856",
+        "bytes": 2012,
+        "sha256": "01efe7b62276e5a439e0d0315e02166d4bdd3616a93dfbea122028cb5d014be6"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/FloatingPoint.h",
+        "gitBlobSha1": "0ed567832b4fca3a6767b6deec54409bb29ad4ff",
+        "bytes": 13881,
+        "sha256": "a3a58eadb42d07bab1151d529f834999e4902dbaa4ef8eea02a9154484046401"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/GuardObjects.h",
+        "gitBlobSha1": "2cd950f3142c5efd6ad6e89ef9d5636f9892681e",
+        "bytes": 5514,
+        "sha256": "e01db56090fff1e65dff7e1678d183198d7153ca2d9cdc7b6fba2acd71e9719e"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/HashFunctions.h",
+        "gitBlobSha1": "8b2c172bd14b29c9a519a5ad5b02b84d59ea1281",
+        "bytes": 9944,
+        "sha256": "ebf8434b53016a19e1c19a079a092b153db47d4d18afde503b4ee62c4ead6d3d"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/IntegerPrintfMacros.h",
+        "gitBlobSha1": "ff2415a86f91d0a104430956f1de31f1473a1c39",
+        "bytes": 2408,
+        "sha256": "d7bfdfe36f9ae6a745c611ae66f0b73a0cf531c8a8471da4b97a02e5bb207ee2"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/IntegerTypeTraits.h",
+        "gitBlobSha1": "9414451f913c230ec70034664f740458b6dbc1d4",
+        "bytes": 3651,
+        "sha256": "83bcebba85b1bf7c39c8f18e7d40ee70b2d64bb92a1c13477ac666e250077347"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/Likely.h",
+        "gitBlobSha1": "4f21609295447f4668e3b45d1f84e72185261f93",
+        "bytes": 769,
+        "sha256": "180c2dd43ef49bd3e8b35ac81afbaee0686681d9a201dfb441d078e2ce0abc0d"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/LinkedList.h",
+        "gitBlobSha1": "693c019f92cfc24c826b2885a543c7de6690efc5",
+        "bytes": 13200,
+        "sha256": "992f2fe7810d56ae0f2dfac5c6b80fd061bd21ce22f7ec44495bbfedba048ae6"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/MSIntTypes.h",
+        "gitBlobSha1": "4ce922fbc56d7a19e289e3c146c009f086aeef2e",
+        "bytes": 5495,
+        "sha256": "086a3e6a8d4b00805dd7bca815a8469235ef3511fd1725bcf4742f9550444a31"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/MacroArgs.h",
+        "gitBlobSha1": "c8b7338210356b27d89bb7e0c1ebf10f86622efa",
+        "bytes": 4722,
+        "sha256": "95460a24e5173ac58b94b90dd340e0477f05c0ae95c86d476102d33a9980c445"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/MacroForEach.h",
+        "gitBlobSha1": "ae1f4d0e993cce52873dfb5b4995846ec9b58ff6",
+        "bytes": 7831,
+        "sha256": "18e1dac7f2ee2cf72bd422e66a3e3534d009d37be0215a9d26014c1f1744aae2"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/MathAlgorithms.h",
+        "gitBlobSha1": "cd71d19770001cf8d99de9ef987d64bd7b5e2f5f",
+        "bytes": 13155,
+        "sha256": "d4804f99e56ce69c58bba1a2dd39b4b53888b663ec6a96d5377176fe23082137"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/Maybe.h",
+        "gitBlobSha1": "4ba88f677177a53d5f3ba724333ae3c14f7057dd",
+        "bytes": 5108,
+        "sha256": "5d5590885b46219c476f7a7f521639972aecdb1b82ff8e5547734061263c22d1"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/MaybeOneOf.h",
+        "gitBlobSha1": "1c58f88253ae97ffb3d0a1b91f64210b82b05e22",
+        "bytes": 3490,
+        "sha256": "c9fd42175900900597f4a8943bf9caa2aefb06b4778d034fb2280f4861b50dca"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/MemoryChecking.h",
+        "gitBlobSha1": "0642d758c0676d6ae023ab21a080eda6aab1311d",
+        "bytes": 2435,
+        "sha256": "96fb35326746f682c6790746cb5482dcebe49386afdbe5c19dbc4606a8e31660"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/MemoryReporting.h",
+        "gitBlobSha1": "d2340ecf0905c8dbcad11d2d5f1c347bf6fd2477",
+        "bytes": 826,
+        "sha256": "1ea816e1f58e96bfca5c77c2493be83d6f938cd85b16430684260b0cdec2031f"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/Move.h",
+        "gitBlobSha1": "08ae86fa57a04a69b7991e9f237ee0bffe2f6164",
+        "bytes": 10350,
+        "sha256": "391842a9637cc621509436426d87c3844cab17d10065d25ce96c89fb92422bd1"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/NullPtr.h",
+        "gitBlobSha1": "5963613c4b3f070e4f9e0c6534958e19f34b65a8",
+        "bytes": 4633,
+        "sha256": "ad8d6eaa61975e6906811653e16b939ba29de0ef112748ab001eb48b7089aa69"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/NumericLimits.h",
+        "gitBlobSha1": "730fcb410bbd106a0fd4001895e38cc73b78d717",
+        "bytes": 1133,
+        "sha256": "bfdbf9ed520811c3c7f9601ed5e4d6e06972fb508ebd439dff595b1c29ecedfd"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/Pair.h",
+        "gitBlobSha1": "e9e8a7693813e8fb064376d0015d6f8bead3898e",
+        "bytes": 4901,
+        "sha256": "8d4b3da7becacc17afe70bc997c2c12636b5917f3a23d0841b5622613026913b"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/PodOperations.h",
+        "gitBlobSha1": "843e1311d3ac834e3aacfab474b8accc5ee6a8c3",
+        "bytes": 5628,
+        "sha256": "569d86e663efa63c0696dbb811c5624df2f7f1769d91db60e18da3491006ff41"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/Poison.h",
+        "gitBlobSha1": "75e0f081cd9f3af05fd2bd8a64c33741fa2613e6",
+        "bytes": 1717,
+        "sha256": "503c571aa8e6a619bec3c1d1241a82a1707e66681b101a265b2ae3de3ae129fa"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/Range.h",
+        "gitBlobSha1": "814a2821ad666eb1475e5ec65b3dae94aaf06c97",
+        "bytes": 1233,
+        "sha256": "9ce1c3cb39d2c941be5fe241bf70305cf6ba58002575667626e265bea8879a7e"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/RangedPtr.h",
+        "gitBlobSha1": "4d94035b904ba68d16b3726612aeaa7218ec41e6",
+        "bytes": 6993,
+        "sha256": "d7bd3bab7c5e5b2f6e37e1e223cf4dd245a7687e3bbb57cd5be113dbcaa69857"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/ReentrancyGuard.h",
+        "gitBlobSha1": "557c61015eb536384ec90df642095932c2eb54f2",
+        "bytes": 1359,
+        "sha256": "ea9ddba9593e37cc2d0463a043d16e27ca498aba8f8c7f20d38c0241b5987928"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/RefCountType.h",
+        "gitBlobSha1": "e95a22a0ca63a9a453c7c9ad072787f68574a6ca",
+        "bytes": 1187,
+        "sha256": "6d8c22b001e33d7dd2f0a40ab26d9dbb7e0509ea2865b970cd78d2ef0c022a59"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/RefPtr.h",
+        "gitBlobSha1": "4901067b4c974c0066fa929562f1c1542b3b2a31",
+        "bytes": 13536,
+        "sha256": "10382a6f3bbb2b4d82cd98424fd5ae2b84f665449be1f6e24fc295982e01757c"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/RollingMean.h",
+        "gitBlobSha1": "5add14c879f44b014b274b12a33d3f43d6430034",
+        "bytes": 2648,
+        "sha256": "d6a6a5b4c3dabf374e7bc00645eca5873629d8e5d939dfaf526359f48a6bef79"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/SHA1.h",
+        "gitBlobSha1": "ddccaa67e7079e0c7de7d2453718e822318f63e8",
+        "bytes": 1683,
+        "sha256": "161a2cd8d3e435c53078bf9aff96ed00e3f9d477427ba342d2c19c164d2cbe94"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/Scoped.h",
+        "gitBlobSha1": "3f854d6375829f8757d5ad5aa9dd501332487f5f",
+        "bytes": 10869,
+        "sha256": "26b256d570eeabc998aeb57705022e888b614b399b9a5bda28ae2fa07a72ef92"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/SplayTree.h",
+        "gitBlobSha1": "a6d692266f74bb6b185cafad30da4d1d1e734a54",
+        "bytes": 7085,
+        "sha256": "bf2a2c7135264f1a7830f4b980161f35298ea692b3d441ef3baca005c28a691e"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/TaggedAnonymousMemory.h",
+        "gitBlobSha1": "d26b06dfb48fb28291b4a3e52126c242273cef3a",
+        "bytes": 2764,
+        "sha256": "7955cfe163f0593d3a403ed2cdf56e69debe159512d8311c58959177e4fd7291"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/TemplateLib.h",
+        "gitBlobSha1": "ea12c18b2b09c2a7c70d8d1f99494c030f7edbdc",
+        "bytes": 3020,
+        "sha256": "9f0165d7cca1200f586389ad3b0c4ca5d2bdfa61f9f923db4aca1fa3adf5633c"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/ThreadLocal.h",
+        "gitBlobSha1": "28015de22e221d34a7bed2b52fd07ac4b11c1771",
+        "bytes": 3714,
+        "sha256": "ec51575102bd52d589aff0d559dbf6173a3a50e2e054202a22cd26467231f3f8"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/ToString.h",
+        "gitBlobSha1": "f11cad5cb64d57fbff0d2795a96ebbcd99f5a4dc",
+        "bytes": 855,
+        "sha256": "e10eb7d58d757350643dd85336355d924eba67ab164e59f1f2fcb57800a9e19c"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/TypeTraits.h",
+        "gitBlobSha1": "515c68d94ec65855799eee8fa1461f45246291df",
+        "bytes": 29608,
+        "sha256": "2fad29f2a9807d7d563b8eaf3f576a65bd352c9c8e4685b93c0093d0e30152a8"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/TypedEnum.h",
+        "gitBlobSha1": "d84cd902572653d2fcf1cdfd9e3a14134a6766fa",
+        "bytes": 12213,
+        "sha256": "394328ca38c16927bf9196473c76524a23491305c8f3ebca1352959258c3b87d"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/TypedEnumBits.h",
+        "gitBlobSha1": "1f439f123996d0e901e703d3e2975a40c5a33b6d",
+        "bytes": 5794,
+        "sha256": "9ce4a8d876083505e847c7c55171e7b19f657c64e53679aedc5b559741cfcb84"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/TypedEnumInternal.h",
+        "gitBlobSha1": "8c88cb589b7ea15c0f2d8bd6859ddf5ac0db8b49",
+        "bytes": 3784,
+        "sha256": "8a69f1ee611d1b8dc716673c6ef65a764c2c32407ac79cdf397916589222edd1"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/Types.h",
+        "gitBlobSha1": "e7e18abb27467feeca016dcd7f9cdcf64c903f9b",
+        "bytes": 4180,
+        "sha256": "c03fbe3df534471f1d66a3aa184da5e258469a16d1267327541dec749f59a203"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/UniquePtr.h",
+        "gitBlobSha1": "9c873db90c4a7d1f73fa6ce4fa124827717ef37b",
+        "bytes": 22459,
+        "sha256": "0a97239775328da31e145d4983c14966b3f5f741963725bd30c569069b5b2c84"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/Vector.h",
+        "gitBlobSha1": "8540caf476f4c36fbc47d2ed4ea725b0a1b087da",
+        "bytes": 34396,
+        "sha256": "df1123985d0d3b2cd0430b9664f4f24bfe7d623c42f335b781868e4a73276b1e"
+      },
+      {
+        "path": "spidermonkey/include/mac/mozilla/WeakPtr.h",
+        "gitBlobSha1": "07f00bc29516b322749a75b7a10e88c734e53255",
+        "bytes": 5991,
+        "sha256": "6a080baaae027d6e7d995d539032f30afa798f712bc7573cab186d514134b2f5"
+      },
+      {
+        "path": "spidermonkey/prebuilt/mac/libjs_static.a",
+        "gitBlobSha1": "9b23eac960b95360ecee9636c4de0faa32c98a92",
+        "bytes": 17931304,
+        "sha256": "6a11c54419c1247ff5946fbf31e03aa32c20f86d8727979d0060bbf41197247f"
+      }
+    ],
+    "architectures": [
+      "i386",
+      "x86_64"
+    ]
+  },
+  "sample": {
+    "source": "legacy-sample.js",
+    "sourceSha256": "432cbc558d381f0ba21efeb91b5fe31ad7d1d74b22ffc250f4b51173efbe801e",
+    "bytecode": "legacy-sample.jsc",
+    "bytecodeSha256": "8342d2546931ba6f049f77c640dd7e4a6fbdb4a9bde6edde3399545c381e89a4",
+    "bytes": 2551,
+    "format": "SpiderMonkey XDR (.jsc)",
+    "expectedResult": 240,
+    "compilerSourceSha256": "04d859547894def8ae55ea7c4f2e9496d761f679a49c07f8a8519e4daebe93c2",
+    "compilerLanguage": "C++11",
+    "compilerArchitecture": "x86_64",
+    "execution": "Rosetta 2 on macOS arm64",
+    "compilerDefines": [
+      "STATIC_JS_API=1"
+    ],
+    "jitDisabled": true,
+    "deterministicRegeneration": true
+  },
+  "licenseDocuments": [
+    {
+      "file": "LICENSE-UPSTREAM-NOTICE.txt",
+      "source": "https://raw.githubusercontent.com/cocos2d/Spidermonkey/1d8c1d7eb188db095b5a7ce838ba0a933a0d414b/LICENSE",
+      "sha256": "a799adf18bfb1911f16086dc0e2a6d1cd0e31272f47e7ee6841b465b74d249de"
+    },
+    {
+      "file": "LICENSE-MPL-2.0.txt",
+      "source": "https://raw.githubusercontent.com/cocos2d/Spidermonkey/1d8c1d7eb188db095b5a7ce838ba0a933a0d414b/toolkit/content/license.html",
+      "section": "mpl",
+      "sourceDocumentSha256": "eba938a046662404d6ee70109df2d764db6c650e3080b8f07f662b5a264ed5b8",
+      "sha256": "c011eaf6085fbb02345bc55ce5b7f51725fe5203188a5c1b19c057b164354778"
+    }
+  ]
+}

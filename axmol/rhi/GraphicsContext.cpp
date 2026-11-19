@@ -1,6 +1,7 @@
 /****************************************************************************
  Copyright (c) 2018-2019 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -14,6 +15,7 @@
 #include "axmol/rhi/Texture.h"
 
 #include <limits>
+#include <memory>
 
 namespace ax::rhi
 {
@@ -63,6 +65,41 @@ bool GraphicsContext::updateSurface(SurfaceHandle /*surface*/, uint32_t /*width*
 void GraphicsContext::setFrameBufferOnly(bool /*frameBufferOnly*/) {}
 
 void GraphicsContext::submitCurrentFrameCommands(bool /*waitForCompletion*/) {}
+
+void GraphicsContext::beginExplicitRenderPass(RenderTarget* renderTarget, const RenderPassDesc& desc)
+{
+    beginRenderPass(renderTarget, desc);
+}
+
+void GraphicsContext::acquireLegacyDefaultFramebufferReadback() {}
+void GraphicsContext::releaseLegacyDefaultFramebufferReadback() {}
+
+bool GraphicsContext::readPixelsSync(RenderTarget* rt, PixelBufferDesc& result)
+{
+    if (!rt)
+        return false;
+    struct Capture
+    {
+        PixelBufferDesc pixels;
+        bool complete = false;
+    };
+    // A backend may retain the callback even when it cannot flush a capture in
+    // this state. Its callback must never refer to the caller's stack/output.
+    auto capture = std::make_shared<Capture>();
+    readPixels(rt, [capture](const PixelBufferDesc& pixels) {
+        capture->pixels._data = pixels._data;
+        capture->pixels._width = pixels._width;
+        capture->pixels._height = pixels._height;
+        capture->complete = true;
+    });
+    submitCurrentFrameCommands(true);
+    if (!capture->complete || !capture->pixels)
+        return false;
+    result._data = std::move(capture->pixels._data);
+    result._width = capture->pixels._width;
+    result._height = capture->pixels._height;
+    return true;
+}
 
 uint64_t GraphicsContext::getCompletedFenceValue() const
 {

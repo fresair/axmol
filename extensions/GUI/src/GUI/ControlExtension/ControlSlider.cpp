@@ -6,6 +6,7 @@
  * http://yannickloriot.com
  *
  * Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+ * Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,6 +32,8 @@
 
 #include "ControlSlider.h"
 #include "axmol/base/Director.h"
+#include "axmol/base/PointerEvent.h"
+#include <cmath>
 
 NS_AX_EXT_BEGIN
 
@@ -218,6 +221,46 @@ void ControlSlider::setMaximumValue(float maximumValue)
         _minimumValue = _maximumValue - 1.0f;
     }
     setValue(_value);
+}
+
+bool ControlSlider::onPointerHitTest(PointerEvent* event, Vec3* outHitPoint)
+{
+    if (!_legacyTouchHitTestEnabled)
+        return Control::onPointerHitTest(event, outHitPoint);
+    if (!event || !isVisible() || !getParent() || !_thumbSprite)
+        return false;
+
+    // The dispatcher resolved this ray for the current camera. Keep the v3
+    // world-z=0 convention; another listener's cached hit is not this hit.
+    const auto finite = [](const Vec3& value) {
+        return std::isfinite(value.x) && std::isfinite(value.y) && std::isfinite(value.z);
+    };
+    const auto& ray = event->getRay();
+    if (!finite(ray.origin) || !finite(ray.direction) || ray.direction.z == 0.0f)
+        return false;
+    const float t = -ray.origin.z / ray.direction.z;
+    if (!std::isfinite(t) || t < 0.0f)
+        return false;
+    const Vec3 point = ray.origin + ray.direction * t;
+    if (!finite(point))
+        return false;
+
+    // Give only a transient event the prospective hit. The caller retains its
+    // own cache, start point, capture/claim and propagation state until the
+    // dispatcher installs the result through its normal successful-hit path.
+    struct LocalHitEvent final : PointerEvent
+    {
+        void target(Node* node) { setCurrentTarget(node); }
+    } local;
+    local.copyDispatchStateFrom(*event);
+    local.setCamera(event->getCamera());
+    local.target(this);
+    local.setHitResult(point, event->getCamera(), this);
+    if (!isTouchInside(&local))
+        return false;
+    if (outHitPoint)
+        *outHitPoint = point;
+    return true;
 }
 
 bool ControlSlider::isTouchInside(PointerEvent* touch)

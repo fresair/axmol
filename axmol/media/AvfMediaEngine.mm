@@ -1,5 +1,6 @@
 /****************************************************************************
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -478,7 +479,7 @@ void AvfMediaEngine::onStatusNotification(void* context)
         }
     }
 
-    if (_bAutoPlay)
+    if (_bAutoPlay && (_state == MEMediaState::Preparing || _state == MEMediaState::Playing))
     {
         /* Fix issue: #2371 for tvOS
         delay one frame to invoke [player play] to fix player.timeControlStatus
@@ -494,7 +495,8 @@ void AvfMediaEngine::onStatusNotification(void* context)
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
           AvfMediaCallbackGuard callback(callbackState, generation);
           AVPlayer* player = weakPlayer;
-          if (callback && player != nil && player == callback.get()->_player)
+          if (callback && player != nil && player == callback.get()->_player &&
+              callback.get()->getState() == MEMediaState::Playing)
               [player play];
         });
 
@@ -711,14 +713,15 @@ bool AvfMediaEngine::pause()
 }
 bool AvfMediaEngine::stop()
 {
-    if (_state != MEMediaState::Stopped)
+    if (_state != MEMediaState::Stopped && _state != MEMediaState::Closed)
     {
         setCurrentTime(0);
         [_player pause];
-        _state = MEMediaState::Stopped;
-
-        // stop() will be invoked in dealloc, which is invoked by _videoPlayer's destructor,
-        // so do't send the message when _videoPlayer is being deleted.
+        _playbackEnded = false;
+        _state         = MEMediaState::Stopped;
+        // Explicit stop must update consumers (including VideoPlayer::isPlaying).
+        // Destruction uses close(), which detaches callbacks without publishing a stop event.
+        fireMediaEvent(MEMediaEventType::Stopped);
     }
     return true;
 }

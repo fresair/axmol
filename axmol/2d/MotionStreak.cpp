@@ -4,6 +4,7 @@ Copyright (c) 2010-2012 cocos2d-x.org
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -293,8 +294,8 @@ void MotionStreak::update(float delta)
                 newIdx2 = newIdx * 2;
 
             const uint8_t alpha        = (uint8_t)(_pointState[newIdx] * 255.0f);
-            _vertices[newIdx2].color.a = alpha;
-            _vertices[newIdx2].color.a = alpha;
+            _vertices[newIdx2].color.a     = alpha;
+            _vertices[newIdx2 + 1].color.a = alpha;
         }
     }
     _nuPoints -= mov;

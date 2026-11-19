@@ -2,6 +2,7 @@
  Copyright (c) 2013-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -342,8 +343,10 @@ void Renderer::visitRenderQueue(RenderQueue& queue)
     pushStateBlock();
 
     // Apply default state for all render queues
-    setDepthTest(false);
-    setDepthWrite(false);
+    setDepthTest(_isDepthTestFor2D);
+    setDepthWrite(_isDepthTestFor2D);
+    if (_isDepthTestFor2D)
+        setDepthCompareFunc(rhi::CompareFunc::LESS_EQUAL);
     setCullMode(rhi::CullMode::NONE);
 
     //
@@ -546,7 +549,7 @@ rhi::StencilOp Renderer::getStencilDepthPassOp() const
 
 rhi::CompareFunc Renderer::getStencilCompareFunc() const
 {
-    return _dsDesc.depthCompareFunc;
+    return _dsDesc.frontFaceStencil.stencilCompareFunc;
 }
 
 unsigned int Renderer::getStencilReadMask() const
@@ -680,6 +683,10 @@ void Renderer::drawBatchedTriangles()
     }
 
     /************** 2: Draw *************/
+    // Sprite/quad triangles remain double-sided when visited by a 3D camera.
+    // Mesh material callbacks and later batches retain their own cull state.
+    const auto savedCullMode = getCullMode();
+    setCullMode(rhi::CullMode::NONE);
     beginRenderPass();
 
     _context->setVertexBuffer(_vertexBuffer);
@@ -688,7 +695,7 @@ void Renderer::drawBatchedTriangles()
     for (int i = 0; i < batchesTotal; ++i)
     {
         auto& drawInfo = _triBatchesToDraw[i];
-        _context->updatePipelineState(_currentRT, drawInfo.cmd->getPipelineDesc(), rhi::PrimitiveType::TRIANGLE);
+        updateDrawPipelineState(drawInfo.cmd, rhi::PrimitiveType::TRIANGLE);
         _context->drawElements(rhi::IndexFormat::U_SHORT, drawInfo.indicesToDraw,
                                drawInfo.offset * sizeof(_indices[0]));
 
@@ -697,6 +704,7 @@ void Renderer::drawBatchedTriangles()
     }
 
     endRenderPass();
+    setCullMode(savedCullMode);
 
     /************** 3: Cleanup *************/
     _queuedTriangleCommands.clear();
@@ -705,6 +713,36 @@ void Renderer::drawBatchedTriangles()
     {
         _queuedIndexCount  = 0;
         _queuedVertexCount = 0;
+    }
+}
+
+void Renderer::updateDrawPipelineState(const RenderCommand* command, rhi::PrimitiveType primitiveType)
+{
+    const auto& descriptor = command->getPipelineDesc();
+    if (_stencilColorWriteMask == rhi::ColorWriteMask::ALL && !_gridCaptureSourceOverAlpha)
+    {
+        _context->updatePipelineState(_currentRT, descriptor, primitiveType);
+    }
+    else
+    {
+        auto maskedDescriptor = descriptor;
+        maskedDescriptor.blendDesc.writeMask &= _stencilColorWriteMask;
+        auto& blend = maskedDescriptor.blendDesc;
+        // Preserve all RGB factors and nonstandard blend equations. A coupled
+        // SRC_ALPHA source-over descriptor otherwise squares source alpha,
+        // making even an opaque covered destination translucent in the capture.
+        if (_gridCaptureSourceOverAlpha && blend.blendEnabled && blend.rgbBlendOp == rhi::BlendOp::ADD &&
+            blend.alphaBlendOp == rhi::BlendOp::ADD &&
+            (blend.sourceRGBBlendFactor == rhi::BlendFactor::SRC_ALPHA ||
+             blend.sourceRGBBlendFactor == rhi::BlendFactor::ONE) &&
+            blend.destinationRGBBlendFactor == rhi::BlendFactor::ONE_MINUS_SRC_ALPHA &&
+            blend.sourceAlphaBlendFactor == blend.sourceRGBBlendFactor &&
+            blend.destinationAlphaBlendFactor == blend.destinationRGBBlendFactor)
+        {
+            blend.sourceAlphaBlendFactor      = rhi::BlendFactor::ONE;
+            blend.destinationAlphaBlendFactor = rhi::BlendFactor::ONE_MINUS_SRC_ALPHA;
+        }
+        _context->updatePipelineState(_currentRT, maskedDescriptor, primitiveType);
     }
 }
 
@@ -719,7 +757,7 @@ void Renderer::drawCustomCommand(RenderCommand* command)
     _context->setVertexBuffer(cmd->getVertexBuffer());
 
     const auto primitiveType = cmd->getPrimitiveType();
-    _context->updatePipelineState(_currentRT, cmd->getPipelineDesc(), primitiveType);
+    updateDrawPipelineState(cmd, primitiveType);
 
     auto drawType = cmd->getDrawType();
     switch (drawType)
@@ -829,6 +867,22 @@ void Renderer::readPixels(rhi::RenderTarget* rt, std::function<void(const rhi::P
     _context->readPixels(rt, std::move(callback));
 }
 
+bool Renderer::readPixelsSync(rhi::RenderTarget* rt, rhi::PixelBufferDesc& result)
+{
+    if (!rt || !_context)
+        return false;
+    if (rt == _defaultRT)
+        _context->setFrameBufferOnly(false);
+    return _context->readPixelsSync(rt, result);
+}
+
+rhi::GraphicsContext* Renderer::acquireLegacyDefaultFramebufferReadback()
+{
+    if (_context)
+        _context->acquireLegacyDefaultFramebufferReadback();
+    return _context;
+}
+
 void Renderer::updateSurface(SurfaceHandle surface, uint32_t width, uint32_t height)
 {
     if (_context)
@@ -841,6 +895,10 @@ void Renderer::beginRenderPass()
 
     // Disable depth/stencil access if render target has no relevant attachments.
     auto depthStencil = _dsDesc;
+    // Nested render queues and material callbacks may enable depth again.
+    // Alpha-stencil fragments must reach the shader and must not write depth.
+    if (_stencilDepthOverride)
+        depthStencil.removeFlag(DepthStencilFlags::DEPTH_TEST | DepthStencilFlags::DEPTH_WRITE);
     if (!_currentRT->isDefaultRenderTarget())
     {
         if (!_currentRT->_depthStencil)
@@ -894,7 +952,7 @@ void Renderer::clear(ClearFlag flags, const Color& color, float depth, unsigned 
         else
             descriptor.flags.discardStart |= TargetBufferFlags::STENCIL;
 
-        _context->beginRenderPass(_currentRT, descriptor);
+        _context->beginExplicitRenderPass(_currentRT, descriptor);
         _context->endRenderPass();
     };
     addCommand(command);

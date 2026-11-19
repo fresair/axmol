@@ -9,6 +9,7 @@
  * http://yannickloriot.com
  *
  * Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+ * Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,6 +33,7 @@
  */
 
 #include "ControlSaturationBrightnessPicker.h"
+#include "LegacyControlTouchHitTest.h"
 
 NS_AX_EXT_BEGIN
 
@@ -68,6 +70,8 @@ bool ControlSaturationBrightnessPicker::initWithTargetAndPos(Node* target, Vec2 
         _shadow =
             ControlUtils::addSpriteToTargetWithPosAndAnchor("colourPickerShadow.png", target, pos, Vec2(0.0f, 0.0f));
         _slider = ControlUtils::addSpriteToTargetWithPosAndAnchor("colourPicker.png", target, pos, Vec2(0.5f, 0.5f));
+        if (!_background || !_overlay || !_shadow || !_slider)
+            return false;
 
         _startPos = pos;  // starting position of the colour picker
         boxPos    = 35;   // starting position of the virtual box area for picking a colour
@@ -84,9 +88,13 @@ bool ControlSaturationBrightnessPicker::initWithTargetAndPos(Node* target, Vec2 
 ControlSaturationBrightnessPicker* ControlSaturationBrightnessPicker::create(Node* target, Vec2 pos)
 {
     ControlSaturationBrightnessPicker* pRet = new ControlSaturationBrightnessPicker();
-    pRet->initWithTargetAndPos(target, pos);
-    pRet->autorelease();
-    return pRet;
+    if (pRet->initWithTargetAndPos(target, pos))
+    {
+        pRet->autorelease();
+        return pRet;
+    }
+    delete pRet;
+    return nullptr;
 }
 
 void ControlSaturationBrightnessPicker::setEnabled(bool enabled)
@@ -106,7 +114,11 @@ void ControlSaturationBrightnessPicker::updateWithHSV(HSV hsv)
     hsvTemp.v = 1;
 
     RGBA rgba = ControlUtils::RGBfromHSV(hsvTemp);
-    _background->setColor(Color32(rgba));
+    if (_legacyCompatibilityEnabled)
+        _background->setColor(Color32(static_cast<uint8_t>(rgba.r * 255.0f), static_cast<uint8_t>(rgba.g * 255.0f),
+                                     static_cast<uint8_t>(rgba.b * 255.0f), _background->getOpacity()));
+    else
+        _background->setColor(Color32(rgba));
 }
 
 void ControlSaturationBrightnessPicker::updateDraggerWithHSV(HSV hsv)
@@ -162,7 +174,17 @@ void ControlSaturationBrightnessPicker::updateSliderPosition(Vec2 sliderPosition
     _brightness = fabs((_startPos.y + (float)boxPos - sliderPosition.y) / (float)boxSize);
 }
 
-bool ControlSaturationBrightnessPicker::checkSliderPosition(Vec2 location)
+bool ControlSaturationBrightnessPicker::onPointerHitTest(PointerEvent* event, Vec3* outHitPoint)
+{
+    if (!_legacyCompatibilityEnabled)
+        return Control::onPointerHitTest(event, outHitPoint);
+    if (!_background || !_slider)
+        return false;
+    return detail::legacyControlTouchHitTest(
+        this, event, outHitPoint, [this](Vec2 location) { return containsSliderPosition(location); });
+}
+
+bool ControlSaturationBrightnessPicker::containsSliderPosition(Vec2 location) const
 {
     // Clamp the position of the icon within the circle
 
@@ -176,7 +198,12 @@ bool ControlSaturationBrightnessPicker::checkSliderPosition(Vec2 location)
     float dist = sqrtf(dx * dx + dy * dy);
 
     // check that the touch location is within the bounding rectangle before sending updates
-    if (dist <= _background->getBoundingBox().size.width * 0.5f)
+    return dist <= _background->getBoundingBox().size.width * 0.5f;
+}
+
+bool ControlSaturationBrightnessPicker::checkSliderPosition(Vec2 location)
+{
+    if (containsSliderPosition(location))
     {
         updateSliderPosition(location);
         sendActionsForControlEvents(Control::EventType::VALUE_CHANGED);

@@ -1,5 +1,6 @@
 /****************************************************************************
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -204,6 +205,7 @@ public static unsafe class BindingGenerator
         var diagnostics = new List<GenerationDiagnostic>();
         var classes = new List<BindingClass>();
         var enums = new List<BindingEnum>();
+        var knownEnums = new HashSet<string>(StringComparer.Ordinal);
         var generatedFiles = new List<string>();
         // Validate configuration against the selected C++ declarations, not
         // only against emitted methods.  A skip often names an internal or
@@ -229,7 +231,10 @@ public static unsafe class BindingGenerator
             var handle = CXTranslationUnit.Parse(
                 index,
                 fullHeader,
-                request.ClangArguments.ToArray(),
+                // Axmol's parser includes project headers via -isystem to
+                // suppress dependency warnings. Preserve their documentation
+                // annotations so manual-only helpers stay out of both emitters.
+                request.ClangArguments.Concat(new[] { "-fretain-comments-from-system-headers" }).ToArray(),
                 ReadOnlySpan<CXUnsavedFile>.Empty,
                 // Match the historical clang.cindex parser.  Detailed
                 // preprocessing records are not needed for binding emission
@@ -287,6 +292,9 @@ public static unsafe class BindingGenerator
 
                 foreach (var enumeration in tree.Enums.Distinct())
                 {
+                    if (request.Language == "js" && IsDefinition(enumeration) && !enumeration.IsAnonymous &&
+                        enumeration.CXXAccessSpecifier is not (CX_CXXAccessSpecifier.CX_CXXProtected or CX_CXXAccessSpecifier.CX_CXXPrivate))
+                        knownEnums.Add(GetQualifiedName(enumeration));
                     if (IsSelectedEnum(enumeration, request) && IsDefinition(enumeration))
                         enums.Add(ToBindingEnum(enumeration, tree));
                 }
@@ -345,6 +353,9 @@ public static unsafe class BindingGenerator
         }
 
         var fastMethods = ResolveFastMethods(request, uniqueClasses, diagnostics);
+        var collectedClasses = uniqueClasses;
+        if (request.Language == "js")
+            uniqueClasses = JsCppEmitter.SelectSupported(request, uniqueClasses, uniqueEnums, knownEnums, diagnostics);
 
         // Keep generation transactional at the module level.  A translation
         // unit may still yield partial cursors after a Clang error, but those
@@ -366,13 +377,25 @@ public static unsafe class BindingGenerator
         var outputFiles = new List<(string Path, string Contents)>();
         if (request.EmitCpp)
         {
-            outputFiles.Add((Path.Combine(request.OutputDirectory, $"axlua_{request.Module}_gen.h"),
-                             CppEmitter.EmitHeader(request)));
-            outputFiles.AddRange(CppEmitter.EmitSources(request, uniqueClasses, uniqueEnums, fastMethods)
-                .Select(source => (Path.Combine(request.OutputDirectory, source.FileName), source.Contents)));
+            if (request.Language == "js")
+            {
+                outputFiles.Add((Path.Combine(request.OutputDirectory, $"axjs_{request.Module}_gen.h"),
+                                 JsCppEmitter.EmitHeader(request)));
+                outputFiles.AddRange(JsCppEmitter.EmitSources(request, uniqueClasses, uniqueEnums)
+                    .Select(source => (Path.Combine(request.OutputDirectory, source.FileName), source.Contents)));
+            }
+            else
+            {
+                outputFiles.Add((Path.Combine(request.OutputDirectory, $"axlua_{request.Module}_gen.h"),
+                                 CppEmitter.EmitHeader(request)));
+                outputFiles.AddRange(CppEmitter.EmitSources(request, uniqueClasses, uniqueEnums, fastMethods)
+                    .Select(source => (Path.Combine(request.OutputDirectory, source.FileName), source.Contents)));
+            }
         }
         if (request.EmitManifest)
-            outputFiles.Add((manifestPath, JsonSerializer.Serialize(new BindingManifest
+            outputFiles.Add((manifestPath, request.Language == "js"
+                ? JsCppEmitter.EmitManifest(request, uniqueClasses, uniqueEnums, collectedClasses)
+                : JsonSerializer.Serialize(new BindingManifest
             {
                 Module = request.Module,
                 RegistrationName = string.IsNullOrWhiteSpace(request.RegistrationName) ? request.Module : request.RegistrationName,
@@ -401,7 +424,7 @@ public static unsafe class BindingGenerator
     private static void RemoveStaleCppChunks(GenerationRequest request, IEnumerable<string> generatedPaths)
     {
         var retained = generatedPaths.Select(Path.GetFullPath).ToHashSet(StringComparer.OrdinalIgnoreCase);
-        var prefix = $"axlua_{request.Module}_gen_";
+        var prefix = $"{(request.Language == "js" ? "axjs" : "axlua")}_{request.Module}_gen_";
         foreach (var path in Directory.GetFiles(request.OutputDirectory, $"{prefix}*.cpp"))
         {
             var fileName = Path.GetFileNameWithoutExtension(path);
@@ -573,7 +596,7 @@ public static unsafe class BindingGenerator
     }
 
     private static string ManifestPathFor(GenerationRequest request) =>
-        Path.Combine(request.OutputDirectory, "manifests", $"axlua_{request.Module}.json");
+        Path.Combine(request.OutputDirectory, "manifests", $"{(request.Language == "js" ? "axjs" : "axlua")}_{request.Module}.json");
 
     private static CXChildVisitResult VisitCursorCallback(CXCursor cursor, CXCursor parent, void* clientData)
     {
@@ -649,7 +672,7 @@ public static unsafe class BindingGenerator
     {
         if (cursor.IsNull || cursor.IsAnonymous || string.IsNullOrWhiteSpace(cursor.Spelling.CString))
             return false;
-        if (IsDeprecated(cursor))
+        if (IsDeprecated(cursor) || IsScriptIgnored(cursor, request.Language))
             return false;
         if (request.NativeNamespaces.Count > 0 &&
             !request.NativeNamespaces.Contains(GetNamespaceName(cursor), StringComparer.Ordinal))
@@ -683,16 +706,16 @@ public static unsafe class BindingGenerator
             : children
                 .Where(x => x.Kind == CXCursorKind.CXCursor_Constructor)
                 .Where(IsUsableConstructor)
-                .Where(x => IsSupportedSignature(x, tree))
-                .Select(x => ToBindingConstructor(x, tree, qualifiedName))
+                .Where(x => IsSupportedSignature(x, tree, request.Language == "js"))
+                .Select(x => ToBindingConstructor(x, tree, qualifiedName, request.Language))
                 .GroupBy(x => string.Join(",", x.ParameterTypes), StringComparer.Ordinal)
                 .Select(x => x.First())
                 .ToArray();
 
         var directMethods = children
             .Where(x => x.Kind == CXCursorKind.CXCursor_CXXMethod)
-            .Where(IsUsableMethod)
-            .Where(x => IsSupportedSignature(x, tree))
+            .Where(x => IsUsableMethod(x, request.Language))
+            .Where(x => IsSupportedSignature(x, tree, request.Language == "js"))
             .Where(x => !x.Spelling.CString.StartsWith("operator", StringComparison.Ordinal))
             .Where(x => !IsSkipped(nativeName, x.Spelling.CString, request))
             .Select(x => ToBindingMethod(x, tree, nativeName, qualifiedName, request))
@@ -711,7 +734,7 @@ public static unsafe class BindingGenerator
             {
                 NativeName = x.Spelling.CString,
                 LuaName = x.Spelling.CString,
-                FieldType = ResolveType(x.Type.Spelling.CString, qualifiedName, tree)
+                FieldType = ResolveScriptType(x.Type.Spelling.CString, qualifiedName, tree, request.Language)
             })
             .GroupBy(x => x.NativeName, StringComparer.Ordinal)
             .Select(x => x.First())
@@ -757,8 +780,8 @@ public static unsafe class BindingGenerator
             var baseMethods = GetChildren(tree, baseRecord)
                 .Where(x => x.Kind == CXCursorKind.CXCursor_CXXMethod)
                 .Where(x => importedNames.Contains(x.Spelling.CString))
-                .Where(IsUsableMethod)
-                .Where(x => IsSupportedSignature(x, tree))
+                .Where(x => IsUsableMethod(x, request.Language))
+                .Where(x => IsSupportedSignature(x, tree, request.Language == "js"))
                 .Where(x => !x.Spelling.CString.StartsWith("operator", StringComparison.Ordinal))
                 .Where(x => !IsSkipped(baseNativeName, x.Spelling.CString, request))
                 .Select(x => ToBindingMethod(x, tree, baseNativeName, baseName, request));
@@ -830,13 +853,15 @@ public static unsafe class BindingGenerator
         return order.Where(baseName => pathCounts[baseName] == 1).ToArray();
     }
 
-    private static BindingConstructor ToBindingConstructor(CXCursor cursor, CursorTree tree, string contextType)
+    private static BindingConstructor ToBindingConstructor(CXCursor cursor, CursorTree tree, string contextType, string language)
     {
         var parameters = GetParameters(cursor, tree);
         return new BindingConstructor
         {
-            ParameterTypes = parameters.Select(x => ResolveType(x.Type.Spelling.CString, contextType, tree)).ToArray(),
-            DefaultValues = parameters.Select(x => GetDefaultValue(x, contextType, tree)).ToArray()
+            ParameterTypes = parameters.Select(x => ResolveScriptType(x.Type.Spelling.CString, contextType, tree, language)).ToArray(),
+            DefaultValues = parameters.Select(x => language == "js"
+                ? QualifyNamespaceRelativeTokens(GetDefaultValue(x, contextType, tree), tree)
+                : GetDefaultValue(x, contextType, tree)).ToArray()
         };
     }
 
@@ -874,9 +899,11 @@ public static unsafe class BindingGenerator
             NativeName = cursor.Spelling.CString,
             LuaName = luaName,
             DeclaringType = contextType,
-            ReturnType = ResolveType(cursor.ResultType.Spelling.CString, contextType, tree),
-            ParameterTypes = parameters.Select(x => ResolveType(x.Type.Spelling.CString, contextType, tree)).ToArray(),
-            DefaultValues = parameters.Select(x => GetDefaultValue(x, contextType, tree)).ToArray(),
+            ReturnType = ResolveScriptType(cursor.ResultType.Spelling.CString, contextType, tree, request.Language),
+            ParameterTypes = parameters.Select(x => ResolveScriptType(x.Type.Spelling.CString, contextType, tree, request.Language)).ToArray(),
+            DefaultValues = parameters.Select(x => request.Language == "js"
+                ? QualifyNamespaceRelativeTokens(GetDefaultValue(x, contextType, tree), tree)
+                : GetDefaultValue(x, contextType, tree)).ToArray(),
             IsStatic = clang.CXXMethod_isStatic(cursor) != 0,
             IsConst = clang.CXXMethod_isConst(cursor) != 0,
             IsVariadic = clang.Cursor_isVariadic(cursor) != 0,
@@ -954,7 +981,7 @@ public static unsafe class BindingGenerator
         string derivedLuaName,
         GenerationRequest request)
     {
-        if (!IsUsableMethod(overridden) || !IsSupportedSignature(overridden, tree) ||
+        if (!IsUsableMethod(overridden, request.Language) || !IsSupportedSignature(overridden, tree, request.Language == "js") ||
             overridden.Spelling.CString.StartsWith("operator", StringComparison.Ordinal))
             return false;
 
@@ -1002,14 +1029,16 @@ public static unsafe class BindingGenerator
 
     private static bool IsUsableConstructor(CXCursor cursor) =>
         !IsDeprecated(cursor) &&
+        !IsScriptIgnored(cursor) &&
         cursor.CXXAccessSpecifier == CX_CXXAccessSpecifier.CX_CXXPublic &&
         clang.CXXMethod_isDeleted(cursor) == 0 &&
         clang.CXXConstructor_isCopyConstructor(cursor) == 0 &&
         clang.CXXConstructor_isMoveConstructor(cursor) == 0 &&
         clang.Cursor_isVariadic(cursor) == 0;
 
-    private static bool IsUsableMethod(CXCursor cursor) =>
+    private static bool IsUsableMethod(CXCursor cursor, string language) =>
         !IsDeprecated(cursor) &&
+        !IsScriptIgnored(cursor, language) &&
         cursor.CXXAccessSpecifier == CX_CXXAccessSpecifier.CX_CXXPublic &&
         clang.CXXMethod_isDeleted(cursor) == 0 &&
         clang.Cursor_isVariadic(cursor) == 0 &&
@@ -1017,7 +1046,7 @@ public static unsafe class BindingGenerator
 
     private static bool IsUsableField(CXCursor cursor, CursorTree tree)
     {
-        if (IsDeprecated(cursor) ||
+        if (IsDeprecated(cursor) || IsScriptIgnored(cursor) ||
             cursor.CXXAccessSpecifier != CX_CXXAccessSpecifier.CX_CXXPublic ||
             cursor.IsAnonymous || string.IsNullOrWhiteSpace(cursor.Spelling.CString))
             return false;
@@ -1044,7 +1073,7 @@ public static unsafe class BindingGenerator
             (rule.ClassPattern == "*" || MatchesConfiguredPattern(className, rule.ClassPattern)) &&
             rule.FieldPatterns.Any(pattern => MatchesConfiguredPattern(fieldName, pattern)));
 
-    private static bool IsSupportedSignature(CXCursor cursor, CursorTree tree)
+    private static bool IsSupportedSignature(CXCursor cursor, CursorTree tree, bool javascript = false)
     {
         var context = GetQualifiedName(clang.getCursorSemanticParent(cursor));
         var types = GetParameters(cursor, tree)
@@ -1063,7 +1092,9 @@ public static unsafe class BindingGenerator
             !type.Contains("tsl::robin_map", StringComparison.Ordinal) &&
             !type.Contains("tlx::string_map", StringComparison.Ordinal) &&
             !type.Contains("ValueMap", StringComparison.Ordinal) &&
-            !type.Contains("std::span", StringComparison.Ordinal) &&
+            // JS Argument<span> owns a converted array for the invocation.
+            // Lua has no span converter and must retain its existing surface.
+            (javascript || !type.Contains("std::span", StringComparison.Ordinal)) &&
             !type.Contains("std::unique_ptr", StringComparison.Ordinal) &&
             // An erased native pointer has no stable Lua representation or
             // ownership contract.  It must use a dedicated adapter/table
@@ -1072,7 +1103,9 @@ public static unsafe class BindingGenerator
             // Scalar out-parameters are an implementation detail of the C++
             // API.  Lua has no addressable float*/int* value, and sol2 would
             // otherwise emit a callable that can never be invoked correctly.
-            !ContainsScalarPointer(type) &&
+            !ContainsScalarPointer(javascript
+                ? Regex.Replace(type, @"(?<![A-Za-z0-9_])(?:const\s+char|char\s+const)\s*\*(?!\s*\*)", "axjs_cstring")
+                : type) &&
             // Cocos-era selector aliases are member-function pointers, not
             // Lua-callable std::function parameters.  Keep them out of an
             // overload group so a modern lambda overload remains bindable.
@@ -1165,6 +1198,59 @@ public static unsafe class BindingGenerator
         }
         result.Append(type, position, type.Length - position);
         return result.ToString();
+    }
+
+    private static string ResolveScriptType(string type, string context, CursorTree tree, string language)
+    {
+        if (language != "js") return ResolveType(type, context, tree);
+        var resolved = ResolveType(ExpandCallableAliases(type, tree), context, tree);
+        resolved = QualifyNamespaceRelativeTokens(resolved, tree)!;
+        // ExtensionMacros retains the deprecated extension namespace alias.
+        // Keep its spelling equivalent to the registered current native type.
+        resolved = resolved.Replace("ax::extension::", "ax::ext::", StringComparison.Ordinal);
+        // The Lua runtime resolves aliases through native template deduction.
+        // JS must classify their storage before emission: AudioId, callback
+        // typedefs, and container aliases are ordinary native value types.
+        for (var pass = 0; pass < 8; ++pass)
+        {
+            var changed = false;
+            foreach (var alias in tree.TypeAliases.Where(x => x.Key.StartsWith("ax::", StringComparison.Ordinal))
+                         .OrderByDescending(x => x.Key.Length))
+            {
+                var pattern = $"(?<![A-Za-z0-9_:]){Regex.Escape(alias.Key)}(?![A-Za-z0-9_:])";
+                if (!Regex.IsMatch(resolved, pattern)) continue;
+                var underlying = ResolveType(alias.Value, alias.Key, tree);
+                if (underlying == alias.Key) continue;
+                var next = Regex.Replace(resolved, pattern, underlying);
+                changed |= next != resolved;
+                resolved = next;
+            }
+            if (!changed) break;
+        }
+        // Alias replacement may introduce namespace-relative enum or template
+        // spellings after the first qualification pass (for example a
+        // MeshRenderer CullFaceSide alias expands to rhi::CullMode).
+        resolved = QualifyNamespaceRelativeTokens(resolved, tree)!;
+        resolved = Regex.Replace(resolved, @"(?<![A-Za-z0-9_:])Vector\s*<", "ax::Vector<");
+        resolved = Regex.Replace(resolved, @"(?<![A-Za-z0-9_:])Map\s*<", "ax::Map<");
+        return resolved;
+    }
+
+    private static string? QualifyNamespaceRelativeTokens(string? value, CursorTree tree)
+    {
+        if (value is null) return null;
+        return Regex.Replace(value, @"(?:[A-Za-z_]\w*::)+[A-Za-z_]\w*", match =>
+        {
+            var name = match.Value;
+            var shortName = name[(name.LastIndexOf("::", StringComparison.Ordinal) + 2)..];
+            var candidates = new List<string>();
+            if (tree.TypeNames.TryGetValue(shortName, out var typeNames)) candidates.AddRange(typeNames);
+            if (tree.ValueNames.TryGetValue(shortName, out var valueNames)) candidates.AddRange(valueNames);
+            if (candidates.Contains(name, StringComparer.Ordinal))
+                return name;
+            var possible = candidates.Where(candidate => candidate.EndsWith("::" + name, StringComparison.Ordinal)).ToArray();
+            return possible.Length == 1 ? possible[0] : name;
+        });
     }
 
     private static string ExpandCallableAliases(string type, CursorTree tree)
@@ -1451,6 +1537,16 @@ public static unsafe class BindingGenerator
 
     private static bool IsDeprecated(CXCursor cursor) =>
         clang.getCursorAvailability(cursor) == CXAvailabilityKind.CXAvailability_Deprecated;
+
+    private static bool IsScriptIgnored(CXCursor cursor, string? language = null)
+    {
+        // The established sol2 surface exports this string out-parameter API
+        // despite its older JS annotation. Preserve that existing Lua method;
+        // JS uses an explicit conversion adapter for unsupported out-parameters.
+        if (language == "lua" && GetQualifiedName(cursor) == "ax::Properties::getPath") return false;
+        using var comment = cursor.RawCommentText;
+        return Regex.IsMatch(comment.CString ?? string.Empty, @"@script\s*\{\s*ignore\s*\}", RegexOptions.CultureInvariant);
+    }
 
     private static IReadOnlyList<CXCursor> GetChildren(CursorTree tree, CXCursor cursor) =>
         tree.Children.TryGetValue(cursor, out var children) ? children : Array.Empty<CXCursor>();

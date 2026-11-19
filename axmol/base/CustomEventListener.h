@@ -2,6 +2,7 @@
  Copyright (c) 2013-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -11,6 +12,7 @@
 #pragma once
 
 #include "axmol/base/EventListener.h"
+#include <string>
 
 /**
  * @addtogroup base
@@ -63,6 +65,8 @@ public:
     bool init(std::string_view listenerId, const std::function<void(CustomEvent*)>& callback);
 
 protected:
+    // EventListener keeps a string_view; dynamic event names must outlive init().
+    std::string _ownedListenerID;
     std::function<void(CustomEvent*)> _onCustomEvent;
 
     friend class LuaCustomEventListener;

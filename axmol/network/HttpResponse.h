@@ -3,6 +3,7 @@
  Copyright (c) 2013-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -115,7 +116,7 @@ public:
 
     const std::string& getStatusText() const { return _statusText; }
 
-    uint64_t getContentLength() const { return _context.content_length; }
+    uint64_t getContentLength() const { return _contentLength; }
 
 private:
     void setResponseCode(int value) { _responseCode = value; }
@@ -255,6 +256,7 @@ private:
     static int on_headers_complete(llhttp_t* context)
     {
         auto thiz            = (HttpResponse*)context->data;
+        thiz->_responseCode  = context->status_code;
         thiz->_contentLength = context->content_length;
         auto request         = thiz->getHttpRequest();
         if (!request->getDataCallback() && thiz->_contentLength > 0)

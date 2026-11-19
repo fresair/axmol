@@ -5,6 +5,7 @@ Copyright (c) 2011      Zynga Inc.
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -78,6 +79,12 @@ bool ActionInterval::initWithDuration(float d)
 
 bool ActionInterval::sendUpdateEventToScript(float dt, Action* actionObject)
 {
+#if AX_ENABLE_SCRIPT_BINDING
+    if (actionObject->hasScriptBindingExposure())
+        if (auto* engine = ScriptEngineManager::getScriptEngineIfExists();
+            engine && engine->dispatchActionUpdate(actionObject, dt))
+            return true;
+#endif
     return false;
 }
 
@@ -101,10 +108,8 @@ void ActionInterval::step(float dt)
     float updateDt = std::max(0.0f,  // needed for rewind. elapsed could be negative
                               std::min(1.0f, _elapsed / _duration));
 
-    if (sendUpdateEventToScript(updateDt, this))
-        return;
-
-    this->update(updateDt);
+    if (!sendUpdateEventToScript(updateDt, this))
+        this->update(updateDt);
 
     _done = _elapsed >= _duration;
 }

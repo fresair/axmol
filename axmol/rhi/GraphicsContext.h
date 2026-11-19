@@ -1,6 +1,7 @@
 /****************************************************************************
  Copyright (c) 2018-2019 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -97,6 +98,12 @@ public:
      * @param desc Specifies a group of render targets that hold the results of a render pass.
      */
     virtual void beginRenderPass(RenderTarget* renderTarget, const RenderPassDesc& desc) = 0;
+
+    /** Begin a deliberately new pass, honoring clear/discard even when a
+     * compute dispatch or synchronous submission interrupted the same target.
+     * Unlike continuation through beginRenderPass(), equal descriptors must
+     * not cause a requested clear to be merged into the preceding pass. */
+    virtual void beginExplicitRenderPass(RenderTarget* renderTarget, const RenderPassDesc& desc);
 
     /**
      * Update depthStencil status, improvment: for metal backend cache it
@@ -222,6 +229,19 @@ public:
      * @param callback        A callback invoked with the resulting pixel buffer description.
      */
     virtual void readPixels(RenderTarget* rt, std::function<void(const PixelBufferDesc&)> callback) = 0;
+
+    /** Read submitted contents before returning. Without a legacy lease,
+     * default-surface reads require this frame's unpresented drawable. A legacy
+     * backend may also read preserved pixels from the preceding rendered frame.
+     * Returns false when no valid synchronous source is available. */
+    virtual bool readPixelsSync(RenderTarget* rt, PixelBufferDesc& result);
+
+    /** Balanced legacy-runtime leases. Acquire before the first default-surface
+     * drawable; backends may preserve its last rendered pixels across frames.
+     * Releasing the last lease invalidates that history. Modern contexts do not
+     * opt in implicitly. */
+    virtual void acquireLegacyDefaultFramebufferReadback();
+    virtual void releaseLegacyDefaultFramebufferReadback();
 
     /**
      * @brief Copies the contents of one texture resource into another texture resource.

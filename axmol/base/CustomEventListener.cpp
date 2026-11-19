@@ -2,6 +2,7 @@
  Copyright (c) 2013-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -44,7 +45,8 @@ bool CustomEventListener::init(std::string_view listenerId, const std::function<
         }
     };
 
-    if (EventListener::init(EventListener::Type::CUSTOM, listenerId, listener))
+    _ownedListenerID.assign(listenerId);
+    if (EventListener::init(EventListener::Type::CUSTOM, _ownedListenerID, listener))
     {
         ret = true;
     }

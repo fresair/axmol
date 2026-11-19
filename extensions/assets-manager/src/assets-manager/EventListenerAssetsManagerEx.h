@@ -1,6 +1,7 @@
 /****************************************************************************
  Copyright (c) 2014-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -27,6 +28,7 @@
 
 #include "axmol/base/EventListener.h"
 #include "axmol/base/CustomEventListener.h"
+#include "axmol/base/WeakPtr.h"
 #include "extensions/ExtensionMacros.h"
 #include "extensions/ExtensionExport.h"
 
@@ -76,7 +78,9 @@ protected:
 
     std::function<void(EventAssetsManagerEx*)> _onAssetsManagerExEvent;
 
-    const AssetsManagerEx* _AssetsManagerEx;
+    // Event names contain the manager address. Its WeakPtr generation keeps a
+    // destroyed manager's listener from receiving a later object at that address.
+    ax::WeakPtr<const AssetsManagerEx> _AssetsManagerEx;
 
     // friend class luaEventListenerAssetsManagerEx;
 };

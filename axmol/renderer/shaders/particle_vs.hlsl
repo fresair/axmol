@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
+// SPDX-License-Identifier: MIT
 #include "base.hlsli"
 
 struct VS_IN {
@@ -7,8 +9,9 @@ struct VS_IN {
 };
 
 struct VS_OUT {
-    float2 v_texCoord : TEXCOORD0;
+    // Keep color at the same stage location for both particle fragment shaders.
     float4 v_color : COLOR0;
+    float2 v_texCoord : TEXCOORD0;
     float4 position : SV_Position;
 };
 

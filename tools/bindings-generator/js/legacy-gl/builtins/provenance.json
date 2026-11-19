@@ -1,0 +1,62 @@
+{
+  "commit": "e4b6a5ef8fcdc99a7ebea606312b67fe4c534b9f",
+  "source": "cocos2d-x/v3 builtin shaders",
+  "files": [
+    {
+      "referencePath": "cocos/renderer/ccShader_PositionTexture.vert",
+      "referenceSha256": "e43f05031d6ccc18247a94d15d934beb1bdcad1e58eea526f5cc413d22ad94d1",
+      "sourceFile": "position-texture.vert",
+      "sourceSha256": "549b2bb5620016b25a8614ec4b3d201f7839e28e56bdad7581b0dbf071d4af5c",
+      "licenseFile": "LICENSE.txt",
+      "payloadExtraction": "Exact C++ raw-string payload; unchanged builtin shader expressions."
+    },
+    {
+      "referencePath": "cocos/renderer/ccShader_PositionTexture.frag",
+      "referenceSha256": "2f68b6bcae4fdf9b798d31341c8a2ccb9b3cbef9590aa36fd120ddfcdc697efd",
+      "sourceFile": "position-texture.frag",
+      "sourceSha256": "0f12c41f2d8208c8832d535048146b13689749f71dcc3fd7086e21f369d050e6",
+      "licenseFile": "LICENSE.txt",
+      "payloadExtraction": "Exact C++ raw-string payload; unchanged builtin shader expressions."
+    },
+    {
+      "referencePath": "cocos/renderer/ccShader_PositionTextureColor.vert",
+      "referenceSha256": "e6b1a4ed39efd6f0ff4084a8a19f707ab5335a056694b026117b27a5f2f12f54",
+      "sourceFile": "position-texture-color.vert",
+      "sourceSha256": "70e6a2184274b161351d44a5160676469e9f29021ac7e1152b2d1f9014e802b8",
+      "licenseFile": "LICENSE.txt",
+      "payloadExtraction": "Exact C++ raw-string payload; unchanged builtin shader expressions."
+    },
+    {
+      "referencePath": "cocos/renderer/ccShader_PositionTextureColor.frag",
+      "referenceSha256": "502ff52a7cf3625ca97d927795df97097119d09a1bbc56723262e09a9431146a",
+      "sourceFile": "position-texture-color.frag",
+      "sourceSha256": "9671f524399c534750b812823e45a87a8de3fc31d12580e22b4198545fe09622",
+      "licenseFile": "LICENSE.txt",
+      "payloadExtraction": "Exact C++ raw-string payload; unchanged builtin shader expressions."
+    },
+    {
+      "referencePath": "cocos/renderer/ccShader_PositionTextureColor_noMVP.vert",
+      "referenceSha256": "1bac12a161f78adb3d828ce41969ab5095da93916fd1ef5a91a423cf67f5cc30",
+      "sourceFile": "position-texture-color-no-mvp.vert",
+      "sourceSha256": "05179dfeb30ef6bddb0cda19e249c6ccc741889c5f08dc196e5e5c748a2fefbc",
+      "licenseFile": "LICENSE.txt",
+      "payloadExtraction": "Exact C++ raw-string payload; unchanged builtin shader expressions."
+    },
+    {
+      "referencePath": "cocos/renderer/ccShader_PositionTextureColor_noMVP.frag",
+      "referenceSha256": "15fca249ea24dd5888ca934e9fb65fcd19289faede75b9ad532ab506885a5ef0",
+      "sourceFile": "position-texture-color-no-mvp.frag",
+      "sourceSha256": "0e87a8216ff2cf519bc4013ddcce6fcd92152e14771c05a7a1a0b069a29b61f6",
+      "licenseFile": "LICENSE.txt",
+      "payloadExtraction": "Exact C++ raw-string payload; unchanged builtin shader expressions."
+    },
+    {
+      "referencePath": "cocos/renderer/ccShader_PositionTextureColorAlphaTest.frag",
+      "referenceSha256": "9f642e20ab53d0a4b82cf4df8ae4d2261ab3738379b3cae24b3836df8733c435",
+      "sourceFile": "position-texture-color-alpha-test.frag",
+      "sourceSha256": "2aa34a9fe20f36d0fc870c279c8409f54cbc2b9b66c7fba955b2e76fcd3ca574",
+      "licenseFile": "LICENSE.txt",
+      "payloadExtraction": "Exact C++ raw-string payload; unchanged builtin shader expressions."
+    }
+  ]
+}

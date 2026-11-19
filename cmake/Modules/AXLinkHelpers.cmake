@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
+# SPDX-License-Identifier: MIT
 include(${_AX_ROOT}/1k/platforms.cmake)
 _1k_deprecated_32bit(axmol 3.0.0)
 
@@ -193,6 +195,8 @@ function(ax_link_cxx_prebuilt APP_NAME AX_ROOT_DIR AX_PREBUILT_DIR)
     list(APPEND LIBS opus)
   endif()
 
+  ax_link_pred(AX_WITH_TIFF LIBS tiff)
+
   if(AX_ENABLE_EXT_LIVE2D)
     include(${AX_ROOT_DIR}/extensions/Live2D/live2d-core.cmake)
   endif()
@@ -361,3 +365,153 @@ function(ax_link_lua_prebuilt APP_NAME AX_ROOT_DIR AX_PREBUILT_DIR)
     endif()
   endif()
 endfunction(ax_link_lua_prebuilt)
+
+# JavaScript SDKs use the exported CMake map so the exact runtime package and
+# transitive extension interfaces survive SDK linking on Apple and Android.
+function(ax_link_js_prebuilt APP_NAME AX_ROOT_DIR AX_PREBUILT_DIR)
+  if(IS_ABSOLUTE "${AX_PREBUILT_DIR}")
+    set(_js_sdk_dir "${AX_PREBUILT_DIR}")
+  else()
+    set(_js_sdk_dir "${AX_ROOT_DIR}/${AX_PREBUILT_DIR}")
+  endif()
+  if(NOT EXISTS "${_js_sdk_dir}/AxmolTargets.cmake")
+    message(FATAL_ERROR "JavaScript SDK target map not found: ${_js_sdk_dir}/AxmolTargets.cmake. Build axmol-sdk with AX_ENABLE_EXT_JS=ON first.")
+  endif()
+
+  find_package(Threads REQUIRED)
+  set(_1kfetch_cache_dir "${AX_ROOT_DIR}/cache")
+  include("${AX_ROOT_DIR}/1k/fetch.cmake")
+  load_cache("${_js_sdk_dir}" READ_WITH_PREFIX _js_sdk_
+    AX_WITH_JPEG AX_WITH_TIFF AX_WITH_CURL AX_ENABLE_OPUS AX_WITH_CARES
+    BUILD_SHARED_LIBS ANDROID_SHARED_LOADS)
+  set(BUILD_SHARED_LIBS "${_js_sdk_BUILD_SHARED_LIBS}" PARENT_SCOPE)
+  if(ANDROID)
+    set(ANDROID_SHARED_LOADS "${_js_sdk_ANDROID_SHARED_LOADS}" PARENT_SCOPE)
+    if(NOT COMMAND config_android_shared_libs)
+      function(config_android_shared_libs package_name target_folder)
+        string(REPLACE "." "/" package_path "${package_name}")
+        configure_file("${_AX_ROOT}/3rdparty/SharedLoader.java.in"
+          "${target_folder}/${package_path}/SharedLoader.java" @ONLY)
+      endfunction()
+    endif()
+  endif()
+  set(_js_sdk_imports zlib openssl)
+  if(_js_sdk_AX_WITH_JPEG)
+    list(APPEND _js_sdk_imports jpeg-turbo)
+  endif()
+  if(_js_sdk_AX_WITH_CURL)
+    list(APPEND _js_sdk_imports curl)
+  endif()
+  if(_js_sdk_AX_ENABLE_OPUS)
+    list(APPEND _js_sdk_imports opus)
+  endif()
+  if(_js_sdk_AX_WITH_CARES)
+    list(APPEND _js_sdk_imports c-ares)
+  endif()
+  foreach(_js_import IN LISTS _js_sdk_imports)
+    if(_js_import STREQUAL "openssl")
+      set(_js_import_target OpenSSL::SSL)
+    elseif(_js_import STREQUAL "c-ares")
+      set(_js_import_target cares)
+    else()
+      set(_js_import_target "${_js_import}")
+    endif()
+    if(NOT TARGET ${_js_import_target})
+      add_subdirectory("${AX_ROOT_DIR}/3rdparty/${_js_import}"
+        "${CMAKE_CURRENT_BINARY_DIR}/js-sdk-import/${_js_import}")
+    endif()
+  endforeach()
+
+  # The runtime is an imported target, so it is intentionally not included in
+  # AxmolTargets.cmake. Import it with the same manifest validation as a source
+  # build, before loading the SDK map which references it.
+  if(NOT TARGET axmol::spidermonkey)
+    add_subdirectory("${AX_ROOT_DIR}/3rdparty/spidermonkey"
+      "${CMAKE_CURRENT_BINARY_DIR}/js-runtime-import")
+  endif()
+  include("${_js_sdk_dir}/AxmolTargets.cmake")
+  if(NOT TARGET axjs)
+    message(FATAL_ERROR "The selected Axmol SDK was built without JavaScript support")
+  endif()
+  target_link_libraries(${APP_NAME} axjs axmol)
+
+  load_cache("${_js_sdk_dir}" READ_WITH_PREFIX _js_sdk_ AXSLCC_OUT_DIR)
+  if(DEFINED _js_sdk_AXSLCC_OUT_DIR AND IS_DIRECTORY "${_js_sdk_AXSLCC_OUT_DIR}")
+    if(APPLE)
+      ax_mark_multi_resources(_js_sdk_shaders RES_TO "Resources/axslc"
+        FOLDERS "${_js_sdk_AXSLCC_OUT_DIR}")
+      target_sources(${APP_NAME} PRIVATE ${_js_sdk_shaders})
+    else()
+      add_custom_command(TARGET ${APP_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory "${_js_sdk_AXSLCC_OUT_DIR}"
+          "$<TARGET_FILE_DIR:${APP_NAME}>/axslc"
+        VERBATIM)
+    endif()
+  endif()
+endfunction()
+
+function(ax_embed_js_runtime_frameworks APP_NAME)
+  if(NOT APPLE OR NOT TARGET OpenAL)
+    return()
+  endif()
+  get_target_property(_js_openal_framework OpenAL FRAMEWORK)
+  if(NOT _js_openal_framework)
+    return()
+  endif()
+  if(XCODE)
+    set_target_properties(${APP_NAME} PROPERTIES
+      XCODE_LINK_BUILD_PHASE_MODE KNOWN_LOCATION
+      XCODE_EMBED_FRAMEWORKS OpenAL
+      XCODE_EMBED_FRAMEWORKS_CODE_SIGN_ON_COPY ON
+      XCODE_EMBED_FRAMEWORKS_REMOVE_HEADERS_ON_COPY ON)
+  else()
+    if(MACOSX)
+      set(_js_framework_source "$<TARGET_FILE_DIR:OpenAL>/../..")
+      set(_js_framework_dest "$<TARGET_BUNDLE_DIR:${APP_NAME}>/Contents/Frameworks/soft_oal.framework")
+      set_property(TARGET ${APP_NAME} APPEND PROPERTY BUILD_RPATH "@executable_path/../Frameworks")
+      add_custom_command(TARGET ${APP_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E remove_directory "${_js_framework_dest}"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${_js_framework_dest}/Versions/C/Resources"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+          "${_js_framework_source}/Versions/C/soft_oal"
+          "${_js_framework_dest}/Versions/C/soft_oal"
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+          "${_js_framework_source}/Versions/C/Resources"
+          "${_js_framework_dest}/Versions/C/Resources"
+        COMMAND ${CMAKE_COMMAND} -E create_symlink C
+          "${_js_framework_dest}/Versions/Current"
+        COMMAND ${CMAKE_COMMAND} -E create_symlink Versions/Current/soft_oal
+          "${_js_framework_dest}/soft_oal"
+        COMMAND ${CMAKE_COMMAND} -E create_symlink Versions/Current/Resources
+          "${_js_framework_dest}/Resources"
+        VERBATIM)
+    else()
+      set(_js_framework_source "$<TARGET_FILE_DIR:OpenAL>")
+      set(_js_framework_dest "$<TARGET_BUNDLE_DIR:${APP_NAME}>/Frameworks")
+      set_property(TARGET ${APP_NAME} APPEND PROPERTY BUILD_RPATH "@executable_path/Frameworks")
+      add_custom_command(TARGET ${APP_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${_js_framework_dest}"
+        COMMAND ${CMAKE_COMMAND} -E copy_directory "${_js_framework_source}"
+          "${_js_framework_dest}/soft_oal.framework"
+        VERBATIM)
+    endif()
+  endif()
+endfunction()
+
+function(ax_sign_macos_bundle APP_NAME)
+  if(NOT MACOSX OR XCODE)
+    return()
+  endif()
+  if(NOT DEFINED AX_MACOS_BUNDLE_CODESIGN_IDENTITY)
+    set(AX_MACOS_BUNDLE_CODESIGN_IDENTITY "-" CACHE STRING
+      "Code-sign identity for non-Xcode macOS application bundles; empty disables signing")
+    mark_as_advanced(AX_MACOS_BUNDLE_CODESIGN_IDENTITY)
+  endif()
+  if(NOT AX_MACOS_BUNDLE_CODESIGN_IDENTITY STREQUAL "")
+    add_custom_command(TARGET ${APP_NAME} POST_BUILD
+      COMMAND /usr/bin/codesign --force --deep --sign
+        "${AX_MACOS_BUNDLE_CODESIGN_IDENTITY}" "$<TARGET_BUNDLE_DIR:${APP_NAME}>"
+      COMMENT "Code signing macOS application bundle"
+      VERBATIM)
+  endif()
+endfunction()

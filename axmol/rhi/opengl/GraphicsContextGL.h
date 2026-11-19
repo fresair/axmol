@@ -1,6 +1,7 @@
 /****************************************************************************
  Copyright (c) 2018-2019 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -148,6 +149,8 @@ public:
     void setScissorRect(bool enabled, float x, float y, float width, float height) override;
 
     void readPixels(RenderTarget* rt, std::function<void(const PixelBufferDesc&)> callback) override;
+    /** Full physical framebuffer capture; the asynchronous API retains its viewport scope. @script{ignore} */
+    bool readPixelsSync(RenderTarget* rt, PixelBufferDesc& result) override;
 
     bool copyTexture(RenderTarget* src, Texture* dst) override;
     bool copyTexture(Texture* src, Texture* dst) override;

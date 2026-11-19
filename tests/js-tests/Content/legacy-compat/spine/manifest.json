@@ -1,0 +1,1654 @@
+{
+  "schema": 1,
+  "upstream": "https://github.com/EsotericSoftware/spine-runtimes",
+  "upstream_commit": "1ad4e94bc3f16f4908a87a97d31e0de657f1788a",
+  "upstream_commit_date": "2026-10-09T08:14:41Z",
+  "original_upstream": "https://github.com/cocos2d/cocos2d-x",
+  "original_commit": "e4b6a5ef8fcdc99a7ebea606312b67fe4c534b9f",
+  "original_files": [
+    {
+      "file": "spineboy-ess.json",
+      "sha256": "038eb0375d86288f7fe57ede68d552ff0d8e095a3680ced1c27ff380568d58e4"
+    },
+    {
+      "file": "goblins-pro.json",
+      "sha256": "3304d805186eb88ab7598bcf6de028f6903bd391731476486f80b8f2d7c082ad"
+    },
+    {
+      "file": "spineboy.atlas",
+      "sha256": "95004a74ae64930cbabd0d0747d22bd5f120713fd2de6995031e5164daa15d03"
+    },
+    {
+      "file": "spineboy.png",
+      "sha256": "e59b891bd9f2bdeb5aca2f95b05797a3c2d4f4af335c5ba8ec38359686c031d1"
+    },
+    {
+      "file": "goblins.atlas",
+      "sha256": "38f8ded833beecf219a2956b00054f39d2efa8aeba915e0d2f77c6dadfc955e5"
+    },
+    {
+      "file": "goblins.png",
+      "sha256": "947bbf8faf3c2d6b883e4cb3de4a2efd3cb877e659cdca0abb42b10446032a3e"
+    },
+    {
+      "file": "license.txt",
+      "sha256": "97323a357336b848fc971f7029355b683a3d07d2e81e6adceff624eb51569242"
+    }
+  ],
+  "overlay_files": [
+    {
+      "file": "spineboy-ess.json",
+      "source": "https://raw.githubusercontent.com/EsotericSoftware/spine-runtimes/1ad4e94bc3f16f4908a87a97d31e0de657f1788a/examples/spineboy/export/spineboy-ess.json",
+      "sha256": "da21eb38c5c1bb5fa5d8569d6ffeec9e4f1976ee4c260bcc709c6f32ade1c9b9",
+      "size": 91478
+    },
+    {
+      "file": "goblins-pro.json",
+      "source": "https://raw.githubusercontent.com/EsotericSoftware/spine-runtimes/1ad4e94bc3f16f4908a87a97d31e0de657f1788a/examples/goblins/export/goblins-pro.json",
+      "sha256": "f45b7a36097c60692e78fef20626103eab0532e3e40701fb29438e9d75dfa057",
+      "size": 50236
+    },
+    {
+      "file": "LICENSE_spineboy.txt",
+      "source": "https://raw.githubusercontent.com/EsotericSoftware/spine-runtimes/1ad4e94bc3f16f4908a87a97d31e0de657f1788a/examples/spineboy/license.txt",
+      "sha256": "08074c5f8c5f072626a0830250304fe3063d9d49f8f9b039e063bb238f2b993b",
+      "size": 313
+    },
+    {
+      "file": "LICENSE_goblins.txt",
+      "source": "https://raw.githubusercontent.com/EsotericSoftware/spine-runtimes/1ad4e94bc3f16f4908a87a97d31e0de657f1788a/examples/goblins/license.txt",
+      "sha256": "08074c5f8c5f072626a0830250304fe3063d9d49f8f9b039e063bb238f2b993b",
+      "size": 313
+    },
+    {
+      "file": "spineboy.atlas",
+      "source": "tests/js-tests/Content/legacy/js-tests/res/spine/spineboy.atlas",
+      "sha256": "95004a74ae64930cbabd0d0747d22bd5f120713fd2de6995031e5164daa15d03",
+      "size": 4368
+    },
+    {
+      "file": "spineboy.png",
+      "source": "tests/js-tests/Content/legacy/js-tests/res/spine/spineboy.png",
+      "sha256": "e59b891bd9f2bdeb5aca2f95b05797a3c2d4f4af335c5ba8ec38359686c031d1",
+      "size": 585797
+    },
+    {
+      "file": "goblins.atlas",
+      "source": "tests/js-tests/Content/legacy/js-tests/res/spine/goblins.atlas",
+      "sha256": "38f8ded833beecf219a2956b00054f39d2efa8aeba915e0d2f77c6dadfc955e5",
+      "size": 4400
+    },
+    {
+      "file": "goblins.png",
+      "source": "tests/js-tests/Content/legacy/js-tests/res/spine/goblins.png",
+      "sha256": "947bbf8faf3c2d6b883e4cb3de4a2efd3cb877e659cdca0abb42b10446032a3e",
+      "size": 210574
+    },
+    {
+      "file": "LICENSE_original_images.txt",
+      "source": "tests/js-tests/Content/legacy/js-tests/res/spine/license.txt",
+      "sha256": "97323a357336b848fc971f7029355b683a3d07d2e81e6adceff624eb51569242",
+      "size": 302
+    }
+  ],
+  "actors": {
+    "spineboy": {
+      "original_exporter": "3.6.32",
+      "overlay_exporter": "4.3.75-beta",
+      "original_animations": [
+        "death",
+        "hit",
+        "idle",
+        "jump",
+        "run",
+        "shoot",
+        "walk"
+      ],
+      "overlay_animations": [
+        "aim",
+        "death",
+        "hit",
+        "idle",
+        "jump",
+        "run",
+        "shoot",
+        "walk"
+      ],
+      "original_skins": [
+        "default"
+      ],
+      "overlay_skins": [
+        "default"
+      ],
+      "original_atlas_regions": [
+        "crosshair",
+        "dust01",
+        "dust02",
+        "dust03",
+        "eye-indifferent",
+        "eye-surprised",
+        "front-bracer",
+        "front-fist-closed",
+        "front-fist-open",
+        "front-foot",
+        "front-shin",
+        "front-thigh",
+        "front-upper-arm",
+        "goggles",
+        "gun",
+        "head",
+        "hoverboard-board",
+        "hoverboard-thruster",
+        "hoverglow-small",
+        "mouth-grind",
+        "mouth-oooo",
+        "mouth-smile",
+        "muzzle-glow",
+        "muzzle-ring",
+        "muzzle01",
+        "muzzle02",
+        "muzzle03",
+        "muzzle04",
+        "muzzle05",
+        "neck",
+        "portal-bg",
+        "portal-flare1",
+        "portal-flare2",
+        "portal-flare3",
+        "portal-shade",
+        "portal-streaks1",
+        "portsl-streaks2",
+        "rear-bracer",
+        "rear-foot",
+        "rear-shin",
+        "rear-thigh",
+        "rear-upper-arm",
+        "torso"
+      ]
+    },
+    "goblins": {
+      "original_exporter": "3.6.32",
+      "overlay_exporter": "4.3.75-beta",
+      "original_animations": [
+        "walk"
+      ],
+      "overlay_animations": [
+        "walk"
+      ],
+      "original_skins": [
+        "default",
+        "goblin",
+        "goblingirl"
+      ],
+      "overlay_skins": [
+        "default",
+        "goblin",
+        "goblingirl"
+      ],
+      "original_atlas_regions": [
+        "dagger",
+        "goblin/eyes-closed",
+        "goblin/head",
+        "goblin/left-arm",
+        "goblin/left-foot",
+        "goblin/left-hand",
+        "goblin/left-lower-leg",
+        "goblin/left-shoulder",
+        "goblin/left-upper-leg",
+        "goblin/neck",
+        "goblin/pelvis",
+        "goblin/right-arm",
+        "goblin/right-foot",
+        "goblin/right-hand",
+        "goblin/right-lower-leg",
+        "goblin/right-shoulder",
+        "goblin/right-upper-leg",
+        "goblin/torso",
+        "goblin/undie-straps",
+        "goblin/undies",
+        "goblingirl/eyes-closed",
+        "goblingirl/head",
+        "goblingirl/left-arm",
+        "goblingirl/left-foot",
+        "goblingirl/left-hand",
+        "goblingirl/left-lower-leg",
+        "goblingirl/left-shoulder",
+        "goblingirl/left-upper-leg",
+        "goblingirl/neck",
+        "goblingirl/pelvis",
+        "goblingirl/right-arm",
+        "goblingirl/right-foot",
+        "goblingirl/right-hand",
+        "goblingirl/right-lower-leg",
+        "goblingirl/right-shoulder",
+        "goblingirl/right-upper-leg",
+        "goblingirl/torso",
+        "goblingirl/undie-straps",
+        "goblingirl/undies",
+        "shield",
+        "spear"
+      ]
+    }
+  },
+  "compatibility_basis": {
+    "runtime_version": "4.3",
+    "axmol_runtime_import_commit": "4cfc054e786a62a2d342f0c396f9d10d107806d4",
+    "skeleton_json_parser_sha256": "8aaaed47ac2f0f162bad48363e86b81b6d40589f0d37706e58432a0bf08c0484",
+    "skeleton_json_parser_matches_upstream_commit": true,
+    "runtime_files_matching_upstream": 196,
+    "runtime_files_total": 201,
+    "runtime_files": [
+      {
+        "file": "extensions/spine/runtime/include/spine/Animation.h",
+        "sha256": "44a6846bd0d6c21e55e97fa5810b88ddd58bf8d8c2176ad00bb11dd65acf7e4f",
+        "upstream_git_blob": "7fc48e4cade02e23e636933d503d555586c20e29",
+        "local_git_blob": "7fc48e4cade02e23e636933d503d555586c20e29",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/AnimationState.h",
+        "sha256": "2d44766d32bb6db01a8f050b5dacd4f5a6d210454bc3ff82d1be881ec645d5b0",
+        "upstream_git_blob": "073f440e1ae3225f4cb9069fed39de84c5b7d550",
+        "local_git_blob": "9e26355f97d591d7013c3def9638ee91a5673c44",
+        "matches_upstream": false
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/AnimationStateData.h",
+        "sha256": "29c006953b553a29094f965d5da72fbf1b854429772f418305a484d329d26bad",
+        "upstream_git_blob": "81524899451f91b741bdf47c79a3a5dfc1856b3c",
+        "local_git_blob": "81524899451f91b741bdf47c79a3a5dfc1856b3c",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/Array.h",
+        "sha256": "f3373725c933a533f464516cde4e4525f38d0e9bf429e86e78b65c1949ccf438",
+        "upstream_git_blob": "4f01d34313b61caa9084bbd054d0222d19f1038d",
+        "local_git_blob": "4f01d34313b61caa9084bbd054d0222d19f1038d",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/ArrayUtils.h",
+        "sha256": "2fce745100bdaf606d0b97a2ddb8ff1fbacd953507e3ad53b296859b81475428",
+        "upstream_git_blob": "62c66ee33893655c80bf47f760c0e989e39300c3",
+        "local_git_blob": "62c66ee33893655c80bf47f760c0e989e39300c3",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/Atlas.h",
+        "sha256": "0068fe9cfcbba4abc1161f5ee82944fd4d7bd207505c01b312532c2e59e59a0b",
+        "upstream_git_blob": "a359b7b3a5d37798ba05e82b80b40bc000a11144",
+        "local_git_blob": "a359b7b3a5d37798ba05e82b80b40bc000a11144",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/AtlasAttachmentLoader.h",
+        "sha256": "bdf1ef75f7d194a78fba41050e74ad0dbeed2a3ca6c8fff9c1cc61a999c6d5fb",
+        "upstream_git_blob": "7646a21b86772fb2984dd50a35644bf8b92cae30",
+        "local_git_blob": "7646a21b86772fb2984dd50a35644bf8b92cae30",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/Attachment.h",
+        "sha256": "18869883eb93e373c9c1809dc2c71e12b44960e7240a13fd3fb79f3f04fba80e",
+        "upstream_git_blob": "878bc011f6a1fcce25d73f9ecbd2b061b2467c8f",
+        "local_git_blob": "878bc011f6a1fcce25d73f9ecbd2b061b2467c8f",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/AttachmentLoader.h",
+        "sha256": "e90ac1d8db9e56901d392e3daae492ba836f81de00c3564f025c27c46abf067a",
+        "upstream_git_blob": "cc3cade02b355918dc57a4c94ca4de8b72f95646",
+        "local_git_blob": "cc3cade02b355918dc57a4c94ca4de8b72f95646",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/AttachmentTimeline.h",
+        "sha256": "52d92a216f6098353ed056995d5ecdf8e0238ac5f25d38865347e5dd05ff88bf",
+        "upstream_git_blob": "7db63bac8333dc242e718cd67c7c6991668a38aa",
+        "local_git_blob": "7db63bac8333dc242e718cd67c7c6991668a38aa",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/AttachmentType.h",
+        "sha256": "fc1fd6becf4721f52ce2b46000560dd5929e753ade0f04e0ecdb805c1c69cfe2",
+        "upstream_git_blob": "e4b97dacb44e12d3132b582e86f532294cef665a",
+        "local_git_blob": "e4b97dacb44e12d3132b582e86f532294cef665a",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/BlendMode.h",
+        "sha256": "53f24608d1b92b5f72ac07fe79699c195de29fbca76ee8554da95dc66c0b86dc",
+        "upstream_git_blob": "e89a4f3f3f6e578c0b9f0f1e3032a95a313d3916",
+        "local_git_blob": "e89a4f3f3f6e578c0b9f0f1e3032a95a313d3916",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/BlockAllocator.h",
+        "sha256": "ae6e5b19ce8f4314b9d50bec1f76a9a2d168a2058d7ac8514fad2f6d1c1d4bc5",
+        "upstream_git_blob": "d08b6ec42984029920ed2f56d0876b76c0f15e6a",
+        "local_git_blob": "d08b6ec42984029920ed2f56d0876b76c0f15e6a",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/Bone.h",
+        "sha256": "6bf046a230922ff0caadaee0429931c37270cfbc39b1d34fabcdcc97ccf9ac0c",
+        "upstream_git_blob": "553924e69bc92104f7069f4f9a6255bba1cd1efd",
+        "local_git_blob": "553924e69bc92104f7069f4f9a6255bba1cd1efd",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/BoneData.h",
+        "sha256": "129da93a3f2ca16d88bd49373d943e77539ab5a1cd8d9589119a6a7f25413431",
+        "upstream_git_blob": "e279e360e67427c4108a64143cf6fdb4dca7f8da",
+        "local_git_blob": "e279e360e67427c4108a64143cf6fdb4dca7f8da",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/BoneLocal.h",
+        "sha256": "9d05fb4524afb5b405af14f7871d5344a2c0f1317d6c299e23812e1c5f1d01bd",
+        "upstream_git_blob": "51ebd26657cb0a2a4189e8bc1356427c8e2f79e6",
+        "local_git_blob": "51ebd26657cb0a2a4189e8bc1356427c8e2f79e6",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/BonePose.h",
+        "sha256": "9281b476360718f4a1fbb73592682c69a9f20c8f0dafea974b420f4eb58ca9cf",
+        "upstream_git_blob": "ad682101636bfa757984d1e08098a725291f8882",
+        "local_git_blob": "ad682101636bfa757984d1e08098a725291f8882",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/BoneTimeline.h",
+        "sha256": "60e274736f0f63a6c0ad66b691ec99ae2972db7c50accd638294011e75fe85f9",
+        "upstream_git_blob": "cf846feb66efe1e0dafb287e06560182d9e20cb4",
+        "local_git_blob": "cf846feb66efe1e0dafb287e06560182d9e20cb4",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/BoundingBoxAttachment.h",
+        "sha256": "ab9267c3e34029b71f2c16514ad75c5fd1e1ce1c73ab66c8736d04db87bc8a2e",
+        "upstream_git_blob": "3ec328430149011861449c93f9be060bf650d35e",
+        "local_git_blob": "3ec328430149011861449c93f9be060bf650d35e",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/ClippingAttachment.h",
+        "sha256": "5fbb1010cf8bad77343fc374b2ac88e88cc435b76cad0088c347df6ecfe9f078",
+        "upstream_git_blob": "048fe8b1273dba17c060e44ff1f025652267b1ba",
+        "local_git_blob": "048fe8b1273dba17c060e44ff1f025652267b1ba",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/Color.h",
+        "sha256": "d70d848df73d4ff7ea73066e04298a3d0be5ba78d8e944841016a12389faed02",
+        "upstream_git_blob": "0c670a8948703e4550e8840cb2966fd72e8e2302",
+        "local_git_blob": "0c670a8948703e4550e8840cb2966fd72e8e2302",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/ColorTimeline.h",
+        "sha256": "66b5ab7f05b57265c77221e961bca9b6a6ab18eca7d0ab5b0e247320a5fbfdfa",
+        "upstream_git_blob": "65d84e5f069f9d0190625a9ea85a4742d81d001e",
+        "local_git_blob": "65d84e5f069f9d0190625a9ea85a4742d81d001e",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/Constraint.h",
+        "sha256": "5ab81f2d29f5620768a759f1646606c6ae84b6780691b866b5414a869cdcbd62",
+        "upstream_git_blob": "5a66f86580d4637bb51e53843ff2a723b5c0712e",
+        "local_git_blob": "5a66f86580d4637bb51e53843ff2a723b5c0712e",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/ConstraintData.h",
+        "sha256": "5f93473cca1ef0ff1b6bcb6cb694e8a4ab240c6baff1342a3f8719364d0065f3",
+        "upstream_git_blob": "18311fc649fef5102cc1705215d67f43fb4d40d0",
+        "local_git_blob": "18311fc649fef5102cc1705215d67f43fb4d40d0",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/ConstraintTimeline.h",
+        "sha256": "b7cb9df6f77c16aa1ae484262ccb23814eb8c7b72d011bf064ece785ed6b68c4",
+        "upstream_git_blob": "16c2a5dc456117290574ce32480d19e2d0d77df7",
+        "local_git_blob": "16c2a5dc456117290574ce32480d19e2d0d77df7",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/ConstraintTimeline1.h",
+        "sha256": "21977d0ab6f0cd36fb703f2ebddf59bb1b2d32b6937da1eff228bd6625cd8934",
+        "upstream_git_blob": "b7b73151ab04c672125872d6fed1777894086117",
+        "local_git_blob": "b7b73151ab04c672125872d6fed1777894086117",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/CurveTimeline.h",
+        "sha256": "983a16661b34ebe9baeee838911e8a25bb7ff588cd5a686dab88e2951ed3d269",
+        "upstream_git_blob": "fe30d25a956d52a1e4701eb2930cdd5179e4ad45",
+        "local_git_blob": "fe30d25a956d52a1e4701eb2930cdd5179e4ad45",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/Debug.h",
+        "sha256": "036b66daa39b39f51dd1373681614dfa20fb995db94b614716d578e14c1b795d",
+        "upstream_git_blob": "b3a3227b6510b9a040b92ccb33fc84e9f02d0cd4",
+        "local_git_blob": "b3a3227b6510b9a040b92ccb33fc84e9f02d0cd4",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/DeformTimeline.h",
+        "sha256": "294f5d748c55fa5a3ef90bbc4f8ab635745c945bc199ae9dcd71fe7a429c3506",
+        "upstream_git_blob": "ed5c3f94de798cc67a7bd7fd62371bba7fe0b2a8",
+        "local_git_blob": "ed5c3f94de798cc67a7bd7fd62371bba7fe0b2a8",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/DrawOrder.h",
+        "sha256": "e64edab8c7c9ac4f2b8b9ad0181f7ea86203076179a5b221bcf87471209a7e66",
+        "upstream_git_blob": "918084fb0a85ddb1074d1e8293d4fddcff6ce80d",
+        "local_git_blob": "918084fb0a85ddb1074d1e8293d4fddcff6ce80d",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/DrawOrderFolderTimeline.h",
+        "sha256": "a0f36fd44b62e4d313808e83c5b2a872eb9247873951ecfac0a8c8129567763d",
+        "upstream_git_blob": "6bd2507d846a7c4220b266ee49bdf81ff032ae14",
+        "local_git_blob": "6bd2507d846a7c4220b266ee49bdf81ff032ae14",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/DrawOrderTimeline.h",
+        "sha256": "7588d88e14803f862a8d18d6c900e2d8535272ad430c8b133b23d23c739ac444",
+        "upstream_git_blob": "9f8bc7a450831760458275caa0fa145b67f9ddc6",
+        "local_git_blob": "9f8bc7a450831760458275caa0fa145b67f9ddc6",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/Event.h",
+        "sha256": "c9ba05393afc2b94e73fcc0139f1803225d2b72891411be0f36083e6b8c8dc06",
+        "upstream_git_blob": "43e8efb0e5114a7b591e5cfbb65e81ec61200381",
+        "local_git_blob": "43e8efb0e5114a7b591e5cfbb65e81ec61200381",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/EventData.h",
+        "sha256": "2339ed6f2c346ff89290cc1c41cab8a61dfe35ecba5964a95b98bb57097c5251",
+        "upstream_git_blob": "cf9f7f1c496b6b7b0cd1cddf5245d78345d52a5e",
+        "local_git_blob": "cf9f7f1c496b6b7b0cd1cddf5245d78345d52a5e",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/EventTimeline.h",
+        "sha256": "02f3b169f7f9554ae6da01c23bdeec16937c26ffd1dd3ac0c7bb4ccb16db135b",
+        "upstream_git_blob": "ba371b8f2a57b494fb8e42cd0663275f5a2be438",
+        "local_git_blob": "ba371b8f2a57b494fb8e42cd0663275f5a2be438",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/Extension.h",
+        "sha256": "5e0eb5518c504c9de691e3aa3e29a46e66a29398ed42ce28c795f6b4aecea2cc",
+        "upstream_git_blob": "e3d0d6f348eff7d9b5021079750dead8ae692453",
+        "local_git_blob": "e3d0d6f348eff7d9b5021079750dead8ae692453",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/HasRendererObject.h",
+        "sha256": "f72731215b77935efb6609e4f1fe4f72b6af7685bcf228517dd3d04317a42f54",
+        "upstream_git_blob": "55e038c5f6e1b75d9fd824960454f76138c257ac",
+        "local_git_blob": "55e038c5f6e1b75d9fd824960454f76138c257ac",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/HashMap.h",
+        "sha256": "e17954be5e7df7447ae408062607de388c694a73f268d799aeb6f5fca32f7ca2",
+        "upstream_git_blob": "6bcbe49af12b4458203cf4d0861e7bc6a5fa2376",
+        "local_git_blob": "6bcbe49af12b4458203cf4d0861e7bc6a5fa2376",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/IkConstraint.h",
+        "sha256": "5ad61475f0f62b5dd378f878b4a193318f257f0db5890d7353920260c1d9366f",
+        "upstream_git_blob": "8f411308856a29e1b7613ac7b87328931ff1f3c2",
+        "local_git_blob": "8f411308856a29e1b7613ac7b87328931ff1f3c2",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/IkConstraintData.h",
+        "sha256": "6de1cbcdcd9df2986a98bcf6bf0edf6b51e37bd2ddae72d3cf9002591f9e0a46",
+        "upstream_git_blob": "be5b629bd05b490aaa59124afb8c8ecb3db60430",
+        "local_git_blob": "be5b629bd05b490aaa59124afb8c8ecb3db60430",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/IkConstraintPose.h",
+        "sha256": "22071a4a8d0e0ab0314a53a33693884c8fd214860057d41fa70e79cf5f794585",
+        "upstream_git_blob": "2f86ae510337e7d12f2f966bffd1c1aefecf53bb",
+        "local_git_blob": "2f86ae510337e7d12f2f966bffd1c1aefecf53bb",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/IkConstraintTimeline.h",
+        "sha256": "f4ce1182b4677170fd80e31bbde9b00155b4de059be0260b2339cc9dfc03f6f3",
+        "upstream_git_blob": "38e12eb077e1b8158edb262f2a0c4eb95049e927",
+        "local_git_blob": "38e12eb077e1b8158edb262f2a0c4eb95049e927",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/Inherit.h",
+        "sha256": "4f6598e229b9cd074fa4a173db2b4f4a7c844839ee64969737228936f12da3fa",
+        "upstream_git_blob": "ec520ccf6f11aab1541246be7cc2c5c730cccab7",
+        "local_git_blob": "ec520ccf6f11aab1541246be7cc2c5c730cccab7",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/InheritTimeline.h",
+        "sha256": "37877baf413574b4ba2f8d00eda8898ebbf28e267fc4c6b091519744b385cc34",
+        "upstream_git_blob": "c768ef5c6d74e1d2dd46d37666bda12d62fbd6f2",
+        "local_git_blob": "c768ef5c6d74e1d2dd46d37666bda12d62fbd6f2",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/Interpolation.h",
+        "sha256": "9c6d9ae72e848a679ce77fb1e09a46407c95d3f40729aded2ce3fb6cf0adb258",
+        "upstream_git_blob": "4b06de53408615c228cf203b538c67dfb0e32fb9",
+        "local_git_blob": "733314a31c61f9ffcba8b1b644dabea68188bb66",
+        "matches_upstream": false
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/Json.h",
+        "sha256": "37258b8c89205089ba1275f21fb649beeca6c548233b01bc2898fed951467c27",
+        "upstream_git_blob": "b7683f16dfbb28fc2f3262d73c140ec6af349fb9",
+        "local_git_blob": "b7683f16dfbb28fc2f3262d73c140ec6af349fb9",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/LinkedMesh.h",
+        "sha256": "b131f73d64315e5fe9cbb39111490c8d6d2d6c7f726ed60465f3a99d805415d1",
+        "upstream_git_blob": "527aa31345518214de1776acb5a1b1dd71d78d52",
+        "local_git_blob": "527aa31345518214de1776acb5a1b1dd71d78d52",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/Map.h",
+        "sha256": "1f6f991cb64c13e12ce61d07aabda5ec9c63b7598592638f2e0f5c36ca559be6",
+        "upstream_git_blob": "3e510914562794f6b6f2c118c2e02fc9921acc10",
+        "local_git_blob": "3e510914562794f6b6f2c118c2e02fc9921acc10",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/MathUtil.h",
+        "sha256": "7527e928aa07e90f39aa04cac44c3790feb586237e8cc1626c710d50efbafce5",
+        "upstream_git_blob": "7b1da2621e1ad9a049c8868ca870485c639dd16a",
+        "local_git_blob": "7b1da2621e1ad9a049c8868ca870485c639dd16a",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/MeshAttachment.h",
+        "sha256": "15edf149f9f0e5b7d42529b913314b59f10c742f2c4863c3fb5080aefc8234fb",
+        "upstream_git_blob": "466982f1de5ca991399a559488f18f3725eca7a9",
+        "local_git_blob": "466982f1de5ca991399a559488f18f3725eca7a9",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/PathAttachment.h",
+        "sha256": "8886d1f56eb76370bab982226eb8f9893ee9450d147ca2e2f49ccccdff73e593",
+        "upstream_git_blob": "f70f82e87e627d74c0eb1b266a26cdc7cf679e3c",
+        "local_git_blob": "f70f82e87e627d74c0eb1b266a26cdc7cf679e3c",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/PathConstraint.h",
+        "sha256": "b83aa5f7b6b101e9c020908efed07e2b6ee8af50217aa9b12bbcef06e89a76d7",
+        "upstream_git_blob": "73281d4e8ca7706e6608172d7f7c0247b573daad",
+        "local_git_blob": "73281d4e8ca7706e6608172d7f7c0247b573daad",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/PathConstraintData.h",
+        "sha256": "77c569271988f8bac6005fe8d40005a38c17c0440c1530e3a29e09df861f6b28",
+        "upstream_git_blob": "008c4bf47dbebcd750aadcd6833a0159d2d11139",
+        "local_git_blob": "008c4bf47dbebcd750aadcd6833a0159d2d11139",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/PathConstraintMixTimeline.h",
+        "sha256": "33eda2f337ffac41f88522c86d30ffa695a67a8ca620b3ad428c4170f2867048",
+        "upstream_git_blob": "65eca772ee02525709f7cb1159164426d56c1c3d",
+        "local_git_blob": "65eca772ee02525709f7cb1159164426d56c1c3d",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/PathConstraintPose.h",
+        "sha256": "05782878426d1c4e6952bd2a973bf73c0f094396fede726d35816d50d7a79277",
+        "upstream_git_blob": "7ced81989d2425177fae5fb10b56171ec7b6470c",
+        "local_git_blob": "7ced81989d2425177fae5fb10b56171ec7b6470c",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/PathConstraintPositionTimeline.h",
+        "sha256": "3525cf7d451f84ad242ca67a7ef5397f48db9856433d193473fbdb8031ecf3bd",
+        "upstream_git_blob": "303380ff8c0143ce5d4b46958b0be29b53c652a8",
+        "local_git_blob": "303380ff8c0143ce5d4b46958b0be29b53c652a8",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/PathConstraintSpacingTimeline.h",
+        "sha256": "11f7c620d11a737bad90daf9ee43570ffe3df9530a3d4384b732048921957f53",
+        "upstream_git_blob": "c38229bb16efca20f84e1052098c3d1b2c7b6ba4",
+        "local_git_blob": "c38229bb16efca20f84e1052098c3d1b2c7b6ba4",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/Physics.h",
+        "sha256": "9ac8a7fe25e43c995e8a3bd7ba88720b07b41eabbf39674b6f8d72bae1b55182",
+        "upstream_git_blob": "ccfb04c5a5232871890b009b06b2dc4b840cbb99",
+        "local_git_blob": "ccfb04c5a5232871890b009b06b2dc4b840cbb99",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/PhysicsConstraint.h",
+        "sha256": "8b6bbb49c451eec1590a9d96e5d87914f34b3925d951dd8e44ccf6116d4963cb",
+        "upstream_git_blob": "2767c3298017abb40b1acb310041b04d0500a24d",
+        "local_git_blob": "2767c3298017abb40b1acb310041b04d0500a24d",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/PhysicsConstraintData.h",
+        "sha256": "d9c46e960624cfd1eea6e71104df23bb3e58ffdd197f55d82341ae62fcf99bb9",
+        "upstream_git_blob": "298965feaa9969fe322498dc9d5f503178986f67",
+        "local_git_blob": "298965feaa9969fe322498dc9d5f503178986f67",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/PhysicsConstraintPose.h",
+        "sha256": "4b83fae1589c0a50fb50e86ed99285d1b68745eaa0f619f199f6eabf01be83bc",
+        "upstream_git_blob": "d2814d23baf899c8447c4da6dcd295b14c45fcc5",
+        "local_git_blob": "d2814d23baf899c8447c4da6dcd295b14c45fcc5",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/PhysicsConstraintTimeline.h",
+        "sha256": "4e9b0aa9e395e798cb021c60d5181f330381f628323dc04c38435eb3992b8826",
+        "upstream_git_blob": "b699bb6b910d18b2b669a666dbd888e594a2f106",
+        "local_git_blob": "b699bb6b910d18b2b669a666dbd888e594a2f106",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/PointAttachment.h",
+        "sha256": "9eb6a4a66feb2b9fcd48a3ab3a513109d7aaa389fd04223694f63eb1613f2bf1",
+        "upstream_git_blob": "41eb1123ba4e22a9d97c521f1bb8a089636768aa",
+        "local_git_blob": "41eb1123ba4e22a9d97c521f1bb8a089636768aa",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/Pool.h",
+        "sha256": "f8ff27002cab134d7777630f4155f7bc9795a63aeb264c2ef8f41cb9d4eadc2e",
+        "upstream_git_blob": "53d095191503f4d8f85baa066ee1bc2af57ce4ed",
+        "local_git_blob": "53d095191503f4d8f85baa066ee1bc2af57ce4ed",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/Pose.h",
+        "sha256": "15bc8f2e1315710b91418767635d84458d51b860d7e1a9ebd0e20b2a26040142",
+        "upstream_git_blob": "35938c85c3a72165a5914a80be1a1434cb2dbfbf",
+        "local_git_blob": "35938c85c3a72165a5914a80be1a1434cb2dbfbf",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/Posed.h",
+        "sha256": "4df024cda36a16019d81209c3c1a2c04f63155e64cac4420a2f91d70f1042770",
+        "upstream_git_blob": "919914d1382fb895cf2da6031e8c32afcc881b0e",
+        "local_git_blob": "919914d1382fb895cf2da6031e8c32afcc881b0e",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/PosedActive.h",
+        "sha256": "bfbf74a3b0020d0cb184efba9a4838cbdbb0df10621f83d36a29c998ec1b2020",
+        "upstream_git_blob": "6ccefafa5488ae233262a6ad63bec85db4b6b825",
+        "local_git_blob": "6ccefafa5488ae233262a6ad63bec85db4b6b825",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/PosedData.h",
+        "sha256": "e262e9cff40f192c951f27e97d85a9a83d3788aee188d8dfb02e3cf61b0888b3",
+        "upstream_git_blob": "97bdc7f0fbd32b51d6d9a1665749d3d588da6b94",
+        "local_git_blob": "97bdc7f0fbd32b51d6d9a1665749d3d588da6b94",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/PositionMode.h",
+        "sha256": "bb5cd081f541bf553569a1e8f05421eb9d340b3fc9cc8106698b4bcdf4d67962",
+        "upstream_git_blob": "5736607ada750d78ac13802c4958236c9863480e",
+        "local_git_blob": "5736607ada750d78ac13802c4958236c9863480e",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/Property.h",
+        "sha256": "40185488e6efcb55567728a245f6b4b6a5b6155af5ae4f49314f0c21c97ea701",
+        "upstream_git_blob": "030e27e49f4d80474511108a96187b72d97eb3cc",
+        "local_git_blob": "030e27e49f4d80474511108a96187b72d97eb3cc",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/RTTI.h",
+        "sha256": "ee6a52b48b313f98fcef94968c3bd3a2e69d5c44cefaac43be639047966e92bc",
+        "upstream_git_blob": "43cdbe5ec8b088b46a6ddbea531fddefd516a8e2",
+        "local_git_blob": "43cdbe5ec8b088b46a6ddbea531fddefd516a8e2",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/RegionAttachment.h",
+        "sha256": "490c6a4dece535995a4d6597d1a42408ee9fec1055b709586339b9d5a6c7d095",
+        "upstream_git_blob": "3069f465987f67edf69be0afade419b2274e1c65",
+        "local_git_blob": "3069f465987f67edf69be0afade419b2274e1c65",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/RotateMode.h",
+        "sha256": "03f49c6b2d2fc328ca956da2fdd64775fa0642531b7d16d62e1cf93931bc2656",
+        "upstream_git_blob": "7f9a717ac7f0fd5c28a4a767aa58d2a4f1b412a0",
+        "local_git_blob": "7f9a717ac7f0fd5c28a4a767aa58d2a4f1b412a0",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/RotateTimeline.h",
+        "sha256": "d5b1327d28bdd59822174152c7ef1349c6ccc6f6bbb7c5e2e3f003ff7dab1962",
+        "upstream_git_blob": "872130ce5f6971579d0782ba2f9e4bf089e55060",
+        "local_git_blob": "872130ce5f6971579d0782ba2f9e4bf089e55060",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/ScaleTimeline.h",
+        "sha256": "e5c2257a10026f57c07a10981d1cd8ecaafbd7a6151a03a1d2228a20c4cc7591",
+        "upstream_git_blob": "00b962a7de1a0727581b77b3ac456dbaadd82db6",
+        "local_git_blob": "00b962a7de1a0727581b77b3ac456dbaadd82db6",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/Sequence.h",
+        "sha256": "f3de3bc6178134a48323b700c7f4b15bf4abb1c528d2c6f09e64a59d73d7d00e",
+        "upstream_git_blob": "adabe3c6777f7c699576a6aacf35e228fdfc78d4",
+        "local_git_blob": "adabe3c6777f7c699576a6aacf35e228fdfc78d4",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/SequenceTimeline.h",
+        "sha256": "fbd8a8f0591b589cf12efd891177cca2dcbc5a2e0b40a1d262e5cb9d63963a4f",
+        "upstream_git_blob": "6ccf220806cc685f46461d3c230da92bf104c7cf",
+        "local_git_blob": "6ccf220806cc685f46461d3c230da92bf104c7cf",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/ShearTimeline.h",
+        "sha256": "08696ed250afbf728181d6615b2f2b93f44cd320f14c6b32f891129b2bae03e3",
+        "upstream_git_blob": "d312efa80ffec8e3fc2a3ec3b8a4c72b14a0bb14",
+        "local_git_blob": "d312efa80ffec8e3fc2a3ec3b8a4c72b14a0bb14",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/Skeleton.h",
+        "sha256": "a37f61abf2c655ecfa397f489f174a8a47dc184644bfb074c57722839084573f",
+        "upstream_git_blob": "a3d5aa5cd4be0091a0e50d32e29dd2d67dfe35e5",
+        "local_git_blob": "a3d5aa5cd4be0091a0e50d32e29dd2d67dfe35e5",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/SkeletonBinary.h",
+        "sha256": "b3421313fb33609679189e7e7fb5b4f7e4258e909184ebb70c0d08ff94f1957e",
+        "upstream_git_blob": "e6804539c63d06330ba02b49c0e8184d3181c0c9",
+        "local_git_blob": "e6804539c63d06330ba02b49c0e8184d3181c0c9",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/SkeletonBounds.h",
+        "sha256": "44fb6b97f388877a9cb6c5677f5d79ea079a4199869a6195f2dce10dd98a8b17",
+        "upstream_git_blob": "2593410f4995ebd45fd943a25366a3b810c019a2",
+        "local_git_blob": "2593410f4995ebd45fd943a25366a3b810c019a2",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/SkeletonClipping.h",
+        "sha256": "c7428b3c4a2da154bbdf4928d4894c0a2f30c7f2bd242bfde4c74d332ce93be3",
+        "upstream_git_blob": "386aefb6cb27898c2954a38647b56e2633968c02",
+        "local_git_blob": "386aefb6cb27898c2954a38647b56e2633968c02",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/SkeletonData.h",
+        "sha256": "6d95172c8430e7c721036da3bca6e625a01a1f39d81da6a61b15cd74b2eb6614",
+        "upstream_git_blob": "7028d28da55c8a11ed0bb0fcf742f390edbcccf4",
+        "local_git_blob": "7028d28da55c8a11ed0bb0fcf742f390edbcccf4",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/SkeletonJson.h",
+        "sha256": "206ccd092c80553bf9ca94f12978c51a78e8916f8b546e4708c9e5d735a67f99",
+        "upstream_git_blob": "39838f1139e82926bfd08b8b8d5d62118c1c9ba5",
+        "local_git_blob": "39838f1139e82926bfd08b8b8d5d62118c1c9ba5",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/SkeletonRenderer.h",
+        "sha256": "e2d9a1301d05e42e2c9a07f954b84d3a8fb9c5bf18e9dae1dc66ee3751259ce6",
+        "upstream_git_blob": "244b521e9b103b067ce4df5a6c7605c5b57735aa",
+        "local_git_blob": "244b521e9b103b067ce4df5a6c7605c5b57735aa",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/Skin.h",
+        "sha256": "13bdcd27e0b50643c26b57163b1b4a2431df780573665d35e237d138720544fd",
+        "upstream_git_blob": "8875f2861a9571e985f78ca6019f9a8b6957c761",
+        "local_git_blob": "8875f2861a9571e985f78ca6019f9a8b6957c761",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/Slider.h",
+        "sha256": "66f3adae3b9dc4adf0dbdb72ec86cd45dd7cd93f6586852b6c6bfb91104bbc90",
+        "upstream_git_blob": "1f4a146077413d8ae675cfc28d087d86f1e953a0",
+        "local_git_blob": "1f4a146077413d8ae675cfc28d087d86f1e953a0",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/SliderData.h",
+        "sha256": "7db5db662c5d45cc19a3a58460d1721942bac3e22852de7b395d8438075e63c3",
+        "upstream_git_blob": "8bbce0b098071649212164dde2493c8e1fe2cfd4",
+        "local_git_blob": "8bbce0b098071649212164dde2493c8e1fe2cfd4",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/SliderMixTimeline.h",
+        "sha256": "159f1c06ffba19012e157cb5348f1b0915e5337f23c423928b061049cb8258c6",
+        "upstream_git_blob": "650db0aa085686b4f6224759896e778bf79256d7",
+        "local_git_blob": "650db0aa085686b4f6224759896e778bf79256d7",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/SliderPose.h",
+        "sha256": "93999e6e2712d44f1837c6700192936674f5815c728fa9c78bae3a94c85b294d",
+        "upstream_git_blob": "6bab56d737f921329b1690f8140703a69fba4885",
+        "local_git_blob": "6bab56d737f921329b1690f8140703a69fba4885",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/SliderTimeline.h",
+        "sha256": "7a4c7c68f71b4f384ff30a2ccf317cb67dccc7af4a853a8e198c2a95e9e08277",
+        "upstream_git_blob": "dd22579ba02f3b7eada9f5a48fb4f0f2a6946e8c",
+        "local_git_blob": "dd22579ba02f3b7eada9f5a48fb4f0f2a6946e8c",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/Slot.h",
+        "sha256": "cf30d353bc3d489d497567ccb8ce9ea68df5120243a5c2c4a8862fb5376bce23",
+        "upstream_git_blob": "320a6411063512be9dca38be8a16a236ac182cd5",
+        "local_git_blob": "320a6411063512be9dca38be8a16a236ac182cd5",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/SlotCurveTimeline.h",
+        "sha256": "66b9a28cda80952ab6a9bccfa2b15fa9f113479e4d2d46d830650f1bc6155ccb",
+        "upstream_git_blob": "1d33d7e34da0846e4eeedb6366d60b9eec8d6f5f",
+        "local_git_blob": "1d33d7e34da0846e4eeedb6366d60b9eec8d6f5f",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/SlotData.h",
+        "sha256": "db4161fae3b80f775932818bbd12b217d5ccd60c51a7887900b6c3d8f2917f77",
+        "upstream_git_blob": "1662e6291e0c0b0a0064df6601a17e798512847a",
+        "local_git_blob": "1662e6291e0c0b0a0064df6601a17e798512847a",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/SlotPose.h",
+        "sha256": "63581ae166c135a0d3ab791a959420dda51fcc4e4700af196c5e1200743a3e9c",
+        "upstream_git_blob": "23f46d513999693ad5211c281f0371fabe8411f7",
+        "local_git_blob": "23f46d513999693ad5211c281f0371fabe8411f7",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/SlotTimeline.h",
+        "sha256": "bac7d5859d7e7527cf6ba66008de7fd9f86fed91c3220e723af765e11667da5b",
+        "upstream_git_blob": "6d26af2487906e9a9a12d9dae8215960d0ff3fca",
+        "local_git_blob": "6d26af2487906e9a9a12d9dae8215960d0ff3fca",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/SpacingMode.h",
+        "sha256": "6529b9148ea7de6038311cb242ead2e7349036696b0ddad1cc46362f8cf6c029",
+        "upstream_git_blob": "bf8553e3ef3662ba4bf35bbb712c2bb4ff32ace5",
+        "local_git_blob": "bf8553e3ef3662ba4bf35bbb712c2bb4ff32ace5",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/SpineObject.h",
+        "sha256": "ea5015c388e64fa54f6c8fff6a86df15a496b817399b030a6a6ceb9c4d1e88f6",
+        "upstream_git_blob": "dc893695aeab2e42bdd6d21997533ad5c5773afc",
+        "local_git_blob": "dc893695aeab2e42bdd6d21997533ad5c5773afc",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/SpineString.h",
+        "sha256": "ce99d46195a48ae319666607993bfab006d69a3aa9a8592d182147873a2eded3",
+        "upstream_git_blob": "99667e57fa6405173acd1ba224807924df181d30",
+        "local_git_blob": "4ac197ed0b5216f7ac9ec8b7f9c897c699aef35f",
+        "matches_upstream": false
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/TextureLoader.h",
+        "sha256": "fc04a5e7c933766638adb1de3cf7eaefed68fc8ac08312515c34cb750b1bd15a",
+        "upstream_git_blob": "60f86afb9828ce63f556d9dae7b7f46bd9c11118",
+        "local_git_blob": "60f86afb9828ce63f556d9dae7b7f46bd9c11118",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/TextureRegion.h",
+        "sha256": "9a852720e10cdda1d85719dd7c808935a36675211fab2b79632d6d9f6836eceb",
+        "upstream_git_blob": "158133ec572867299481ad1916f656c684651e85",
+        "local_git_blob": "158133ec572867299481ad1916f656c684651e85",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/Timeline.h",
+        "sha256": "9f50cee16e8cc622855e3fb74e76d55db7cf6272b4f1206794ca6cbbfe249959",
+        "upstream_git_blob": "c9339ea28698f7167ad0765e756fafffd83330e6",
+        "local_git_blob": "c9339ea28698f7167ad0765e756fafffd83330e6",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/TransformConstraint.h",
+        "sha256": "cece94e3d6d5353dd0d34947db115e809336d7bb16732bc06ef544935ad14773",
+        "upstream_git_blob": "4b467351da63bb719e87dadba626bec667335a31",
+        "local_git_blob": "4b467351da63bb719e87dadba626bec667335a31",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/TransformConstraintData.h",
+        "sha256": "b099851931fb8ea119f88f24787270b47b5bfbbd539d9543b6c73d0dc2cc3c17",
+        "upstream_git_blob": "6cc344672b17d537f9285d0b09b94e58b7617f88",
+        "local_git_blob": "6cc344672b17d537f9285d0b09b94e58b7617f88",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/TransformConstraintPose.h",
+        "sha256": "a44aa39a2cbe0333485c4a2acd01073392995f8ae37fcd5f5452e6ebca3bc55e",
+        "upstream_git_blob": "78f99909967a41fbb7729a9762b7af8460897718",
+        "local_git_blob": "78f99909967a41fbb7729a9762b7af8460897718",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/TransformConstraintTimeline.h",
+        "sha256": "c33cbcbae48fb98f9da828fa6498e71aeea5b09d422c0648fbe050d2940114f7",
+        "upstream_git_blob": "367322e6a5da38604d9e1d356e1836e13ecea42b",
+        "local_git_blob": "367322e6a5da38604d9e1d356e1836e13ecea42b",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/TranslateTimeline.h",
+        "sha256": "6263570551312678dbd969c83a87a633609cf10dab896bd271e434ab209b968d",
+        "upstream_git_blob": "66760ef7b90470849f21016edfa219c8efcc46ae",
+        "local_git_blob": "66760ef7b90470849f21016edfa219c8efcc46ae",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/Triangulator.h",
+        "sha256": "170a5fbd943a295133baf8037e74ba1e3460f7776716ce71ef8cb3f7acd88669",
+        "upstream_git_blob": "7776a80bc654621e754c9d21b40fb00488115d5f",
+        "local_git_blob": "7776a80bc654621e754c9d21b40fb00488115d5f",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/Update.h",
+        "sha256": "759108cfc150034cc95c2bb57e23b95b0050c38095666d5b944724e8a3f98274",
+        "upstream_git_blob": "52fd951ec5900f6e79fb422798b471c2477f6397",
+        "local_git_blob": "52fd951ec5900f6e79fb422798b471c2477f6397",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/Version.h",
+        "sha256": "e35c0e9e127f2affb4b92fca95cb423722a9f1f3ee89bdf9c8688e319b9f99e7",
+        "upstream_git_blob": "c60430fb5cc06cdb49169f1ed74e76252551cf70",
+        "local_git_blob": "c60430fb5cc06cdb49169f1ed74e76252551cf70",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/VertexAttachment.h",
+        "sha256": "742f543a738f7a45edf5025890de1963a15caa9b14fda8a00ddf0bd86f7e7e44",
+        "upstream_git_blob": "5fff2ab71eca225d986117aa2d0db8f1dfa97c24",
+        "local_git_blob": "5fff2ab71eca225d986117aa2d0db8f1dfa97c24",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/dll.h",
+        "sha256": "a804dd995c6feca802f7bbeb8212aa868c3d28bfcf3b21f5752b5061942f8e41",
+        "upstream_git_blob": "2681a5381599773eb98c3ba6727dff05916363bc",
+        "local_git_blob": "2681a5381599773eb98c3ba6727dff05916363bc",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/include/spine/spine.h",
+        "sha256": "59f3e1afba0505cc24d46823521ab4c729e7caa6f8019e4a91311e8820e0c5a1",
+        "upstream_git_blob": "6467ee8175634e6b55c5a35e4d018e1b3a7ac61c",
+        "local_git_blob": "6467ee8175634e6b55c5a35e4d018e1b3a7ac61c",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/Animation.cpp",
+        "sha256": "9f089ea109d5136873fc0c9a43f4045a9dad162467eb0a68d0cc4e3c42c517dc",
+        "upstream_git_blob": "2bfa2a06bec659510bca28446b21ac013b4a17ba",
+        "local_git_blob": "2bfa2a06bec659510bca28446b21ac013b4a17ba",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/AnimationState.cpp",
+        "sha256": "416f7eaa2b9a02503d54fde6723af426ccfe3fc277e1a9dfebb2fff8e69b4ce3",
+        "upstream_git_blob": "05758996c5e7a597953c50888cd8c3b973e246be",
+        "local_git_blob": "b1c6c9fdd607d7eac1b58f4169aac8d9a2538afe",
+        "matches_upstream": false
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/AnimationStateData.cpp",
+        "sha256": "f4916ad9a76e9faa8ee9ad667881d937ff2734d7d89f4c30ad6038f89b8c7936",
+        "upstream_git_blob": "6fe13a271f150fa20d68d215dee4048174d90992",
+        "local_git_blob": "6fe13a271f150fa20d68d215dee4048174d90992",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/Atlas.cpp",
+        "sha256": "672a45946fce4b3145ae87e864fabc40adebed5f5e4019c1255d8cb1289be22e",
+        "upstream_git_blob": "7eb5b5e71a5de80a195e43d55c85ed1611782e73",
+        "local_git_blob": "7eb5b5e71a5de80a195e43d55c85ed1611782e73",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/AtlasAttachmentLoader.cpp",
+        "sha256": "40c03d96c6c41b072db9ca70e695e468509677715d29a29bd65d6397961f7598",
+        "upstream_git_blob": "33a7cb08f18b0b1865f29e28d2ad8dbbca5c0b67",
+        "local_git_blob": "33a7cb08f18b0b1865f29e28d2ad8dbbca5c0b67",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/Attachment.cpp",
+        "sha256": "db7be04e102e59d28409782788f68c3b5398af6a244cfbf93ae30859130e1722",
+        "upstream_git_blob": "5f5ac65b450ae9e96738dca02c523041dd33ec07",
+        "local_git_blob": "5f5ac65b450ae9e96738dca02c523041dd33ec07",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/AttachmentLoader.cpp",
+        "sha256": "71cef7be992d6d4dfdb77044541d13e8cf87dd38a1100159eb50422599e34db9",
+        "upstream_git_blob": "290eb74ca30ee3f3f674a99580d3c1d4300773ff",
+        "local_git_blob": "290eb74ca30ee3f3f674a99580d3c1d4300773ff",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/AttachmentTimeline.cpp",
+        "sha256": "d9baeef83a54933fb6171af32bbbd65f0d3eff366056ca54f2a2f8c7e14a79dd",
+        "upstream_git_blob": "579b38d9d3cf5e5b3c6a0a381369744d8ac64c46",
+        "local_git_blob": "579b38d9d3cf5e5b3c6a0a381369744d8ac64c46",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/Bone.cpp",
+        "sha256": "1a0e57ddeb5c80e588769b54e4669691295be82040dc4662b01f863af171f1b3",
+        "upstream_git_blob": "044c1b7b5bec04715e31593b97e58c327ebfd95e",
+        "local_git_blob": "211e39d4fe31165b93fba5937982d97ac6ae3bfb",
+        "matches_upstream": false
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/BoneData.cpp",
+        "sha256": "ecd94decf0608b6d6188fca65a17498fcf8fc7e2a704bdab9738deb4af5d149e",
+        "upstream_git_blob": "84169d53a644a5e8caff4ebf9bdf81eb4c2e887b",
+        "local_git_blob": "84169d53a644a5e8caff4ebf9bdf81eb4c2e887b",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/BoneLocal.cpp",
+        "sha256": "8da1e09db3752aee01990e7d84500a0ac47376b10ac085691d33d25515a07945",
+        "upstream_git_blob": "5dc687b5dc89c9554e5f83b26fd7c1f1b7f37792",
+        "local_git_blob": "5dc687b5dc89c9554e5f83b26fd7c1f1b7f37792",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/BonePose.cpp",
+        "sha256": "9f61ed2e20c5fc9e1d035e8279cd90b1fb686dce142f61a64097fb3b4a969dbc",
+        "upstream_git_blob": "8e8e133fda0b74d2bfd125e88a53efc751ae7114",
+        "local_git_blob": "8e8e133fda0b74d2bfd125e88a53efc751ae7114",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/BoneTimeline.cpp",
+        "sha256": "c86acaee3804abd6213b1d780951b77139bded0e74ad4f65b40e53d2f41b37fa",
+        "upstream_git_blob": "6010ff9da6cddf5ebeb7c4a878f114a0baae9274",
+        "local_git_blob": "6010ff9da6cddf5ebeb7c4a878f114a0baae9274",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/BoundingBoxAttachment.cpp",
+        "sha256": "3d5dd79404bf818f3ab39534565ca155e4fc38b24841a095b72f1f9bed6f77a5",
+        "upstream_git_blob": "ffe8663e6dc4af1cd3cf1ba5f89c15a187b3838e",
+        "local_git_blob": "ffe8663e6dc4af1cd3cf1ba5f89c15a187b3838e",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/ClippingAttachment.cpp",
+        "sha256": "ac3af5cae5914a920b1be1f2b06eceb217dc943d87209dad4c4a0047ab1db4f0",
+        "upstream_git_blob": "03fb86fc5b2f73871cbdb0f8db399bb350f95e88",
+        "local_git_blob": "03fb86fc5b2f73871cbdb0f8db399bb350f95e88",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/ColorTimeline.cpp",
+        "sha256": "5b55b051cee47241743355a02ca498bd0f583611bbb2aac7052b18b752e910a9",
+        "upstream_git_blob": "546a8b57b3b4fbc2387b3275113533d66ddaf805",
+        "local_git_blob": "546a8b57b3b4fbc2387b3275113533d66ddaf805",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/Constraint.cpp",
+        "sha256": "832bd6edb13f9c115a489403c10e09cefef4658905fd4debf7856dbf876993f4",
+        "upstream_git_blob": "b9eb21eced63fd4de82a1a9fe8652df341f3d3f8",
+        "local_git_blob": "b9eb21eced63fd4de82a1a9fe8652df341f3d3f8",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/ConstraintData.cpp",
+        "sha256": "c7bf9abd9d71405546f2f74555651ad964091f939ff7e9e5b3c40f6af86829f7",
+        "upstream_git_blob": "b8fee722921f814cb59f2319c7016dd2b2b4f2ed",
+        "local_git_blob": "b8fee722921f814cb59f2319c7016dd2b2b4f2ed",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/ConstraintTimeline.cpp",
+        "sha256": "50b2b6c3187da626b4784bc643babea260e6f6d54b541ad8fc83ece3ba824030",
+        "upstream_git_blob": "e7c775154f5369b545eefb42ca50fd3dcfb88126",
+        "local_git_blob": "e7c775154f5369b545eefb42ca50fd3dcfb88126",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/ConstraintTimeline1.cpp",
+        "sha256": "97d29e5c5954e96b9e4c8c1252fa9639a0ebb72a4dc6a665ef802d879bbb40ce",
+        "upstream_git_blob": "9ddd0ee6eeedd24275f9545817594fa811ce4943",
+        "local_git_blob": "9ddd0ee6eeedd24275f9545817594fa811ce4943",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/CurveTimeline.cpp",
+        "sha256": "4cba8fda423738653271462b4175bd5e53a921921fae7e56149a418af4763d18",
+        "upstream_git_blob": "6dfbf9cd439aec6c580a70b65ec6b74db4e400f5",
+        "local_git_blob": "6dfbf9cd439aec6c580a70b65ec6b74db4e400f5",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/DeformTimeline.cpp",
+        "sha256": "d21bfb9f9f12c69a06e26160f9a8afc7ade2c4e8f729e2bbd4b836484a98ae92",
+        "upstream_git_blob": "07e497bfbabe567d39e69cf7135081fd7bb2d6fb",
+        "local_git_blob": "07e497bfbabe567d39e69cf7135081fd7bb2d6fb",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/DrawOrder.cpp",
+        "sha256": "3ab49f318340b9b766a9ac5ed31fa9fb2b36390d97bfd6f577a751f18416f1c3",
+        "upstream_git_blob": "ef248cc45d27f79cf88bb768578a2b0aac8a18e6",
+        "local_git_blob": "ef248cc45d27f79cf88bb768578a2b0aac8a18e6",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/DrawOrderFolderTimeline.cpp",
+        "sha256": "6b19ffed1c8678bad8597d237916a8c272a0cdde79bc4594c6876bfffbc71ab2",
+        "upstream_git_blob": "5c9e1c3c816f4c028ec2458791a3479607851730",
+        "local_git_blob": "5c9e1c3c816f4c028ec2458791a3479607851730",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/DrawOrderTimeline.cpp",
+        "sha256": "e0ee3a15753a285c9edd1c52bc5ce3d734ab0aa8129a8ba76f99a1c679130a32",
+        "upstream_git_blob": "1282c15719f63cac8df70cf232de14ae32a32a7f",
+        "local_git_blob": "1282c15719f63cac8df70cf232de14ae32a32a7f",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/Event.cpp",
+        "sha256": "fb76e48db00186b1ccb0fa72d6c595f77871ce346c029630b841ac61a6a115d9",
+        "upstream_git_blob": "fa6cfb71ba2ffbb79da4e0031651d08facc5bd70",
+        "local_git_blob": "fa6cfb71ba2ffbb79da4e0031651d08facc5bd70",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/EventData.cpp",
+        "sha256": "d785bddae2a93eb85ab4d97ded365d6b142ec86b48aed9a585e7545145d9ad71",
+        "upstream_git_blob": "5db90faa714badd46bc2e863c178c3b53877883b",
+        "local_git_blob": "5db90faa714badd46bc2e863c178c3b53877883b",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/EventTimeline.cpp",
+        "sha256": "52127e5693cff368a3443c837c2bfb3d478b1a74d242306bafb48c393913bc90",
+        "upstream_git_blob": "4ca30533cd60a98dfd0542d9329b53d19a9a116a",
+        "local_git_blob": "4ca30533cd60a98dfd0542d9329b53d19a9a116a",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/Extension.cpp",
+        "sha256": "62ee63f2a88a5ebe6c2f21c6c2f91e0d2d5e0bf7a5d137bc40f88f3471f60fa9",
+        "upstream_git_blob": "8369aae43e9f8542f5a9ff89619dd6fb9f368821",
+        "local_git_blob": "8369aae43e9f8542f5a9ff89619dd6fb9f368821",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/IkConstraint.cpp",
+        "sha256": "76429fc22bf476483ceb6f518c9e2de3379440e96d2ed4cd3994939fa26fa4de",
+        "upstream_git_blob": "4a5af586812ef2d4c13cb4062197a5548150321a",
+        "local_git_blob": "4a5af586812ef2d4c13cb4062197a5548150321a",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/IkConstraintData.cpp",
+        "sha256": "0bbcc0252656188b06aeef7885defd5cba927cb10c728bf7239c3515485eef04",
+        "upstream_git_blob": "0429153bebbf7b371e5d731b1927a24a9e8c66c6",
+        "local_git_blob": "0429153bebbf7b371e5d731b1927a24a9e8c66c6",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/IkConstraintPose.cpp",
+        "sha256": "569621083e5db3a005d4a557e437965ee78692ee7f8b3cc5ab973cecb87c792c",
+        "upstream_git_blob": "b76ff38a96731510e1a8d9e85e2123cad7b0bd80",
+        "local_git_blob": "b76ff38a96731510e1a8d9e85e2123cad7b0bd80",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/IkConstraintTimeline.cpp",
+        "sha256": "5614797593adf5bfa74db53b9015ef7fa82596b92d59e93035d88a89e1759caf",
+        "upstream_git_blob": "1f1de420eb73e0a0a04697766e1cff5eaa8ce935",
+        "local_git_blob": "1f1de420eb73e0a0a04697766e1cff5eaa8ce935",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/InheritTimeline.cpp",
+        "sha256": "2c9b35fecc0f6a55a135aee0f4961cff92b596b4da4afb8215cbe7957c29217e",
+        "upstream_git_blob": "cfd07cfdd9cf00e5fd6b3efad5cdfef61d49e2d0",
+        "local_git_blob": "cfd07cfdd9cf00e5fd6b3efad5cdfef61d49e2d0",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/Interpolation.cpp",
+        "sha256": "a3d4ee8808ef6d7f2ec13bdfe5e98114c18e72477f233a3424dbe06f1a48cccb",
+        "upstream_git_blob": "b139090b8a7e1634a8415d40968ccb72ca244873",
+        "local_git_blob": "b139090b8a7e1634a8415d40968ccb72ca244873",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/Json.cpp",
+        "sha256": "0f526492d9dfab7082e9b2c084bfa99612664db403a212108f0133d112b1db21",
+        "upstream_git_blob": "5f14718f36d0fb4f9bfdb5826e96bd9b1bbc85a3",
+        "local_git_blob": "5f14718f36d0fb4f9bfdb5826e96bd9b1bbc85a3",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/LinkedMesh.cpp",
+        "sha256": "e58287c842b1345a6c824187eb33b48785b4fa5dacf06b3bfc98e42c30c2e04f",
+        "upstream_git_blob": "68fdd4f5697b95bb08e5f0239932d2da908a0ab5",
+        "local_git_blob": "68fdd4f5697b95bb08e5f0239932d2da908a0ab5",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/MathUtil.cpp",
+        "sha256": "92499addd7588aa9a9a4b30e58f94748410da1f615f26c7f3c786f1f8bd3171a",
+        "upstream_git_blob": "5782a8771823376a29fa715cf2f4ee12afc49182",
+        "local_git_blob": "5782a8771823376a29fa715cf2f4ee12afc49182",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/MeshAttachment.cpp",
+        "sha256": "64fbf1e485f668ff8fccc6ea68c73723068ab3ad8614b1d9bd6e1086ccbc177a",
+        "upstream_git_blob": "f4a107cf6a43abc1ca6f51119531b08ed1841c1f",
+        "local_git_blob": "f4a107cf6a43abc1ca6f51119531b08ed1841c1f",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/PathAttachment.cpp",
+        "sha256": "f42dd941558ebc0a7b9b78a36ef136007df204779d014cb8ec80d65f0972c3c4",
+        "upstream_git_blob": "76d9804cc2e7d29d587ae6107e27ad4a264b2774",
+        "local_git_blob": "76d9804cc2e7d29d587ae6107e27ad4a264b2774",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/PathConstraint.cpp",
+        "sha256": "359319bce7a64efbe6b78fc98a1664ddf798fb16a313d1b58e3092d94d2cd07f",
+        "upstream_git_blob": "349c6b20825d3c2aa52d6ce47ac11ae0887d7655",
+        "local_git_blob": "349c6b20825d3c2aa52d6ce47ac11ae0887d7655",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/PathConstraintData.cpp",
+        "sha256": "1a1c316095c76d7b8b1dd4d8d3e1173e4f8e2219861a8cd27a560c761f8ce437",
+        "upstream_git_blob": "6dfb444abdd3a265f9a1801c62bcb7e2dc1f26a8",
+        "local_git_blob": "6dfb444abdd3a265f9a1801c62bcb7e2dc1f26a8",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/PathConstraintMixTimeline.cpp",
+        "sha256": "c393d18171799181a911ec063d95662e04722009663bce45ec54b6f2fad3e3b4",
+        "upstream_git_blob": "274465f668bc5e7834268642820b645202caa070",
+        "local_git_blob": "274465f668bc5e7834268642820b645202caa070",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/PathConstraintPose.cpp",
+        "sha256": "0502d0a7b0befb5f45468b7ed2bfd37c2bd869cdc551934d3c51daef149539e5",
+        "upstream_git_blob": "9a7f94e1f2337ee2155fc4d8e8f4280074f1902f",
+        "local_git_blob": "9a7f94e1f2337ee2155fc4d8e8f4280074f1902f",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/PathConstraintPositionTimeline.cpp",
+        "sha256": "70cc2956c1b669b229c75fa532d8a649e4e4cd3ba9a00936ad4def21c77d15f6",
+        "upstream_git_blob": "ce56620e5849c8a2206ae6f6d3647344c1c5195c",
+        "local_git_blob": "ce56620e5849c8a2206ae6f6d3647344c1c5195c",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/PathConstraintSpacingTimeline.cpp",
+        "sha256": "919931997451ab7b71983fc1f7ac976b55b42b509d3da35cce28cb50ee7caab1",
+        "upstream_git_blob": "6ff93d96749cc07c2035201977562b9844113cf4",
+        "local_git_blob": "6ff93d96749cc07c2035201977562b9844113cf4",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/PhysicsConstraint.cpp",
+        "sha256": "9c11b0ae49cf1b3c9e64d733c1922ae860d31dfddda9d47dccda5eee59de3fd0",
+        "upstream_git_blob": "7353f36c9a3164ea3bbd412d33535cf90c52c83a",
+        "local_git_blob": "7353f36c9a3164ea3bbd412d33535cf90c52c83a",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/PhysicsConstraintData.cpp",
+        "sha256": "b057c7ad9cdeb618a3a2fe0327932e518e4b5715fe5752a65856c80215b26c9f",
+        "upstream_git_blob": "c882b59515a438ec67587b6ad598c887af025856",
+        "local_git_blob": "c882b59515a438ec67587b6ad598c887af025856",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/PhysicsConstraintPose.cpp",
+        "sha256": "a3e2083c591ecf62c0784c6b772414746ffd1d55e10e4025c43167b300c697fe",
+        "upstream_git_blob": "255af11f20f24775d74febf9bb2896903f353b01",
+        "local_git_blob": "255af11f20f24775d74febf9bb2896903f353b01",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/PhysicsConstraintTimeline.cpp",
+        "sha256": "455cd75b0aa9ecc670e82361bb7e386173a1c95255d3a63a0376fbd0dfb97f17",
+        "upstream_git_blob": "6a92453cde6746559237729536788160b443bc8a",
+        "local_git_blob": "6a92453cde6746559237729536788160b443bc8a",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/PointAttachment.cpp",
+        "sha256": "78f36878c52b483241641e5bacb101d91f2f855597d50e4654322cd1c9ad4168",
+        "upstream_git_blob": "bc26228f45ff842fa3940e9e6fb15cf66028db89",
+        "local_git_blob": "bc26228f45ff842fa3940e9e6fb15cf66028db89",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/RTTI.cpp",
+        "sha256": "0fca9575ceac83e57b6dbbc5d343baab97ec93075b5aa2ae74c303af9fbf2bb9",
+        "upstream_git_blob": "ee996d19fe2d1ce296549d8dcbbfc1bfaa1c046f",
+        "local_git_blob": "ee996d19fe2d1ce296549d8dcbbfc1bfaa1c046f",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/RegionAttachment.cpp",
+        "sha256": "22ff853fc5abb203d6e628b510e7c5455377e1b49d0dfa78704a965ac91b6dcc",
+        "upstream_git_blob": "0492c670f451ad3af6849e425c972214375eb346",
+        "local_git_blob": "0492c670f451ad3af6849e425c972214375eb346",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/RotateTimeline.cpp",
+        "sha256": "76f136caa7f50c87fca633ff56f617b70eb14df79a04b1c3d6c143766e4f70c4",
+        "upstream_git_blob": "ead49bb747db1df427cc809b2f1fe5f597841eed",
+        "local_git_blob": "ead49bb747db1df427cc809b2f1fe5f597841eed",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/ScaleTimeline.cpp",
+        "sha256": "7f635c5f2bee70aa0567f460724e782e8f7dc8d8a84bd49c03c438aa1e107e84",
+        "upstream_git_blob": "e620def0510a33b9476d39565a9dc2ca0ea3dc6e",
+        "local_git_blob": "e620def0510a33b9476d39565a9dc2ca0ea3dc6e",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/Sequence.cpp",
+        "sha256": "376cd79c0f59e29108267e00c4c56b3cc9770060c4e6ad67ef7091f8a5f2adfb",
+        "upstream_git_blob": "f42825870796ccfc9ed19b41f710040ca62aa1bf",
+        "local_git_blob": "f42825870796ccfc9ed19b41f710040ca62aa1bf",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/SequenceTimeline.cpp",
+        "sha256": "746192a7f892137950f3ba525795a7b59f2dc57a2dd4c6ad7f7e35f2ed02a318",
+        "upstream_git_blob": "e12ef7d8d74e81ddf1f56d52dfa7b6aec8037200",
+        "local_git_blob": "e12ef7d8d74e81ddf1f56d52dfa7b6aec8037200",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/ShearTimeline.cpp",
+        "sha256": "f581982c534235734b6e957bfacb116393f99f2f5a30740a7ec64a6fe124b179",
+        "upstream_git_blob": "1ff0c16881ed179f6482a517cff34a3b433caa4e",
+        "local_git_blob": "1ff0c16881ed179f6482a517cff34a3b433caa4e",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/Skeleton.cpp",
+        "sha256": "4940358cd86667d30609bd157a38b7b7bf2aa84163d87530d0d5e15eb6f06b57",
+        "upstream_git_blob": "0f7a4bab6768986c5faabda4022095b0a93dec79",
+        "local_git_blob": "0f7a4bab6768986c5faabda4022095b0a93dec79",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/SkeletonBinary.cpp",
+        "sha256": "4e6b1363b4e3daf9d9012c6cb12800f95bbe0bdd9120903648b9b823c8004397",
+        "upstream_git_blob": "3ac58945be876b920b6f3526466d8ce924998050",
+        "local_git_blob": "3ac58945be876b920b6f3526466d8ce924998050",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/SkeletonBounds.cpp",
+        "sha256": "86de8930a328f5f699c638683939308e5e1db07c0d7e52f9a1923e186c865868",
+        "upstream_git_blob": "faece49475f35d29bc7274179cfdfc97b0738a66",
+        "local_git_blob": "faece49475f35d29bc7274179cfdfc97b0738a66",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/SkeletonClipping.cpp",
+        "sha256": "09437a9abf65d33c8000c909f57f33ad410d130569bf3c7d193a194dc111d75f",
+        "upstream_git_blob": "e9b6893d7d1c8eed551ada988206622ae13b42d7",
+        "local_git_blob": "e9b6893d7d1c8eed551ada988206622ae13b42d7",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/SkeletonData.cpp",
+        "sha256": "0ed691f1015637442fe08074d10d78627170b4721fa9040859d6f9ffbe7a90a3",
+        "upstream_git_blob": "1c42b90e143ef966aad0af81f41a2d44cb9901ec",
+        "local_git_blob": "1c42b90e143ef966aad0af81f41a2d44cb9901ec",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/SkeletonJson.cpp",
+        "sha256": "8aaaed47ac2f0f162bad48363e86b81b6d40589f0d37706e58432a0bf08c0484",
+        "upstream_git_blob": "7244d993d6ba0761a21df36ab6790f68a6c0c31c",
+        "local_git_blob": "7244d993d6ba0761a21df36ab6790f68a6c0c31c",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/SkeletonRenderer.cpp",
+        "sha256": "d63554918dec88d85ce06beed76bd31224e2e5b03ca399ae3ec67c52d32baf87",
+        "upstream_git_blob": "5e017c03835be6c513e39a37df1d27dbf02257ce",
+        "local_git_blob": "5e017c03835be6c513e39a37df1d27dbf02257ce",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/Skin.cpp",
+        "sha256": "1f4104cc95448ef2bf660233f2b8c4943a29a1c49264b914aca283c77ad90eee",
+        "upstream_git_blob": "42ec9b3a4706aad3f8a7e1a34eda711147c29eb2",
+        "local_git_blob": "42ec9b3a4706aad3f8a7e1a34eda711147c29eb2",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/Slider.cpp",
+        "sha256": "71c6738cd15aac29b5a1e0d4dfa86c31058e4d816c2ac22af94b759654797c01",
+        "upstream_git_blob": "2de1e143e28775c82fb247fef08bd9148baa191d",
+        "local_git_blob": "2de1e143e28775c82fb247fef08bd9148baa191d",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/SliderData.cpp",
+        "sha256": "7c797fc882768bb0f0354781aa8ac6739cb0d491df25d9d869a59ed957dd7a54",
+        "upstream_git_blob": "311eab4fcffd005dad515dbcc0312a690dbbfd42",
+        "local_git_blob": "311eab4fcffd005dad515dbcc0312a690dbbfd42",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/SliderMixTimeline.cpp",
+        "sha256": "dae4e31e5ed98b2254b40e25b13aa668b9cdb20afe1a3080af71cee8ae7ca28e",
+        "upstream_git_blob": "433b032f2494dbb7f90e0a0449001194fb7835aa",
+        "local_git_blob": "433b032f2494dbb7f90e0a0449001194fb7835aa",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/SliderPose.cpp",
+        "sha256": "a0fa269658434748cbf72056c94751b5c8aec626210a882190aae7f7a368ab0a",
+        "upstream_git_blob": "0419ce4d1fa26643c04a2757ce02b923235bac5f",
+        "local_git_blob": "0419ce4d1fa26643c04a2757ce02b923235bac5f",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/SliderTimeline.cpp",
+        "sha256": "98960848473bcccb04dbdb0f97effd92d325bcb7f48f38a69342cdbab5dea254",
+        "upstream_git_blob": "b3f628e41b08f7c010e730a83321cd8ef19f07a6",
+        "local_git_blob": "b3f628e41b08f7c010e730a83321cd8ef19f07a6",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/Slot.cpp",
+        "sha256": "23cd8f7903e4b49551971601bd0b5dc383d313e3e41dc03435c4e203fad7c348",
+        "upstream_git_blob": "7d954ded9be1ff16e037f7f0dbf5ec283801b3a6",
+        "local_git_blob": "7d954ded9be1ff16e037f7f0dbf5ec283801b3a6",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/SlotCurveTimeline.cpp",
+        "sha256": "625cacf5ea33105971e584c6bc96ff810bdbabe59de24e9f76b4c93d5a6e3bb9",
+        "upstream_git_blob": "7f540526860a6b0e37bbc3c46d8f074615f236fc",
+        "local_git_blob": "7f540526860a6b0e37bbc3c46d8f074615f236fc",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/SlotData.cpp",
+        "sha256": "e6eff3f46e13ffc9b528e7c944a6449e3d1beef581ce77bd2a24da96cbdd5f21",
+        "upstream_git_blob": "9d261f8ad4af656abfdb61800a2d4fdd6148edf4",
+        "local_git_blob": "9d261f8ad4af656abfdb61800a2d4fdd6148edf4",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/SlotPose.cpp",
+        "sha256": "6c2707446945742e9ad9eeb08ee175b80948bd9edc86ee2e9968b98f69543bef",
+        "upstream_git_blob": "c416df1782c8eaa4f3ae6d3bf38c284e5af4edae",
+        "local_git_blob": "c416df1782c8eaa4f3ae6d3bf38c284e5af4edae",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/SlotTimeline.cpp",
+        "sha256": "e2538babff7018508411cc35c18d38250c13a28d761da47bb2dcc602646fffc8",
+        "upstream_git_blob": "c314515b5387b0330c9719170dfa99920d95fd89",
+        "local_git_blob": "c314515b5387b0330c9719170dfa99920d95fd89",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/SpineObject.cpp",
+        "sha256": "451863b8c55964bac831209abfaace7deda7b1af54aa82f8d1ae4ed3e261ed2d",
+        "upstream_git_blob": "d71bf6e10cd29cde113796c8af00de9e0b1cbb94",
+        "local_git_blob": "d71bf6e10cd29cde113796c8af00de9e0b1cbb94",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/TextureLoader.cpp",
+        "sha256": "3f5a84c13e9b715e9fe4131b17cffc7162fc4ae5372ca67d22ca4a9cecc79cf5",
+        "upstream_git_blob": "4dd2a5f345540a5ae9d727e7e0b1c54eb5216a5a",
+        "local_git_blob": "4dd2a5f345540a5ae9d727e7e0b1c54eb5216a5a",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/TextureRegion.cpp",
+        "sha256": "b1ba30a39556f212de7fb880871cccb49bb50cc0271ca4f7a91e3859c6c4c51e",
+        "upstream_git_blob": "373a4301a3ba0b75270c3180145c3c760e913380",
+        "local_git_blob": "373a4301a3ba0b75270c3180145c3c760e913380",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/Timeline.cpp",
+        "sha256": "2e15582568f59c3b33e50ac3e5776d652feb145843f491fdcde911b48fc1bd3e",
+        "upstream_git_blob": "2b63f9ee7e6cf0829b000fb63be8099fbc392c02",
+        "local_git_blob": "2b63f9ee7e6cf0829b000fb63be8099fbc392c02",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/TransformConstraint.cpp",
+        "sha256": "1bf148b620303688c74d172ed5ff5dcc17da6bfba8cc2471e87e4ce24cad9bea",
+        "upstream_git_blob": "d6da79df8717f952bb26ca608398e2e8097f6014",
+        "local_git_blob": "d6da79df8717f952bb26ca608398e2e8097f6014",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/TransformConstraintData.cpp",
+        "sha256": "48571edf4e768dae7d2db868c2cee20c46f83fd4b1b85dfdb4882f255c732cd5",
+        "upstream_git_blob": "061113460a57bc73e8a8d19ecd22ea159108e641",
+        "local_git_blob": "061113460a57bc73e8a8d19ecd22ea159108e641",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/TransformConstraintPose.cpp",
+        "sha256": "bc75cd654c0132a38fcbd832a56054edd62ca0400893422ca2b89abae9016270",
+        "upstream_git_blob": "85efe1a3d72f7ddf7d6961785cb1e3ae258b52bb",
+        "local_git_blob": "85efe1a3d72f7ddf7d6961785cb1e3ae258b52bb",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/TransformConstraintTimeline.cpp",
+        "sha256": "2e1e7780949bcef97ebc6e65ecf3b0f860988b0bff42673ee5c8dd8637fa8922",
+        "upstream_git_blob": "b6a09a300941d4bab723c2c9db143dec836f92a2",
+        "local_git_blob": "b6a09a300941d4bab723c2c9db143dec836f92a2",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/TranslateTimeline.cpp",
+        "sha256": "c662117cf9920c8f3ef27db3ee2c6a6474df2e8d81cef37600bae38b4e06cdab",
+        "upstream_git_blob": "fea071b3743e3b615f386605d3ae9929707f125a",
+        "local_git_blob": "fea071b3743e3b615f386605d3ae9929707f125a",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/Triangulator.cpp",
+        "sha256": "0086bedfec38e42683f5f54cda326c9ca6a8d6cb7a4ab64da0272568ce909b21",
+        "upstream_git_blob": "3a38c4425913508a21b0c59f613826c92bc803b2",
+        "local_git_blob": "3a38c4425913508a21b0c59f613826c92bc803b2",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/Update.cpp",
+        "sha256": "872823b83a71eba5a3e8ec1ebbfdf99f77b1f0381120c68b9212fa7b332d1f97",
+        "upstream_git_blob": "81ee025dc56d381c0c4152b9690a7e838225294f",
+        "local_git_blob": "81ee025dc56d381c0c4152b9690a7e838225294f",
+        "matches_upstream": true
+      },
+      {
+        "file": "extensions/spine/runtime/src/spine/VertexAttachment.cpp",
+        "sha256": "45b9b1c30e849b3e4e19a137cfb74d39cbbea3ee2a842570d6250c2e24c9f8da",
+        "upstream_git_blob": "af9526b160de1b8bced8edc800ae970036161fdc",
+        "local_git_blob": "af9526b160de1b8bced8edc800ae970036161fdc",
+        "matches_upstream": true
+      }
+    ],
+    "native_result": "native-parser-result.json",
+    "native_scope": "Actual SkeletonJson/Atlas decode, track queue/mixing/listeners, bone poses and mesh FFD; CPU only.",
+    "renderer_scope": "Original APK SpineTest cases must independently validate textures, rendering and touch behavior."
+  },
+  "migration": "Same upstream Spineboy/Goblins exports. JSON upgraded to 4.3; original atlas/images are byte-identical. Original tests and raw resources are unchanged."
+}

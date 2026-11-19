@@ -3,6 +3,7 @@
  Copyright (c) 2013-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -102,8 +103,13 @@ std::string Application::getVersion()
 
 bool Application::openURL(std::string_view url)
 {
-    NSString* msg = [NSString stringWithCString:url.data() encoding:NSUTF8StringEncoding];
-    NSURL* nsUrl  = [NSURL URLWithString:msg];
+    NSString* msg = [[NSString alloc] initWithBytes:url.data() length:url.size() encoding:NSUTF8StringEncoding];
+    NSURL* nsUrl  = msg ? [NSURL URLWithString:msg] : nil;
+#if !__has_feature(objc_arc)
+    [msg release];
+#endif
+    if (!nsUrl)
+        return false;
 
     id application = [UIApplication sharedApplication];
     [application openURL:nsUrl options:@{} completionHandler:nil];

@@ -2,6 +2,7 @@
  Copyright (c) 2015-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -12,6 +13,7 @@
 
 #include "axmol/math/Math.h"
 #include "axmol/base/Object.h"
+#include "axmol/base/WeakPtr.h"
 #include "axmol/base/Config.h"
 #include "axmol/tlx/flat_set.hpp"
 #include "axmol/physics/3d/ContactEvent3D.h"
@@ -67,6 +69,7 @@ class Component;
 class Renderer;
 struct SceneRenderState;
 class Scene;
+class Node;
 
 /**
  * @brief The physics information container for Axmol 3D physics components.
@@ -78,8 +81,10 @@ class AX_DLL PhysicsWorld3D : public Object,
                               public JPH::BroadPhaseLayerInterface
 {
     friend class Rigidbody3D;
+    friend class PhysicsActor;
     friend class Collider3D;
     friend class Joint3D;
+    friend class Scene;
 
 public:
     using PreSolveCallback = std::function<bool(const ContactInfo3D&)>;
@@ -173,7 +178,7 @@ public:
      * the time step by yourself.
      * @param autoStep A bool object, default value is true.
      */
-    void setAutoStep(bool autoStep) { _autoStep = autoStep; }
+    void setAutoStep(bool autoStep);
 
     /**
      * Get the auto step of this physics world.
@@ -331,6 +336,56 @@ protected:
     PhysicsDebugDraw3D* _debugDrawer;
 
     bool _autoStep{true};
+
+    bool isKinematicZeroStepEligible(Rigidbody3D* body) const;
+    void publishKinematicZeroStepPoses();
+    bool restoreKinematicSolverPose(Rigidbody3D* body);
+
+    struct KinematicFrameTarget
+    {
+        WeakPtr<Rigidbody3D> body;
+        WeakPtr<Node> owner;
+        JPH::BodyID bodyID;
+        Vec3 position;
+        Quat rotation;
+    };
+    // Scene owns the lexical frame scope. These values contain no JS roots
+    // and never retain a body or extend its Object/Jolt generation lifetime.
+    class KinematicFrameScope
+    {
+    public:
+        KinematicFrameScope() = default;
+        KinematicFrameScope(PhysicsWorld3D* world, int steps, float fixedDelta);
+        ~KinematicFrameScope();
+        KinematicFrameScope(const KinematicFrameScope&) = delete;
+        KinematicFrameScope& operator=(const KinematicFrameScope&) = delete;
+        KinematicFrameScope(KinematicFrameScope&& other) noexcept;
+        KinematicFrameScope& operator=(KinematicFrameScope&&) = delete;
+    private:
+        WeakPtr<PhysicsWorld3D> _world;
+    };
+    bool beginKinematicFrameSync(int steps, float fixedDelta);
+    void endKinematicFrameSync();
+    void invalidateKinematicFrameTarget(Rigidbody3D* body);
+    std::vector<KinematicFrameTarget> _kinematicFrameTargets;
+    int _kinematicFrameStepsRemaining{0};
+    float _kinematicFrameFixedDelta{0.0f};
+    bool _kinematicFrameActive{false};
+    bool _steppingSimulation{false};
+
+    struct KinematicSolverPose
+    {
+        WeakPtr<Rigidbody3D> body;
+        WeakPtr<Node> owner;
+        JPH::BodyID bodyID;
+        JPH::RVec3 position;
+        JPH::Quat rotation;
+        JPH::RVec3 publishedPosition;
+        JPH::Quat publishedRotation;
+    };
+    // Owned by this World, independent of the lexical frame target/budget.
+    // Weak identities never extend a Node, body, or BodyID generation lifetime.
+    std::vector<KinematicSolverPose> _kinematicSolverPoses;
 };
 
 // end of 3d group

@@ -1,6 +1,7 @@
 /****************************************************************************
  Copyright (c) 2018-2019 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -12,6 +13,7 @@
 #include "axmol/rhi/GraphicsContext.h"
 #include "axmol/rhi/metal/GraphicsDeviceMTL.h"
 #include <unordered_map>
+#include <atomic>
 
 namespace ax::rhi::mtl
 {
@@ -71,6 +73,7 @@ public:
      * @param descriptor Specifies a group of render targets that hold the results of a render pass.
      */
     void beginRenderPass(RenderTarget* renderTarget, const RenderPassDesc& descriptor) override;
+    void beginExplicitRenderPass(RenderTarget* renderTarget, const RenderPassDesc& descriptor) override;
 
     /**
      * Update depthStencil status, improvment: for metal backend cache it
@@ -169,6 +172,9 @@ public:
     void setScissorRect(bool enabled, float x, float y, float width, float height) override;
 
     void readPixels(RenderTarget* rt, std::function<void(const PixelBufferDesc&)> callback) override;
+    bool readPixelsSync(RenderTarget* rt, PixelBufferDesc& result) override;
+    void acquireLegacyDefaultFramebufferReadback() override;
+    void releaseLegacyDefaultFramebufferReadback() override;
 
     bool copyTexture(RenderTarget* src, Texture* dst) override;
     bool copyTexture(Texture* src, Texture* dst) override;
@@ -200,7 +206,8 @@ protected:
      * @param rectWidth,rectHeight Specify the dimensions of the pixel rectangle. rectWidth and rectHeight of one
      * correspond to a single pixel.
      * @param pbd, the output buffer for fill texels data
-     * @remark: !!!this function only can call after endFrame, then it's could be works well.
+     * @remark Call only after submitting the source's render commands on this
+     * queue. The private blit command buffer waits for them and its own copy.
      */
     void readPixels(id<MTLTexture> texture,
                     size_t origX,
@@ -231,11 +238,29 @@ private:
     void flush();
     void flushCaptureCommands();
     void restoreFrameBufferOnly();
+    void invalidateLegacyReadback();
+    void validateLegacyReadbackSurface();
+    void preserveLegacyDefaultColor();
+    MTLStoreAction interruptedColorStoreAction(const RenderTarget* target, size_t index) const;
+    id<MTLTexture> defaultReadbackSource();
+    void traceLegacyReadback(const char* event, const char* source, id<MTLTexture> texture) const;
 
     CAMetalLayer* _mtlLayer{nil};
     RenderTargetImpl* _screenRT{nullptr};
     id<CAMetalDrawable> _currentDrawable{nil};
     bool _restoreFrameBufferOnlyAfterDrawable{false};
+    unsigned int _legacyReadbackUsers = 0;
+    bool _legacyPreviousFramebufferOnly = true;
+    id<MTLTexture> _legacyColorBacking = nil;
+    id<MTLTexture> _defaultColorTexture = nil;
+    bool _defaultColorWritten = false;
+    bool _defaultColorNeedsResolve = false;
+    bool _legacyColorValid = false;
+    uint64_t _readbackFrame = 0;
+    uint64_t _legacyColorFrame = 0;
+    uint64_t _legacyColorGeneration = 0;
+    mutable uint64_t _readbackTraceFrame = 0;
+    std::shared_ptr<std::atomic<bool>> _legacyCopyFailed;
 
     // weak ref, like context, managed by GraphicsDeviceImpl
     id<MTLCommandQueue> _mtlCmdQueue              = nil;

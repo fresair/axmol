@@ -3,6 +3,7 @@
 # Copyright (c) 2014 martell malone
 # Copyright (c) 2015-2017 Chukong Technologies Inc.
 # Copyright (c) 2019-present Simdsoft Limited.
+# Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 #
 # https://axmol.dev/
 #
@@ -29,7 +30,12 @@ include(PreventInSourceBuilds)
 # works before build libaxmol
 include(AXBuildSet)
 
-option(AX_BUILD_TESTS "Build cpp & lua tests" ON)
+option(AX_BUILD_TESTS "Build C++, Lua and enabled JavaScript tests" ON)
+option(AX_BUILD_JS_RUNTIME_TESTS "Build focused JavaScript runtime regression tests" ${AX_BUILD_TESTS})
+
+if(AX_BUILD_TESTS OR AX_BUILD_JS_RUNTIME_TESTS)
+  enable_testing()
+endif()
 
 # Mark that engine build is invoked from root
 set(BUILD_ENGINE_BEGAN ON)
@@ -40,7 +46,6 @@ add_subdirectory(${_AX_ROOT}/axmol ${ENGINE_BINARY_PATH}/axmol)
 set(BUILD_ENGINE_DONE ON)
 
 if(AX_BUILD_TESTS)
-  enable_testing()
   message(STATUS "CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR}")
 
   macro(add_test_target target_name dir)
@@ -67,4 +72,8 @@ if(AX_BUILD_TESTS)
   if(AX_ENABLE_EXT_LUA)
     add_test_target(lua-tests ${_AX_ROOT}/tests/lua-tests)
   endif(AX_ENABLE_EXT_LUA)
+
+  if(AX_ENABLE_EXT_JS)
+    add_test_target(js-tests ${_AX_ROOT}/tests/js-tests)
+  endif()
 endif()

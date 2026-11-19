@@ -1,0 +1,359 @@
+{
+  "schemaVersion": 1,
+  "repository": "https://github.com/slembcke/Chipmunk2D",
+  "tag": "Chipmunk-7.0.1",
+  "commit": "e98a7cedb366daecf388f0faa0acee996ee7d0f3",
+  "sourceArchiveSha256": "633a879592bd0863a054355d0e997a789143ef16e6a176f3cf065f1b8ea956bd",
+  "version": "7.0.1",
+  "historicalVersionProof": [
+    {
+      "repository": "https://github.com/cocos2d/cocos2d-x-3rd-party-libs-bin",
+      "commit": "a85b979dcd6b5cb8aa2bf97e52b73a2d827b3cfb",
+      "path": "chipmunk/include/chipmunk/chipmunk.h",
+      "gitBlobSha1": "591974766f6e666577d3e55e33db7e7eb0aba084",
+      "sha256": "7df016ba9ef564f96798f65af695c801cb0b90cc7604af68f4af686144367f71"
+    },
+    {
+      "repository": "https://github.com/cocos2d/cocos2d-x-3rd-party-libs-bin",
+      "commit": "a85b979dcd6b5cb8aa2bf97e52b73a2d827b3cfb",
+      "path": "chipmunk/include/chipmunk/chipmunk_types.h",
+      "gitBlobSha1": "7aee0c7943952560f98ea9d580f187747eb61c40",
+      "sha256": "eefca84078e061ecee86dc9a44562b4e6671d4a34e807ac003af1edea6bd6e2d"
+    }
+  ],
+  "configuration": {
+    "language": "C99",
+    "cpUseDoubles": true,
+    "usedBy": "JavaScript legacy cp namespace only; core uses Box2D",
+    "patches": [
+      {
+        "path": "upstream/src/cpHastySpace.c",
+        "patch": "patches/0001-hastyspace-posix-cpu-count.patch",
+        "originalSha256": "5976295229104ff32bd5653bb36204b80fe57cb00e147b95fc526d1e7a5923a7",
+        "patchedSha256": "4f0efc58207b81d3dc7ce8a3f76eb6db10e4c0164d691d327fac75d05c59ee96",
+        "patchSha256": "5990a69fd81e4affcad81deb68301c71f760ae98a63414f3255abc9e257ae328",
+        "reason": "Use sysconf CPU count on Android/Linux, retain sysctlbyname on Apple; NDK r27d does not provide sys/sysctl.h"
+      }
+    ],
+    "cpUseCgTypes": false
+  },
+  "license": "MIT",
+  "files": [
+    {
+      "path": "upstream/LICENSE.txt",
+      "sha256": "109cedb0301cba4e05fa99241f162bdad015c9541ae84b420b0148ac1ea588e2",
+      "bytes": 1088
+    },
+    {
+      "path": "upstream/include/chipmunk/chipmunk.h",
+      "sha256": "c75fb75f6e5914066ab345643f4c9072e10c48cd1657e56562fbfae3c3d0f2a2",
+      "bytes": 9511
+    },
+    {
+      "path": "upstream/include/chipmunk/chipmunk_ffi.h",
+      "sha256": "164fa02ae47d5aa3720952241b87b60fd1fa16216c48b4e11df70c01c4e50416",
+      "bytes": 3093
+    },
+    {
+      "path": "upstream/include/chipmunk/chipmunk_private.h",
+      "sha256": "1b32e7c0b6fa05e56efe74e7611476f115366aed08591ed1c4cde6dd34397adf",
+      "bytes": 18547
+    },
+    {
+      "path": "upstream/include/chipmunk/chipmunk_types.h",
+      "sha256": "27ec88d63d17407ff1f59ef952c712319f56dd0a1af5c65aaf3059ae538effb7",
+      "bytes": 6599
+    },
+    {
+      "path": "upstream/include/chipmunk/chipmunk_unsafe.h",
+      "sha256": "f9ccc0867a321701677fe67622c4e24a6364ca2728d35d672fefbbab83118a11",
+      "bytes": 2934
+    },
+    {
+      "path": "upstream/include/chipmunk/cpArbiter.h",
+      "sha256": "7d1b6477e9aa8f023560425353ce2e896b216e21fc128cde3621d8f6bb691d82",
+      "bytes": 8853
+    },
+    {
+      "path": "upstream/include/chipmunk/cpBB.h",
+      "sha256": "2d0b9ec32adff610cd30334d67c5e681d647cdbafdf93eeaf7f9598a8e8ea57a",
+      "bytes": 5503
+    },
+    {
+      "path": "upstream/include/chipmunk/cpBody.h",
+      "sha256": "909a6c87cdb486ec386fd4c96a9fc3fd08494fc7162c10e75f5af4f569a0715f",
+      "bytes": 9531
+    },
+    {
+      "path": "upstream/include/chipmunk/cpConstraint.h",
+      "sha256": "51c4f1be58f7684110077b023203890ec95bab26cc7b4c3547421c82e603699d",
+      "bytes": 4808
+    },
+    {
+      "path": "upstream/include/chipmunk/cpDampedRotarySpring.h",
+      "sha256": "031c75e29b085e7c5e1daa0a5deb6054f4804606dc3ed6c5df2f9d3f43cb38f7",
+      "bytes": 3112
+    },
+    {
+      "path": "upstream/include/chipmunk/cpDampedSpring.h",
+      "sha256": "e91a1dfbcb1459e34877989e5f110107c4a735ce594edd5c07f9b53f32a9d5b5",
+      "bytes": 3599
+    },
+    {
+      "path": "upstream/include/chipmunk/cpGearJoint.h",
+      "sha256": "bae1692d3e2376712ad2debb5a824bd41dab7c0a641d79f048f2b4a7f142fefe",
+      "bytes": 2134
+    },
+    {
+      "path": "upstream/include/chipmunk/cpGrooveJoint.h",
+      "sha256": "23ab41384dbb85d0b5c2606eeb47e799de4e265f3ffd04eef99e0e54ca64c7b5",
+      "bytes": 2620
+    },
+    {
+      "path": "upstream/include/chipmunk/cpHastySpace.h",
+      "sha256": "b4793d11de737ec57fc57e24fa924f1f1cc3c04406b94d22663f9fdbd9da1500",
+      "bytes": 1427
+    },
+    {
+      "path": "upstream/include/chipmunk/cpMarch.h",
+      "sha256": "c9c40855134564740d645e84f086b76ddbedadb37ea38ab2aa2b88c5965e1271",
+      "bytes": 1669
+    },
+    {
+      "path": "upstream/include/chipmunk/cpPinJoint.h",
+      "sha256": "c93fc8e1a2b44557b6695ad91766bb84d65e8f89e673c95ce3254f8418aca349",
+      "bytes": 2522
+    },
+    {
+      "path": "upstream/include/chipmunk/cpPivotJoint.h",
+      "sha256": "2a06cb2750a23d5ae8fbea2fd46897f5820c14098766e675cfeed4f73e446c75",
+      "bytes": 2415
+    },
+    {
+      "path": "upstream/include/chipmunk/cpPolyShape.h",
+      "sha256": "cc757dcdbe5fa4a66edb1b9d51931910dcfb55e57b8a1f2cc5df8a41ca762a7d",
+      "bytes": 3208
+    },
+    {
+      "path": "upstream/include/chipmunk/cpPolyline.h",
+      "sha256": "66d79d1b7060f518cac0b2c6a3f3a18c405f0f5c6762aa202c1992835daddc8d",
+      "bytes": 2713
+    },
+    {
+      "path": "upstream/include/chipmunk/cpRatchetJoint.h",
+      "sha256": "1193c29657a82ec3b9fdf216e95594fc6a9cfc76da40b929c19f3e23284a0c35",
+      "bytes": 2458
+    },
+    {
+      "path": "upstream/include/chipmunk/cpRobust.h",
+      "sha256": "1f8f92002ed92311679c92e38fb417df0f9305c30763bbb2d31ffe15cbce1f77",
+      "bytes": 569
+    },
+    {
+      "path": "upstream/include/chipmunk/cpRotaryLimitJoint.h",
+      "sha256": "d7cda6f37feeac0aa4ea0381a9136e701735e4aaea2e3a27c2b74bfc05bdffac",
+      "bytes": 2403
+    },
+    {
+      "path": "upstream/include/chipmunk/cpShape.h",
+      "sha256": "36b2b77377927b2318e37ecf639ac9ffc96eb0b8bfe440d0c5cae22f6a7f918a",
+      "bytes": 9272
+    },
+    {
+      "path": "upstream/include/chipmunk/cpSimpleMotor.h",
+      "sha256": "035e4edbb41109b3b9fe27c5fdfe8c75ccd0f4b45316e5a925481a09728b8a7c",
+      "bytes": 1976
+    },
+    {
+      "path": "upstream/include/chipmunk/cpSlideJoint.h",
+      "sha256": "f4a7c6213bf1ba0b5e5e07b92e58da7d2e6a61222915e90104903093a20b23a2",
+      "bytes": 2927
+    },
+    {
+      "path": "upstream/include/chipmunk/cpSpace.h",
+      "sha256": "9fd90f0ffec97abac224c44af793a7bb79b6b52bfe9a8af35fd4bb2f39f35b32",
+      "bytes": 17142
+    },
+    {
+      "path": "upstream/include/chipmunk/cpSpatialIndex.h",
+      "sha256": "eba6bd319dd623cb764628681fc7bdddb15dcfcbcb727ae42d96b46abbfd0ba3",
+      "bytes": 9856
+    },
+    {
+      "path": "upstream/include/chipmunk/cpTransform.h",
+      "sha256": "b8d96bcb4add1533f5004c7d5cd303937ba82a0e529908aa328927f1ebd88752",
+      "bytes": 5624
+    },
+    {
+      "path": "upstream/include/chipmunk/cpVect.h",
+      "sha256": "1f3f675185a348747ca8c2ac7ffbe2c4d53c4ab3e136f149cb27002bcc82fd4d",
+      "bytes": 6585
+    },
+    {
+      "path": "upstream/src/chipmunk.c",
+      "sha256": "d3615ed8635aa0aad9c5e85680b4dd0b8cfe113f9fa70b0a220be569cd617d86",
+      "bytes": 9474
+    },
+    {
+      "path": "upstream/src/cpArbiter.c",
+      "sha256": "5ada093be15cc48325c417b3d37de2ba392c756845771cda5bc4c3421a6db9ea",
+      "bytes": 13928
+    },
+    {
+      "path": "upstream/src/cpArray.c",
+      "sha256": "c3b78019e8415331f471b4074beec3d9075be105c4af623c614b69c7e15d7a94",
+      "bytes": 2344
+    },
+    {
+      "path": "upstream/src/cpBBTree.c",
+      "sha256": "132c92be919b1aaee6793cd921aa4674007e2a79ce2b3f7c065edd8c42710424",
+      "bytes": 21458
+    },
+    {
+      "path": "upstream/src/cpBody.c",
+      "sha256": "e4a338cd705ec326bf984393c54f9c41915df03fe0b351ddd88e6b31fcc8184c",
+      "bytes": 14659
+    },
+    {
+      "path": "upstream/src/cpCollision.c",
+      "sha256": "05ea1556cbce2facbc89e2f1dc14c09d3d5e3899189b2e8468fe6eaddd026d7b",
+      "bytes": 25637
+    },
+    {
+      "path": "upstream/src/cpConstraint.c",
+      "sha256": "0c3d8421d14db740ce52f1093affe4cde1c3039ea6b424d2a18d1b82c8785454",
+      "bytes": 4261
+    },
+    {
+      "path": "upstream/src/cpDampedRotarySpring.c",
+      "sha256": "53736d9accf34fece3921bf1926bcaebbf206a364c4b22aa754a82830dd26c88",
+      "bytes": 6103
+    },
+    {
+      "path": "upstream/src/cpDampedSpring.c",
+      "sha256": "b6b8a3ab3c74a7e7230f6bf676fc735fe14b2f242e5f7664d84e54c869064302",
+      "bytes": 7130
+    },
+    {
+      "path": "upstream/src/cpGearJoint.c",
+      "sha256": "d0152366ffbefba8b90e5499aec2b68f1dfefbd5f66d55dab8c7c15b391947ba",
+      "bytes": 4299
+    },
+    {
+      "path": "upstream/src/cpGrooveJoint.c",
+      "sha256": "513a17b20e55cfce8949dd8bd0d1cb0feb6627a701f1a3a276575b12b7713e86",
+      "bytes": 6042
+    },
+    {
+      "path": "upstream/src/cpHashSet.c",
+      "sha256": "a184afecae1d883032110bb6ed5b63be0e1b8d81c59277690608eca677bdc848",
+      "bytes": 5758
+    },
+    {
+      "path": "upstream/src/cpHastySpace.c",
+      "sha256": "4f0efc58207b81d3dc7ce8a3f76eb6db10e4c0164d691d327fac75d05c59ee96",
+      "bytes": 14222,
+      "originalSha256": "5976295229104ff32bd5653bb36204b80fe57cb00e147b95fc526d1e7a5923a7"
+    },
+    {
+      "path": "upstream/src/cpMarch.c",
+      "sha256": "74c966d0b3cf0035961b318a957906d57f5ce93218b6f3431743e64a1092ee7d",
+      "bytes": 6651
+    },
+    {
+      "path": "upstream/src/cpPinJoint.c",
+      "sha256": "29481cd5b23e1e78eff709c38a9dd442cd4a310b2919528b8d30e90a169da01b",
+      "bytes": 5306
+    },
+    {
+      "path": "upstream/src/cpPivotJoint.c",
+      "sha256": "86f8ca4cdf8a09c3d66ff7fe6f1d3db31aa44dc11aec5459f2a1733e5d41abd3",
+      "bytes": 4689
+    },
+    {
+      "path": "upstream/src/cpPolyShape.c",
+      "sha256": "a9adac515596e9a538246d52fe17be0a2ce68a0643cebeec1faf12294fc16fb1",
+      "bytes": 9484
+    },
+    {
+      "path": "upstream/src/cpPolyline.c",
+      "sha256": "18b2f35fed02d770126fa5a7f5d01f680512e4df35b2f1c10a941e97fa85cadc",
+      "bytes": 17364
+    },
+    {
+      "path": "upstream/src/cpRatchetJoint.c",
+      "sha256": "71014dba7976c097f575a18bfe016604400beae13a4d5ea1cc3723f9d18967ef",
+      "bytes": 5273
+    },
+    {
+      "path": "upstream/src/cpRobust.c",
+      "sha256": "78c8b80d786009df67a3aa80829289d4d684dacda5c02c754e01a53d5a75bcbb",
+      "bytes": 233
+    },
+    {
+      "path": "upstream/src/cpRotaryLimitJoint.c",
+      "sha256": "46c90eb65a742836eaf8892961ad08cf79d6f4eaffbd3ee0efb26f7986222f88",
+      "bytes": 4676
+    },
+    {
+      "path": "upstream/src/cpShape.c",
+      "sha256": "001103548020e36c92950eb226aab118714f3c91c3e4f1fec2515b3c0150d329",
+      "bytes": 15190
+    },
+    {
+      "path": "upstream/src/cpSimpleMotor.c",
+      "sha256": "2ba969caf45db3976f79e3b0c19ccf2c42c39c6bf77beb3ff36b316d28428f3a",
+      "bytes": 3442
+    },
+    {
+      "path": "upstream/src/cpSlideJoint.c",
+      "sha256": "9824e4f08eaea86449a539bde0e1b110c3e0058e02b9ebe349180d4fd67f49dd",
+      "bytes": 5886
+    },
+    {
+      "path": "upstream/src/cpSpace.c",
+      "sha256": "c5d411ff84de51e699e1f45f7cdd084fa82644ce26729ba484cee8172567350e",
+      "bytes": 19993
+    },
+    {
+      "path": "upstream/src/cpSpaceComponent.c",
+      "sha256": "0fc067a2b2114814c420a595e156252caf908431af7c277de78afff1c8610165",
+      "bytes": 12330
+    },
+    {
+      "path": "upstream/src/cpSpaceDebug.c",
+      "sha256": "232ef4c0e091d055692a7600e06bb3976840679de410c352d48bc921603f5547",
+      "bytes": 6301
+    },
+    {
+      "path": "upstream/src/cpSpaceHash.c",
+      "sha256": "7eeacaadfd692b0135d5cdc3d34d946f8781d38d3fb9ea4f50dfcec75b3f4464",
+      "bytes": 15757
+    },
+    {
+      "path": "upstream/src/cpSpaceQuery.c",
+      "sha256": "5be413debe7ac46051f3e8c0869bb08e421cfffac5c4e09aad19f651e2ed9d1a",
+      "bytes": 7362
+    },
+    {
+      "path": "upstream/src/cpSpaceStep.c",
+      "sha256": "1cda20f8abb0eb66c2eea82bd3ef7560e614df59d48d46504c985f38553a5b7b",
+      "bytes": 14122
+    },
+    {
+      "path": "upstream/src/cpSpatialIndex.c",
+      "sha256": "94bd30995893cdd3c50a755a6fd279531208436ace00d212723bdf16b965d92b",
+      "bytes": 2462
+    },
+    {
+      "path": "upstream/src/cpSweep1D.c",
+      "sha256": "5fe3759cbe8aa9d977ef752f6a9d9019d3f0b82edd41b55adeada2d4c4682b81",
+      "bytes": 6555
+    },
+    {
+      "path": "upstream/src/prime.h",
+      "sha256": "e58eac554944a42e4bc0226e084ebe262b56b9702484ec3447ced0f67048af53",
+      "bytes": 1797
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 /****************************************************************************
 Copyright (c) 2013-2017 Chukong Technologies Inc.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -64,10 +65,10 @@ Bone::Bone()
 
 Bone::~Bone(void)
 {
-    AX_SAFE_DELETE(_tweenData);
-    AX_SAFE_DELETE(_tween);
-    AX_SAFE_DELETE(_displayManager);
-    AX_SAFE_DELETE(_worldInfo);
+    AX_SAFE_RELEASE_NULL(_tweenData);
+    AX_SAFE_RELEASE_NULL(_tween);
+    AX_SAFE_RELEASE_NULL(_displayManager);
+    AX_SAFE_RELEASE_NULL(_worldInfo);
 
     AX_SAFE_RELEASE_NULL(_boneData);
 
@@ -87,21 +88,21 @@ bool Bone::init(std::string_view name)
 
         _name = name;
 
-        AX_SAFE_DELETE(_tweenData);
+        AX_SAFE_RELEASE_NULL(_tweenData);
         _tweenData = new FrameData();
 
-        AX_SAFE_DELETE(_tween);
+        AX_SAFE_RELEASE_NULL(_tween);
         _tween = new BoneTweenController();
         _tween->init(this);
 
-        AX_SAFE_DELETE(_displayManager);
+        AX_SAFE_RELEASE_NULL(_displayManager);
         _displayManager = new DisplayManager();
         _displayManager->init(this);
 
-        AX_SAFE_DELETE(_worldInfo);
+        AX_SAFE_RELEASE_NULL(_worldInfo);
         _worldInfo = new BaseData();
 
-        AX_SAFE_DELETE(_boneData);
+        AX_SAFE_RELEASE_NULL(_boneData);
         _boneData = new BoneData();
 
         bRet = true;

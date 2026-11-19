@@ -1,0 +1,2961 @@
+{
+  "formatVersion": 1,
+  "language": "js",
+  "engine": "SpiderMonkey 33.1",
+  "module": "3d",
+  "registrationName": "ax_3d",
+  "targetNamespace": "cc",
+  "conditionalExpression": "defined(AX_ENABLE_3D)",
+  "classes": [
+    {
+      "nativeName": "AABB",
+      "qualifiedName": "ax::AABB",
+      "jsName": "AABB",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        },
+        {
+          "parameterTypes": [
+            "const ax::Vec3 \u0026",
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ]
+        }
+      ],
+      "bases": [],
+      "methods": [
+        {
+          "nativeName": "containPoint",
+          "jsName": "containPoint",
+          "declaringType": "ax::AABB",
+          "returnType": "bool",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getCenter",
+          "jsName": "getCenter",
+          "declaringType": "ax::AABB",
+          "returnType": "ax::Vec3",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "intersects",
+          "jsName": "intersects",
+          "declaringType": "ax::AABB",
+          "returnType": "bool",
+          "parameterTypes": [
+            "const ax::AABB \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isEmpty",
+          "jsName": "isEmpty",
+          "declaringType": "ax::AABB",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "merge",
+          "jsName": "merge",
+          "declaringType": "ax::AABB",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::AABB \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "reset",
+          "jsName": "reset",
+          "declaringType": "ax::AABB",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "set",
+          "jsName": "set",
+          "declaringType": "ax::AABB",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026",
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "transform",
+          "jsName": "transform",
+          "declaringType": "ax::AABB",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Mat4 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [
+        {
+          "nativeName": "_max",
+          "jsName": "_max",
+          "fieldType": "ax::Vec3"
+        },
+        {
+          "nativeName": "_min",
+          "jsName": "_min",
+          "fieldType": "ax::Vec3"
+        }
+      ],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "Animate3D",
+      "qualifiedName": "ax::Animate3D",
+      "jsName": "Animate3D",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::ActionInterval",
+        "ax::FiniteTimeAction",
+        "ax::Action",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::Animate3D",
+          "returnType": "ax::Animate3D *",
+          "parameterTypes": [
+            "ax::Animation3D *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::Animate3D",
+          "returnType": "ax::Animate3D *",
+          "parameterTypes": [
+            "ax::Animation3D *",
+            "float",
+            "float"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "createWithFrames",
+          "jsName": "createWithFrames",
+          "declaringType": "ax::Animate3D",
+          "returnType": "ax::Animate3D *",
+          "parameterTypes": [
+            "ax::Animation3D *",
+            "int",
+            "int",
+            "float"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null,
+            "30.f"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getOriginInterval",
+          "jsName": "getOriginInterval",
+          "declaringType": "ax::Animate3D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getQuality",
+          "jsName": "getQuality",
+          "declaringType": "ax::Animate3D",
+          "returnType": "ax::Animate3DQuality",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getSpeed",
+          "jsName": "getSpeed",
+          "declaringType": "ax::Animate3D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getTransitionTime",
+          "jsName": "getTransitionTime",
+          "declaringType": "ax::Animate3D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getWeight",
+          "jsName": "getWeight",
+          "declaringType": "ax::Animate3D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "init",
+          "jsName": "init",
+          "declaringType": "ax::Animate3D",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::Animation3D *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "init",
+          "jsName": "init",
+          "declaringType": "ax::Animate3D",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::Animation3D *",
+            "float",
+            "float"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "initWithFrames",
+          "jsName": "initWithFrames",
+          "declaringType": "ax::Animate3D",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::Animation3D *",
+            "int",
+            "int",
+            "float"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "removeFromMap",
+          "jsName": "removeFromMap",
+          "declaringType": "ax::Animate3D",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setOriginInterval",
+          "jsName": "setOriginInterval",
+          "declaringType": "ax::Animate3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setQuality",
+          "jsName": "setQuality",
+          "declaringType": "ax::Animate3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Animate3DQuality"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setSpeed",
+          "jsName": "setSpeed",
+          "declaringType": "ax::Animate3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setTransitionTime",
+          "jsName": "setTransitionTime",
+          "declaringType": "ax::Animate3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "setWeight",
+          "jsName": "setWeight",
+          "declaringType": "ax::Animate3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "Animation3D",
+      "qualifiedName": "ax::Animation3D",
+      "jsName": "Animation3D",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::Animation3D",
+          "returnType": "ax::Animation3D *",
+          "parameterTypes": [
+            "std::string_view",
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null,
+            "\u0022\u0022"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getDuration",
+          "jsName": "getDuration",
+          "declaringType": "ax::Animation3D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "initWithFile",
+          "jsName": "initWithFile",
+          "declaringType": "ax::Animation3D",
+          "returnType": "bool",
+          "parameterTypes": [
+            "std::string_view",
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "AttachNode",
+      "qualifiedName": "ax::AttachNode",
+      "jsName": "AttachNode",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::Node",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::AttachNode",
+          "returnType": "ax::AttachNode *",
+          "parameterTypes": [
+            "ax::Bone3D *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "BillBoard",
+      "qualifiedName": "ax::BillBoard",
+      "jsName": "BillBoard",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::Sprite",
+        "ax::Node",
+        "ax::Object",
+        "ax::TextureProtocol",
+        "ax::BlendProtocol"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::BillBoard",
+          "returnType": "ax::BillBoard *",
+          "parameterTypes": [
+            "ax::BillBoard::Mode"
+          ],
+          "defaultValues": [
+            "ax::BillBoard::Mode::VIEW_POINT_ORIENTED"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::BillBoard",
+          "returnType": "ax::BillBoard *",
+          "parameterTypes": [
+            "std::string_view",
+            "ax::BillBoard::Mode"
+          ],
+          "defaultValues": [
+            null,
+            "ax::BillBoard::Mode::VIEW_POINT_ORIENTED"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::BillBoard",
+          "returnType": "ax::BillBoard *",
+          "parameterTypes": [
+            "std::string_view",
+            "const ax::Rect \u0026",
+            "ax::BillBoard::Mode"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            "ax::BillBoard::Mode::VIEW_POINT_ORIENTED"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "createWithTexture",
+          "jsName": "createWithTexture",
+          "declaringType": "ax::BillBoard",
+          "returnType": "ax::BillBoard *",
+          "parameterTypes": [
+            "ax::Texture2D *",
+            "ax::BillBoard::Mode"
+          ],
+          "defaultValues": [
+            null,
+            "ax::BillBoard::Mode::VIEW_POINT_ORIENTED"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getMode",
+          "jsName": "getMode",
+          "declaringType": "ax::BillBoard",
+          "returnType": "ax::BillBoard::Mode",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "setMode",
+          "jsName": "setMode",
+          "declaringType": "ax::BillBoard",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::BillBoard::Mode"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "Bundle3D",
+      "qualifiedName": "ax::Bundle3D",
+      "jsName": "Bundle3D",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [],
+      "methods": [
+        {
+          "nativeName": "clear",
+          "jsName": "clear",
+          "declaringType": "ax::Bundle3D",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "createBundle",
+          "jsName": "createBundle",
+          "declaringType": "ax::Bundle3D",
+          "returnType": "ax::Bundle3D *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "destroyBundle",
+          "jsName": "destroyBundle",
+          "declaringType": "ax::Bundle3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Bundle3D *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getTrianglesList",
+          "jsName": "getTrianglesList",
+          "declaringType": "ax::Bundle3D",
+          "returnType": "std::vector\u003Cax::Vec3\u003E",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "load",
+          "jsName": "load",
+          "declaringType": "ax::Bundle3D",
+          "returnType": "bool",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "parseGLDataType",
+          "jsName": "parseGLDataType",
+          "declaringType": "ax::Bundle3D",
+          "returnType": "ax::rhi::VertexElementType",
+          "parameterTypes": [
+            "std::string_view",
+            "int"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "parseSamplerAddressMode",
+          "jsName": "parseSamplerAddressMode",
+          "declaringType": "ax::Bundle3D",
+          "returnType": "ax::rhi::SamplerAddressMode",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "Mesh",
+      "qualifiedName": "ax::Mesh",
+      "jsName": "Mesh",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "addInstanceChild",
+          "jsName": "addInstanceChild",
+          "declaringType": "ax::Mesh",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Node *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "calculateAABB",
+          "jsName": "calculateAABB",
+          "declaringType": "ax::Mesh",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "enableInstancing",
+          "jsName": "enableInstancing",
+          "declaringType": "ax::Mesh",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool",
+            "int"
+          ],
+          "defaultValues": [
+            null,
+            "0"
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getAABB",
+          "jsName": "getAABB",
+          "declaringType": "ax::Mesh",
+          "returnType": "const ax::AABB \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getBlendFunc",
+          "jsName": "getBlendFunc",
+          "declaringType": "ax::Mesh",
+          "returnType": "const ax::BlendFunc \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMaterial",
+          "jsName": "getMaterial",
+          "declaringType": "ax::Mesh",
+          "returnType": "ax::Material *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMeshVertexAttribCount",
+          "jsName": "getMeshVertexAttribCount",
+          "declaringType": "ax::Mesh",
+          "returnType": "ssize_t",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getName",
+          "jsName": "getName",
+          "declaringType": "ax::Mesh",
+          "returnType": "std::string_view",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getProgramState",
+          "jsName": "getProgramState",
+          "declaringType": "ax::Mesh",
+          "returnType": "ax::rhi::ProgramState *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getVertexSizeInBytes",
+          "jsName": "getVertexSizeInBytes",
+          "declaringType": "ax::Mesh",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isVisible",
+          "jsName": "isVisible",
+          "declaringType": "ax::Mesh",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "rebuildInstances",
+          "jsName": "rebuildInstances",
+          "declaringType": "ax::Mesh",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setBlendFunc",
+          "jsName": "setBlendFunc",
+          "declaringType": "ax::Mesh",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::BlendFunc \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setDynamicInstancing",
+          "jsName": "setDynamicInstancing",
+          "declaringType": "ax::Mesh",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setIndexFormat",
+          "jsName": "setIndexFormat",
+          "declaringType": "ax::Mesh",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::rhi::IndexFormat"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setInstanceCount",
+          "jsName": "setInstanceCount",
+          "declaringType": "ax::Mesh",
+          "returnType": "void",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            "0"
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMaterial",
+          "jsName": "setMaterial",
+          "declaringType": "ax::Mesh",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Material *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setName",
+          "jsName": "setName",
+          "declaringType": "ax::Mesh",
+          "returnType": "void",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setProgramState",
+          "jsName": "setProgramState",
+          "declaringType": "ax::Mesh",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::rhi::ProgramState *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setVisible",
+          "jsName": "setVisible",
+          "declaringType": "ax::Mesh",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "shrinkToFitInstances",
+          "jsName": "shrinkToFitInstances",
+          "declaringType": "ax::Mesh",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "getMeshVertexAttribute",
+          "returnType": "const ax::MeshVertexAttrib \u0026",
+          "parameterTypes": [
+            "int"
+          ]
+        },
+        {
+          "nativeName": "setMeshIndexData",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::MeshIndexData *"
+          ]
+        },
+        {
+          "nativeName": "setSkin",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::MeshSkin *"
+          ]
+        }
+      ]
+    },
+    {
+      "nativeName": "MeshMaterial",
+      "qualifiedName": "ax::MeshMaterial",
+      "jsName": "MeshMaterial",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Material",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "createBuiltInMaterial",
+          "jsName": "createBuiltInMaterial",
+          "declaringType": "ax::MeshMaterial",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "createBuiltInMaterial",
+          "jsName": "createBuiltInMaterial",
+          "declaringType": "ax::MeshMaterial",
+          "returnType": "ax::MeshMaterial *",
+          "parameterTypes": [
+            "ax::MeshMaterial::MaterialType",
+            "bool"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "createWithFilename",
+          "jsName": "createWithFilename",
+          "declaringType": "ax::MeshMaterial",
+          "returnType": "ax::MeshMaterial *",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "createWithProgramState",
+          "jsName": "createWithProgramState",
+          "declaringType": "ax::MeshMaterial",
+          "returnType": "ax::MeshMaterial *",
+          "parameterTypes": [
+            "ax::rhi::ProgramState *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getMaterialType",
+          "jsName": "getMaterialType",
+          "declaringType": "ax::MeshMaterial",
+          "returnType": "ax::MeshMaterial::MaterialType",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "releaseBuiltInMaterial",
+          "jsName": "releaseBuiltInMaterial",
+          "declaringType": "ax::MeshMaterial",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "releaseCachedMaterial",
+          "jsName": "releaseCachedMaterial",
+          "declaringType": "ax::MeshMaterial",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "MeshRenderer",
+      "qualifiedName": "ax::MeshRenderer",
+      "jsName": "MeshRenderer",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Node",
+        "ax::Object",
+        "ax::BlendProtocol"
+      ],
+      "methods": [
+        {
+          "nativeName": "addInstanceChild",
+          "jsName": "addInstanceChild",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Node *",
+            "bool"
+          ],
+          "defaultValues": [
+            null,
+            "false"
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "ax::MeshRenderer *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "ax::MeshRenderer *",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "ax::MeshRenderer *",
+          "parameterTypes": [
+            "std::string_view",
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "disableInstancing",
+          "jsName": "disableInstancing",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "enableInstancing",
+          "jsName": "enableInstancing",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::MeshMaterial::InstanceMaterialType",
+            "int"
+          ],
+          "defaultValues": [
+            null,
+            "0"
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "enableInstancing",
+          "jsName": "enableInstancing",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::MeshMaterial *",
+            "int"
+          ],
+          "defaultValues": [
+            null,
+            "0"
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "genMaterial",
+          "jsName": "genMaterial",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            "false"
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getAABB",
+          "jsName": "getAABB",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "const ax::AABB \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getAABBRecursively",
+          "jsName": "getAABBRecursively",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "ax::AABB",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getAABBRecursivelyImp",
+          "jsName": "getAABBRecursivelyImp",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "ax::AABB",
+          "parameterTypes": [
+            "ax::Node *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getAttachNode",
+          "jsName": "getAttachNode",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "ax::AttachNode *",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getBlendFunc",
+          "jsName": "getBlendFunc",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "const ax::BlendFunc \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getLightMask",
+          "jsName": "getLightMask",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "unsigned int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMaterial",
+          "jsName": "getMaterial",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "ax::Material *",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            "0"
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMesh",
+          "jsName": "getMesh",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "ax::Mesh *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMeshByIndex",
+          "jsName": "getMeshByIndex",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "ax::Mesh *",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMeshByName",
+          "jsName": "getMeshByName",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "ax::Mesh *",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMeshCount",
+          "jsName": "getMeshCount",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "ssize_t",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMeshes",
+          "jsName": "getMeshes",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "const ax::Vector\u003Cax::Mesh *\u003E \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getSkeleton",
+          "jsName": "getSkeleton",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "ax::Skeleton3D *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getSubMeshMaterial",
+          "jsName": "getSubMeshMaterial",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "ax::Material *",
+          "parameterTypes": [
+            "size_t",
+            "size_t"
+          ],
+          "defaultValues": [
+            null,
+            "0"
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "initWithFile",
+          "jsName": "initWithFile",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "bool",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "isForceDepthWrite",
+          "jsName": "isForceDepthWrite",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isWireframe",
+          "jsName": "isWireframe",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "rebuildInstances",
+          "jsName": "rebuildInstances",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "removeAllAttachNode",
+          "jsName": "removeAllAttachNode",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "removeAttachNode",
+          "jsName": "removeAttachNode",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "void",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setBlendFunc",
+          "jsName": "setBlendFunc",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::BlendFunc \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setCullFace",
+          "jsName": "setCullFace",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::rhi::CullMode"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setCullFaceEnabled",
+          "jsName": "setCullFaceEnabled",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setDynamicInstancing",
+          "jsName": "setDynamicInstancing",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setForceDepthWrite",
+          "jsName": "setForceDepthWrite",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setLightMask",
+          "jsName": "setLightMask",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "void",
+          "parameterTypes": [
+            "unsigned int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMaterial",
+          "jsName": "setMaterial",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Material *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMaterial",
+          "jsName": "setMaterial",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Material *",
+            "int"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setTexture",
+          "jsName": "setTexture",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "void",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setTexture",
+          "jsName": "setTexture",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Texture2D *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setWireframe",
+          "jsName": "setWireframe",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "shrinkToFitInstances",
+          "jsName": "shrinkToFitInstances",
+          "declaringType": "ax::MeshRenderer",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "MotionStreak3D",
+      "qualifiedName": "ax::MotionStreak3D",
+      "jsName": "MotionStreak3D",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::Node",
+        "ax::Object",
+        "ax::TextureProtocol",
+        "ax::BlendProtocol"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::MotionStreak3D",
+          "returnType": "ax::MotionStreak3D *",
+          "parameterTypes": [
+            "float",
+            "float",
+            "float",
+            "const ax::Color32 \u0026",
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::MotionStreak3D",
+          "returnType": "ax::MotionStreak3D *",
+          "parameterTypes": [
+            "float",
+            "float",
+            "float",
+            "const ax::Color32 \u0026",
+            "ax::Texture2D *"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getBlendFunc",
+          "jsName": "getBlendFunc",
+          "declaringType": "ax::MotionStreak3D",
+          "returnType": "const ax::BlendFunc \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getStroke",
+          "jsName": "getStroke",
+          "declaringType": "ax::MotionStreak3D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getSweepAxis",
+          "jsName": "getSweepAxis",
+          "declaringType": "ax::MotionStreak3D",
+          "returnType": "const ax::Vec3 \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getTexture",
+          "jsName": "getTexture",
+          "declaringType": "ax::MotionStreak3D",
+          "returnType": "ax::Texture2D *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "initWithFade",
+          "jsName": "initWithFade",
+          "declaringType": "ax::MotionStreak3D",
+          "returnType": "bool",
+          "parameterTypes": [
+            "float",
+            "float",
+            "float",
+            "const ax::Color32 \u0026",
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "initWithFade",
+          "jsName": "initWithFade",
+          "declaringType": "ax::MotionStreak3D",
+          "returnType": "bool",
+          "parameterTypes": [
+            "float",
+            "float",
+            "float",
+            "const ax::Color32 \u0026",
+            "ax::Texture2D *"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "isStartingPositionInitialized",
+          "jsName": "isStartingPositionInitialized",
+          "declaringType": "ax::MotionStreak3D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "reset",
+          "jsName": "reset",
+          "declaringType": "ax::MotionStreak3D",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setBlendFunc",
+          "jsName": "setBlendFunc",
+          "declaringType": "ax::MotionStreak3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::BlendFunc \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setStartingPositionInitialized",
+          "jsName": "setStartingPositionInitialized",
+          "declaringType": "ax::MotionStreak3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setStroke",
+          "jsName": "setStroke",
+          "declaringType": "ax::MotionStreak3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setSweepAxis",
+          "jsName": "setSweepAxis",
+          "declaringType": "ax::MotionStreak3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setTexture",
+          "jsName": "setTexture",
+          "declaringType": "ax::MotionStreak3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Texture2D *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "tintWithColor",
+          "jsName": "tintWithColor",
+          "declaringType": "ax::MotionStreak3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Color32 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "OBB",
+      "qualifiedName": "ax::OBB",
+      "jsName": "OBB",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        },
+        {
+          "parameterTypes": [
+            "const ax::AABB \u0026"
+          ],
+          "defaultValues": [
+            null
+          ]
+        }
+      ],
+      "bases": [],
+      "methods": [
+        {
+          "nativeName": "containPoint",
+          "jsName": "containPoint",
+          "declaringType": "ax::OBB",
+          "returnType": "bool",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "intersects",
+          "jsName": "intersects",
+          "declaringType": "ax::OBB",
+          "returnType": "bool",
+          "parameterTypes": [
+            "const ax::OBB \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "reset",
+          "jsName": "reset",
+          "declaringType": "ax::OBB",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "set",
+          "jsName": "set",
+          "declaringType": "ax::OBB",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026",
+            "const ax::Vec3 \u0026",
+            "const ax::Vec3 \u0026",
+            "const ax::Vec3 \u0026",
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "transform",
+          "jsName": "transform",
+          "declaringType": "ax::OBB",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Mat4 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [
+        {
+          "nativeName": "_center",
+          "jsName": "_center",
+          "fieldType": "ax::Vec3"
+        },
+        {
+          "nativeName": "_extentX",
+          "jsName": "_extentX",
+          "fieldType": "ax::Vec3"
+        },
+        {
+          "nativeName": "_extentY",
+          "jsName": "_extentY",
+          "fieldType": "ax::Vec3"
+        },
+        {
+          "nativeName": "_extentZ",
+          "jsName": "_extentZ",
+          "fieldType": "ax::Vec3"
+        },
+        {
+          "nativeName": "_extents",
+          "jsName": "_extents",
+          "fieldType": "ax::Vec3"
+        },
+        {
+          "nativeName": "_xAxis",
+          "jsName": "_xAxis",
+          "fieldType": "ax::Vec3"
+        },
+        {
+          "nativeName": "_yAxis",
+          "jsName": "_yAxis",
+          "fieldType": "ax::Vec3"
+        },
+        {
+          "nativeName": "_zAxis",
+          "jsName": "_zAxis",
+          "fieldType": "ax::Vec3"
+        }
+      ],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "Ray",
+      "qualifiedName": "ax::Ray",
+      "jsName": "Ray",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        },
+        {
+          "parameterTypes": [
+            "const ax::Vec3 \u0026",
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ]
+        }
+      ],
+      "bases": [],
+      "methods": [
+        {
+          "nativeName": "set",
+          "jsName": "set",
+          "declaringType": "ax::Ray",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026",
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "transform",
+          "jsName": "transform",
+          "declaringType": "ax::Ray",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Mat4 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [
+        {
+          "nativeName": "direction",
+          "jsName": "direction",
+          "fieldType": "ax::Vec3"
+        },
+        {
+          "nativeName": "origin",
+          "jsName": "origin",
+          "fieldType": "ax::Vec3"
+        }
+      ],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "dist",
+          "returnType": "float",
+          "parameterTypes": [
+            "const ax::Plane \u0026"
+          ]
+        },
+        {
+          "nativeName": "intersects",
+          "returnType": "ax::Vec3",
+          "parameterTypes": [
+            "const ax::Plane \u0026"
+          ]
+        }
+      ]
+    },
+    {
+      "nativeName": "Skeleton3D",
+      "qualifiedName": "ax::Skeleton3D",
+      "jsName": "Skeleton3D",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "addBone",
+          "jsName": "addBone",
+          "declaringType": "ax::Skeleton3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Bone3D *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getBoneByIndex",
+          "jsName": "getBoneByIndex",
+          "declaringType": "ax::Skeleton3D",
+          "returnType": "ax::Bone3D *",
+          "parameterTypes": [
+            "unsigned int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getBoneByName",
+          "jsName": "getBoneByName",
+          "declaringType": "ax::Skeleton3D",
+          "returnType": "ax::Bone3D *",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getBoneCount",
+          "jsName": "getBoneCount",
+          "declaringType": "ax::Skeleton3D",
+          "returnType": "ssize_t",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getBoneIndex",
+          "jsName": "getBoneIndex",
+          "declaringType": "ax::Skeleton3D",
+          "returnType": "int",
+          "parameterTypes": [
+            "ax::Bone3D *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getRootBone",
+          "jsName": "getRootBone",
+          "declaringType": "ax::Skeleton3D",
+          "returnType": "ax::Bone3D *",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getRootCount",
+          "jsName": "getRootCount",
+          "declaringType": "ax::Skeleton3D",
+          "returnType": "ssize_t",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "removeAllBones",
+          "jsName": "removeAllBones",
+          "declaringType": "ax::Skeleton3D",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "updateBoneMatrix",
+          "jsName": "updateBoneMatrix",
+          "declaringType": "ax::Skeleton3D",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "Skybox",
+      "qualifiedName": "ax::Skybox",
+      "jsName": "Skybox",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::Node",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::Skybox",
+          "returnType": "ax::Skybox *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::Skybox",
+          "returnType": "ax::Skybox *",
+          "parameterTypes": [
+            "std::string_view",
+            "std::string_view",
+            "std::string_view",
+            "std::string_view",
+            "std::string_view",
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "init",
+          "jsName": "init",
+          "declaringType": "ax::Skybox",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "init",
+          "jsName": "init",
+          "declaringType": "ax::Skybox",
+          "returnType": "bool",
+          "parameterTypes": [
+            "std::string_view",
+            "std::string_view",
+            "std::string_view",
+            "std::string_view",
+            "std::string_view",
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "reload",
+          "jsName": "reload",
+          "declaringType": "ax::Skybox",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setTexture",
+          "jsName": "setTexture",
+          "declaringType": "ax::Skybox",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::TextureCube *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "Terrain",
+      "qualifiedName": "ax::Terrain",
+      "jsName": "Terrain",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::Node",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "convertToTerrainSpace",
+          "jsName": "convertToTerrainSpace",
+          "declaringType": "ax::Terrain",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::Terrain",
+          "returnType": "ax::Terrain *",
+          "parameterTypes": [
+            "ax::Terrain::TerrainData \u0026",
+            "ax::Terrain::CrackFixedType"
+          ],
+          "defaultValues": [
+            null,
+            "ax::Terrain::CrackFixedType::INCREASE_LOWER"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getAABB",
+          "jsName": "getAABB",
+          "declaringType": "ax::Terrain",
+          "returnType": "ax::AABB",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getHeightData",
+          "jsName": "getHeightData",
+          "declaringType": "ax::Terrain",
+          "returnType": "std::vector\u003Cfloat\u003E",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getImageHeight",
+          "jsName": "getImageHeight",
+          "declaringType": "ax::Terrain",
+          "returnType": "float",
+          "parameterTypes": [
+            "int",
+            "int"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMaxHeight",
+          "jsName": "getMaxHeight",
+          "declaringType": "ax::Terrain",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getMinHeight",
+          "jsName": "getMinHeight",
+          "declaringType": "ax::Terrain",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getNormal",
+          "jsName": "getNormal",
+          "declaringType": "ax::Terrain",
+          "returnType": "ax::Vec3",
+          "parameterTypes": [
+            "int",
+            "int"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getTerrainSize",
+          "jsName": "getTerrainSize",
+          "declaringType": "ax::Terrain",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "initHeightMap",
+          "jsName": "initHeightMap",
+          "declaringType": "ax::Terrain",
+          "returnType": "bool",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "initProperties",
+          "jsName": "initProperties",
+          "declaringType": "ax::Terrain",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "initTextures",
+          "jsName": "initTextures",
+          "declaringType": "ax::Terrain",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "initWithTerrainData",
+          "jsName": "initWithTerrainData",
+          "declaringType": "ax::Terrain",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::Terrain::TerrainData \u0026",
+            "ax::Terrain::CrackFixedType"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "reload",
+          "jsName": "reload",
+          "declaringType": "ax::Terrain",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "resetHeightMap",
+          "jsName": "resetHeightMap",
+          "declaringType": "ax::Terrain",
+          "returnType": "void",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setAlphaMap",
+          "jsName": "setAlphaMap",
+          "declaringType": "ax::Terrain",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Texture2D *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setDetailMap",
+          "jsName": "setDetailMap",
+          "declaringType": "ax::Terrain",
+          "returnType": "void",
+          "parameterTypes": [
+            "unsigned int",
+            "ax::Terrain::DetailMap"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setDrawWire",
+          "jsName": "setDrawWire",
+          "declaringType": "ax::Terrain",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setIsEnableFrustumCull",
+          "jsName": "setIsEnableFrustumCull",
+          "declaringType": "ax::Terrain",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setLODDistance",
+          "jsName": "setLODDistance",
+          "declaringType": "ax::Terrain",
+          "returnType": "void",
+          "parameterTypes": [
+            "float",
+            "float",
+            "float"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setLightDir",
+          "jsName": "setLightDir",
+          "declaringType": "ax::Terrain",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setLightMap",
+          "jsName": "setLightMap",
+          "declaringType": "ax::Terrain",
+          "returnType": "void",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMaxDetailMapAmount",
+          "jsName": "setMaxDetailMapAmount",
+          "declaringType": "ax::Terrain",
+          "returnType": "void",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setSkirtHeightRatio",
+          "jsName": "setSkirtHeightRatio",
+          "declaringType": "ax::Terrain",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "TextureCube",
+      "qualifiedName": "ax::TextureCube",
+      "jsName": "TextureCube",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::TextureCube",
+          "returnType": "ax::TextureCube *",
+          "parameterTypes": [
+            "std::string_view",
+            "std::string_view",
+            "std::string_view",
+            "std::string_view",
+            "std::string_view",
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getImagePaths",
+          "jsName": "getImagePaths",
+          "declaringType": "ax::TextureCube",
+          "returnType": "const std::vector\u003Cstd::string\u003E \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getRHITexture",
+          "jsName": "getRHITexture",
+          "declaringType": "ax::TextureCube",
+          "returnType": "ax::rhi::Texture *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "reloadTexture",
+          "jsName": "reloadTexture",
+          "declaringType": "ax::TextureCube",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "setTexParameters",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::rhi::SamplerDesc \u0026"
+          ]
+        }
+      ]
+    }
+  ],
+  "enums": [
+    {
+      "nativeName": "Animate3DState",
+      "qualifiedName": "ax::Animate3D::Animate3DState",
+      "ownerQualifiedName": "ax::Animate3D",
+      "values": [
+        {
+          "name": "FadeIn",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "FadeOut",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "Running",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "Mode",
+      "qualifiedName": "ax::BillBoard::Mode",
+      "ownerQualifiedName": "ax::BillBoard",
+      "values": [
+        {
+          "name": "VIEW_POINT_ORIENTED",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "VIEW_PLANE_ORIENTED",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "InstanceMaterialType",
+      "qualifiedName": "ax::MeshMaterial::InstanceMaterialType",
+      "ownerQualifiedName": "ax::MeshMaterial",
+      "values": [
+        {
+          "name": "NO_INSTANCING",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "UNLIT_INSTANCE",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "CUSTOM",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "MaterialType",
+      "qualifiedName": "ax::MeshMaterial::MaterialType",
+      "ownerQualifiedName": "ax::MeshMaterial",
+      "values": [
+        {
+          "name": "UNLIT",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "UNLIT_INSTANCE",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "UNLIT_NOTEX",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "VERTEX_LIT",
+          "signedValue": 3,
+          "unsignedValue": 3,
+          "isUnsigned": false
+        },
+        {
+          "name": "DIFFUSE",
+          "signedValue": 4,
+          "unsignedValue": 4,
+          "isUnsigned": false
+        },
+        {
+          "name": "DIFFUSE_NOTEX",
+          "signedValue": 5,
+          "unsignedValue": 5,
+          "isUnsigned": false
+        },
+        {
+          "name": "BUMPED_DIFFUSE",
+          "signedValue": 6,
+          "unsignedValue": 6,
+          "isUnsigned": false
+        },
+        {
+          "name": "QUAD_TEXTURE",
+          "signedValue": 7,
+          "unsignedValue": 7,
+          "isUnsigned": false
+        },
+        {
+          "name": "QUAD_COLOR",
+          "signedValue": 8,
+          "unsignedValue": 8,
+          "isUnsigned": false
+        },
+        {
+          "name": "CUSTOM",
+          "signedValue": 9,
+          "unsignedValue": 9,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "CrackFixedType",
+      "qualifiedName": "ax::Terrain::CrackFixedType",
+      "ownerQualifiedName": "ax::Terrain",
+      "values": [
+        {
+          "name": "SKIRT",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "INCREASE_LOWER",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "TextureBindingSlot",
+      "qualifiedName": "ax::Terrain::TextureBindingSlot",
+      "ownerQualifiedName": "ax::Terrain",
+      "values": [
+        {
+          "name": "BINDING_SLOT_DETAIL_BASE",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "BINDING_SLOT_ALPHA_MAP",
+          "signedValue": 4,
+          "unsignedValue": 4,
+          "isUnsigned": false
+        },
+        {
+          "name": "BINDING_SLOT_LIGHT_MAP",
+          "signedValue": 5,
+          "unsignedValue": 5,
+          "isUnsigned": false
+        }
+      ]
+    }
+  ]
+}

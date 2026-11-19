@@ -1,5 +1,6 @@
 /****************************************************************************
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -21,6 +22,7 @@ namespace Axmol.LuaBindings;
 /// </summary>
 public sealed class BatchGenerationRequest
 {
+    public string Language { get; set; } = "lua";
     public string RepositoryRoot { get; set; } = string.Empty;
     public string ConfigurationDirectory { get; set; } = string.Empty;
     public string OutputDirectory { get; set; } = string.Empty;
@@ -65,7 +67,7 @@ public static class BatchBindingGenerator
         {
             try
             {
-                loadedConfigurations[configPath] = LoadConfiguration(configPath, request.RepositoryRoot);
+                loadedConfigurations[configPath] = LoadConfiguration(configPath, request.RepositoryRoot, request.Language);
             }
             catch (Exception ex) when (ex is InvalidDataException or JsonException or IOException)
             {
@@ -102,8 +104,8 @@ public static class BatchBindingGenerator
                     diagnostics.Add(new GenerationDiagnostic
                     {
                         Severity = "error",
-                        Code = "AXLUA011",
-                        Message = $"Lua class '{luaName}' is registered by both " +
+                    Code = "AXLUA011",
+                        Message = $"{request.Language} class '{luaName}' is registered by both " +
                                   $"{previous.Module}:{previous.NativeName} and " +
                                   $"{config.Module}:{bindingClass.QualifiedName}."
                     });
@@ -114,6 +116,10 @@ public static class BatchBindingGenerator
                 }
             }
         }
+
+        if (request.Language == "js" && !request.Verify &&
+            !diagnostics.Any(x => x.Severity == "error") && request.Module == "all")
+            JsCppEmitter.WriteAggregate(request.OutputDirectory, results);
 
         return new BatchGenerationResult
         {
@@ -132,6 +138,8 @@ public static class BatchBindingGenerator
             throw new ArgumentException("OutputDirectory is required.", nameof(request));
         if (!Directory.Exists(request.ConfigurationDirectory))
             throw new DirectoryNotFoundException(request.ConfigurationDirectory);
+        if (request.Language is not ("lua" or "js"))
+            throw new ArgumentException("Language must be 'lua' or 'js'.", nameof(request));
     }
 
     private static IReadOnlyList<string> SelectConfigurations(string directory, string module)
@@ -151,7 +159,7 @@ public static class BatchBindingGenerator
         return new[] { selected };
     }
 
-    private static ModuleConfiguration LoadConfiguration(string path, string repositoryRoot)
+    private static ModuleConfiguration LoadConfiguration(string path, string repositoryRoot, string language)
     {
         using var document = JsonDocument.Parse(File.ReadAllText(path));
         var root = document.RootElement;
@@ -204,8 +212,8 @@ public static class BatchBindingGenerator
             SkippedBasePatterns = OptionalStrings(root, "base_classes_to_skip"),
             SkipRules = ReadSkipRules(root),
             FieldRules = ReadFieldRules(root),
-            RenameRules = ReadRenameRules(root),
-            ClassRenames = ReadClassRenames(root),
+            RenameRules = ReadRenameRules(root, language),
+            ClassRenames = ReadClassRenames(root, language),
             FastBindings = OptionalStrings(root, "fast_bindings"),
             ConditionalExpression = conditional,
             CppChunkCount = chunks
@@ -221,8 +229,11 @@ public static class BatchBindingGenerator
 
         using var document = JsonDocument.Parse(File.ReadAllText(request.AdapterAllowlistPath));
         if (!document.RootElement.TryGetProperty("adapters", out var entries) ||
-            entries.ValueKind != JsonValueKind.Array || entries.GetArrayLength() == 0)
-            throw new InvalidDataException("Manual adapter allowlist must contain at least one adapter entry.");
+            entries.ValueKind != JsonValueKind.Array || request.Language == "lua" && entries.GetArrayLength() == 0)
+            throw new InvalidDataException("Manual adapter allowlist must contain an adapters array.");
+        var adapterDirectory = request.Language == "js" ? "manual" : "adapters";
+        var bindingDirectory = request.Language == "js" ? "js-bindings" : "lua-bindings";
+        var adapterPrefix = $"extensions/scripting/{bindingDirectory}/{adapterDirectory}/";
 
         var listed = new HashSet<string>(StringComparer.Ordinal);
         foreach (var entry in entries.EnumerateArray())
@@ -233,18 +244,25 @@ public static class BatchBindingGenerator
                 throw new InvalidDataException($"Manual adapter '{path}' has an empty reason.");
             if (!listed.Add(path))
                 throw new InvalidDataException($"Manual adapter is listed more than once: {path}");
-            if (!path.StartsWith("extensions/scripting/lua-bindings/adapters/", StringComparison.Ordinal) ||
-                !path.EndsWith(".cpp", StringComparison.Ordinal))
+            var directoryPolicy = request.Language == "js" && path == adapterPrefix;
+            if (!path.StartsWith(adapterPrefix, StringComparison.Ordinal) ||
+                !directoryPolicy &&
+                !(path.EndsWith(".cpp", StringComparison.Ordinal) ||
+                  request.Language == "js" && path.EndsWith(".mm", StringComparison.Ordinal)))
                 throw new InvalidDataException($"Manual adapter allowlist path is outside adapters/: {path}");
-            if (!File.Exists(Path.Combine(request.RepositoryRoot, path.Replace('/', Path.DirectorySeparatorChar))))
+            if (!directoryPolicy && !File.Exists(Path.Combine(request.RepositoryRoot, path.Replace('/', Path.DirectorySeparatorChar))))
                 throw new FileNotFoundException($"Manual adapter allowlist points to a missing file: {path}");
         }
 
-        var adapterRoot = Path.Combine(request.RepositoryRoot, "extensions", "scripting", "lua-bindings", "adapters");
-        foreach (var actualPath in Directory.EnumerateFiles(adapterRoot, "*.cpp", SearchOption.AllDirectories))
+        var adapterRoot = Path.Combine(request.RepositoryRoot, "extensions", "scripting", bindingDirectory, adapterDirectory);
+        if (!Directory.Exists(adapterRoot))
+            return;
+        foreach (var actualPath in Directory.EnumerateFiles(adapterRoot, "*", SearchOption.AllDirectories)
+                     .Where(path => path.EndsWith(".cpp", StringComparison.Ordinal) ||
+                                    request.Language == "js" && path.EndsWith(".mm", StringComparison.Ordinal)))
         {
             var relative = Path.GetRelativePath(request.RepositoryRoot, actualPath).Replace('\\', '/');
-            if (!listed.Contains(relative))
+            if (!listed.Contains(relative) && !listed.Any(path => path.EndsWith("/", StringComparison.Ordinal) && relative.StartsWith(path, StringComparison.Ordinal)))
                 throw new InvalidDataException(
                     $"Manual adapter is not allowlisted: {relative}. Add an explicit reason or remove the adapter.");
         }
@@ -368,7 +386,7 @@ public static class BatchBindingGenerator
         }).Where(x => x.FieldPatterns.Count > 0).ToArray();
     }
 
-    private static IReadOnlyList<BindingRenameRule> ReadRenameRules(JsonElement root)
+    private static IReadOnlyList<BindingRenameRule> ReadRenameRules(JsonElement root, string language)
     {
         if (!root.TryGetProperty("rename_functions", out var value))
             return Array.Empty<BindingRenameRule>();
@@ -376,17 +394,18 @@ public static class BatchBindingGenerator
             throw new InvalidDataException("'rename_functions' must be an array.");
         return value.EnumerateArray().Select(entry =>
         {
-            ValidateProperties(entry, "rename_functions", "class", "method", "luaName");
+            var scriptName = language == "js" ? "jsName" : "luaName";
+            ValidateProperties(entry, "rename_functions", "class", "method", scriptName);
             return new BindingRenameRule
             {
                 ClassPattern = RequiredString(entry, "class"),
                 MethodPattern = RequiredString(entry, "method"),
-                LuaName = RequiredString(entry, "luaName")
+                LuaName = RequiredString(entry, scriptName)
             };
         }).ToArray();
     }
 
-    private static IReadOnlyList<BindingClassRename> ReadClassRenames(JsonElement root)
+    private static IReadOnlyList<BindingClassRename> ReadClassRenames(JsonElement root, string language)
     {
         if (!root.TryGetProperty("rename_classes", out var value))
             return Array.Empty<BindingClassRename>();
@@ -394,11 +413,12 @@ public static class BatchBindingGenerator
             throw new InvalidDataException("'rename_classes' must be an array.");
         return value.EnumerateArray().Select(entry =>
         {
-            ValidateProperties(entry, "rename_classes", "native", "luaName");
+            var scriptName = language == "js" ? "jsName" : "luaName";
+            ValidateProperties(entry, "rename_classes", "native", scriptName);
             return new BindingClassRename
             {
                 NativeName = RequiredString(entry, "native"),
-                LuaName = RequiredString(entry, "luaName")
+                LuaName = RequiredString(entry, scriptName)
             };
         }).ToArray();
     }
@@ -438,6 +458,7 @@ public static class BatchBindingGenerator
             var clangArguments = batch.ClangArguments.Concat(ClangFlags).ToArray();
             return new GenerationRequest
             {
+                Language = batch.Language,
                 RepositoryRoot = batch.RepositoryRoot,
                 OutputDirectory = batch.OutputDirectory,
                 Module = Module[3..],

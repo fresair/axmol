@@ -2,6 +2,7 @@
  Copyright (c) 2012 cocos2d-x.org
  Copyright (c) 2010 Sangwoo Im
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -752,7 +753,8 @@ bool ScrollView::onPointerHitTest(PointerEvent* event, Vec3* outHitPoint)
     auto phase = event->getPhase();
     if (phase == InputPhase::PointerDown)
     {
-        if (!event->isPrimaryPressed())
+        // Additional touches participate in pinching; other pointers require the primary button.
+        if (event->getPointerType() != PointerType::Touch && !event->isPrimaryPressed())
             return false;
     }
 
@@ -781,7 +783,8 @@ bool ScrollView::onPointerHitTest(PointerEvent* event, Vec3* outHitPoint)
 
 bool ScrollView::onPointerDown(PointerEvent* touch)
 {
-    if (!touch->isPrimaryPressed())
+    // Match hit-test admission for additional touches and primary-button pointers.
+    if (touch->getPointerType() != PointerType::Touch && !touch->isPrimaryPressed())
         return false;
 
     if (!this->isVisible() || !this->hasVisibleParents())

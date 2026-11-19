@@ -1,0 +1,39 @@
+{
+  "module": "ax_navmesh",
+  "target_namespace": "cc",
+  "cpp_namespace": "ax",
+  "macro_judgement": "#if defined(AX_ENABLE_NAVMESH)",
+  "headers": [
+    "%(axdir)s/axmol/navmesh/NavMesh.h"
+  ],
+  "clang_flags": [
+    "-DAX_ENABLE_3D=1",
+    "-DAX_ENABLE_NAVMESH=1"
+  ],
+  "classes": [
+    "NavMesh",
+    "NavMeshAgent",
+    "NavMeshObstacle"
+  ],
+  "abstract_classes": [],
+  "classes_have_no_parents": [],
+  "base_classes_to_skip": [],
+  "skip": [
+    {
+      "class": "NavMesh",
+      "methods": [
+        "findPath"
+      ]
+    },
+    {
+      "class": "NavMeshObstacle",
+      "methods": [
+        "setRadius",
+        "setHeight"
+      ]
+    }
+  ],
+  "rename_functions": [],
+  "rename_classes": [],
+  "cpp_chunks": 1
+}

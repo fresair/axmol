@@ -3,6 +3,7 @@ Copyright (c) 2010      cocos2d-x.org
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -15,10 +16,13 @@ SPDX-License-Identifier: MIT
 
 #include "axmol/base/PointerEvent.h"
 #include "axmol/scene/Camera.h"
+#include "axmol/platform/RenderView.h"
 
 #include <list>
 #include <float.h>
 #include <map>
+#include <atomic>
+#include <cmath>
 
 // Touch bookkeeping was migrated into InputSystem private members.
 
@@ -28,6 +32,9 @@ namespace ax
 using EventDispatcher = EventDispatcher;  // ensure symbol visibility
 
 InputSystem* InputSystem::_instance = nullptr;
+
+// Never reuse an editor generation after detach/destruction/instance recreation.
+static std::atomic<int64_t> nextIMEGeneration{1};
 
 //////////////////////////////////////////////////////////////////////////
 // add/remove delegate in InputDelegate Cons/Destructor
@@ -41,6 +48,22 @@ InputDelegate::InputDelegate()
 InputDelegate::~InputDelegate()
 {
     InputSystem::getInstance()->removeDelegate(this);
+}
+
+void InputDelegate::setLegacyIMEEditingLifetime(std::weak_ptr<void> lifetime)
+{
+    if (ownsLegacyIMEEditingLifetime(lifetime))
+        return;
+    _legacyIMEEditingLifetime = std::move(lifetime);
+    auto* input = InputSystem::getInstance();
+    if (input->_delegateWithIme == this)
+    {
+        // The owner/mode changes on the native owner thread. Invalidate queued
+        // operations immediately and prepare a real new platform connection.
+        input->_imeGeneration = nextIMEGeneration.fetch_add(1);
+        if (auto* view = Director::getInstance()->getRenderView())
+            view->setIMEKeyboardState(true);
+    }
 }
 
 bool InputDelegate::attachWithIME()
@@ -139,6 +162,52 @@ bool InputSystem::hasAttachedDelegate() const
     return _delegateWithIme != nullptr;
 }
 
+bool InputSystem::getIMETextState(IMETextState& state) const
+{
+    state = {};
+    if (!_delegateWithIme)
+        return false;
+    _delegateWithIme->getIMETextState(state);
+    state.legacyEditing = _delegateWithIme->isLegacyIMEEditing();
+    state.generation = _imeGeneration;
+    return true;
+}
+
+bool InputSystem::dispatchIMEEdit(int64_t generation, int operation, std::string_view document,
+                                  int selectionStart, int selectionEnd, std::string_view payload,
+                                  unsigned int deleteBefore, int preeditCaret, IMETextState& actual)
+{
+    if (!_delegateWithIme || generation != _imeGeneration || operation < 0 || operation > 4)
+        return false;
+    auto* delegate = _delegateWithIme;
+    if (delegate->isLegacyIMEEditing())
+    {
+        // The real Android Editable already contains preedit replacement. Apply
+        // its delta once; a commit of identical composing text inserts nothing.
+        actual.generation = generation;
+        bool accepted = delegate->applyIMETextState(document, selectionStart, selectionEnd,
+            operation == 1 && payload.find_first_of("\r\n") != std::string_view::npos, actual);
+        actual.generation = generation;
+        return accepted;
+    }
+    switch (operation)
+    {
+    case 0: delegate->updatePreeditText(payload, preeditCaret); break;
+    case 1: delegate->insertText(payload); break;
+    case 2: if (deleteBefore) delegate->deleteBackward(deleteBefore); break;
+    case 3: delegate->setIMESelection(selectionStart, selectionEnd); break;
+    case 4: delegate->updatePreeditText({}, 0); break;
+    }
+    // Query only the same still-attached generation after a possibly reentrant
+    // native callback. Java caches this committed state for connection restart,
+    // but keeps modern composing spans/text in its real Editable separately.
+    if (_delegateWithIme != delegate || _imeGeneration != generation ||
+        !delegate->getIMETextState(actual))
+        return false;
+    actual.generation = generation;
+    return true;
+}
+
 bool InputSystem::dispatchHitTestWithIME(const Vec2& location)
 {
     if (_delegateWithIme)
@@ -202,9 +271,11 @@ bool InputSystem::attachDelegateWithIME(InputDelegate* delegate)
                 // detach first
                 InputDelegate* oldDelegate = _delegateWithIme;
                 _delegateWithIme           = 0;
+                _imeGeneration = nextIMEGeneration.fetch_add(1);
                 oldDelegate->didDetachWithIME();
 
                 _delegateWithIme = *iter;
+                _imeGeneration = nextIMEGeneration.fetch_add(1);
                 delegate->didAttachWithIME();
             }
             ret = true;
@@ -215,6 +286,7 @@ bool InputSystem::attachDelegateWithIME(InputDelegate* delegate)
         AX_BREAK_IF(!delegate->canAttachWithIME());
 
         _delegateWithIme = *iter;
+        _imeGeneration = nextIMEGeneration.fetch_add(1);
         delegate->didAttachWithIME();
         ret = true;
     } while (0);
@@ -231,6 +303,7 @@ bool InputSystem::detachDelegateWithIME(InputDelegate* delegate)
         AX_BREAK_IF(!delegate->canDetachWithIME());
 
         _delegateWithIme = 0;
+        _imeGeneration = nextIMEGeneration.fetch_add(1);
         delegate->didDetachWithIME();
         ret = true;
     } while (0);
@@ -252,6 +325,7 @@ void InputSystem::removeDelegate(InputDelegate* delegate)
             if (*iter == _delegateWithIme)
             {
                 _delegateWithIme = 0;
+                _imeGeneration = nextIMEGeneration.fetch_add(1);
             }
         _delegateList.erase(iter);
     } while (0);
@@ -720,31 +794,45 @@ void InputSystem::onPlatformKeyboardWillShow(float rawX, float rawY, float rawWi
 {
     auto director = ax::Director::getInstance();
 
-    // Lambda to convert native platform pixels (Top-Left origin) into aligned World Space (Bottom-Left origin)
+    // Keyboard bounds cover the world z=0 plane used by the default 2D UI.
+    // Deprojection depth 0 is the near clipping plane, not world z=0: using
+    // its dimensions shrinks a perspective keyboard to a tiny central rect.
     auto convertToAlignedWorldRect = [&](float rx, float ry, float rw, float rh) -> ax::Rect {
-        ax::Vec2 keyboardSize{rw, rh};
-        ax::Vec2 keyboardPos{rx, ry};
-
-        // Convert raw physical pixels/points to screen logic pixels via the input gateway
-        keyboardSize = nativeToScreen(keyboardSize);
-        keyboardPos  = nativeToScreen(keyboardPos);
-
-        // Transform the relative screen size vector into World Space dimensions
+        if (!std::isfinite(rx) || !std::isfinite(ry) || !std::isfinite(rw) || !std::isfinite(rh) || rw <= 0.0f ||
+            rh <= 0.0f || !std::isfinite(rx + rw) || !std::isfinite(ry + rh))
+            return ax::Rect();
         auto scene  = director->getRunningScene();
         auto camera = scene ? scene->getDefaultCamera() : nullptr;
         if (!camera)
             return ax::Rect();
-        Vec3 nearWorldSize   = camera->deprojectScreenToWorld(Vec3(keyboardSize.x, keyboardSize.y, 0.0f));
-        Vec3 nearWorldOrigin = camera->deprojectScreenToWorld(Vec3(0.0f, 0.0f, 0.0f));
-        float worldW         = std::abs(nearWorldSize.x - nearWorldOrigin.x);
-        float worldH         = std::abs(nearWorldSize.y - nearWorldOrigin.y);
 
-        // Transform the screen position to World Space and shift from Top-Left to Bottom-Left orientation
-        Vec3 nearWorldPos = camera->deprojectScreenToWorld(Vec3(keyboardPos.x, keyboardPos.y, 0.0f));
-        float worldX      = nearWorldPos.x;
-        float worldY      = nearWorldPos.y - worldH;
-
-        return ax::Rect(worldX, worldY, worldW, worldH);
+        const Vec2 corners[] = {{rx, ry}, {rx + rw, ry}, {rx + rw, ry + rh}, {rx, ry + rh}};
+        Vec2 lower{FLT_MAX, FLT_MAX}, upper{-FLT_MAX, -FLT_MAX};
+        for (const auto& corner : corners)
+        {
+            const auto screen = nativeToScreen(corner);
+            if (!std::isfinite(screen.x) || !std::isfinite(screen.y))
+                return ax::Rect();
+            const auto ray = camera->screenToRay(screen);
+            if (!std::isfinite(ray.origin.x) || !std::isfinite(ray.origin.y) || !std::isfinite(ray.origin.z) ||
+                !std::isfinite(ray.direction.x) || !std::isfinite(ray.direction.y) ||
+                !std::isfinite(ray.direction.z) || std::abs(ray.direction.z) <= 1e-6f)
+                return ax::Rect();
+            const float distance = -ray.origin.z / ray.direction.z;
+            if (!std::isfinite(distance) || distance < 0.0f)
+                return ax::Rect();
+            const auto point = ray.origin + ray.direction * distance;
+            if (!std::isfinite(point.x) || !std::isfinite(point.y))
+                return ax::Rect();
+            lower.x = std::min(lower.x, point.x);
+            lower.y = std::min(lower.y, point.y);
+            upper.x = std::max(upper.x, point.x);
+            upper.y = std::max(upper.y, point.y);
+        }
+        const float width = upper.x - lower.x, height = upper.y - lower.y;
+        if (!std::isfinite(width) || !std::isfinite(height))
+            return ax::Rect();
+        return ax::Rect(lower.x, lower.y, width, height);
     };
 
     _cachedKeyboardNotifInfo.duration = duration;

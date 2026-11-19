@@ -5,6 +5,7 @@ Copyright (c) 2011      Zynga Inc.
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -20,6 +21,7 @@ SPDX-License-Identifier: MIT
 #include "axmol/scene/Camera.h"
 #include "axmol/renderer/Shaders.h"
 #include "axmol/renderer/Renderer.h"
+#include "axmol/renderer/ProgramManager.h"
 #include "axmol/rhi/ProgramState.h"
 
 namespace ax
@@ -155,6 +157,8 @@ void AtlasNode::setColor(const Color32& color)
 
 void AtlasNode::setOpacity(uint8_t opacity)
 {
+    // The cached tint is RGBA; keep its alpha in sync before setColor reuses it.
+    _colorUnmodified.a = opacity;
     Node::setOpacity(opacity);
 
     // special opacity for premultiplied textures
@@ -224,8 +228,21 @@ void AtlasNode::updateBlendFunc()
 
 void AtlasNode::setTexture(Texture2D* texture)
 {
+    auto* previous = _textureAtlas->getTexture();
+    const bool textureStateChanged =
+        previous == nullptr || previous->getPixelFormat() != texture->getPixelFormat() ||
+        previous->getSamplerFlags() != texture->getSamplerFlags();
     _textureAtlas->setTexture(texture);
-    updateProgramStateTexture(texture);
+    // Preserve the modern/default path and user programs. Only a custom family
+    // explicitly registered by the compatibility layer may select a variant.
+    auto* variant = textureStateChanged && _programState ?
+        ProgramStateRegistry::getInstance()->acquireTextureVariant(
+            _programState->getProgram(), ProgramManager::chooseSpriteProgramType(texture->getPixelFormat()),
+            texture->getSamplerFlags()) : nullptr;
+    if (variant)
+        setProgramState(variant, true);
+    else
+        updateProgramStateTexture(texture);
 
     this->updateBlendFunc();
     this->updateOpacityModifyRGB();

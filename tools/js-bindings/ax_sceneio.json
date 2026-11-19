@@ -1,0 +1,29 @@
+{
+  "module": "ax_sceneio",
+  "target_namespace": "ccs",
+  "cpp_namespace": "ax",
+  "macro_judgement": null,
+  "headers": [
+    "%(axdir)s/extensions/sceneio/src/sceneio/ActionTimeline/CSLoader.h",
+    "%(axdir)s/extensions/sceneext/src/sceneext/ActionTimeline/ActionTimeline.h"
+  ],
+  "clang_flags": [],
+  "classes": [
+    "CSLoader"
+  ],
+  "abstract_classes": [],
+  "classes_have_no_parents": [
+    "CSLoader"
+  ],
+  "base_classes_to_skip": [],
+  "skip": [
+    {
+      "class": "CSLoader",
+      "methods": [
+        "^destroyInstance$"
+      ]
+    }
+  ],
+  "rename_functions": [],
+  "rename_classes": []
+}

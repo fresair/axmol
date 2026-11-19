@@ -6,6 +6,7 @@
  * http://yannickloriot.com
  *
  * Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+ * Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,6 +29,7 @@
  */
 
 #include "ControlPotentiometer.h"
+#include <cmath>
 
 NS_AX_EXT_BEGIN
 
@@ -160,6 +162,59 @@ void ControlPotentiometer::setMaximumValue(float maximumValue)
 float ControlPotentiometer::getMaximumValue()
 {
     return _maximumValue;
+}
+
+bool ControlPotentiometer::onPointerHitTest(PointerEvent* event, Vec3* outHitPoint)
+{
+    if (!event || !isVisible() || !_progressTimer)
+        return false;
+
+    const auto finite = [](const Vec3& p) {
+        return std::isfinite(p.x) && std::isfinite(p.y) && std::isfinite(p.z);
+    };
+    const auto& ray = event->getRay();
+    if (!finite(ray.origin) || !finite(ray.direction) || ray.direction == Vec3::zero)
+        return false;
+
+    const auto nodeToWorld = getNodeToWorldTransform();
+    for (float value : nodeToWorld.m)
+        if (!std::isfinite(value))
+            return false;
+    auto worldToNode = nodeToWorld;
+    if (!worldToNode.inverse())
+        return false;
+    for (float value : worldToNode.m)
+        if (!std::isfinite(value))
+            return false;
+
+    Ray localRay(ray);
+    localRay.transform(worldToNode);
+    if (!finite(localRay.origin) || !finite(localRay.direction) || localRay.direction.z == 0.0f)
+        return false;
+    const float t = -localRay.origin.z / localRay.direction.z;
+    if (!std::isfinite(t) || t < 0.0f)
+        return false;
+    const Vec3 localHit = localRay.origin + localRay.direction * t;
+    if (!finite(localHit))
+        return false;
+
+    // Match isTouchInside's original strict circle, including its actual local
+    // progress center. Node's positive content rectangle clips this circle.
+    const auto center = _progressTimer->getPosition();
+    const auto size   = getContentSize();
+    if (!std::isfinite(center.x) || !std::isfinite(center.y) || !std::isfinite(size.width) || !std::isfinite(size.height))
+        return false;
+    const float distance = distanceBetweenPointAndPoint(center, Vec2(localHit.x, localHit.y));
+    if (!(distance < MIN(size.width / 2, size.height / 2)))
+        return false;
+
+    Vec3 worldHit;
+    nodeToWorld.transformPoint(localHit, &worldHit);
+    if (!finite(worldHit))
+        return false;
+    if (outHitPoint)
+        *outHitPoint = worldHit;
+    return true;
 }
 
 bool ControlPotentiometer::isTouchInside(PointerEvent* touch)

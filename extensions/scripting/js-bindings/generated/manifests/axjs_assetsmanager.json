@@ -1,0 +1,874 @@
+{
+  "formatVersion": 1,
+  "language": "js",
+  "engine": "SpiderMonkey 33.1",
+  "module": "assetsmanager",
+  "registrationName": "ax_assetsmanager",
+  "targetNamespace": "jsb",
+  "conditionalExpression": null,
+  "classes": [
+    {
+      "nativeName": "AssetsManager",
+      "qualifiedName": "ax::ext::AssetsManager",
+      "jsName": "AssetsManager",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [
+            "const char *",
+            "const char *",
+            "const char *"
+          ],
+          "defaultValues": [
+            "NULL",
+            "NULL",
+            "NULL"
+          ]
+        }
+      ],
+      "bases": [
+        "ax::Node",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "checkUpdate",
+          "jsName": "checkUpdate",
+          "declaringType": "ax::ext::AssetsManager",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::ext::AssetsManager",
+          "returnType": "ax::ext::AssetsManager *",
+          "parameterTypes": [
+            "const char *",
+            "const char *",
+            "const char *",
+            "std::function\u003Cvoid (int)\u003E",
+            "std::function\u003Cvoid (int)\u003E",
+            "std::function\u003Cvoid ()\u003E"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "deleteVersion",
+          "jsName": "deleteVersion",
+          "declaringType": "ax::ext::AssetsManager",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getConnectionTimeout",
+          "jsName": "getConnectionTimeout",
+          "declaringType": "ax::ext::AssetsManager",
+          "returnType": "unsigned int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getPackageUrl",
+          "jsName": "getPackageUrl",
+          "declaringType": "ax::ext::AssetsManager",
+          "returnType": "const char *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getStoragePath",
+          "jsName": "getStoragePath",
+          "declaringType": "ax::ext::AssetsManager",
+          "returnType": "const char *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getVersion",
+          "jsName": "getVersion",
+          "declaringType": "ax::ext::AssetsManager",
+          "returnType": "std::string_view",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getVersionFileUrl",
+          "jsName": "getVersionFileUrl",
+          "declaringType": "ax::ext::AssetsManager",
+          "returnType": "const char *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "setConnectionTimeout",
+          "jsName": "setConnectionTimeout",
+          "declaringType": "ax::ext::AssetsManager",
+          "returnType": "void",
+          "parameterTypes": [
+            "unsigned int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setPackageUrl",
+          "jsName": "setPackageUrl",
+          "declaringType": "ax::ext::AssetsManager",
+          "returnType": "void",
+          "parameterTypes": [
+            "const char *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setStoragePath",
+          "jsName": "setStoragePath",
+          "declaringType": "ax::ext::AssetsManager",
+          "returnType": "void",
+          "parameterTypes": [
+            "const char *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setVersionFileUrl",
+          "jsName": "setVersionFileUrl",
+          "declaringType": "ax::ext::AssetsManager",
+          "returnType": "void",
+          "parameterTypes": [
+            "const char *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "update",
+          "jsName": "update",
+          "declaringType": "ax::ext::AssetsManager",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "update",
+          "jsName": "update",
+          "declaringType": "ax::Node",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "getDelegate",
+          "returnType": "ax::ext::AssetsManagerDelegateProtocol *",
+          "parameterTypes": []
+        },
+        {
+          "nativeName": "setDelegate",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::ext::AssetsManagerDelegateProtocol *"
+          ]
+        }
+      ]
+    },
+    {
+      "nativeName": "AssetsManagerEx",
+      "qualifiedName": "ax::ext::AssetsManagerEx",
+      "jsName": "AssetsManagerEx",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [
+            "std::string_view",
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ]
+        }
+      ],
+      "bases": [
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "checkUpdate",
+          "jsName": "checkUpdate",
+          "declaringType": "ax::ext::AssetsManagerEx",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::ext::AssetsManagerEx",
+          "returnType": "ax::ext::AssetsManagerEx *",
+          "parameterTypes": [
+            "std::string_view",
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "downloadFailedAssets",
+          "jsName": "downloadFailedAssets",
+          "declaringType": "ax::ext::AssetsManagerEx",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getLocalManifest",
+          "jsName": "getLocalManifest",
+          "declaringType": "ax::ext::AssetsManagerEx",
+          "returnType": "const ax::ext::Manifest *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMaxConcurrentTask",
+          "jsName": "getMaxConcurrentTask",
+          "declaringType": "ax::ext::AssetsManagerEx",
+          "returnType": "const int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getRemoteManifest",
+          "jsName": "getRemoteManifest",
+          "declaringType": "ax::ext::AssetsManagerEx",
+          "returnType": "const ax::ext::Manifest *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getState",
+          "jsName": "getState",
+          "declaringType": "ax::ext::AssetsManagerEx",
+          "returnType": "ax::ext::AssetsManagerEx::State",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getStoragePath",
+          "jsName": "getStoragePath",
+          "declaringType": "ax::ext::AssetsManagerEx",
+          "returnType": "std::string_view",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "setMaxConcurrentTask",
+          "jsName": "setMaxConcurrentTask",
+          "declaringType": "ax::ext::AssetsManagerEx",
+          "returnType": "void",
+          "parameterTypes": [
+            "const int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setVersionCompareHandle",
+          "jsName": "setVersionCompareHandle",
+          "declaringType": "ax::ext::AssetsManagerEx",
+          "returnType": "void",
+          "parameterTypes": [
+            "const std::function\u003Cint (std::string_view, std::string_view)\u003E \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "update",
+          "jsName": "update",
+          "declaringType": "ax::ext::AssetsManagerEx",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "setVerifyCallback",
+          "returnType": "void",
+          "parameterTypes": [
+            "const std::function\u003Cbool (std::string_view, ax::ext::ManifestAsset)\u003E \u0026"
+          ]
+        }
+      ]
+    },
+    {
+      "nativeName": "EventAssetsManagerEx",
+      "qualifiedName": "ax::ext::EventAssetsManagerEx",
+      "jsName": "EventAssetsManagerEx",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [
+            "std::string_view",
+            "ax::ext::AssetsManagerEx *",
+            "const ax::ext::EventAssetsManagerEx::EventCode \u0026",
+            "float",
+            "float",
+            "std::string_view",
+            "std::string_view",
+            "int",
+            "int"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null,
+            "0",
+            "0",
+            "\u0022\u0022",
+            "\u0022\u0022",
+            "0",
+            "0"
+          ]
+        }
+      ],
+      "bases": [
+        "ax::CustomEvent",
+        "ax::Event",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "getAssetId",
+          "jsName": "getAssetId",
+          "declaringType": "ax::ext::EventAssetsManagerEx",
+          "returnType": "std::string",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getAssetsManagerEx",
+          "jsName": "getAssetsManagerEx",
+          "declaringType": "ax::ext::EventAssetsManagerEx",
+          "returnType": "ax::ext::AssetsManagerEx *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getCURLECode",
+          "jsName": "getCURLECode",
+          "declaringType": "ax::ext::EventAssetsManagerEx",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getCURLMCode",
+          "jsName": "getCURLMCode",
+          "declaringType": "ax::ext::EventAssetsManagerEx",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getEventCode",
+          "jsName": "getEventCode",
+          "declaringType": "ax::ext::EventAssetsManagerEx",
+          "returnType": "ax::ext::EventAssetsManagerEx::EventCode",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMessage",
+          "jsName": "getMessage",
+          "declaringType": "ax::ext::EventAssetsManagerEx",
+          "returnType": "std::string",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getPercent",
+          "jsName": "getPercent",
+          "declaringType": "ax::ext::EventAssetsManagerEx",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getPercentByFile",
+          "jsName": "getPercentByFile",
+          "declaringType": "ax::ext::EventAssetsManagerEx",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "EventListenerAssetsManagerEx",
+      "qualifiedName": "ax::ext::EventListenerAssetsManagerEx",
+      "jsName": "EventListenerAssetsManagerEx",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::CustomEventListener",
+        "ax::EventListener",
+        "ax::Object"
+      ],
+      "methods": [],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "Manifest",
+      "qualifiedName": "ax::ext::Manifest",
+      "jsName": "Manifest",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "getManifestFileUrl",
+          "jsName": "getManifestFileUrl",
+          "declaringType": "ax::ext::Manifest",
+          "returnType": "std::string_view",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getPackageUrl",
+          "jsName": "getPackageUrl",
+          "declaringType": "ax::ext::Manifest",
+          "returnType": "std::string_view",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getSearchPaths",
+          "jsName": "getSearchPaths",
+          "declaringType": "ax::ext::Manifest",
+          "returnType": "std::vector\u003Cstd::string\u003E",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getVersion",
+          "jsName": "getVersion",
+          "declaringType": "ax::ext::Manifest",
+          "returnType": "std::string_view",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getVersionFileUrl",
+          "jsName": "getVersionFileUrl",
+          "declaringType": "ax::ext::Manifest",
+          "returnType": "std::string_view",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isLoaded",
+          "jsName": "isLoaded",
+          "declaringType": "ax::ext::Manifest",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isVersionLoaded",
+          "jsName": "isVersionLoaded",
+          "declaringType": "ax::ext::Manifest",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    }
+  ],
+  "enums": [
+    {
+      "nativeName": "ErrorCode",
+      "qualifiedName": "ax::ext::AssetsManager::ErrorCode",
+      "ownerQualifiedName": "ax::ext::AssetsManager",
+      "values": [
+        {
+          "name": "CREATE_FILE",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "NETWORK",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "NO_NEW_VERSION",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "UNCOMPRESS",
+          "signedValue": 3,
+          "unsignedValue": 3,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "State",
+      "qualifiedName": "ax::ext::AssetsManagerEx::State",
+      "ownerQualifiedName": "ax::ext::AssetsManagerEx",
+      "values": [
+        {
+          "name": "UNCHECKED",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "PREDOWNLOAD_VERSION",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "DOWNLOADING_VERSION",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "VERSION_LOADED",
+          "signedValue": 3,
+          "unsignedValue": 3,
+          "isUnsigned": false
+        },
+        {
+          "name": "PREDOWNLOAD_MANIFEST",
+          "signedValue": 4,
+          "unsignedValue": 4,
+          "isUnsigned": false
+        },
+        {
+          "name": "DOWNLOADING_MANIFEST",
+          "signedValue": 5,
+          "unsignedValue": 5,
+          "isUnsigned": false
+        },
+        {
+          "name": "MANIFEST_LOADED",
+          "signedValue": 6,
+          "unsignedValue": 6,
+          "isUnsigned": false
+        },
+        {
+          "name": "NEED_UPDATE",
+          "signedValue": 7,
+          "unsignedValue": 7,
+          "isUnsigned": false
+        },
+        {
+          "name": "UPDATING",
+          "signedValue": 8,
+          "unsignedValue": 8,
+          "isUnsigned": false
+        },
+        {
+          "name": "UNZIPPING",
+          "signedValue": 9,
+          "unsignedValue": 9,
+          "isUnsigned": false
+        },
+        {
+          "name": "UP_TO_DATE",
+          "signedValue": 10,
+          "unsignedValue": 10,
+          "isUnsigned": false
+        },
+        {
+          "name": "FAIL_TO_UPDATE",
+          "signedValue": 11,
+          "unsignedValue": 11,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "UpdateEntry",
+      "qualifiedName": "ax::ext::AssetsManagerEx::UpdateEntry",
+      "ownerQualifiedName": "ax::ext::AssetsManagerEx",
+      "values": [
+        {
+          "name": "NONE",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "CHECK_UPDATE",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "DO_UPDATE",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "EventCode",
+      "qualifiedName": "ax::ext::EventAssetsManagerEx::EventCode",
+      "ownerQualifiedName": "ax::ext::EventAssetsManagerEx",
+      "values": [
+        {
+          "name": "ERROR_NO_LOCAL_MANIFEST",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "ERROR_DOWNLOAD_MANIFEST",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "ERROR_PARSE_MANIFEST",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "NEW_VERSION_FOUND",
+          "signedValue": 3,
+          "unsignedValue": 3,
+          "isUnsigned": false
+        },
+        {
+          "name": "ALREADY_UP_TO_DATE",
+          "signedValue": 4,
+          "unsignedValue": 4,
+          "isUnsigned": false
+        },
+        {
+          "name": "UPDATE_PROGRESSION",
+          "signedValue": 5,
+          "unsignedValue": 5,
+          "isUnsigned": false
+        },
+        {
+          "name": "ASSET_UPDATED",
+          "signedValue": 6,
+          "unsignedValue": 6,
+          "isUnsigned": false
+        },
+        {
+          "name": "ERROR_UPDATING",
+          "signedValue": 7,
+          "unsignedValue": 7,
+          "isUnsigned": false
+        },
+        {
+          "name": "UPDATE_FINISHED",
+          "signedValue": 8,
+          "unsignedValue": 8,
+          "isUnsigned": false
+        },
+        {
+          "name": "UPDATE_FAILED",
+          "signedValue": 9,
+          "unsignedValue": 9,
+          "isUnsigned": false
+        },
+        {
+          "name": "ERROR_DECOMPRESS",
+          "signedValue": 10,
+          "unsignedValue": 10,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "DiffType",
+      "qualifiedName": "ax::ext::Manifest::DiffType",
+      "ownerQualifiedName": "ax::ext::Manifest",
+      "values": [
+        {
+          "name": "ADDED",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "DELETED",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "MODIFIED",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "DownloadState",
+      "qualifiedName": "ax::ext::Manifest::DownloadState",
+      "ownerQualifiedName": "ax::ext::Manifest",
+      "values": [
+        {
+          "name": "UNSTARTED",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "DOWNLOADING",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "SUCCESSED",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "UNMARKED",
+          "signedValue": 3,
+          "unsignedValue": 3,
+          "isUnsigned": false
+        }
+      ]
+    }
+  ]
+}

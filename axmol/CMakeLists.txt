@@ -3,6 +3,7 @@
 # Copyright (c) 2014 martell malone
 # Copyright (c) 2015-2017 Chukong Technologies Inc.
 # Copyright (c) 2019-present Simdsoft Limited.
+# Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 #
 # https://axmol.dev/
 #
@@ -192,11 +193,13 @@ set_property(CACHE AX_PROFILER_BACKEND PROPERTY STRINGS NONE TRACY)
 option(AX_EXT_HINT "The default extensions hint" ON)
 
 option(AX_ENABLE_EXT_LUA "Build lua libraries" ${AX_EXT_HINT})
+option(AX_ENABLE_EXT_JS "Build SpiderMonkey JavaScript bindings" OFF)
 option(AX_ENABLE_EXT_GUI "Build extension GUI" ${AX_EXT_HINT})
 option(AX_ENABLE_EXT_ASSETMANAGER "Build extension asset-manager" ${AX_EXT_HINT})
 option(AX_ENABLE_EXT_SPINE "Build extension spine" ${AX_EXT_HINT})
 option(AX_ENABLE_EXT_DRAGONBONES "Build extension DragonBones" ${AX_EXT_HINT})
 option(AX_ENABLE_EXT_SCENEIO "Build extension sceneio (aka cocostudio)" ${AX_EXT_HINT})
+option(AX_ENABLE_EXT_COCOSBUILDER "Build the legacy CocosBuilder native reader" OFF)
 option(AX_ENABLE_EXT_FAIRYGUI "Build extension FairyGUI" ${AX_EXT_HINT})
 option(AX_ENABLE_EXT_IMGUI "Build extension ImGui" ${AX_EXT_HINT})
 option(AX_ENABLE_EXT_EFFEKSEER "Build extension Effekseer" ${AX_EXT_HINT})
@@ -439,6 +442,7 @@ set_source_files_properties(
   ${_AX_ROOT}/axmol/renderer/shaders/label_normal_fs.hlsl
   ${_AX_ROOT}/axmol/renderer/shaders/label_outline_fs.hlsl
   ${_AX_ROOT}/axmol/renderer/shaders/positionTextureColor_fs.hlsl
+  ${_AX_ROOT}/axmol/renderer/shaders/positionTextureColorAlphaTest_fs.hlsl
   ${_AX_ROOT}/axmol/renderer/shaders/dualSampler_fs.hlsl
   PROPERTIES AXSLCC_VARIANT_DEFINES "USE_POINT_SAMPLER=1"
 )
@@ -649,6 +653,12 @@ if(BUILD_ENGINE_BEGAN)
     set(_sdk_exts ${_AX_EXTENSION_LIBS})
     if(AX_ENABLE_EXT_LUA)
       list(APPEND _sdk_exts axlua)
+    endif()
+    if(AX_ENABLE_EXT_JS)
+      list(APPEND _sdk_exts axjs)
+    endif()
+    if(ANDROID)
+      list(APPEND _sdk_exts cpp_android_spec)
     endif()
     add_dependencies(axmol-sdk axmol ${_sdk_exts})
    

@@ -1,5 +1,6 @@
 /****************************************************************************
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -454,6 +455,7 @@ void TextureImpl::updateFaceData(TextureCubeFace side, const void* data)
 void TextureImpl::updateSamplerDesc(const SamplerDesc& samplerDesc)
 {
     _desc.samplerDesc = samplerDesc;
+    Texture::_desc.samplerDesc = samplerDesc;
 
     auto samplerRegistry = SamplerRegistry::getInstance();
     auto samplerIndex    = samplerRegistry->registerSampler(samplerDesc);

@@ -1,0 +1,721 @@
+{
+  "formatVersion": 1,
+  "language": "js",
+  "engine": "SpiderMonkey 33.1",
+  "module": "particle3d",
+  "registrationName": "ax_particle3d",
+  "targetNamespace": "cc",
+  "conditionalExpression": "defined(AX_ENABLE_EXT_PARTICLE3D)",
+  "classes": [
+    {
+      "nativeName": "PUParticleSystem3D",
+      "qualifiedName": "ax::PUParticleSystem3D",
+      "jsName": "PUParticleSystem3D",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::ParticleSystem3D",
+        "ax::Node",
+        "ax::Object",
+        "ax::BlendProtocol"
+      ],
+      "methods": [
+        {
+          "nativeName": "calulateRotationOffset",
+          "jsName": "calulateRotationOffset",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "clearAllParticles",
+          "jsName": "clearAllParticles",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "clone",
+          "jsName": "clone",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "ax::PUParticleSystem3D *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "copyAttributesTo",
+          "jsName": "copyAttributesTo",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::PUParticleSystem3D *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "ax::PUParticleSystem3D *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "ax::PUParticleSystem3D *",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "ax::PUParticleSystem3D *",
+          "parameterTypes": [
+            "std::string_view",
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "forceUpdate",
+          "jsName": "forceUpdate",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getDefaultDepth",
+          "jsName": "getDefaultDepth",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getDefaultHeight",
+          "jsName": "getDefaultHeight",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getDefaultWidth",
+          "jsName": "getDefaultWidth",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getDerivedPosition",
+          "jsName": "getDerivedPosition",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "ax::Vec3",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getDerivedScale",
+          "jsName": "getDerivedScale",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "ax::Vec3",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getEmittedEmitterQuota",
+          "jsName": "getEmittedEmitterQuota",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "unsigned int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getEmittedSystemQuota",
+          "jsName": "getEmittedSystemQuota",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "unsigned int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMaterialName",
+          "jsName": "getMaterialName",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "std::string_view",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMaxVelocity",
+          "jsName": "getMaxVelocity",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getParentParticleSystem",
+          "jsName": "getParentParticleSystem",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "ax::PUParticleSystem3D *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getParticleSystemScaleVelocity",
+          "jsName": "getParticleSystemScaleVelocity",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getTimeElapsedSinceStart",
+          "jsName": "getTimeElapsedSinceStart",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "initSystem",
+          "jsName": "initSystem",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "bool",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "initWithFilePath",
+          "jsName": "initWithFilePath",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "bool",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "initWithFilePathAndMaterialPath",
+          "jsName": "initWithFilePathAndMaterialPath",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "bool",
+          "parameterTypes": [
+            "std::string_view",
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "isMarkedForEmission",
+          "jsName": "isMarkedForEmission",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "removeAllBehaviourTemplate",
+          "jsName": "removeAllBehaviourTemplate",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "removeAllEmitter",
+          "jsName": "removeAllEmitter",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "removeAllListener",
+          "jsName": "removeAllListener",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "removerAllObserver",
+          "jsName": "removerAllObserver",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "rotationOffset",
+          "jsName": "rotationOffset",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setDefaultDepth",
+          "jsName": "setDefaultDepth",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setDefaultHeight",
+          "jsName": "setDefaultHeight",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setDefaultWidth",
+          "jsName": "setDefaultWidth",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setEmittedEmitterQuota",
+          "jsName": "setEmittedEmitterQuota",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "unsigned int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setEmittedSystemQuota",
+          "jsName": "setEmittedSystemQuota",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "unsigned int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMarkedForEmission",
+          "jsName": "setMarkedForEmission",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMaterialName",
+          "jsName": "setMaterialName",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMaxVelocity",
+          "jsName": "setMaxVelocity",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setParticleSystemScaleVelocity",
+          "jsName": "setParticleSystemScaleVelocity",
+          "declaringType": "ax::PUParticleSystem3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "makeParticleLocal",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::PUParticle3D *"
+          ]
+        }
+      ]
+    },
+    {
+      "nativeName": "ParticleSystem3D",
+      "qualifiedName": "ax::ParticleSystem3D",
+      "jsName": "ParticleSystem3D",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::Node",
+        "ax::Object",
+        "ax::BlendProtocol"
+      ],
+      "methods": [
+        {
+          "nativeName": "getAliveParticleCount",
+          "jsName": "getAliveParticleCount",
+          "declaringType": "ax::ParticleSystem3D",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getBlendFunc",
+          "jsName": "getBlendFunc",
+          "declaringType": "ax::ParticleSystem3D",
+          "returnType": "const ax::BlendFunc \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getParticleQuota",
+          "jsName": "getParticleQuota",
+          "declaringType": "ax::ParticleSystem3D",
+          "returnType": "unsigned int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getState",
+          "jsName": "getState",
+          "declaringType": "ax::ParticleSystem3D",
+          "returnType": "ax::ParticleSystem3D::State",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isEnabled",
+          "jsName": "isEnabled",
+          "declaringType": "ax::ParticleSystem3D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isKeepLocal",
+          "jsName": "isKeepLocal",
+          "declaringType": "ax::ParticleSystem3D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "pauseParticleSystem",
+          "jsName": "pauseParticleSystem",
+          "declaringType": "ax::ParticleSystem3D",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "removeAffector",
+          "jsName": "removeAffector",
+          "declaringType": "ax::ParticleSystem3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "removeAllAffector",
+          "jsName": "removeAllAffector",
+          "declaringType": "ax::ParticleSystem3D",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "resumeParticleSystem",
+          "jsName": "resumeParticleSystem",
+          "declaringType": "ax::ParticleSystem3D",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setBlendFunc",
+          "jsName": "setBlendFunc",
+          "declaringType": "ax::ParticleSystem3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::BlendFunc \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setEnabled",
+          "jsName": "setEnabled",
+          "declaringType": "ax::ParticleSystem3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setKeepLocal",
+          "jsName": "setKeepLocal",
+          "declaringType": "ax::ParticleSystem3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setParticleQuota",
+          "jsName": "setParticleQuota",
+          "declaringType": "ax::ParticleSystem3D",
+          "returnType": "void",
+          "parameterTypes": [
+            "unsigned int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "startParticleSystem",
+          "jsName": "startParticleSystem",
+          "declaringType": "ax::ParticleSystem3D",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "stopParticleSystem",
+          "jsName": "stopParticleSystem",
+          "declaringType": "ax::ParticleSystem3D",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    }
+  ],
+  "enums": [
+    {
+      "nativeName": "State",
+      "qualifiedName": "ax::ParticleSystem3D::State",
+      "ownerQualifiedName": "ax::ParticleSystem3D",
+      "values": [
+        {
+          "name": "STOP",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "RUNNING",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "PAUSE",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        }
+      ]
+    }
+  ]
+}

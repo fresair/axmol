@@ -1,6 +1,7 @@
 /****************************************************************************
  Copyright (c) 2018-2019 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -9,6 +10,7 @@
 
 #include "axmol/rhi/ProgramState.h"
 #include "axmol/rhi/Program.h"
+#include "axmol/rhi/VertexLayout.h"
 #include "axmol/rhi/Texture.h"
 #include "axmol/rhi/SamplerRegistry.h"
 #include "axmol/base/EventDispatcher.h"
@@ -247,6 +249,7 @@ void ProgramState::remapTextureRuntimeLocations()
 ProgramState::~ProgramState()
 {
     AX_SAFE_RELEASE(_program);
+    AX_SAFE_RELEASE(_vertexLayoutOverride);
 
 #if AX_ENABLE_CONTEXT_LOSS_RECOVERY
     Director::getInstance()->getEventDispatcher()->removeEventListener(_backToForegroundListener);
@@ -263,7 +266,19 @@ ProgramState* ProgramState::clone() const
     cp->_uniformBuffer = _uniformBuffer;
     cp->_batchId       = this->_batchId;
     cp->_isBatchable   = this->_isBatchable;
+    Object::assign(cp->_vertexLayoutOverride, _vertexLayoutOverride);
     return cp;
+}
+
+void ProgramState::setVertexLayoutOverride(VertexLayout* layout)
+{
+    if (Object::assign(_vertexLayoutOverride, layout))
+    {
+        // A caller-selected declaration must not share a sprite batch with a
+        // state whose declaration is inferred from the native program.
+        _batchId = -1;
+        _isBatchable = false;
+    }
 }
 
 rhi::UniformLocation ProgramState::getUniformLocation(rhi::Uniform kind) const
@@ -283,7 +298,10 @@ void ProgramState::getUniformLocations(std::string_view name, UniformLocationVec
 
 void ProgramState::setCallbackUniform(const rhi::UniformLocation& uniformLocation, const UniformCallback& callback)
 {
-    _callbackUniforms[uniformLocation] = callback;
+    if (callback)
+        _callbackUniforms[uniformLocation] = callback;
+    else
+        _callbackUniforms.erase(uniformLocation);
 }
 
 void ProgramState::setUniform(const rhi::UniformLocation& uniformLocation, const void* data, size_t size)

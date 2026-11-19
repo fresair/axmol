@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "repository": "https://github.com/cocos2d/cocos2d-x",
+  "commit": "e4b6a5ef8fcdc99a7ebea606312b67fe4c534b9f",
+  "license": "MIT (full original notice preserved in every source file)",
+  "files": [
+    {
+      "sourcePath": "tests/js-tests/src/BaseTestLayer/BaseTestLayer.js",
+      "fixturePath": "upstream/src/BaseTestLayer/BaseTestLayer.js",
+      "bytes": 9782,
+      "sha256": "a878f714b77768a0f65e3b6d1b0d8eab792fa658e733ab8fad020b678d8ec7ee",
+      "gitBlobSha1": "4d3d0819ef5ee8bf35d86523356af6abab653be9"
+    },
+    {
+      "sourcePath": "tests/js-tests/src/UnitTest/UnitTest.js",
+      "fixturePath": "upstream/src/UnitTest/UnitTest.js",
+      "bytes": 8354,
+      "sha256": "f6c94b4d799bc79fd269b61afa5e2b74f3ccf2a9b206e8d0339b219997634ff4",
+      "gitBlobSha1": "38ce4925288d8ff2a36f6daafe0d6d6a876350f6"
+    },
+    {
+      "sourcePath": "tests/js-tests/src/SchedulerTest/SchedulerTest.js",
+      "fixturePath": "upstream/src/SchedulerTest/SchedulerTest.js",
+      "bytes": 21366,
+      "sha256": "88614512a802ec6ab34cf9216be13f84db5e3ade3ed8e4ffc9f54994a5d6713e",
+      "gitBlobSha1": "fc552703352b6d5057449cf6affa6c0d0444d512"
+    },
+    {
+      "sourcePath": "tests/js-tests/src/tests-main.js",
+      "fixturePath": "upstream/src/tests-main.js",
+      "bytes": 23281,
+      "sha256": "78e9a863ba94abc707376c51768549c4fe11ab971212178f85ee891e554c68ef",
+      "gitBlobSha1": "04d93aa8f93d36146d667ca331f9746ef0be67be"
+    }
+  ],
+  "selection": [
+    {
+      "file": "upstream/src/tests-main.js",
+      "evaluatedBytes": [
+        0,
+        2992
+      ],
+      "lineRange": [
+        1,
+        84
+      ],
+      "purpose": "Unchanged globals and TestScene class declaration; its graphics constructor is not instantiated."
+    },
+    {
+      "file": "upstream/src/BaseTestLayer/BaseTestLayer.js",
+      "evaluated": "whole file",
+      "purpose": "Unchanged class definitions, including inherited log/compareResults; graphics constructors are not instantiated."
+    },
+    {
+      "file": "upstream/src/UnitTest/UnitTest.js",
+      "evaluated": "whole file",
+      "selected": "RectUnitTest.runTest/getCurrentResult/getExpectedResult with every original assertion",
+      "lineRange": [
+        69,
+        190
+      ]
+    },
+    {
+      "file": "upstream/src/SchedulerTest/SchedulerTest.js",
+      "evaluated": "whole file",
+      "selected": "TestNode ctor/_super/init/scheduleUpdateWithPriority/update; SchedulerUpdate.onRemoveUpdates",
+      "lineRange": [
+        302,
+        368
+      ]
+    }
+  ]
+}

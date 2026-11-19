@@ -2,6 +2,7 @@
 Copyright (c) 2010 cocos2d-x.org
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -28,6 +29,8 @@ THE SOFTWARE.
 
 #include <string>
 #include <string_view>
+#include <memory>
+#include <cstdint>
 #include "axmol/math/Math.h"
 #include "axmol/base/KeyboardEvent.h"
 
@@ -69,6 +72,22 @@ struct IMEKeyboardNotificationInfo
     float duration;
 };
 
+/** Native editor snapshot, with selection expressed in Unicode code points.
+ * @script{ignore}
+ */
+struct IMETextState
+{
+    std::string text;
+    int selectionStart{0};
+    int selectionEnd{0};
+    unsigned int charLimit{0};
+    bool multiline{false};
+    bool editable{true};
+    bool legacyEditing{false};
+    bool password{false};
+    int64_t generation{0};
+};
+
 /**
  *@brief Input delegate.
  */
@@ -93,8 +112,26 @@ public:
      */
     virtual bool detachWithIME();
 
+    /** Opt in to the old Editable/preedit contract for this delegate only.
+     * The caller owns the lifetime; expiry restores the modern event contract.
+     * @script{ignore}
+     */
+    void setLegacyIMEEditingLifetime(std::weak_ptr<void> lifetime);
+
+    /** @script{ignore} */
+    bool isLegacyIMEEditing() const { return !_legacyIMEEditingLifetime.expired(); }
+
+    /** Compare owner identity even after expiry, without retaining that owner.
+     * @script{ignore}
+     */
+    bool ownsLegacyIMEEditingLifetime(const std::weak_ptr<void>& lifetime) const
+    {
+        return !_legacyIMEEditingLifetime.owner_before(lifetime) && !lifetime.owner_before(_legacyIMEEditingLifetime);
+    }
+
 protected:
     friend class InputSystem;
+
 
     /**
      * @brief IME hit-test.
@@ -189,11 +226,20 @@ protected:
      */
     virtual void performEditAction(EditAction action) {}
 
+    // Platform synchronization reuses the attached delegate and its real native
+    // selection/edit transactions. Generic delegates keep their existing events.
+    virtual bool getIMETextState(IMETextState&) const { return false; }
+    virtual bool applyIMETextState(std::string_view, int, int, bool, IMETextState&) { return false; }
+    virtual void setIMESelection(int, int) {}
+
 protected:
     /**
      * @lua NA
      */
     InputDelegate();
+
+private:
+    std::weak_ptr<void> _legacyIMEEditingLifetime;
 };
 
 }  // namespace ax

@@ -4,6 +4,8 @@
 
 Axmol 是采用 MIT 许可证的开源跨平台游戏引擎，支持使用 C++ 或 Lua 开发 2D 和 3D 游戏，并发布到移动端、桌面端、WebAssembly，以及通过 UWP 发布到 Xbox。
 
+`axmol-js` 分支是基于 [Axmol](https://github.com/axmolengine/axmol) 二次开发的项目。Ye Liangqi 为 axmol-js 创作的新增代码及修改部分，版权声明为 Copyright (c) 2026 Ye Liangqi，并沿用项目的 [MIT 许可证](LICENSE)。上游及第三方代码保留原有版权声明，并继续适用各自的许可证；作者信息见 [AUTHORS.md](AUTHORS.md)，组件许可见对应目录中的许可证文件。
+
 [在线体验](#在线体验) · [快速开始](#快速开始) · [Axmol 作品](https://github.com/axmolengine/axmol/wiki/Made-in-Axmol) · [English](README.md)
 
 [![构建状态](https://github.com/axmolengine/axmol/workflows/build/badge.svg)](https://github.com/axmolengine/axmol/actions?query=workflow%3Abuild)
@@ -62,7 +64,18 @@ cd ./projects/HelloCpp
 axmol
 ```
 
-使用 `-l lua` 可创建 Lua 项目。正式项目如需使用稳定的 v2 LTS，请改为克隆 `release/2.x` 分支，其要求为 C++20。Windows 环境准备、其他平台构建及常见问题见[完整指南](docs/DevSetup.md)。
+使用 `-l lua` 可创建 Lua 项目。本 `axmol-js` 分支还可使用 `-l js` 创建原生 JavaScript 项目，沿用相同的 setup 和构建流程。例如，在 Apple Silicon Mac 上：
+
+```sh
+axmol new -p dev.axmol.hellojs -d ./projects -l js HelloJs
+cd ./projects/HelloJs
+axmol build -p osx -a arm64
+```
+
+首次 JS 构建会在依赖包缺失时自动准备固定版本的 SpiderMonkey；后续构建复用校验通过的包。支持的 ARM64 平台、准备条件与缓存选项见 [JavaScript 指南](templates/js/README.md)。
+
+
+正式项目如需使用稳定的 v2 LTS，请改为克隆 `release/2.x` 分支，其要求为 C++20。Windows 环境准备、其他平台构建及常见问题见[完整指南](docs/DevSetup.md)。
 
 ## 可以构建什么
 

@@ -1,0 +1,23 @@
+{
+  "version": "1.0.0.0",
+  "classname": "CCNode",
+  "name": "scene-root",
+  "objecttag": 500,
+  "CanvasSize": {
+    "_width": 640,
+    "_height": 480
+  },
+  "gameobjects": [
+    {
+      "classname": "CCNode",
+      "name": "scene-child",
+      "objecttag": 501,
+      "x": 17,
+      "y": 19,
+      "gameobjects": [],
+      "components": []
+    }
+  ],
+  "components": [],
+  "Triggers": []
+}

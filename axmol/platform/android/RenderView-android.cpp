@@ -3,12 +3,15 @@ Copyright (c) 2010-2012 cocos2d-x.org
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
 SPDX-License-Identifier: MIT
 ****************************************************************************/
 #include "axmol/platform/android/RenderView-android.h"
+#include "axmol/base/InputSystem.h"
+#include <climits>
 #include "axmol/base/Director.h"
 #include "axmol/base/Macros.h"
 #include "axmol/platform/android/jni/JniHelper.h"
@@ -160,7 +163,12 @@ void RenderView::setIMEKeyboardState(bool bOpen)
 {
     if (bOpen)
     {
-        JniHelper::callStaticVoidMethod("dev.axmol.lib.AxmolPlayer", "openIMEKeyboard");
+        IMETextState state;
+        InputSystem::getInstance()->getIMETextState(state);
+        JniHelper::callStaticVoidMethod("dev.axmol.lib.AxmolPlayer", "openIMEKeyboard", state.text,
+            state.selectionStart, state.selectionEnd,
+            static_cast<int>(std::min(state.charLimit, static_cast<unsigned>(INT_MAX))),
+            state.legacyEditing, state.multiline, state.password, state.generation);
     }
     else
     {

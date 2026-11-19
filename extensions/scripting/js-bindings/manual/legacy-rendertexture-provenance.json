@@ -1,0 +1,7 @@
+{
+  "repository": "https://github.com/cocos2d/cocos2d-x",
+  "commit": "e4b6a5ef8fcdc99a7ebea606312b67fe4c534b9f",
+  "source": "cocos/2d/CCRenderTexture.cpp",
+  "sourceSha256": "a4188f416f01118832dd18a9b89058dda97eba7c2e005c9d5586c27dda17b43d",
+  "adaptation": "Preserve the legacy Node, display Sprite and offscreen child traversal contract using current Axmol RenderTexture and RenderTexturePass. Old GL pixel/clear constants mapped explicitly. Current RHI already normalizes target Y orientation. Original fixture remains unchanged."
+}

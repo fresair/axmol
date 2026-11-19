@@ -1,5 +1,6 @@
 /****************************************************************************
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -122,6 +123,7 @@ public:
     void submitCurrentFrameCommands(bool waitForCompletion) override;
 
     void readPixels(RenderTarget* rt, std::function<void(const PixelBufferDesc&)> callback) override;
+    bool readPixelsSync(RenderTarget* rt, PixelBufferDesc& result) override;
 
     bool copyTexture(RenderTarget* src, Texture* dst) override;
     bool copyTexture(Texture* src, Texture* dst) override;
@@ -258,6 +260,7 @@ private:
 
     bool _swapchainDirty{false};
     bool _inFrame{false};
+    bool _renderPassActive{false};
     bool _suboptimal{false};
     bool _frameAcquireSemaphoreConsumed{false};
 

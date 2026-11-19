@@ -1,5 +1,6 @@
 /****************************************************************************
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -76,6 +77,18 @@ public:
 
     /** @brief Returns the physics world that owns this body, or `nullptr` when detached. */
     PhysicsWorld3D* getWorld() const { return _world; }
+
+    /**
+     * Explicitly create this owner's body in a selected world before scene entry.
+     * Used when a constraint is registered while its node hierarchy is still
+     * being assembled. Normal onEnter remains idempotent and onExit detaches it.
+     * Rejects missing owners and attempts to move an already attached body.
+     * @script{ignore}
+     */
+    bool attachToPhysicsWorld(PhysicsWorld3D* world)
+    {
+        return world && _owner && (!_world || _world == world) && attachToWorld(world);
+    }
 
     /**
      * @brief Returns the native Jolt body identifier.
@@ -365,6 +378,18 @@ public:
     /** @brief Pushes the owner node's transform into the native physics body. */
     void syncNodeToPhysics() override;
 
+    /**
+     * Opt in to publishing Node-driven mass-zero Kinematic poses on Scene
+     * frames with no solver step. The default is false. This policy does not
+     * change the last real solver pose used for the next kinematic velocity.
+     * @script{ignore}
+     */
+    void setKinematicZeroStepSyncEnabled(bool enabled);
+    /** @script{ignore} */
+    bool isKinematicZeroStepSyncEnabled() const;
+
+    void setOwner(Node* owner) override;
+
     /** @brief Applies the native physics body's transform to the owner node. */
     void syncPhysicsToNode() override;
 
@@ -442,6 +467,9 @@ protected:
     float _angularDamping{0.0f};
 
     bool _allowSleeping{true};
+    // Only an explicit massless Kinematic request preserves this allocation
+    // across later Static transitions, disabling and world re-entry.
+    bool _preserveKinematicMotionProperties{false};
     MotionType _motionType{MotionType::Unspec};
     CollisionDetectionMode _collisionDetection{CollisionDetectionMode::Discrete};
     Mat4 _transformInPhysics;
@@ -453,6 +481,14 @@ protected:
     std::vector<Joint3D*> _joints;
 
     void* _userData{nullptr};
+
+    // Generic native opt-in. Modern C++/Lua and ordinary cc.Rigidbody3D keep
+    // their existing N0 policy unless a caller explicitly enables it.
+    bool _kinematicZeroStepSyncEnabled{false};
+
+    void syncKinematicNodeForStep(float dt);
+    bool captureKinematicNodeTarget(Vec3& translation, Quat& rotation) const;
+    void syncCapturedKinematicTarget(const Vec3& translation, const Quat& rotation, float remainingTime);
 };
 
 }  // namespace ax

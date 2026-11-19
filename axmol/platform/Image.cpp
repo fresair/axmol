@@ -3,6 +3,7 @@ Copyright (c) 2010-2012 cocos2d-x.org
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -15,6 +16,12 @@ SPDX-License-Identifier: MIT
 #include <string>
 #include <ctype.h>
 #include <algorithm>
+#include <limits>
+#include <memory>
+
+#if AX_WITH_TIFF
+#    include <tiffio.h>
+#endif
 
 #include "axmol/tlx/utility.hpp"
 #include "axmol/base/Config.h"  // AX_USE_JPEG, AX_USE_WEBP
@@ -122,6 +129,96 @@ struct dirent* readdir$INODE64(DIR* dir)
 
 namespace ax
 {
+
+#if AX_WITH_TIFF
+namespace
+{
+// Image decoders consume an in-memory stream; no global TIFF handlers or file
+// handles are used, so concurrent texture loading does not share stream state.
+struct TiffMemoryStream
+{
+    const uint8_t* data;
+    size_t size;
+    size_t offset = 0;
+};
+
+tmsize_t readTiffMemory(thandle_t handle, void* destination, tmsize_t requested)
+{
+    auto& stream = *static_cast<TiffMemoryStream*>(handle);
+    if (requested <= 0)
+        return 0;
+    const auto count = std::min(static_cast<size_t>(requested), stream.size - stream.offset);
+    if (count)
+        memcpy(destination, stream.data + stream.offset, count);
+    stream.offset += count;
+    return static_cast<tmsize_t>(count);
+}
+
+tmsize_t writeTiffMemory(thandle_t, void*, tmsize_t)
+{
+    return 0;
+}
+
+toff_t seekTiffMemory(thandle_t handle, toff_t offset, int origin)
+{
+    auto& stream = *static_cast<TiffMemoryStream*>(handle);
+    size_t position;
+    if (origin == SEEK_SET)
+    {
+        if (offset > stream.size)
+            return static_cast<toff_t>(-1);
+        position = static_cast<size_t>(offset);
+    }
+    else if (origin == SEEK_CUR || origin == SEEK_END)
+    {
+        const size_t base = origin == SEEK_CUR ? stream.offset : stream.size;
+        // libtiff expresses negative relative offsets in unsigned toff_t.
+        if (offset > static_cast<toff_t>(std::numeric_limits<int64_t>::max()))
+        {
+            const toff_t backwards = toff_t{0} - offset;
+            if (backwards > base)
+                return static_cast<toff_t>(-1);
+            position = base - static_cast<size_t>(backwards);
+        }
+        else
+        {
+            if (offset > stream.size - base)
+                return static_cast<toff_t>(-1);
+            position = base + static_cast<size_t>(offset);
+        }
+    }
+    else
+        return static_cast<toff_t>(-1);
+    stream.offset = position;
+    return static_cast<toff_t>(position);
+}
+
+int closeTiffMemory(thandle_t)
+{
+    return 0;
+}
+
+toff_t sizeTiffMemory(thandle_t handle)
+{
+    return static_cast<toff_t>(static_cast<TiffMemoryStream*>(handle)->size);
+}
+
+int mapTiffMemory(thandle_t, void**, toff_t*)
+{
+    return 0;
+}
+
+void unmapTiffMemory(thandle_t, void*, toff_t) {}
+
+int reportTiffMessage(TIFF*, void*, const char* module, const char* format, va_list arguments)
+{
+    char message[512];
+    vsnprintf(message, sizeof(message), format, arguments);
+    AXLOGW("TIFF {}: {}", module ? module : "decoder", message);
+    return 1;
+}
+}  // namespace
+#endif
 
 //////////////////////////////////////////////////////////////////////////
 // struct and data for pvr structure
@@ -669,7 +766,7 @@ bool Image::initWithImageData(uint8_t* data, ssize_t dataLen, bool ownData)
 
     do
     {
-        AX_BREAK_IF(!data || dataLen == 0);
+        AX_BREAK_IF(!data || dataLen <= 0);
 
         uint8_t* unpackedData = nullptr;
         ssize_t unpackedLen   = 0;
@@ -694,6 +791,13 @@ bool Image::initWithImageData(uint8_t* data, ssize_t dataLen, bool ownData)
             if (ownData)
                 free((void*)data);
             ownData = true;
+        }
+
+        if (!unpackedData || unpackedLen <= 0)
+        {
+            if (ownData)
+                free(unpackedData);
+            break;
         }
 
         _fileType = detectFormat(unpackedData, unpackedLen);
@@ -730,6 +834,11 @@ bool Image::initWithImageData(uint8_t* data, ssize_t dataLen, bool ownData)
         case Format::BMP:
             ret = initWithBmpData(unpackedData, unpackedLen);
             break;
+#if AX_WITH_TIFF
+        case Format::TIFF:
+            ret = initWithTiffData(unpackedData, unpackedLen);
+            break;
+#endif
         default:
         {
             // load and detect image format
@@ -901,6 +1010,16 @@ bool Image::isPvr(const uint8_t* data, ssize_t dataLen)
 
 Image::Format Image::detectFormat(const uint8_t* data, ssize_t dataLen)
 {
+    if (!data || dataLen <= 0)
+        return Format::UNKNOWN;
+#if AX_WITH_TIFF
+    // Classic TIFF (42) and BigTIFF (43), both byte orders. Recognize truncated
+    // TIFF headers too, letting the TIFF reader reject them without TGA fallback.
+    if (dataLen >= 4 &&
+        ((data[0] == 'I' && data[1] == 'I' && (data[2] == 42 || data[2] == 43) && data[3] == 0) ||
+         (data[0] == 'M' && data[1] == 'M' && data[2] == 0 && (data[3] == 42 || data[3] == 43))))
+        return Format::TIFF;
+#endif
     if (isPng(data, dataLen))
     {
         return Format::PNG;
@@ -960,6 +1079,96 @@ Image::Format Image::detectFormat(const uint8_t* data, ssize_t dataLen)
 
     return Format::UNKNOWN;
 }
+
+#if AX_WITH_TIFF
+bool Image::initWithTiffData(const uint8_t* data, ssize_t dataLen)
+{
+    if (!data || dataLen < 8)
+        return false;
+
+    constexpr size_t memoryLimit = 256u * 1024u * 1024u;
+    auto options = std::unique_ptr<TIFFOpenOptions, decltype(&TIFFOpenOptionsFree)>(TIFFOpenOptionsAlloc(),
+                                                                               TIFFOpenOptionsFree);
+    if (!options)
+        return false;
+    TIFFOpenOptionsSetMaxSingleMemAlloc(options.get(), static_cast<tmsize_t>(memoryLimit));
+    TIFFOpenOptionsSetMaxCumulatedMemAlloc(options.get(), static_cast<tmsize_t>(memoryLimit * 2));
+    TIFFOpenOptionsSetErrorHandlerExtR(options.get(), reportTiffMessage, nullptr);
+    TIFFOpenOptionsSetWarningHandlerExtR(options.get(), reportTiffMessage, nullptr);
+    TiffMemoryStream stream{data, static_cast<size_t>(dataLen)};
+    auto tiff = std::unique_ptr<TIFF, decltype(&TIFFClose)>(
+        TIFFClientOpenExt("Image memory", "rm", &stream, readTiffMemory, writeTiffMemory, seekTiffMemory,
+                          closeTiffMemory, sizeTiffMemory, mapTiffMemory, unmapTiffMemory, options.get()),
+        TIFFClose);
+    if (!tiff)
+        return false;
+
+    uint32_t width = 0, height = 0;
+    uint16_t orientation = ORIENTATION_TOPLEFT;
+    if (!TIFFGetField(tiff.get(), TIFFTAG_IMAGEWIDTH, &width) ||
+        !TIFFGetField(tiff.get(), TIFFTAG_IMAGELENGTH, &height) || !width || !height ||
+        width > static_cast<uint32_t>(std::numeric_limits<int>::max()) ||
+        height > static_cast<uint32_t>(std::numeric_limits<int>::max()) ||
+        static_cast<uint64_t>(width) * height > memoryLimit / sizeof(uint32_t))
+    {
+        AXLOGW("TIFF dimensions exceed the Image decoder memory limit");
+        return false;
+    }
+    TIFFGetFieldDefaulted(tiff.get(), TIFFTAG_ORIENTATION, &orientation);
+    if (orientation < ORIENTATION_TOPLEFT || orientation > ORIENTATION_LEFTBOT)
+        return false;
+
+    const size_t byteCount = static_cast<size_t>(width) * height * sizeof(uint32_t);
+    auto raster = std::unique_ptr<uint32_t, decltype(&free)>(static_cast<uint32_t*>(malloc(byteCount)), free);
+    auto pixels = std::unique_ptr<uint8_t, decltype(&free)>(static_cast<uint8_t*>(malloc(byteCount)), free);
+    if (!raster || !pixels)
+        return false;
+
+    // The RGBA helper handles flips but does not transpose orientations 5-8.
+    // Decode stored rows, then normalize all eight orientations ourselves.
+    if (!TIFFSetField(tiff.get(), TIFFTAG_ORIENTATION, ORIENTATION_TOPLEFT) ||
+        !TIFFReadRGBAImageOriented(tiff.get(), width, height, raster.get(), ORIENTATION_TOPLEFT, 1))
+        return false;
+    const bool transposed = orientation >= ORIENTATION_LEFTTOP;
+    const uint32_t outputWidth = transposed ? height : width;
+    const uint32_t outputHeight = transposed ? width : height;
+    for (uint32_t y = 0; y < height; ++y)
+    {
+        for (uint32_t x = 0; x < width; ++x)
+        {
+            uint32_t outputX = x, outputY = y;
+            switch (orientation)
+            {
+            case ORIENTATION_TOPRIGHT: outputX = width - x - 1; break;
+            case ORIENTATION_BOTRIGHT: outputX = width - x - 1; outputY = height - y - 1; break;
+            case ORIENTATION_BOTLEFT: outputY = height - y - 1; break;
+            case ORIENTATION_LEFTTOP: outputX = y; outputY = x; break;
+            case ORIENTATION_RIGHTTOP: outputX = height - y - 1; outputY = x; break;
+            case ORIENTATION_RIGHTBOT: outputX = height - y - 1; outputY = width - x - 1; break;
+            case ORIENTATION_LEFTBOT: outputX = y; outputY = width - x - 1; break;
+            default: break;
+            }
+            const uint32_t value = raster.get()[static_cast<size_t>(y) * width + x];
+            auto* destination = pixels.get() + (static_cast<size_t>(outputY) * outputWidth + outputX) * 4;
+            // Explicit extraction gives RGBA bytes on little- and big-endian hosts.
+            destination[0] = TIFFGetR(value);
+            destination[1] = TIFFGetG(value);
+            destination[2] = TIFFGetB(value);
+            destination[3] = TIFFGetA(value);
+        }
+    }
+    _data = pixels.release();
+    _dataSize = static_cast<ssize_t>(byteCount);
+    _offset = 0;
+    _width = static_cast<int>(outputWidth);
+    _height = static_cast<int>(outputHeight);
+    _pixelFormat = rhi::PixelFormat::RGBA8;
+    // libtiff's RGBA API returns associated alpha. Preserve that information;
+    // Texture2D can select its actual premultiplied blend without multiplying twice.
+    _hasPremultipliedAlpha = true;
+    return true;
+}
+#endif
 
 int Image::getBitPerPixel()
 {

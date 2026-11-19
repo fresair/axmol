@@ -49,10 +49,8 @@ YASIO__DECL yssl_ctx_st* yssl_ctx_new(const yssl_options& opts)
 
   if (opts.client)
   {
-    int fail_count = -1;
     if (yasio__valid_str(opts.crtfile_))
     { // CAfile for verify
-      fail_count = 0;
       tlx::split(opts.crtfile_, ',', [&](char* first, char* last) {
         tlx::split_term_guard null_term(last);
 
@@ -64,7 +62,6 @@ YASIO__DECL yssl_ctx_st* yssl_ctx_new(const yssl_options& opts)
 #  endif
         if (!ok)
         {
-          ++fail_count;
           YASIO_LOG("[global] load ca certifaction file failed!");
         }
       });
@@ -74,7 +71,10 @@ YASIO__DECL yssl_ctx_st* yssl_ctx_new(const yssl_options& opts)
      * SSL_CTX_use_certificate_chain_file
      * SSL_CTX_use_PrivateKey_file
      */
-    if (!fail_count)
+    // An explicitly requested trust file must keep peer verification enabled
+    // even if it cannot be loaded. An empty trust store then rejects the
+    // handshake instead of silently falling back to SSL_VERIFY_NONE.
+    if (yasio__valid_str(opts.crtfile_))
     {
       ::SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER, ::SSL_CTX_get_verify_callback(ctx));
 #  if OPENSSL_VERSION_NUMBER >= 0x10101000L
@@ -215,6 +215,14 @@ YASIO__DECL yssl_st* yssl_new(yssl_ctx_st* ctx, int fd, const char* hostname, bo
   {
     ::SSL_set_connect_state(ssl);
     ::SSL_set_tlsext_host_name(ssl, hostname);
+    if (::SSL_get_verify_mode(ssl) & SSL_VERIFY_PEER)
+    {
+      auto params = ::SSL_get0_param(ssl);
+      // Numeric IPv4/IPv6 identities are IP SANs; other names use DNS SANs.
+      // SNI alone only selects a certificate and does not verify its identity.
+      if (::X509_VERIFY_PARAM_set1_ip_asc(params, hostname) != 1)
+        ::X509_VERIFY_PARAM_set1_host(params, hostname, 0);
+    }
   }
   else
     ::SSL_set_accept_state(ssl);

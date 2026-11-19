@@ -1,6 +1,7 @@
 /****************************************************************************
  Copyright (c) 2018-2019 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -33,6 +34,9 @@ public:
      * @param sampler Specifies the sampler descriptor.
      */
     virtual void updateSamplerDesc(const SamplerDesc& desc) = 0;
+
+    /** Read the descriptor currently applied to the native sampler. @script{ignore} */
+    const SamplerDesc& getSamplerDesc() const { return _desc.samplerDesc; }
 
     /**
      * Update texture description.

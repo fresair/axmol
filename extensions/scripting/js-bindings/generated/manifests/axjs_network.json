@@ -1,0 +1,527 @@
+{
+  "formatVersion": 1,
+  "language": "js",
+  "engine": "SpiderMonkey 33.1",
+  "module": "network",
+  "registrationName": "ax_network",
+  "targetNamespace": "cc",
+  "conditionalExpression": null,
+  "classes": [
+    {
+      "nativeName": "HttpClient",
+      "qualifiedName": "ax::network::HttpClient",
+      "jsName": "HttpClient",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [],
+      "methods": [
+        {
+          "nativeName": "clearFinishedResponseQueue",
+          "jsName": "clearFinishedResponseQueue",
+          "declaringType": "ax::network::HttpClient",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "clearPendingResponseQueue",
+          "jsName": "clearPendingResponseQueue",
+          "declaringType": "ax::network::HttpClient",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "clearResponseQueue",
+          "jsName": "clearResponseQueue",
+          "declaringType": "ax::network::HttpClient",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "enableCookies",
+          "jsName": "enableCookies",
+          "declaringType": "ax::network::HttpClient",
+          "returnType": "void",
+          "parameterTypes": [
+            "const char *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getCookie",
+          "jsName": "getCookie",
+          "declaringType": "ax::network::HttpClient",
+          "returnType": "ax::network::HttpCookie *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getCookieFilename",
+          "jsName": "getCookieFilename",
+          "declaringType": "ax::network::HttpClient",
+          "returnType": "std::string_view",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getInstance",
+          "jsName": "getInstance",
+          "declaringType": "ax::network::HttpClient",
+          "returnType": "ax::network::HttpClient *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getSSLVerification",
+          "jsName": "getSSLVerification",
+          "declaringType": "ax::network::HttpClient",
+          "returnType": "std::string_view",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getTimeoutForConnect",
+          "jsName": "getTimeoutForConnect",
+          "declaringType": "ax::network::HttpClient",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getTimeoutForRead",
+          "jsName": "getTimeoutForRead",
+          "declaringType": "ax::network::HttpClient",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "handleNetworkStatusChanged",
+          "jsName": "handleNetworkStatusChanged",
+          "declaringType": "ax::network::HttpClient",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "isDispatchOnWorkThread",
+          "jsName": "isDispatchOnWorkThread",
+          "declaringType": "ax::network::HttpClient",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "setDispatchOnWorkThread",
+          "jsName": "setDispatchOnWorkThread",
+          "declaringType": "ax::network::HttpClient",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setNameServers",
+          "jsName": "setNameServers",
+          "declaringType": "ax::network::HttpClient",
+          "returnType": "void",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setSSLVerification",
+          "jsName": "setSSLVerification",
+          "declaringType": "ax::network::HttpClient",
+          "returnType": "void",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setTimeoutForConnect",
+          "jsName": "setTimeoutForConnect",
+          "declaringType": "ax::network::HttpClient",
+          "returnType": "void",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setTimeoutForRead",
+          "jsName": "setTimeoutForRead",
+          "declaringType": "ax::network::HttpClient",
+          "returnType": "void",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "getCookieFileMutex",
+          "returnType": "std::recursive_mutex \u0026",
+          "parameterTypes": []
+        },
+        {
+          "nativeName": "getInternalService",
+          "returnType": "yasio::io_service *",
+          "parameterTypes": []
+        },
+        {
+          "nativeName": "getSSLCaFileMutex",
+          "returnType": "std::recursive_mutex \u0026",
+          "parameterTypes": []
+        },
+        {
+          "nativeName": "setClearResponsePredicate",
+          "returnType": "void",
+          "parameterTypes": [
+            "std::function\u003Cbool (ax::network::HttpResponse *)\u003E"
+          ]
+        }
+      ]
+    },
+    {
+      "nativeName": "HttpCookie",
+      "qualifiedName": "ax::network::HttpCookie",
+      "jsName": "HttpCookie",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [],
+      "methods": [
+        {
+          "nativeName": "readFile",
+          "jsName": "readFile",
+          "declaringType": "ax::network::HttpCookie",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setCookieFileName",
+          "jsName": "setCookieFileName",
+          "declaringType": "ax::network::HttpCookie",
+          "returnType": "void",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "writeFile",
+          "jsName": "writeFile",
+          "declaringType": "ax::network::HttpCookie",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "checkAndGetFormatedMatchCookies",
+          "returnType": "std::string",
+          "parameterTypes": [
+            "const ax::network::Uri \u0026"
+          ]
+        },
+        {
+          "nativeName": "getCookies",
+          "returnType": "std::span\u003Cconst ax::network::CookieInfo\u003E",
+          "parameterTypes": []
+        },
+        {
+          "nativeName": "getMatchCookie",
+          "returnType": "const ax::network::CookieInfo *",
+          "parameterTypes": [
+            "const ax::network::Uri \u0026"
+          ]
+        },
+        {
+          "nativeName": "updateOrAddCookie",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::network::CookieInfo *"
+          ]
+        },
+        {
+          "nativeName": "updateOrAddCookie",
+          "returnType": "bool",
+          "parameterTypes": [
+            "std::string_view",
+            "const ax::network::Uri \u0026"
+          ]
+        }
+      ]
+    },
+    {
+      "nativeName": "Uri",
+      "qualifiedName": "ax::network::Uri",
+      "jsName": "Uri",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [],
+      "methods": [
+        {
+          "nativeName": "clear",
+          "jsName": "clear",
+          "declaringType": "ax::network::Uri",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getAuthority",
+          "jsName": "getAuthority",
+          "declaringType": "ax::network::Uri",
+          "returnType": "std::string_view",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getFragment",
+          "jsName": "getFragment",
+          "declaringType": "ax::network::Uri",
+          "returnType": "std::string_view",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getHost",
+          "jsName": "getHost",
+          "declaringType": "ax::network::Uri",
+          "returnType": "std::string_view",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getHostName",
+          "jsName": "getHostName",
+          "declaringType": "ax::network::Uri",
+          "returnType": "std::string_view",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getPassword",
+          "jsName": "getPassword",
+          "declaringType": "ax::network::Uri",
+          "returnType": "std::string_view",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getPath",
+          "jsName": "getPath",
+          "declaringType": "ax::network::Uri",
+          "returnType": "std::string_view",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getPathEtc",
+          "jsName": "getPathEtc",
+          "declaringType": "ax::network::Uri",
+          "returnType": "std::string_view",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getPort",
+          "jsName": "getPort",
+          "declaringType": "ax::network::Uri",
+          "returnType": "uint16_t",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getQuery",
+          "jsName": "getQuery",
+          "declaringType": "ax::network::Uri",
+          "returnType": "std::string_view",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getQueryParams",
+          "jsName": "getQueryParams",
+          "declaringType": "ax::network::Uri",
+          "returnType": "const std::vector\u003Cstd::pair\u003Cstd::string, std::string\u003E\u003E \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getScheme",
+          "jsName": "getScheme",
+          "declaringType": "ax::network::Uri",
+          "returnType": "std::string_view",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getUserName",
+          "jsName": "getUserName",
+          "declaringType": "ax::network::Uri",
+          "returnType": "std::string_view",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "invalid",
+          "jsName": "invalid",
+          "declaringType": "ax::network::Uri",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "isCustomPort",
+          "jsName": "isCustomPort",
+          "declaringType": "ax::network::Uri",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isSecure",
+          "jsName": "isSecure",
+          "declaringType": "ax::network::Uri",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isValid",
+          "jsName": "isValid",
+          "declaringType": "ax::network::Uri",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "toString",
+          "jsName": "toString",
+          "declaringType": "ax::network::Uri",
+          "returnType": "std::string",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "parse",
+          "returnType": "ax::network::Uri",
+          "parameterTypes": [
+            "std::string_view"
+          ]
+        }
+      ]
+    }
+  ],
+  "enums": []
+}

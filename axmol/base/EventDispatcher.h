@@ -2,6 +2,7 @@
  Copyright (c) 2013-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -167,6 +168,15 @@ public:
      */
     void dispatchEvent(Event* event, bool forced = false);
 
+    // Internal compatibility registration. Only manually adapted legacy JS
+    // listeners opt in; modern C++/Lua Pointer/Menu/Widget listeners use 0.
+    // Metadata lives in a weak, per-dispatcher external registry, without
+    // changing native class layout or virtual method tables.
+    [[internal]] void setLegacyPointerDispatchType(PointerEventListener* listener, int legacyType,
+        bool swallow = false, const std::function<void(intptr_t, bool)>& releaseClaim = {});
+    [[internal]] bool isLegacyPointerListenerAttached(PointerEventListener* listener) const;
+    [[internal]] static void clearLegacyPointerDispatchType(PointerEventListener* listener);
+
     /** Dispatches a Custom Event with a event name an optional user data.
      *
      * @param eventName The name of the event which needs to be dispatched.
@@ -314,7 +324,7 @@ protected:
     void cleanToRemovedListeners();
 
     bool dispatchClaimedPointerEvent(PointerEvent* event);
-    void dispatchUnclaimedPointerEvent(PointerEvent* event, PointerCaptureId captureId);
+    void dispatchUnclaimedPointerEvent(PointerEvent* event, PointerCaptureId captureId, int legacyType = 0);
 
     struct PointerClaimDispatchEntry
     {

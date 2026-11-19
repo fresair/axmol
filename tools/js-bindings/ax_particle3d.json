@@ -1,0 +1,45 @@
+{
+  "module": "ax_particle3d",
+  "target_namespace": "cc",
+  "cpp_namespace": "ax",
+  "cpp_chunks": 2,
+  "macro_judgement": "#if defined(AX_ENABLE_EXT_PARTICLE3D)",
+  "headers": [
+    "%(axdir)s/extensions/Particle3D/src/Particle3D/ParticleSystem3D.h",
+    "%(axdir)s/extensions/Particle3D/src/Particle3D/PU/PUParticleSystem3D.h"
+  ],
+  "clang_flags": [
+    "-DAX_ENABLE_3D=1",
+    "-DAX_ENABLE_EXT_PARTICLE3D=1"
+  ],
+  "classes": [
+    "ParticleSystem3D",
+    "PUParticleSystem3D"
+  ],
+  "abstract_classes": [],
+  "classes_have_no_parents": [],
+  "base_classes_to_skip": [],
+  "fields": [],
+  "skip": [
+    {
+      "class": "PUParticleSystem3D",
+      "methods": [
+        "getDerivedOrientation",
+        "getEmittedEmitterParticlePool",
+        "getEmittedSystemParticlePool",
+        "getAffector",
+        "getEmitter",
+        "getObserver"
+      ]
+    },
+    {
+      "class": "ParticleSystem3D",
+      "methods": [
+        "getParticlePool",
+        "getAffector"
+      ]
+    }
+  ],
+  "rename_functions": [],
+  "rename_classes": []
+}

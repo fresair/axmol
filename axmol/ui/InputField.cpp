@@ -1,5 +1,6 @@
 /****************************************************************************
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -9,10 +10,17 @@ SPDX-License-Identifier: MIT
 #include "axmol/ui/InputField.h"
 #include "axmol/base/Director.h"
 #include "axmol/base/text_utils.h"
+#include "axmol/base/RefPtr.h"
+#include "axmol/base/InputSystem.h"
 #include "axmol/platform/Device.h"
 #include "axmol/platform/RenderView.h"
 
 #include <algorithm>
+#include <cmath>
+
+#if AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID
+#    include "axmol/platform/android/jni/JniHelper.h"
+#endif
 #include <string.h>
 #include <limits>
 
@@ -29,6 +37,21 @@ namespace
 {
 static constexpr int INPUT_FIELD_RENDERER_Z             = (-1);
 static constexpr std::string_view DEFAULT_PASSWORD_CHAR = "\xe2\x80\xa2"sv;
+// An insertion shared by two visual rows belongs to the following row.
+// Pointer hit testing and vertical navigation must search the same owned range.
+// Keep one insertion for an empty final row; nonvisual metrics retain their
+// existing range and all modern/fallback behavior.
+template <class Lines>
+static auto visualInsertionEnd(const Lines& lines, size_t row)
+{
+    const auto& line = lines[row];
+    auto end = line.charXOffsets.end();
+    if (line.fromVisualLayout && row + 1 < lines.size() &&
+        lines[row + 1].startCharIndex == line.endCharIndex && line.charXOffsets.size() > 1)
+        --end;
+    return end;
+}
+
 static FontType labelTypeToFontType(Label::LabelType type)
 {
     switch (type)
@@ -329,6 +352,8 @@ void InputField::setFontName(std::string_view fontName)
     updateLineHeight();
     _cursor->setContentSize(Vec2{_cursor->getContentSize().width, _fontSize});
     markDirty(DIRTY_LINE_METRICS);
+    if (isLegacyIMEEditing())
+        updateContentSize();
 }
 
 void InputField::setFontSize(float size)
@@ -366,6 +391,8 @@ void InputField::setFontSize(float size)
     _passwordCharWidth = measureText(_passwordChar).width;
     updateLineHeight();
     markDirty(DIRTY_LINE_METRICS);
+    if (isLegacyIMEEditing())
+        updateContentSize();
 }
 
 float InputField::getFontSize() const
@@ -617,6 +644,72 @@ void InputField::deleteBackward(unsigned int numChars)
     dispatchEvent(EventType::DELETE_BACKWARD);
 }
 
+bool InputField::getIMETextState(IMETextState& state) const
+{
+    state.text = _inputText;
+    state.selectionStart = hasSelection() ? _selectionAnchor : _cursorCharOffset;
+    state.selectionEnd = _cursorCharOffset;
+    state.charLimit = _charLimit;
+    state.multiline = _multilineEnabled;
+    state.editable = !_readOnly && _enabled;
+    state.legacyEditing = isLegacyIMEEditing();
+    state.password = _passwordEnabled;
+    return true;
+}
+
+void InputField::setIMESelection(int selectionStart, int selectionEnd)
+{
+    const int count = static_cast<int>(_charCount);
+    selectionStart = std::clamp(selectionStart, 0, count);
+    selectionEnd = std::clamp(selectionEnd, 0, count);
+    setCursorOffset(selectionStart, false);
+    setCursorOffset(selectionEnd, true);
+}
+
+bool InputField::applyIMETextState(std::string_view document, int selectionStart, int selectionEnd,
+                                  bool submitNewline, IMETextState& actual)
+{
+    // Callback code can detach, destroy the JS VM, or remove the last external
+    // native reference. Keep this real editor alive for the whole transaction.
+    RefPtr<InputField> keepAlive(this);
+    const auto generation = actual.generation;
+    auto active = [&] { return isLegacyIMEEditing() && InputSystem::getInstance()->isAttachedDelegate(this, generation); };
+    if (!active())
+        return false;
+    if (!_readOnly && _enabled)
+    {
+        std::u32string oldChars, newChars;
+        if (!text_utils::UTF8ToUTF32(_inputText, oldChars) || !text_utils::UTF8ToUTF32(document, newChars))
+            return false;
+        size_t prefix = 0;
+        while (prefix < oldChars.size() && prefix < newChars.size() && oldChars[prefix] == newChars[prefix])
+            ++prefix;
+        size_t suffix = 0;
+        while (suffix < oldChars.size() - prefix && suffix < newChars.size() - prefix &&
+               oldChars[oldChars.size() - 1 - suffix] == newChars[newChars.size() - 1 - suffix])
+            ++suffix;
+        if (prefix + suffix < oldChars.size())
+        {
+            setIMESelection(static_cast<int>(prefix), static_cast<int>(oldChars.size() - suffix));
+            deleteSelection(true);
+        }
+        if (!active())
+            return getIMETextState(actual);
+        if (prefix + suffix < newChars.size())
+        {
+            setIMESelection(static_cast<int>(prefix), static_cast<int>(prefix));
+            const auto byteStart = text_utils::countUTF8WithLimit(document, prefix).byteCount;
+            const auto byteEnd = text_utils::countUTF8WithLimit(document, newChars.size() - suffix).byteCount;
+            insertText(document.substr(byteStart, byteEnd - byteStart));
+        }
+        else if (submitNewline && !_multilineEnabled)
+            insertText("\n");
+        if (active())
+            setIMESelection(selectionStart, selectionEnd);
+    }
+    return getIMETextState(actual);
+}
+
 void InputField::handleDeleteKeyEvent()
 {
     if (hasSelection())
@@ -716,11 +809,30 @@ void InputField::setMultilineEnabled(bool enabled)
 
 Node* InputField::getRenderNode()
 {
+    // The v3 TextField renderer was the same object that accepted IME edits.
+    // Its public getString() therefore reflected an edit before the next draw.
+    // Keep that observable contract for legacy fields using the real Label;
+    // modern fields retain their deferred presentation and layout.
+    if (_renderLabel && isLegacyIMEEditing() && isDirty(DIRTY_TEXT))
+        updatePresentation();
     return _renderLabel;
 }
 
 Vec2 InputField::resolvePreferredSize(const Vec2& /*sizeHint*/) const
 {
+    // v3 TextField setters measured the newly presented text immediately.
+    // Its VM-owned editing token also selects that geometry contract. Modern
+    // C++/Lua fields keep their existing deferred presentation behavior.
+    if (isLegacyIMEEditing())
+    {
+        auto* field = const_cast<InputField*>(this);
+        if (field->isDirty(DIRTY_TEXT))
+            field->updatePresentation();
+        // A prior auto-size layout must not constrain the next natural text
+        // measurement. Fixed-size LineWrap fields retain their real bounds.
+        if (_autoSize && !_multilineEnabled)
+            _renderLabel->setDimensions(0, 0);
+    }
     return _renderLabel->getContentSize();
 }
 
@@ -736,6 +848,8 @@ void InputField::setString(std::string_view text)
 
     // Defer text updating and geometry remeasuring to the layout pass
     markDirty(DIRTY_CHAR_OFFSETS | DIRTY_TEXT | DIRTY_LINE_METRICS | DIRTY_CURSOR);
+    if (_renderLabel && isLegacyIMEEditing())
+        updateContentSize();
 }
 
 void InputField::updateLogicalLimits(uint32_t newCharCount)
@@ -769,6 +883,8 @@ void InputField::updatePresentation()
         }
         _renderLabel->setTextColor(_colorText);
     }
+    if (isLegacyIMEEditing())
+        updateContentSize();
 }
 
 void InputField::updateLineHeight()
@@ -828,6 +944,8 @@ void InputField::setPasswordChar(std::string_view ch)
 
         // Changing password glyph affects texture and typography metrics
         markDirty(DIRTY_TEXT | DIRTY_LINE_METRICS | DIRTY_CURSOR);
+        if (_renderLabel && isLegacyIMEEditing())
+            updateContentSize();
     }
 }
 
@@ -857,6 +975,8 @@ void InputField::setPasswordEnabled(bool value)
 
         // Changing to password mode requires text reshaping and layout re-evaluation
         markDirty(DIRTY_TYPOGRAPHY);
+        if (_renderLabel && isLegacyIMEEditing())
+            updateContentSize();
     }
 }
 
@@ -1071,6 +1191,10 @@ int InputField::getByteOffset(int cursorOffset) const
 float InputField::getRenderLabelTextBottomY() const
 {
     // Ensure layout metrics are up-to-date before calculating vertical offset
+    // A retained native field may outlive or replace its legacy VM owner.
+    // Revoke the cached visual policy as well as the weak opt-in token.
+    if (!_lineMetrics.empty() && _lineMetrics.front().usesLegacySystemPolicy != usesLegacySystemLineMetricsPolicy())
+        const_cast<InputField*>(this)->markDirty(DIRTY_LINE_METRICS);
     if (isDirty(DIRTY_LINE_METRICS))
         const_cast<InputField*>(this)->rebuildLineMetrics();
 
@@ -1164,6 +1288,24 @@ void InputField::updateSelectionLayer(void)
 
     if (selStart == selEnd)
         return;
+
+    // Bitmap layout already contains exact alignment, wrapping and row bounds.
+    // The logical single-line/newline policy is independent of visual wrapping.
+    if (!_lineMetrics.empty() && _lineMetrics.front().fromVisualLayout)
+    {
+        for (const auto& line : _lineMetrics)
+        {
+            int begin = std::max(selStart, line.startCharIndex) - line.startCharIndex;
+            int end = std::min(selEnd, line.endCharIndex) - line.startCharIndex;
+            if (begin < 0 || end <= begin || end >= static_cast<int>(line.charXOffsets.size()))
+                continue;
+            float x1 = line.visualOriginX + line.charXOffsets[begin];
+            float x2 = line.visualOriginX + line.charXOffsets[end];
+            if (x2 > x1)
+                _selectionLayer->drawSolidRect({x1, line.visualBottom}, {x2, line.visualTop}, _selectionColor);
+        }
+        return;
+    }
 
     float labelTextBottomY = getRenderLabelTextBottomY();
     int totalLines         = static_cast<int>(_lineMetrics.size());
@@ -1317,6 +1459,8 @@ void InputField::setTextHorizontalAlignment(TextHAlignment alignment)
         _textHAlignment = alignment;
         _renderLabel->setHorizontalAlignment(alignment);
         markDirty(DIRTY_CURSOR | DIRTY_SELECTION);
+        if (usesLegacySystemLineMetricsPolicy())
+            markDirty(DIRTY_LINE_METRICS);
     }
 }
 
@@ -1332,6 +1476,8 @@ void InputField::setTextVerticalAlignment(TextVAlignment alignment)
         _textVAlignment = alignment;
         _renderLabel->setVerticalAlignment(alignment);
         markDirty(DIRTY_CURSOR | DIRTY_SELECTION);
+        if (usesLegacySystemLineMetricsPolicy())
+            markDirty(DIRTY_LINE_METRICS);
     }
 }
 
@@ -1342,6 +1488,9 @@ TextVAlignment InputField::getTextVerticalAlignment() const
 
 void InputField::updateLayout()
 {
+    if (!_lineMetrics.empty() && _lineMetrics.front().usesLegacySystemPolicy != usesLegacySystemLineMetricsPolicy())
+        markDirty(DIRTY_LINE_METRICS | DIRTY_CURSOR | DIRTY_SELECTION);
+
     if (_continuousTouchPending)
         _continuousTouchElapsedTime += _director->getDeltaTime();
 
@@ -1486,6 +1635,10 @@ void InputField::resetTouchState()
 
 Vec2 InputField::cursorPositionFromOffset(int cursorOffset) const
 {
+    // A retained native field may outlive or replace its legacy VM owner.
+    // Revoke the cached visual policy as well as the weak opt-in token.
+    if (!_lineMetrics.empty() && _lineMetrics.front().usesLegacySystemPolicy != usesLegacySystemLineMetricsPolicy())
+        const_cast<InputField*>(this)->markDirty(DIRTY_LINE_METRICS);
     if (isDirty(DIRTY_LINE_METRICS))
         const_cast<InputField*>(this)->rebuildLineMetrics();
 
@@ -1507,6 +1660,9 @@ Vec2 InputField::cursorPositionFromOffset(int cursorOffset) const
     if (charInLine > (int)line.charXOffsets.size() - 1)
         charInLine = (int)line.charXOffsets.size() - 1;
 
+    if (line.fromVisualLayout)
+        return {line.visualOriginX + line.charXOffsets[charInLine], (line.visualBottom + line.visualTop) * 0.5f};
+
     float x = line.charXOffsets[charInLine];  // x offset from line start to cursor
     // Apply horizontal alignment
     float totalTextWidth = line.lineWidth;
@@ -1527,10 +1683,42 @@ Vec2 InputField::cursorPositionFromOffset(int cursorOffset) const
 
 int InputField::cursorOffsetFromPosition(const Vec2& position) const
 {
+    // A retained native field may outlive or replace its legacy VM owner.
+    // Revoke the cached visual policy as well as the weak opt-in token.
+    if (!_lineMetrics.empty() && _lineMetrics.front().usesLegacySystemPolicy != usesLegacySystemLineMetricsPolicy())
+        const_cast<InputField*>(this)->markDirty(DIRTY_LINE_METRICS);
     if (isDirty(DIRTY_LINE_METRICS))
         const_cast<InputField*>(this)->rebuildLineMetrics();
     if (_inputText.empty() || _lineMetrics.empty())
         return 0;
+
+    if (_lineMetrics.front().fromVisualLayout)
+    {
+        // Pick the real drawn row closest to the point, including above/below
+        // the text block, without changing the single-line Enter policy.
+        const LineMetrics* selected = &_lineMetrics.front();
+        float distance = std::numeric_limits<float>::max();
+        for (const auto& line : _lineMetrics)
+        {
+            float d = position.y < line.visualBottom ? line.visualBottom - position.y
+                      : position.y > line.visualTop ? position.y - line.visualTop : 0.0f;
+            if (d < distance)
+            {
+                distance = d;
+                selected = &line;
+            }
+        }
+        float x = position.x - selected->visualOriginX;
+        const auto& offsets = selected->charXOffsets;
+        auto insertionEnd = visualInsertionEnd(_lineMetrics, static_cast<size_t>(selected - _lineMetrics.data()));
+        auto edge = std::lower_bound(offsets.begin(), insertionEnd, x);
+        int index = static_cast<int>(edge - offsets.begin());
+        if (index == 0) return selected->startCharIndex;
+        if (edge == insertionEnd)
+            return selected->startCharIndex + static_cast<int>(insertionEnd - offsets.begin()) - 1;
+        float midpoint = (offsets[index - 1] + offsets[index]) * 0.5f;
+        return selected->startCharIndex + (x < midpoint ? index - 1 : index);
+    }
 
     float yOffset = getRenderLabelTextBottomY();
 
@@ -1593,14 +1781,19 @@ void InputField::rebuildLineMetrics()
     if (isDirty(DIRTY_TEXT))
         updatePresentation();
 
+    const bool legacyPolicy = usesLegacySystemLineMetricsPolicy();
     clearDirty(DIRTY_LINE_METRICS);
     _lineMetrics.clear();
     if (_inputText.empty())
     {
         // At least one empty line placeholder
         _lineMetrics.push_back({0, 0, 0.0f, {0.0f}});
+        _lineMetrics.back().usesLegacySystemPolicy = legacyPolicy;
         return;
     }
+
+    if (rebuildLegacySystemLineMetrics())
+        return;
 
     float availableWidth = _multilineEnabled ? _contentSize.width : std::numeric_limits<float>::max();
     if (availableWidth <= 0.0f && _multilineEnabled)
@@ -1675,6 +1868,133 @@ void InputField::rebuildLineMetrics()
     currentLine.endCharIndex = totalChars;
     currentLine.lineWidth    = currentLine.charXOffsets.back();
     _lineMetrics.push_back(std::move(currentLine));
+    for (auto& line : _lineMetrics)
+        line.usesLegacySystemPolicy = legacyPolicy;
+}
+
+bool InputField::usesLegacySystemLineMetricsPolicy() const
+{
+#if AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID
+    return isLegacyIMEEditing() && _fontType == FontType::SYSTEM;
+#else
+    return false;
+#endif
+}
+
+bool InputField::rebuildLegacySystemLineMetrics()
+{
+#if AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID
+    if (!usesLegacySystemLineMetricsPolicy() || !_renderLabel || _inputText.empty() || !JniHelper::getJavaVM())
+        return false;
+
+    // System fonts render as a true platform bitmap. Letter sprites and
+    // getLineCount() are not actual soft-wrap layout information for that path.
+    auto display = _renderLabel->getString();
+    if (display.empty() || display.size() > static_cast<size_t>(std::numeric_limits<jint>::max()))
+        return false;
+    float scale = AX_CONTENT_SCALE_FACTOR();
+    if (!(scale > 0.0f) || !std::isfinite(scale))
+        return false;
+    auto dimensions = _renderLabel->getDimensions();
+    int width = static_cast<int>(dimensions.width * scale);
+    int height = static_cast<int>(dimensions.height * scale);
+    // Mirror FontDefinition's integer font-size assignment before texture scale.
+    int fontSize = static_cast<int>(static_cast<int>(_renderLabel->getSystemFontSize()) * scale);
+    auto fontName = _renderLabel->getSystemFontName();
+    int horizontal = _textHAlignment == TextHAlignment::LEFT ? 1 : _textHAlignment == TextHAlignment::RIGHT ? 2 : 3;
+    int vertical = _textVAlignment == TextVAlignment::TOP ? 1 : _textVAlignment == TextVAlignment::BOTTOM ? 2 : 3;
+
+    JniMethodInfo method;
+    if (!JniHelper::getStaticMethodInfo(method, "dev.axmol.lib.BitmapHelper", "getInputFieldTextLayout",
+                                         "([BLjava/lang/String;IIIIZI)[F"))
+        return false;
+    JNIEnv* env = method.env;
+    jbyteArray bytes = env->NewByteArray(static_cast<jsize>(display.size()));
+    jstring font = env->NewStringUTF(std::string(fontName).c_str());
+    jfloatArray array = nullptr;
+    auto clean = [&] {
+        if (array) env->DeleteLocalRef(array);
+        if (font) env->DeleteLocalRef(font);
+        if (bytes) env->DeleteLocalRef(bytes);
+        env->DeleteLocalRef(method.classID);
+    };
+    if (bytes && font && !env->ExceptionCheck())
+    {
+        env->SetByteArrayRegion(bytes, 0, static_cast<jsize>(display.size()), reinterpret_cast<const jbyte*>(display.data()));
+        array = static_cast<jfloatArray>(env->CallStaticObjectMethod(method.classID, method.methodID, bytes, font,
+            fontSize, horizontal | (vertical << 4), width, height,
+            static_cast<jboolean>(_renderLabel->isWrapEnabled()), static_cast<jint>(_renderLabel->getOverflow())));
+    }
+    if (env->ExceptionCheck())
+    {
+        env->ExceptionDescribe();
+        env->ExceptionClear();
+        clean();
+        return false;
+    }
+    if (!array) { clean(); return false; }
+    auto count = env->GetArrayLength(array);
+    std::vector<float> packed(static_cast<size_t>(count));
+    env->GetFloatArrayRegion(array, 0, count, packed.data());
+    bool error = env->ExceptionCheck();
+    if (error) { env->ExceptionDescribe(); env->ExceptionClear(); }
+    clean();
+    if (error || packed.size() < 5 || !std::all_of(packed.begin(), packed.end(), [](float v) { return std::isfinite(v); }))
+        return false;
+    size_t cursor = 0;
+    auto integer = [&](int& out) {
+        if (cursor >= packed.size() || packed[cursor] < 0 || packed[cursor] >= static_cast<float>(std::numeric_limits<int>::max()) ||
+            std::floor(packed[cursor]) != packed[cursor]) return false;
+        out = static_cast<int>(packed[cursor++]);
+        return true;
+    };
+    int version, chars, bitmapWidth, bitmapHeight, lineCount;
+    if (!integer(version) || version != 1 || !integer(chars) || chars != static_cast<int>(_charCount) ||
+        !integer(bitmapWidth) || !integer(bitmapHeight) || !integer(lineCount) ||
+        bitmapWidth <= 0 || bitmapHeight <= 0 || lineCount <= 0 || lineCount > chars + 1)
+        return false;
+    auto labelSize = _renderLabel->getContentSize();
+    Vec2 origin = _renderLabel->getPosition() - _renderLabel->getAnchorPoint() * labelSize;
+    // Label::createSpriteForSystemFont aligns odd bitmap dimensions by a
+    // half-unit Sprite offset; these metrics must use that same local origin.
+    origin.x += static_cast<int>(labelSize.x) % 2 == 0 ? 0.0f : 0.5f;
+    origin.y += static_cast<int>(labelSize.y) % 2 == 0 ? 0.0f : 0.5f;
+    std::vector<LineMetrics> visual;
+    visual.reserve(static_cast<size_t>(lineCount));
+    for (int index = 0; index < lineCount; ++index)
+    {
+        LineMetrics line;
+        int edges;
+        if (!integer(line.startCharIndex) || !integer(line.endCharIndex) || cursor + 5 > packed.size() ||
+            line.endCharIndex < line.startCharIndex || line.endCharIndex > chars)
+            return false;
+        float left = packed[cursor++], right = packed[cursor++];
+        float top = packed[cursor++], bottom = packed[cursor++];
+        if (!integer(edges) || edges != line.endCharIndex - line.startCharIndex + 1 || cursor + edges > packed.size() ||
+            right < left || bottom < top)
+            return false;
+        line.lineWidth = (right - left) / scale;
+        line.visualOriginX = origin.x + left / scale;
+        line.visualBottom = origin.y + (bitmapHeight - bottom) / scale;
+        line.visualTop = origin.y + (bitmapHeight - top) / scale;
+        line.fromVisualLayout = true;
+        line.usesLegacySystemPolicy = true;
+        for (int edge = 0; edge < edges; ++edge)
+            line.charXOffsets.push_back(packed[cursor++] / scale);
+        if (!std::is_sorted(line.charXOffsets.begin(), line.charXOffsets.end()))
+            return false;
+        visual.emplace_back(std::move(line));
+    }
+    if (cursor != packed.size() || visual.front().startCharIndex != 0 || visual.back().endCharIndex != chars)
+        return false;
+    for (size_t line = 1; line < visual.size(); ++line)
+        if (visual[line - 1].endCharIndex != visual[line].startCharIndex)
+            return false;
+    _lineMetrics = std::move(visual);
+    return true;
+#else
+    return false;
+#endif
 }
 
 void InputField::rebuildCharByteOffsets()
@@ -1694,6 +2014,8 @@ void InputField::rebuildCharByteOffsets()
 
 void InputField::moveCursorVertically(int direction)
 {
+    if (!_lineMetrics.empty() && _lineMetrics.front().usesLegacySystemPolicy != usesLegacySystemLineMetricsPolicy())
+        markDirty(DIRTY_LINE_METRICS | DIRTY_CURSOR | DIRTY_SELECTION);
     if (isDirty(DIRTY_LINE_METRICS))
         rebuildLineMetrics();
 
@@ -1701,13 +2023,24 @@ void InputField::moveCursorVertically(int direction)
         return;
 
     // 1. Locate current line index via standard binary search
-    auto currentLineIt =
-        std::lower_bound(_lineMetrics.begin(), _lineMetrics.end(), _cursorCharOffset,
-                         [](const LineMetrics& lm, int cursorIdx) { return lm.endCharIndex < cursorIdx; });
-
-    int curLine = (currentLineIt == _lineMetrics.end())
+    int curLine;
+    if (_lineMetrics.front().fromVisualLayout)
+    {
+        // A shared soft-wrap boundary belongs to the following visual row,
+        // just as it does in cursorPositionFromOffset and Android Layout.
+        auto currentLineIt = std::upper_bound(_lineMetrics.begin(), _lineMetrics.end(), _cursorCharOffset,
+            [](int offset, const LineMetrics& line) { return offset < line.startCharIndex; });
+        curLine = currentLineIt == _lineMetrics.begin() ? 0 : static_cast<int>(currentLineIt - _lineMetrics.begin()) - 1;
+    }
+    else
+    {
+        auto currentLineIt =
+            std::lower_bound(_lineMetrics.begin(), _lineMetrics.end(), _cursorCharOffset,
+                             [](const LineMetrics& lm, int cursorIdx) { return lm.endCharIndex < cursorIdx; });
+        curLine = currentLineIt == _lineMetrics.end()
                       ? static_cast<int>(_lineMetrics.size()) - 1
                       : static_cast<int>(std::distance(_lineMetrics.begin(), currentLineIt));
+    }
 
     // 2. Compute and clamp the target line index
     int targetLine = std::clamp(curLine + direction, 0, static_cast<int>(_lineMetrics.size()) - 1);
@@ -1719,7 +2052,9 @@ void InputField::moveCursorVertically(int direction)
 
     // 3. Convert Content-Space preferred X to Line-Relative X based on alignment
     float lineStartX = 0.0f;
-    if (_textHAlignment == TextHAlignment::CENTER)
+    if (targetMetrics.fromVisualLayout)
+        lineStartX = targetMetrics.visualOriginX;
+    else if (_textHAlignment == TextHAlignment::CENTER)
         lineStartX = (_contentSize.width - targetMetrics.lineWidth) * 0.5f;
     else if (_textHAlignment == TextHAlignment::RIGHT)
         lineStartX = _contentSize.width - targetMetrics.lineWidth;
@@ -1727,18 +2062,19 @@ void InputField::moveCursorVertically(int direction)
     float lineRelX = std::clamp(_preferredCursorX - lineStartX, 0.0f, targetMetrics.lineWidth);
 
     // 4. Use standard upper_bound to find the closest matching character offset
-    auto offsetIt  = std::upper_bound(offsets.begin(), offsets.end(), lineRelX);
+    auto insertionEnd = visualInsertionEnd(_lineMetrics, static_cast<size_t>(targetLine));
+    auto offsetIt  = std::upper_bound(offsets.begin(), insertionEnd, lineRelX);
     int charInLine = static_cast<int>(std::distance(offsets.begin(), offsetIt)) - 1;
 
     // Nearest-neighbor correction: snap to the closer edge if it sits between two characters
-    if (charInLine >= 0 && charInLine < static_cast<int>(offsets.size()) - 1)
+    if (charInLine >= 0 && charInLine < static_cast<int>(insertionEnd - offsets.begin()) - 1)
     {
         float leftDist  = lineRelX - offsets[charInLine];
         float rightDist = offsets[charInLine + 1] - lineRelX;
         if (rightDist < leftDist)
             ++charInLine;
     }
-    charInLine = std::clamp(charInLine, 0, static_cast<int>(offsets.size()) - 1);
+    charInLine = std::clamp(charInLine, 0, static_cast<int>(insertionEnd - offsets.begin()) - 1);
 
     // 5. Apply the final cursor position updates
     int newCursorPos = targetMetrics.startCharIndex + charInLine;
@@ -1794,6 +2130,16 @@ bool InputField::canPerformEditAction(EditAction action) const
 
 void InputField::keyboardWillShow(IMEKeyboardNotificationInfo& info)
 {
+    // Legacy TextField owns its movement in the original attach/detach callbacks;
+    // v3 did not automatically move its ancestor UI root for keyboard avoidance.
+    // A stopped VM expires its owner before detaching the native delegate. Since
+    // keyboard notifications visit every delegate, ignore that detached field's
+    // stale focus as well. An expired field explicitly attached by native code,
+    // or an explicitly cleared owner, retains the modern contract.
+    const bool hadLegacyOwner = !ownsLegacyIMEEditingLifetime(std::weak_ptr<void>{});
+    if (isLegacyIMEEditing() || (hadLegacyOwner && !InputSystem::getInstance()->isAttachedDelegate(this)))
+        return;
+
     if (_readOnly || !_enabled || !_focused)
         return;
 
@@ -1838,6 +2184,9 @@ void InputField::keyboardWillShow(IMEKeyboardNotificationInfo& info)
 
 void InputField::keyboardWillHide(IMEKeyboardNotificationInfo& info)
 {
+    // Do not gate restoration on the current legacy token: a modern adjustment
+    // may predate an owner change or VM stop. Restore only recorded modern state
+    // and always clear it; a field shown in legacy mode has no adjustment to undo.
     // Find the top-level 2D UI root container and reset it
     auto uiRoot = findUIRoot(this);
     if (uiRoot && _adjustHeight > 0.0f)

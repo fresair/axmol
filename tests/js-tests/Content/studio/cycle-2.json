@@ -1,0 +1,28 @@
+{
+  "Version": "3.10.0.0",
+  "Content": {
+    "ObjectData": {
+      "ctype": "SingleNodeObjectData",
+      "Name": "cycle-root",
+      "Tag": 0,
+      "ActionTag": 0,
+      "Size": {
+        "X": 400,
+        "Y": 300
+      },
+      "Position": {
+        "X": 0,
+        "Y": 0
+      },
+      "Children": [
+        {
+          "ctype": "ProjectNodeObjectData",
+          "Name": "cycle",
+          "FileData": {
+            "Path": "cycle-2.json"
+          }
+        }
+      ]
+    }
+  }
+}

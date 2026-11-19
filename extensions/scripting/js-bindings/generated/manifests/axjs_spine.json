@@ -1,0 +1,763 @@
+{
+  "formatVersion": 1,
+  "language": "js",
+  "engine": "SpiderMonkey 33.1",
+  "module": "spine",
+  "registrationName": "ax_spine",
+  "targetNamespace": "sp",
+  "conditionalExpression": null,
+  "classes": [
+    {
+      "nativeName": "SkeletonAnimation",
+      "qualifiedName": "spine::SkeletonAnimation",
+      "jsName": "SkeletonAnimation",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Node",
+        "ax::Object",
+        "ax::BlendProtocol"
+      ],
+      "methods": [
+        {
+          "nativeName": "clearTrack",
+          "jsName": "clearTrack",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "void",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            "0"
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "clearTracks",
+          "jsName": "clearTracks",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "clone",
+          "jsName": "clone",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "spine::SkeletonAnimation *",
+          "parameterTypes": [
+            "int",
+            "int"
+          ],
+          "defaultValues": [
+            "-1",
+            "-1"
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "spine::SkeletonAnimation *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "spine::SkeletonAnimation *",
+          "parameterTypes": [
+            "spine::SkeletonAsset *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "spine::SkeletonAnimation *",
+          "parameterTypes": [
+            "std::string_view",
+            "std::string_view",
+            "float"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            "1"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getAnimationName",
+          "jsName": "getAnimationName",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "std::string_view",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            "0"
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getBlendFunc",
+          "jsName": "getBlendFunc",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "const ax::BlendFunc \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getDebugBonesEnabled",
+          "jsName": "getDebugBonesEnabled",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getDebugBoundingRectEnabled",
+          "jsName": "getDebugBoundingRectEnabled",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getDebugMeshesEnabled",
+          "jsName": "getDebugMeshesEnabled",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getDebugSlotsEnabled",
+          "jsName": "getDebugSlotsEnabled",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getTimeScale",
+          "jsName": "getTimeScale",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "hasAnimation",
+          "jsName": "hasAnimation",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "bool",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "initWithAsset",
+          "jsName": "initWithAsset",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "void",
+          "parameterTypes": [
+            "spine::SkeletonAsset *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "initWithBinaryFile",
+          "jsName": "initWithBinaryFile",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "void",
+          "parameterTypes": [
+            "std::string_view",
+            "std::string_view",
+            "float"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            "1"
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "initWithJsonFile",
+          "jsName": "initWithJsonFile",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "void",
+          "parameterTypes": [
+            "std::string_view",
+            "std::string_view",
+            "float"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            "1"
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "isAnimationComplete",
+          "jsName": "isAnimationComplete",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "bool",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            "0"
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isAnimationLooping",
+          "jsName": "isAnimationLooping",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "bool",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            "0"
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isTwoColorTint",
+          "jsName": "isTwoColorTint",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "setAsset",
+          "jsName": "setAsset",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "void",
+          "parameterTypes": [
+            "spine::SkeletonAsset *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setAttachment",
+          "jsName": "setAttachment",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "void",
+          "parameterTypes": [
+            "std::string_view",
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setBlendFunc",
+          "jsName": "setBlendFunc",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::BlendFunc \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setBonePosition",
+          "jsName": "setBonePosition",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "bool",
+          "parameterTypes": [
+            "std::string_view",
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setBoneWorldPosition",
+          "jsName": "setBoneWorldPosition",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "bool",
+          "parameterTypes": [
+            "std::string_view",
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setDebugBonesEnabled",
+          "jsName": "setDebugBonesEnabled",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setDebugBoundingRectEnabled",
+          "jsName": "setDebugBoundingRectEnabled",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setDebugMeshesEnabled",
+          "jsName": "setDebugMeshesEnabled",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setDebugSlotsEnabled",
+          "jsName": "setDebugSlotsEnabled",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setEmptyAnimations",
+          "jsName": "setEmptyAnimations",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMix",
+          "jsName": "setMix",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "void",
+          "parameterTypes": [
+            "std::string_view",
+            "std::string_view",
+            "float"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setPostUpdateWorldTransformsListener",
+          "jsName": "setPostUpdateWorldTransformsListener",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "void",
+          "parameterTypes": [
+            "const std::function\u003Cvoid (spine::SkeletonAnimation *)\u003E \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setPreUpdateWorldTransformsListener",
+          "jsName": "setPreUpdateWorldTransformsListener",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "void",
+          "parameterTypes": [
+            "const std::function\u003Cvoid (spine::SkeletonAnimation *)\u003E \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setSkin",
+          "jsName": "setSkin",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "void",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setSlotsRange",
+          "jsName": "setSlotsRange",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "void",
+          "parameterTypes": [
+            "int",
+            "int"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setTimeScale",
+          "jsName": "setTimeScale",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setTwoColorTint",
+          "jsName": "setTwoColorTint",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setUpdateOnlyIfVisible",
+          "jsName": "setUpdateOnlyIfVisible",
+          "declaringType": "spine::SkeletonAnimation",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "addEmptyAnimation",
+          "returnType": "spine::TrackEntry *",
+          "parameterTypes": [
+            "int",
+            "float",
+            "float"
+          ]
+        },
+        {
+          "nativeName": "initWithSkeleton",
+          "returnType": "void",
+          "parameterTypes": [
+            "spine::Skeleton *",
+            "bool"
+          ]
+        },
+        {
+          "nativeName": "setCombinedSkin",
+          "returnType": "bool",
+          "parameterTypes": [
+            "std::string_view",
+            "std::span\u003Cconst std::string_view\u003E"
+          ]
+        },
+        {
+          "nativeName": "setCompleteListener",
+          "returnType": "void",
+          "parameterTypes": [
+            "const std::function\u003Cvoid (spine::TrackEntry *)\u003E \u0026"
+          ]
+        },
+        {
+          "nativeName": "setDisposeListener",
+          "returnType": "void",
+          "parameterTypes": [
+            "const std::function\u003Cvoid (spine::TrackEntry *)\u003E \u0026"
+          ]
+        },
+        {
+          "nativeName": "setEmptyAnimation",
+          "returnType": "spine::TrackEntry *",
+          "parameterTypes": [
+            "int",
+            "float"
+          ]
+        },
+        {
+          "nativeName": "setEndListener",
+          "returnType": "void",
+          "parameterTypes": [
+            "const std::function\u003Cvoid (spine::TrackEntry *)\u003E \u0026"
+          ]
+        },
+        {
+          "nativeName": "setEventListener",
+          "returnType": "void",
+          "parameterTypes": [
+            "const std::function\u003Cvoid (spine::TrackEntry *, spine::Event *)\u003E \u0026"
+          ]
+        },
+        {
+          "nativeName": "setInterruptListener",
+          "returnType": "void",
+          "parameterTypes": [
+            "const std::function\u003Cvoid (spine::TrackEntry *)\u003E \u0026"
+          ]
+        },
+        {
+          "nativeName": "setStartListener",
+          "returnType": "void",
+          "parameterTypes": [
+            "const std::function\u003Cvoid (spine::TrackEntry *)\u003E \u0026"
+          ]
+        },
+        {
+          "nativeName": "setTrackCompleteListener",
+          "returnType": "void",
+          "parameterTypes": [
+            "spine::TrackEntry *",
+            "const std::function\u003Cvoid (spine::TrackEntry *)\u003E \u0026"
+          ]
+        },
+        {
+          "nativeName": "setTrackDisposeListener",
+          "returnType": "void",
+          "parameterTypes": [
+            "spine::TrackEntry *",
+            "const std::function\u003Cvoid (spine::TrackEntry *)\u003E \u0026"
+          ]
+        },
+        {
+          "nativeName": "setTrackEndListener",
+          "returnType": "void",
+          "parameterTypes": [
+            "spine::TrackEntry *",
+            "const std::function\u003Cvoid (spine::TrackEntry *)\u003E \u0026"
+          ]
+        },
+        {
+          "nativeName": "setTrackEventListener",
+          "returnType": "void",
+          "parameterTypes": [
+            "spine::TrackEntry *",
+            "const std::function\u003Cvoid (spine::TrackEntry *, spine::Event *)\u003E \u0026"
+          ]
+        },
+        {
+          "nativeName": "setTrackInterruptListener",
+          "returnType": "void",
+          "parameterTypes": [
+            "spine::TrackEntry *",
+            "const std::function\u003Cvoid (spine::TrackEntry *)\u003E \u0026"
+          ]
+        },
+        {
+          "nativeName": "setTrackStartListener",
+          "returnType": "void",
+          "parameterTypes": [
+            "spine::TrackEntry *",
+            "const std::function\u003Cvoid (spine::TrackEntry *)\u003E \u0026"
+          ]
+        }
+      ]
+    },
+    {
+      "nativeName": "SkeletonAsset",
+      "qualifiedName": "spine::SkeletonAsset",
+      "jsName": "SkeletonAsset",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "getAtlasFile",
+          "jsName": "getAtlasFile",
+          "declaringType": "spine::SkeletonAsset",
+          "returnType": "std::string_view",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getDataFile",
+          "jsName": "getDataFile",
+          "declaringType": "spine::SkeletonAsset",
+          "returnType": "std::string_view",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getScale",
+          "jsName": "getScale",
+          "declaringType": "spine::SkeletonAsset",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "obtain",
+          "jsName": "obtain",
+          "declaringType": "spine::SkeletonAsset",
+          "returnType": "spine::SkeletonAsset *",
+          "parameterTypes": [
+            "std::string_view",
+            "std::string_view",
+            "float"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "getSkeletonData",
+          "returnType": "spine::SkeletonData *",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "nativeName": "SkeletonRenderer",
+      "qualifiedName": "spine::SkeletonRenderer",
+      "jsName": "SkeletonRenderer",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "spine::SpineObject"
+      ],
+      "methods": [],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "render",
+          "returnType": "spine::RenderCommand *",
+          "parameterTypes": [
+            "spine::Skeleton \u0026"
+          ]
+        }
+      ]
+    }
+  ],
+  "enums": []
+}

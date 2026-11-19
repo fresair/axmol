@@ -3,6 +3,7 @@ Copyright (c) 2010      cocos2d-x.org
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -127,6 +128,27 @@ public:
      * @brief Returns the delegate attached to the IME, or nullptr if no delegate is attached.
      */
     bool hasAttachedDelegate() const;
+
+    /** Snapshot the attached native editor on the engine owner thread.
+     * @script{ignore}
+     */
+    bool getIMETextState(IMETextState& state) const;
+
+    /** Apply one OS edit to the same attached delegate generation.
+     * Operations: 0 composition, 1 commit, 2 deletion, 3 selection, 4 finish.
+     * Legacy editors return their normalized native state for the OS Editable;
+     * modern editors retain separate preedit and committed-text callbacks.
+     * @script{ignore}
+     */
+    bool dispatchIMEEdit(int64_t generation, int operation, std::string_view document,
+                         int selectionStart, int selectionEnd, std::string_view payload,
+                         unsigned int deleteBefore, int preeditCaret, IMETextState& actual);
+
+    /** @script{ignore} */
+    bool isAttachedDelegate(const InputDelegate* delegate, int64_t generation = 0) const
+    {
+        return _delegateWithIme == delegate && (!generation || _imeGeneration == generation);
+    }
 
     /**
      * @brief Returns the delegate attached to the IME, or nullptr if no delegate is attached.
@@ -280,6 +302,7 @@ protected:
 
     DelegateList _delegateList{};
     InputDelegate* _delegateWithIme{nullptr};
+    int64_t _imeGeneration{0};
 
     static InputSystem* _instance;
 };

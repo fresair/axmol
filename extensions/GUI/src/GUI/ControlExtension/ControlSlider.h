@@ -6,6 +6,7 @@
  * http://yannickloriot.com
  *
  * Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+ * Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -117,11 +118,22 @@ public:
     virtual void setMaximumValue(float val);
     void setEnabled(bool enabled) override;
     bool isTouchInside(PointerEvent* event) override;
+    /** Enables the v3 native Slider hit predicate for an explicit compatibility client.
+     * The ordinary C++/Lua default remains the Node content-rectangle gate.
+     * @script {ignore}
+     */
+    void setLegacyTouchHitTestEnabled(bool enabled) { _legacyTouchHitTestEnabled = enabled; }
+    /** @script {ignore} */
+    bool isLegacyTouchHitTestEnabled() const { return _legacyTouchHitTestEnabled; }
+
     Vec2 locationFromTouch(PointerEvent* event);
     virtual void setValue(float val);
     virtual void setMinimumValue(float val);
 
 protected:
+    /** @script {ignore} */
+    bool onPointerHitTest(PointerEvent* event, Vec3* outHitPoint) override;
+
     void sliderBegan(Vec2 location);
     void sliderMoved(Vec2 location);
     void sliderEnded(Vec2 location);
@@ -153,6 +165,9 @@ protected:
     AX_SYNTHESIZE_RETAIN(Sprite*, _selectedThumbSprite, SelectedThumbSprite);
     AX_SYNTHESIZE_RETAIN(Sprite*, _progressSprite, ProgressSprite);
     AX_SYNTHESIZE_RETAIN(Sprite*, _backgroundSprite, BackgroundSprite);
+
+private:
+    bool _legacyTouchHitTestEnabled{false};
 };
 
 // end of GUI group

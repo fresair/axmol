@@ -1,5 +1,6 @@
 /****************************************************************************
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -619,10 +620,14 @@ void GraphicsContextImpl::beginRenderPass(RenderTarget* renderTarget, const Rend
 
     // Delegate to RenderTargetImplVK: it will select/create VkRenderPass and VkFramebuffer
     rtImpl->beginRenderPass(_currentCmdBuffer, renderPassDesc, _renderTargetWidth, _renderTargetHeight, _imageIndex);
+    _renderPassActive = true;
 }
 
 void GraphicsContextImpl::endRenderPass()
 {
+    if (!_renderPassActive)
+        return;
+    _renderPassActive = false;
     auto rtImpl = static_cast<RenderTargetImpl*>(_currentRT);
     rtImpl->endRenderPass(_currentCmdBuffer);
     if (rtImpl->isDefaultRenderTarget())
@@ -1605,6 +1610,31 @@ void GraphicsContextImpl::readPixels(RenderTarget* rt, std::function<void(const 
     });
 }
 
+bool GraphicsContextImpl::readPixelsSync(RenderTarget* rt, PixelBufferDesc& result)
+{
+    // The acquired swapchain image belongs to this frame until presentation.
+    // Capturing an earlier/presented image would violate Vulkan ownership.
+    if (!rt || !_inFrame || _currentCmdBuffer == VK_NULL_HANDLE)
+        return false;
+    if (_renderPassActive)
+        endRenderPass();
+    submitCurrentFrameCommands(true);
+    bool complete = false;
+    std::function<void(const PixelBufferDesc&)> capture = [&](const PixelBufferDesc& pixels) {
+        if (pixels)
+        {
+            result._data = pixels._data;
+            result._width = pixels._width;
+            result._height = pixels._height;
+            complete = true;
+        }
+    };
+    // This submits an isolated copy and waits for its staging buffer to become
+    // readable. Do not route this through the asynchronous post-frame queue.
+    doReadPixels(rt, capture);
+    return complete;
+}
+
 void GraphicsContextImpl::doReadPixels(RenderTarget* rt, std::function<void(const PixelBufferDesc&)>& callback)
 {
     PixelBufferDesc pbd{};
@@ -1639,7 +1669,7 @@ void GraphicsContextImpl::doReadPixels(RenderTarget* rt, std::function<void(cons
 
     // Create HOST_VISIBLE | COHERENT staging buffer using VMA
     VkBuffer stagingBuf = VK_NULL_HANDLE;
-    VmaAllocation stagingAlloc;
+    VmaAllocation stagingAlloc = VK_NULL_HANDLE;
     VmaAllocationCreateInfo allocInfo = {};
     allocInfo.usage                   = VMA_MEMORY_USAGE_CPU_ONLY;
 
@@ -1649,7 +1679,12 @@ void GraphicsContextImpl::doReadPixels(RenderTarget* rt, std::function<void(cons
     bufInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
     auto res = vmaCreateBuffer(_driver->getVmaAllocator(), &bufInfo, &allocInfo, &stagingBuf, &stagingAlloc, nullptr);
-    VK_REQUIRE(res, "vmaCreateBuffer failed");
+    if (res != VK_SUCCESS)
+    {
+        AXLOGE("Pixel readback staging allocation failed: {}", static_cast<int>(res));
+        callback(pbd);
+        return;
+    }
 
     auto submission = _driver->startIsolateSubmission();
 
@@ -1685,7 +1720,27 @@ void GraphicsContextImpl::doReadPixels(RenderTarget* rt, std::function<void(cons
 
     // Map and copy out
     void* mapped = nullptr;
-    AXASSERT(vmaMapMemory(_driver->getVmaAllocator(), stagingAlloc, &mapped) == VK_SUCCESS, "vmaMapMemory failed");
+    const auto mapResult = vmaMapMemory(_driver->getVmaAllocator(), stagingAlloc, &mapped);
+    if (mapResult != VK_SUCCESS || !mapped)
+    {
+        AXLOGE("Pixel readback staging map failed: {}", static_cast<int>(mapResult));
+        if (mapResult == VK_SUCCESS)
+            vmaUnmapMemory(_driver->getVmaAllocator(), stagingAlloc);
+        vmaDestroyBuffer(_driver->getVmaAllocator(), stagingBuf, stagingAlloc);
+        callback(pbd);
+        return;
+    }
+    // CPU_ONLY allocations need not be host-coherent on every Vulkan device.
+    // The isolated submission has completed; make its writes visible to the CPU.
+    const auto invalidateResult = vmaInvalidateAllocation(_driver->getVmaAllocator(), stagingAlloc, 0, bufferSize);
+    if (invalidateResult != VK_SUCCESS)
+    {
+        AXLOGE("Pixel readback staging invalidate failed: {}", static_cast<int>(invalidateResult));
+        vmaUnmapMemory(_driver->getVmaAllocator(), stagingAlloc);
+        vmaDestroyBuffer(_driver->getVmaAllocator(), stagingBuf, stagingAlloc);
+        callback(pbd);
+        return;
+    }
 
     pbd._width  = width;
     pbd._height = height;

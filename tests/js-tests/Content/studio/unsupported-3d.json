@@ -1,0 +1,10 @@
+{
+  "Version": "3.10.0.0",
+  "Content": {
+    "ObjectData": {
+      "ctype": "Sprite3DObjectData",
+      "Name": "unsupported-3d",
+      "Children": []
+    }
+  }
+}

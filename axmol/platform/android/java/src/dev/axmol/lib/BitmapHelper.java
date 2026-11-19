@@ -2,6 +2,7 @@
 Copyright (c) 2010-2012 cocos2d-x.org
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -144,6 +145,45 @@ public final class BitmapHelper {
           string = new String(bytes);
         }
 
+        TextPaint paint = BitmapHelper.newPaint(fontName, fontSize);
+        if (stroke) {
+            paint.setStyle(TextPaint.Style.STROKE);
+            paint.setStrokeWidth(strokeSize);
+        }
+        TextBitmapLayout geometry=createTextBitmapLayout(string,paint,fontSize,alignment,width,height,enableWrap,overflow);
+        if(geometry==null)return false;
+        Layout layout=geometry.layout;
+        int bitmapWidth=geometry.bitmapWidth, bitmapHeight=geometry.bitmapHeight;
+        int offsetX=geometry.offsetX, offsetY=geometry.offsetY;
+
+
+        Bitmap bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        canvas.translate(offsetX, offsetY);
+        if ( stroke )
+        {
+            paint.setARGB(strokeA, strokeR, strokeG, strokeB);
+            layout.draw(canvas);
+        }
+        paint.setStyle(TextPaint.Style.FILL);
+        paint.setARGB(fontTintA, fontTintR, fontTintG, fontTintB);
+        layout.draw(canvas);
+
+        BitmapHelper.initNativeObject(bitmap);
+        return true;
+    }
+
+
+    private static final class TextBitmapLayout {
+        final Layout layout;
+        final int bitmapWidth, bitmapHeight, offsetX, offsetY;
+        TextBitmapLayout(Layout value, int width, int height, int x, int y) {
+            layout=value; bitmapWidth=width; bitmapHeight=height; offsetX=x; offsetY=y;
+        }
+    }
+
+    private static TextBitmapLayout createTextBitmapLayout(String string, TextPaint paint,
+            int fontSize, int alignment, int width, int height, boolean enableWrap, int overflow) {
         Layout.Alignment hAlignment = Layout.Alignment.ALIGN_NORMAL;
         int horizontalAlignment = alignment & 0x0F;
         switch (horizontalAlignment) {
@@ -157,13 +197,6 @@ public final class BitmapHelper {
                 break;
             default:
                 break;
-        }
-
-        TextPaint paint = BitmapHelper.newPaint(fontName, fontSize);
-
-        if (stroke) {
-            paint.setStyle(TextPaint.Style.STROKE);
-            paint.setStrokeWidth(strokeSize);
         }
 
         int maxWidth = width;
@@ -203,7 +236,7 @@ public final class BitmapHelper {
         }
 
         if (bitmapWidth == 0 || bitmapHeight == 0) {
-            return false;
+            return null;
         }
 
         int offsetX = 0;
@@ -226,22 +259,62 @@ public final class BitmapHelper {
                 break;
         }
 
+        return new TextBitmapLayout(layout, bitmapWidth, bitmapHeight, offsetX, offsetY);
+    }
 
-
-        Bitmap bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        canvas.translate(offsetX, offsetY);
-        if ( stroke )
-        {
-            paint.setARGB(strokeA, strokeR, strokeG, strokeB);
-            layout.draw(canvas);
+    // Internal JNI geometry query. It uses the identical actual StaticLayout
+    // as bitmap rendering, not per-character synthetic measurements.
+    // Packed floats: schema, codepoints, bitmap width/height, line count,
+    // then each line's start/end codepoint, left/right, top/bottom, offset count
+    // followed by one x offset for every codepoint boundary in that line.
+    public static float[] getInputFieldTextLayout(byte[] bytes, String fontName, int fontSize,
+            int alignment, int width, int height, boolean enableWrap, int overflow) {
+        if(bytes==null || bytes.length==0)return null;
+        String string=new String(bytes);
+        TextBitmapLayout bitmap=createTextBitmapLayout(string,newPaint(fontName,fontSize),
+                fontSize,alignment,width,height,enableWrap,overflow);
+        if(bitmap==null)return null;
+        Layout layout=bitmap.layout;
+        int lines=layout.getLineCount(), chars=string.codePointCount(0,string.length());
+        int count=5;
+        for(int line=0;line<lines;line++) {
+            // Existing cursor search assumes monotonic left-to-right x offsets.
+            // Do not pretend the fallback path repairs bidirectional layout.
+            if(layout.getParagraphDirection(line)!=Layout.DIR_LEFT_TO_RIGHT)return null;
+            // A left-to-right paragraph may still contain RTL runs whose
+            // primary insertion positions happen to be nondecreasing. The
+            // native single-x-per-codepoint model cannot represent their
+            // secondary positions or discontiguous selection geometry.
+            for(int offset=layout.getLineStart(line);offset<layout.getLineEnd(line);offset++)
+                if(layout.isRtlCharAt(offset))return null;
+            count+=7+string.codePointCount(layout.getLineStart(line),layout.getLineEnd(line))+1;
         }
-        paint.setStyle(TextPaint.Style.FILL);
-        paint.setARGB(fontTintA, fontTintR, fontTintG, fontTintB);
-        layout.draw(canvas);
-
-        BitmapHelper.initNativeObject(bitmap);
-        return true;
+        float[] result=new float[count];
+        int out=0;
+        result[out++]=1;result[out++]=chars;result[out++]=bitmap.bitmapWidth;
+        result[out++]=bitmap.bitmapHeight;result[out++]=lines;
+        for(int line=0;line<lines;line++) {
+            int begin=layout.getLineStart(line),end=layout.getLineEnd(line);
+            int visibleEnd=layout.getLineVisibleEnd(line), n=string.codePointCount(begin,end);
+            float left=layout.getLineLeft(line)+bitmap.offsetX;
+            float right=layout.getLineRight(line)+bitmap.offsetX;
+            result[out++]=string.codePointCount(0,begin);
+            result[out++]=string.codePointCount(0,end);
+            result[out++]=left;result[out++]=right;
+            result[out++]=layout.getLineTop(line)+bitmap.offsetY;
+            result[out++]=layout.getLineBottom(line)+bitmap.offsetY;
+            result[out++]=n+1;
+            int offset=begin;
+            for(int ch=0;ch<=n;ch++) {
+                // At a soft line break getPrimaryHorizontal(end) belongs to
+                // the next line. Clamp trailing whitespace to this line's real
+                // drawn edge instead of borrowing the next line's x position.
+                float x=offset>=visibleEnd ? right : layout.getPrimaryHorizontal(offset)+bitmap.offsetX;
+                result[out++]=x-left;
+                if(ch<n)offset+=Character.charCount(string.codePointAt(offset));
+            }
+        }
+        return result;
     }
 
     private static TextPaint newPaint(final String fontName, final int fontSize) {
@@ -249,6 +322,17 @@ public final class BitmapHelper {
         paint.setTextSize(fontSize);
         paint.setAntiAlias(true);
 
+        if (fontName != null && fontName.endsWith(".ttf")) {
+            try {
+                paint.setTypeface(fontName.startsWith("/")
+                        ? Typeface.createFromFile(fontName)
+                        : Typeface.createFromAsset(AxmolEngine.getAssetManager(), fontName));
+                return paint;
+            } catch (RuntimeException exception) {
+                // Missing or invalid files retain the system-family fallback.
+                // No extra cache: later calls can retry a file that appears.
+            }
+        }
         paint.setTypeface(Typeface.create(fontName, Typeface.NORMAL));
 
         return paint;

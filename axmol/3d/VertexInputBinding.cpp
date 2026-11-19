@@ -3,6 +3,8 @@
  Copyright (c) 2015-2017 Chukong Technologies
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
+ Modified for axmol-js by Ye Liangqi in 2026.
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -23,6 +25,7 @@
 
 #include "axmol/rhi/Program.h"
 #include "axmol/renderer/Pass.h"
+#include "axmol/renderer/VertexLayoutManager.h"
 #include "axmol/base/Environment.h"
 #include "axmol/3d/MeshVertexIndexData.h"
 #include "axmol/3d/MeshVertexAttribute.h"
@@ -68,6 +71,7 @@ VertexInputBinding* VertexInputBinding::fetch(MeshIndexData* meshIndexData,
     {
         MeshIndexData* meshData;
         Program* shaderProg;
+        VertexLayout* explicitLayout;
         bool instancing;
     };
 
@@ -75,6 +79,7 @@ VertexInputBinding* VertexInputBinding::fetch(MeshIndexData* meshIndexData,
     memset(&hashMe, 0, sizeof(hashMe));
     hashMe.meshData   = meshIndexData;
     hashMe.shaderProg = pass->getProgramState()->getProgram();
+    hashMe.explicitLayout = instancing ? nullptr : pass->getProgramState()->getVertexLayoutOverride();
     hashMe.instancing = instancing;
 
     auto hash = XXH32(&hashMe, sizeof(hashMe), 0);
@@ -103,6 +108,25 @@ bool VertexInputBinding::init(MeshIndexData* meshIndexData, Pass* pass, MeshComm
 
     _programState = pass->getProgramState();
     _programState->retain();
+
+    if (!instancing)
+    {
+        if (auto* layout = _programState->getVertexLayoutOverride())
+        {
+            Object::assign(_vertexLayout, layout);
+            auto* data = meshIndexData->getMeshVertexData();
+            for (ssize_t index = 0; index < data->getMeshVertexAttribCount(); ++index)
+            {
+                const auto attribute = data->getMeshVertexAttrib(index).vertexAttrib;
+                const auto& semantic = toVertexSemantic(attribute);
+                if (std::any_of(layout->getBindings().begin(), layout->getBindings().end(),
+                    [&](const rhi::InputBindingDesc& binding) { return semantic.getName() == binding.semantic; }))
+                    _vertexAttribsFlags |= 1u << static_cast<unsigned>(attribute);
+            }
+            pass->setVertexLayout(_vertexLayout);
+            return true;
+        }
+    }
 
     auto meshVertexData = meshIndexData->getMeshVertexData();
     auto attributeCount = meshVertexData->getMeshVertexAttribCount();

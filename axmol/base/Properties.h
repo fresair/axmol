@@ -3,6 +3,8 @@
  Copyright (c) 2015-2017 Chukong Technologies
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
+ Modified for axmol-js by Ye Liangqi in 2026.
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -187,6 +189,15 @@ public:
      * @script{create}
      */
     static Properties* createNonRefCounted(std::string_view url);
+
+    /**
+     * Creates an independent copy of this namespace and its descendants.
+     * Captures inherited variables so the copy remains usable after the source
+     * tree is destroyed. Property expressions and local variables are preserved.
+     * The caller owns the returned tree and must delete it.
+     * @script{ignore}
+     */
+    Properties* clone() const;
 
     /**
      * Destructor.
@@ -545,9 +556,6 @@ private:
 
     // Called by resolveInheritance().
     void mergeWith(Properties* overrides);
-
-    // Clones the Properties object.
-    Properties* clone();
 
     void setDirectoryPath(const std::string* path);
     void setDirectoryPath(std::string_view path);

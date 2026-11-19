@@ -1,0 +1,33 @@
+{
+  "module": "ax_cocosbuilder",
+  "target_namespace": "cc",
+  "cpp_namespace": "ax::ext",
+  "cpp_chunks": 2,
+  "macro_judgement": "#if defined(AX_ENABLE_EXT_COCOSBUILDER)",
+  "headers": [
+    "%(axdir)s/extensions/cocosbuilder/CocosBuilder.h"
+  ],
+  "clang_flags": [
+    "-DAX_ENABLE_EXT_COCOSBUILDER=1"
+  ],
+  "classes": [
+    "CCBReader",
+    "CCBAnimationManager",
+    "CCBSequence",
+    "CCBSequenceProperty",
+    "CCBKeyframe",
+    "CCBFile",
+    "NodeLoaderLibrary",
+    "NodeLoader",
+    "CCBSelectorResolver",
+    "CCBMemberVariableAssigner",
+    "NodeLoaderListener"
+  ],
+  "abstract_classes": [],
+  "classes_have_no_parents": [],
+  "base_classes_to_skip": [],
+  "fields": [],
+  "skip": [],
+  "rename_functions": [],
+  "rename_classes": []
+}

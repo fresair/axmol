@@ -21,6 +21,47 @@ $ axmol run -p android
 
 ```
 
+## Native JavaScript projects
+
+After running this checkout's `setup.ps1` and restarting the terminal, use the
+same project workflow as C++ and Lua. On an Apple Silicon Mac:
+
+```sh
+axmol new -p dev.axmol.hellojs -d ./projects -l js HelloJs
+cd ./projects/HelloJs
+axmol build -p osx -a arm64
+```
+
+This creates a standalone game with native SpiderMonkey startup, `Content/main.js`,
+`Content/project.json`, the `cc`/`ccui`/`ccs`/`sp`/`jsb` compatibility scripts,
+platform files and a VS Code debugger configuration. It links the production
+`axjs` bindings and enables `AX_ENABLE_EXT_JS`; it has no js-tests dependency.
+The shared engine setup template selects the engine for C++, Lua and JS alike.
+
+Project creation does not build SpiderMonkey. During the first native configure,
+`3rdparty/spidermonkey` imports an existing validated package or automatically
+prepares a missing default package from pinned source. A cold build needs
+Python 3.9+, curl, patch, make and the platform compiler; it builds an isolated
+Python 2.7.18 if the legacy build toolchain needs it. Existing packages need
+neither a source download nor Python 2. The default cache is the selected engine's
+`cache/js-runtime`; `AX_JS_SPIDERMONKEY_CACHE_DIR` selects another cache and
+`AX_JS_SPIDERMONKEY_OFFLINE=ON` requires cached prerequisites. An explicit
+`AX_JS_SPIDERMONKEY_ROOT` selects a complete package and is strictly validated,
+never automatically built or overwritten. Pass CMake options through `-xc`.
+See the [JavaScript template guide](../../templates/js/README.md) for examples.
+
+Supported targets are Android `arm64-v8a`, macOS ARM64, and iOS ARM64 devices
+and simulators; ARM64 uses the interpreter and all iOS builds disable JIT.
+Android JS builds validate exactly NDK r27d (`27.3.13750724`), API 23 or newer
+and `c++_shared`; use the ordinary `axmol build -p android -a arm64` workflow
+with that NDK installed or selected by the standard SDK tooling.
+
+For multiple engine checkouts, invoke the intended checkout's
+`tools/cmdline/axmol` directly. Shared projects accept explicit CMake
+`-D_AX_ROOT=/absolute/path/to/axmol` through `-xc`; this takes precedence over
+`AX_ROOT`. `-isolated` embeds the engine, including the third-party runtime
+recipe and debugger's production files, excluding test results and caches.
+
 ## Machine-readable build results
 
 After a successful CMake or Android Gradle build, the CLI prints one line with the

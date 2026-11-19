@@ -1,0 +1,99 @@
+# Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
+# SPDX-License-Identifier: MIT
+name: JavaScript bindings
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'axmol/**'
+      - 'extensions/scripting/**'
+      - 'extensions/cocosbuilder/**'
+      - '3rdparty/spidermonkey/**'
+      - '3rdparty/chipmunk/**'
+      - '3rdparty/tiff/**'
+      - 'cmake/**'
+      - 'templates/js/**'
+      - 'templates/common/cmake/**'
+      - '1k/1kiss.ps1'
+      - '1k/android-ndk.ps1'
+      - 'setup.ps1'
+      - 'tests/js-tests/**'
+      - 'tools/js-tests/**'
+      - 'tests/js-runtime-tests/**'
+      - 'tools/js-runtime/**'
+      - 'tools/js-debugger/**'
+      - 'tools/bindings-generator/**'
+      - 'tools/js-bindings/**'
+      - 'tools/cmdline/**'
+      - 'CMakeLists.txt'
+      - '.github/workflows/js-bindings.yml'
+
+jobs:
+  native:
+    runs-on: macos-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        lua: ['ON', 'OFF']
+        js: ['ON', 'OFF']
+    env:
+      AX_ROOT: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set up engine build tools locally
+        shell: pwsh
+        run: |
+          $arch = if ((uname -m) -eq 'arm64') { 'arm64' } else { 'x64' }
+          ./setup.ps1 -hub -p osx -a $arch
+      - name: Configure scripting combination
+        run: >-
+          cmake -S . -B build-js-ci
+          -DAX_BUILD_TESTS=OFF
+          -DAX_BUILD_JS_RUNTIME_TESTS=${{ matrix.js }}
+          -DAX_ENABLE_EXT_LUA=${{ matrix.lua }}
+          -DAX_ENABLE_EXT_JS=${{ matrix.js }}
+          -DAX_ENABLE_EXT_COCOSBUILDER=${{ matrix.js }}
+          -DAX_WITH_TIFF=${{ matrix.js }}
+          -DAX_UPDATE_BUILD_VERSION=OFF
+          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0
+      - name: Build SDK and enabled scripting libraries
+        run: cmake --build build-js-ci --target axmol-sdk -j 4
+      - name: Build and run runtime regressions
+        if: matrix.js == 'ON'
+        run: |
+          cmake --build build-js-ci --target js-runtime-tests js-bindings-tests js-network-tests js-assets-tests js-file-tests js-socketio-tests js-properties-copy-tests js-tiff-tests js-legacy-bytecode-tests js-legacy-source-tests -j 4
+          ctest --test-dir build-js-ci -R 'js-(runtime|bindings|network|assets|file|socketio|properties-copy|tiff|legacy-bytecode|legacy-source)-tests' --output-on-failure --no-tests=error
+      - name: Create JavaScript project and link SDK
+        if: matrix.js == 'ON'
+        shell: pwsh
+        run: |
+          ./tools/cmdline/axmol.ps1 new HelloJs -l js -d build-js-projects
+          cmake -S build-js-projects/HelloJs -B build-js-projects/HelloJs/build -DAX_PREBUILT_DIR=build-js-ci -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          cmake --build build-js-projects/HelloJs/build --target HelloJs -j 4
+          exit $LASTEXITCODE
+      - name: C++ and Lua regressions using the shared SDK
+        if: matrix.lua == 'ON' && matrix.js == 'ON'
+        run: |
+          cmake -S tests/js-runtime-tests/cpp-lua-regression -B build-cpp-lua-ci -DAX_REGRESSION_SDK="$PWD/build-js-ci" -DCMAKE_BUILD_TYPE=Release -DAX_LUA_RUNTIME_OVERLAY=OFF
+          cmake --build build-cpp-lua-ci -j 4
+          ctest --test-dir build-cpp-lua-ci --output-on-failure --no-tests=error
+      - name: Build and run headless binding application
+        if: matrix.js == 'ON'
+        run: |
+          cmake -S tests/js-tests -B build-js-tests-ci -DAX_PREBUILT_DIR=build-js-ci -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0
+          cmake --build build-js-tests-ci --target js-tests -j 4
+          ctest --test-dir build-js-tests-ci -R js-binding-smoke --output-on-failure --no-tests=error
+      - name: Audit complete original JavaScript project definitions
+        if: matrix.js == 'ON'
+        run: |
+          cmake -S tools/js-tests/full-suite-load -B tmp/js-full-suite-load-ci -DAX_PREBUILT_DIR=build-js-ci -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0
+          cmake --build tmp/js-full-suite-load-ci --target js-full-suite-load-tests -j 4
+          ctest --test-dir tmp/js-full-suite-load-ci --output-on-failure --no-tests=error
+      - name: Debug adapter regressions
+        if: matrix.js == 'ON'
+        working-directory: tools/js-debugger
+        run: npm test

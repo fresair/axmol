@@ -5,12 +5,14 @@ Copyright (c) 2011      Zynga Inc.
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
 SPDX-License-Identifier: MIT
 ****************************************************************************/
 
+#include <cmath>
 #include <stdarg.h>
 #include "axmol/2d/Layer.h"
 #include "axmol/base/ScriptSupport.h"
@@ -195,47 +197,74 @@ bool LayerGradient::initWithColor(const Color32& start, const Color32& end, cons
 
 void LayerGradient::updateColor()
 {
-    float h = _alongVector.getLength();
-    if (h == 0)
-        return;
-
-    float c = sqrtf(2.0f);
-    Vec2 u(_alongVector.x / h, _alongVector.y / h);
-
-    // Compressed Interpolation mode
     if (_compressedInterpolation)
     {
-        float h2 = 1 / (fabsf(u.x) + fabsf(u.y));
-        u        = u * (h2 * (float)c);
+        // L1 normalization is equivalent to the compressed formula, without losing
+        // endpoint weights while normalizing the vector in float first.
+        const double x = _alongVector.x;
+        const double y = _alongVector.y;
+        const double length = std::abs(x) + std::abs(y);
+        if (length == 0)
+            return;
+
+        const auto interpolate = [](uint8_t start, uint8_t end, double t) -> double {
+            if (t == 0)
+                return end;
+            if (t == 1)
+                return start;
+            return end + (static_cast<double>(start) - end) * t;
+        };
+        const auto setCorner = [&](Color32& color, double sx, double sy) {
+            const double t = 0.5 * (1.0 + (sx * x + sy * y) / length);
+            // Interpolate bytes directly so exact RGB endpoints stay exact. Alpha
+            // is modulated by displayed opacity before its single byte conversion.
+            color.r = static_cast<uint8_t>(interpolate(_displayedColor.r, _endColor.r, t));
+            color.g = static_cast<uint8_t>(interpolate(_displayedColor.g, _endColor.g, t));
+            color.b = static_cast<uint8_t>(interpolate(_displayedColor.b, _endColor.b, t));
+            color.a = static_cast<uint8_t>(interpolate(_startColor.a, _endColor.a, t) * _displayedColor.a / 255.0);
+        };
+        setCorner(_quad.bl.color, 1, 1);
+        setCorner(_quad.br.color, -1, 1);
+        setCorner(_quad.tl.color, 1, -1);
+        setCorner(_quad.tr.color, -1, -1);
     }
+    else
+    {
+        float h = _alongVector.getLength();
+        if (h == 0)
+            return;
 
-    float opacityf = (float)_displayedColor.a / 255.0f;
+        float c = sqrtf(2.0f);
+        Vec2 u(_alongVector.x / h, _alongVector.y / h);
 
-    Color S(_displayedColor.r / 255.f, _displayedColor.g / 255.f, _displayedColor.b / 255.f,
-            _startColor.a / 255.0f * opacityf);
+        float opacityf = (float)_displayedColor.a / 255.0f;
 
-    Color E(_endColor.r / 255.f, _endColor.g / 255.f, _endColor.b / 255.f, _endColor.a / 255.0f * opacityf);
+        Color S(_displayedColor.r / 255.f, _displayedColor.g / 255.f, _displayedColor.b / 255.f,
+                _startColor.a / 255.0f * opacityf);
 
-    // (-1, -1)
-    _quad.bl.color.r = (E.r + (S.r - E.r) * ((c + u.x + u.y) / (2.0f * c))) * 255;
-    _quad.bl.color.g = (E.g + (S.g - E.g) * ((c + u.x + u.y) / (2.0f * c))) * 255;
-    _quad.bl.color.b = (E.b + (S.b - E.b) * ((c + u.x + u.y) / (2.0f * c))) * 255;
-    _quad.bl.color.a = (E.a + (S.a - E.a) * ((c + u.x + u.y) / (2.0f * c))) * 255;
-    // (1, -1)
-    _quad.br.color.r = (E.r + (S.r - E.r) * ((c - u.x + u.y) / (2.0f * c))) * 255;
-    _quad.br.color.g = (E.g + (S.g - E.g) * ((c - u.x + u.y) / (2.0f * c))) * 255;
-    _quad.br.color.b = (E.b + (S.b - E.b) * ((c - u.x + u.y) / (2.0f * c))) * 255;
-    _quad.br.color.a = (E.a + (S.a - E.a) * ((c - u.x + u.y) / (2.0f * c))) * 255;
-    // (-1, 1)
-    _quad.tl.color.r = (E.r + (S.r - E.r) * ((c + u.x - u.y) / (2.0f * c))) * 255;
-    _quad.tl.color.g = (E.g + (S.g - E.g) * ((c + u.x - u.y) / (2.0f * c))) * 255;
-    _quad.tl.color.b = (E.b + (S.b - E.b) * ((c + u.x - u.y) / (2.0f * c))) * 255;
-    _quad.tl.color.a = (E.a + (S.a - E.a) * ((c + u.x - u.y) / (2.0f * c))) * 255;
-    // (1, 1)
-    _quad.tr.color.r = (E.r + (S.r - E.r) * ((c - u.x - u.y) / (2.0f * c))) * 255;
-    _quad.tr.color.g = (E.g + (S.g - E.g) * ((c - u.x - u.y) / (2.0f * c))) * 255;
-    _quad.tr.color.b = (E.b + (S.b - E.b) * ((c - u.x - u.y) / (2.0f * c))) * 255;
-    _quad.tr.color.a = (E.a + (S.a - E.a) * ((c - u.x - u.y) / (2.0f * c))) * 255;
+        Color E(_endColor.r / 255.f, _endColor.g / 255.f, _endColor.b / 255.f, _endColor.a / 255.0f * opacityf);
+
+        // (-1, -1)
+        _quad.bl.color.r = (E.r + (S.r - E.r) * ((c + u.x + u.y) / (2.0f * c))) * 255;
+        _quad.bl.color.g = (E.g + (S.g - E.g) * ((c + u.x + u.y) / (2.0f * c))) * 255;
+        _quad.bl.color.b = (E.b + (S.b - E.b) * ((c + u.x + u.y) / (2.0f * c))) * 255;
+        _quad.bl.color.a = (E.a + (S.a - E.a) * ((c + u.x + u.y) / (2.0f * c))) * 255;
+        // (1, -1)
+        _quad.br.color.r = (E.r + (S.r - E.r) * ((c - u.x + u.y) / (2.0f * c))) * 255;
+        _quad.br.color.g = (E.g + (S.g - E.g) * ((c - u.x + u.y) / (2.0f * c))) * 255;
+        _quad.br.color.b = (E.b + (S.b - E.b) * ((c - u.x + u.y) / (2.0f * c))) * 255;
+        _quad.br.color.a = (E.a + (S.a - E.a) * ((c - u.x + u.y) / (2.0f * c))) * 255;
+        // (-1, 1)
+        _quad.tl.color.r = (E.r + (S.r - E.r) * ((c + u.x - u.y) / (2.0f * c))) * 255;
+        _quad.tl.color.g = (E.g + (S.g - E.g) * ((c + u.x - u.y) / (2.0f * c))) * 255;
+        _quad.tl.color.b = (E.b + (S.b - E.b) * ((c + u.x - u.y) / (2.0f * c))) * 255;
+        _quad.tl.color.a = (E.a + (S.a - E.a) * ((c + u.x - u.y) / (2.0f * c))) * 255;
+        // (1, 1)
+        _quad.tr.color.r = (E.r + (S.r - E.r) * ((c - u.x - u.y) / (2.0f * c))) * 255;
+        _quad.tr.color.g = (E.g + (S.g - E.g) * ((c - u.x - u.y) / (2.0f * c))) * 255;
+        _quad.tr.color.b = (E.b + (S.b - E.b) * ((c - u.x - u.y) / (2.0f * c))) * 255;
+        _quad.tr.color.a = (E.a + (S.a - E.a) * ((c - u.x - u.y) / (2.0f * c))) * 255;
+    }
 
     // renders using batch node
     if (_renderMode == RenderMode::QUAD_BATCHNODE)

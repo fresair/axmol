@@ -1,6 +1,7 @@
 /****************************************************************************
  Copyright (c) 2018-2019 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -16,6 +17,11 @@ namespace ax::rhi::mtl
 
 ShaderModuleImpl::ShaderModuleImpl(id<MTLDevice> mtlDevice, ShaderStage stage, Data& chunk) : ShaderModule(stage, chunk)
 {
+    if (_codeSpan.empty())
+    {
+        AXLOGE("Cannot compile Metal shader: archive contains no usable shader code");
+        return;
+    }
     NSString* shader = [[NSString alloc] initWithBytes:_codeSpan.data()
                                                 length:_codeSpan.size()
                                               encoding:NSUTF8StringEncoding];

@@ -1,7 +1,9 @@
 # The axmol CMake options
 
 ## The options for axmol (please sort them alphabetically. Thanks.)
-- AX_BUILD_TESTS: whether build test porojects: cpp-tests, lua-tests, fairygui-tests, default: `TRUE`
+- AX_BUILD_TESTS: whether to build test projects, including cpp-tests, lua-tests, fairygui-tests and js-tests when enabled, default: `TRUE`
+- AX_BUILD_JS_RUNTIME_TESTS: build focused headless JS lifecycle and binding regression tests, defaults to `AX_BUILD_TESTS`; useful with the main test applications disabled.
+- AX_JS_GRAPHICS_TESTS: register JS scene, legacy HelloWorld and CocoStudio CTest applications on macOS, default: `FALSE`; these tests require a graphical session.
 - AX_ENABLE_XXX for core feature: 
   - AX_ENABLE_3D: whether to enable 3D support, default: `TRUE`
   - AX_ENABLE_AUDIO: whether to enable audio support, default: `TRUE`
@@ -21,6 +23,7 @@
   - AX_USE_LUAJIT: whether use luajit, default: `FALSE`, use plainlua
 - AX_ENABLE_EXT_XXX for extensions
   - AX_ENABLE_EXT_ASSETMANAGER: the assetmanager extension, default: `TRUE`
+  - AX_ENABLE_EXT_COCOSBUILDER: the legacy native CCBI reader and animation backend, default: `FALSE`; the complete original v3 JS tests enable it.
   - AX_ENABLE_EXT_COCOSTUDIO: the cocosstudio extension for load .csb: `TRUE`
   - AX_ENABLE_EXT_DRAGONBONES: the dragonbones extension: `TRUE`
   - AX_ENABLE_EXT_EFFEKSEER: the effekseer extension, default: `FALSE` 
@@ -29,6 +32,7 @@
   - AX_ENABLE_EXT_IMGUI: the imgui extension, support macos,win,linux,android, default: `TRUE` 
   - AX_ENABLE_EXT_INSPECTOR: the imgui inspector extension, support macos,win,linux,android, default: `TRUE` 
   - AX_ENABLE_EXT_JSONDEFAULT: the UserDefault based on json, default: `FALSE`
+  - AX_ENABLE_EXT_JS: the SpiderMonkey 33.1 JavaScript extension, default: `FALSE`; JavaScript project templates enable it automatically. Lua and JS may be compiled together, with one active script engine per application.
   - AX_ENABLE_EXT_LIVE2D: the live2d extension, default: `FALSE` 
   - AX_ENABLE_EXT_LUA: the lua extension, default: `TRUE`
   - AX_ENABLE_EXT_PARTICLE3D: the particle3d extension, default: `TRUE`
@@ -36,6 +40,10 @@
   - AX_ENABLE_EXT_SDFGEN: the SDF atlas generator, default: `TRUE`
   - AX_ENABLE_EXT_SPINE: the spine extension, default: `TRUE`
 - AX_WITH_XXX: usually user don't need care it
+- AX_WITH_TIFF: decode TIFF images, including embedded legacy particle textures; default: `FALSE`. JavaScript templates and the full v3 JS tests enable it. Prebuilt JavaScript SDKs for these resources must also be built with it enabled.
+- AX_JS_SPIDERMONKEY_ROOT: optional path to a complete, source-built SpiderMonkey package. By default, JS builds reuse a validated package in `cache/js-runtime/packages` or prepare the missing ARM64 package through `3rdparty/spidermonkey`. An explicit path must already contain a matching package.
+- AX_JS_SPIDERMONKEY_AUTO_BUILD: enable first-use preparation for a missing default ARM64 package (`ON` by default). `AX_JS_SPIDERMONKEY_CACHE_DIR` selects its cache and `AX_JS_SPIDERMONKEY_OFFLINE=ON` restricts preparation to locally available source archives and tools. See [SpiderMonkey build options](3rdparty/spidermonkey/README.md).
+- AX_ENABLE_JS_DEBUGGER: build the JavaScript developer debugger, default: `TRUE`; enabled only in Debug and RelWithDebInfo configurations. The JS project template starts it only when `AXMOL_JS_DEBUG=1` is set.
 - AX_RENDER_API: specify render api, valid values are: `auto`, `gl`, `mtl`, `d3d11`, `d3d12`, `vk`, default: `auto`.  
   You may also specify multiple APIs separated by semicolons, e.g. "-DAX_RENDER_API=vk;gl" This will enable both Vulkan and OpenGL backends in the build.
 - AX_GLES_PROFILE: specify GLES profile version, only works when selected render api is `gl`, default: `300`, valid value `300`, `310`

@@ -1,0 +1,8 @@
+{
+    "debugMode": 1,
+    "showFPS": true,
+    "frameRate": 60,
+    "width": 960,
+    "height": 640,
+    "jsList": ["src/SceneSmoke.js"]
+}

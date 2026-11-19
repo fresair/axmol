@@ -2,6 +2,7 @@
  Copyright (c) 2015-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -17,9 +18,11 @@
 #    include "axmol/physics/3d/PhysicsDebugDraw3D.h"
 #    include "axmol/physics/3d/PhysicsUtility3D.h"
 #    include "axmol/physics/3d/Rigidbody3D.h"
+#    include "axmol/physics/PhysicsConsts.h"
 #    include "axmol/renderer/Renderer.h"
 #    include "axmol/scene/Scene.h"
 #    include "axmol/base/Profiling.h"
+#    include "axmol/base/EventDispatcher.h"
 
 #    include <Jolt/Core/Factory.h>
 #    include <Jolt/Core/IssueReporting.h>
@@ -354,14 +357,228 @@ void PhysicsWorld3D::debugDraw(const SceneRenderState& state)
     }
 }
 
+void PhysicsWorld3D::setAutoStep(bool autoStep)
+{
+    if (_autoStep != autoStep)
+    {
+        endKinematicFrameSync();
+    }
+    _autoStep = autoStep;
+}
+
+bool PhysicsWorld3D::isKinematicZeroStepEligible(Rigidbody3D* body) const
+{
+    return body && body->getWorld() == this && body->isAttached() && body->getOwner() &&
+           body->_mass == 0.0f && body->_preserveKinematicMotionProperties && body->isKinematic() &&
+           body->isKinematicZeroStepSyncEnabled() &&
+           (static_cast<int>(body->getSyncFlag()) & static_cast<int>(PhysicsActor::SyncFlag::NODE_TO_PHYSICS));
+}
+
+void PhysicsWorld3D::publishKinematicZeroStepPoses()
+{
+    auto& bodyInterface = _physicsSystem.GetBodyInterface();
+    std::erase_if(_kinematicSolverPoses, [this, &bodyInterface](const auto& pose) {
+        auto* body = pose.body.get();
+        return !isKinematicZeroStepEligible(body) || pose.owner.expired() ||
+               pose.owner.get() != body->getOwner() || pose.bodyID != body->internalHandle() ||
+               bodyInterface.GetPosition(pose.bodyID) != pose.publishedPosition ||
+               bodyInterface.GetRotation(pose.bodyID) != pose.publishedRotation;
+    });
+    for (auto* actor : _physicsActors)
+    {
+        if (actor->getActorType() != PhysicsActor::kRigidbody)
+            continue;
+        auto* body = static_cast<Rigidbody3D*>(actor);
+        if (!isKinematicZeroStepEligible(body))
+            continue;
+        Vec3 position;
+        Quat rotation;
+        if (!body->captureKinematicNodeTarget(position, rotation))
+            continue;
+        auto found = std::find_if(_kinematicSolverPoses.begin(), _kinematicSolverPoses.end(), [body](const auto& pose) {
+            return pose.body.get() == body;
+        });
+        if (found == _kinematicSolverPoses.end())
+        {
+            // Save physical baseline once before N0 publication. Further N0
+            // frames only update the published pose, never the solver baseline.
+            const auto previousPosition = bodyInterface.GetPosition(body->internalHandle());
+            const auto previousRotation = bodyInterface.GetRotation(body->internalHandle());
+            _kinematicSolverPoses.push_back({WeakPtr<Rigidbody3D>(body), WeakPtr<Node>(body->getOwner()),
+                body->internalHandle(), previousPosition, previousRotation, previousPosition, previousRotation});
+            found = std::prev(_kinematicSolverPoses.end());
+        }
+        bodyInterface.SetPositionAndRotation(body->internalHandle(), jphutil::cast(position),
+                                             jphutil::cast(rotation), JPH::EActivation::DontActivate);
+        found->publishedPosition = bodyInterface.GetPosition(body->internalHandle());
+        found->publishedRotation = bodyInterface.GetRotation(body->internalHandle());
+        body->postSimulate();
+    }
+}
+
+bool PhysicsWorld3D::restoreKinematicSolverPose(Rigidbody3D* body)
+{
+    auto found = std::find_if(_kinematicSolverPoses.begin(), _kinematicSolverPoses.end(), [body](const auto& pose) {
+        return pose.body.get() == body;
+    });
+    if (found == _kinematicSolverPoses.end())
+        return false;
+    auto& bodyInterface = _physicsSystem.GetBodyInterface();
+    if (isKinematicZeroStepEligible(body) && !found->owner.expired() &&
+        found->owner.get() == body->getOwner() && found->bodyID == body->internalHandle() &&
+        bodyInterface.GetPosition(found->bodyID) == found->publishedPosition &&
+        bodyInterface.GetRotation(found->bodyID) == found->publishedRotation)
+    {
+        // Restore only immediately before real MoveKinematic/solver work. The
+        // frame target was captured independently. A native external pose edit
+        // invalidates this restore rather than resurrecting the saved pose.
+        bodyInterface.SetPositionAndRotation(body->internalHandle(), found->position,
+                                             found->rotation, JPH::EActivation::DontActivate);
+        return true;
+    }
+    _kinematicSolverPoses.erase(found);
+    return false;
+}
+
+PhysicsWorld3D::KinematicFrameScope::KinematicFrameScope(PhysicsWorld3D* world, int steps, float fixedDelta)
+{
+    if (world && world->beginKinematicFrameSync(steps, fixedDelta))
+        _world = world;
+}
+
+PhysicsWorld3D::KinematicFrameScope::~KinematicFrameScope()
+{
+    if (auto* world = _world.get())
+        world->endKinematicFrameSync();
+}
+
+PhysicsWorld3D::KinematicFrameScope::KinematicFrameScope(KinematicFrameScope&& other) noexcept
+    : _world(std::move(other._world))
+{}
+
+bool PhysicsWorld3D::beginKinematicFrameSync(int steps, float fixedDelta)
+{
+    if (_kinematicFrameActive || _steppingSimulation || steps < 0 || fixedDelta <= 0.0f)
+        return false;
+    if (steps == 0)
+    {
+        publishKinematicZeroStepPoses();
+        return false;
+    }
+    std::vector<KinematicFrameTarget> targets;
+    for (auto* actor : _physicsActors)
+    {
+        if (actor->getActorType() != PhysicsActor::kRigidbody)
+            continue;
+        auto* body = static_cast<Rigidbody3D*>(actor);
+        if (body->_mass != 0.0f || !body->_preserveKinematicMotionProperties || !body->isKinematic() ||
+            !(static_cast<int>(body->getSyncFlag()) & static_cast<int>(PhysicsActor::SyncFlag::NODE_TO_PHYSICS)))
+            continue;
+        KinematicFrameTarget target;
+        if (!body->captureKinematicNodeTarget(target.position, target.rotation))
+            continue;
+        target.body = body;
+        target.owner = body->getOwner();
+        target.bodyID = body->internalHandle();
+        targets.push_back(std::move(target));
+    }
+    _kinematicFrameTargets = std::move(targets);
+    _kinematicFrameStepsRemaining = steps;
+    _kinematicFrameFixedDelta = fixedDelta;
+    _kinematicFrameActive = true;
+    return true;
+}
+
+void PhysicsWorld3D::endKinematicFrameSync()
+{
+    _kinematicFrameTargets.clear();
+    _kinematicFrameStepsRemaining = 0;
+    _kinematicFrameFixedDelta = 0.0f;
+    _kinematicFrameActive = false;
+}
+
+void PhysicsWorld3D::invalidateKinematicFrameTarget(Rigidbody3D* body)
+{
+    std::erase_if(_kinematicSolverPoses, [body](const auto& pose) {
+        return pose.body.expired() || pose.owner.expired() || pose.body.get() == body;
+    });
+    std::erase_if(_kinematicFrameTargets, [body](const auto& target) {
+        return target.body.expired() || target.body.get() == body;
+    });
+}
+
 void PhysicsWorld3D::stepSimulation(float dt)
 {
     AX_PROFILER_ZONE_SCOPED;
 
+    const bool nestedStep = std::exchange(_steppingSimulation, true);
+    struct RestoreStepping
+    {
+        bool& state;
+        bool previous;
+        ~RestoreStepping() { state = previous; }
+    } restore{_steppingSimulation, nestedStep};
+    // A manual nested step cannot consume the Scene's automatic-frame budget.
+    // A changed fixed-delta policy ends the prepared context safely.
+    if (!nestedStep && _kinematicFrameActive && dt != _kinematicFrameFixedDelta)
+        endKinematicFrameSync();
+    const bool preparedStep = !nestedStep && _kinematicFrameActive && _kinematicFrameStepsRemaining > 0;
+    const float remainingTime = preparedStep ? static_cast<float>(
+        static_cast<double>(_kinematicFrameFixedDelta) * _kinematicFrameStepsRemaining) : dt;
+
+    // A target cannot survive a real step with changed ownership, native
+    // identity or eligibility. Re-enabling sync later starts from that step's
+    // real Node pose rather than reviving a previous frame configuration.
+    std::erase_if(_kinematicFrameTargets, [this](const auto& target) {
+        auto* body = target.body.get();
+        return !body || target.owner.expired() || target.owner.get() != body->getOwner() ||
+               body->getWorld() != this || target.bodyID != body->internalHandle() ||
+               body->_mass != 0.0f || !body->_preserveKinematicMotionProperties || !body->isKinematic() ||
+               !(static_cast<int>(body->getSyncFlag()) & static_cast<int>(PhysicsActor::SyncFlag::NODE_TO_PHYSICS));
+    });
+
+    std::vector<WeakPtr<Rigidbody3D>> restoredSolverPoses;
+    // An explicit zero-delta call still publishes legacy Node transforms,
+    // while preserving their last physical baseline for a later real step.
+    // Other actors retain the ordinary preSimulate/Update(0)/postSimulate path.
+    if (dt == 0.0f)
+        publishKinematicZeroStepPoses();
     for (auto* actor : _physicsActors)
-        actor->preSimulate();
+    {
+        auto* body = actor->getActorType() == PhysicsActor::kRigidbody ? static_cast<Rigidbody3D*>(actor) : nullptr;
+        if (dt == 0.0f && isKinematicZeroStepEligible(body))
+            continue;
+        if (body && body->_mass == 0.0f && body->_preserveKinematicMotionProperties && body->isKinematic() &&
+            ((int)body->getSyncFlag() & (int)PhysicsActor::SyncFlag::NODE_TO_PHYSICS) && dt > 0.0f)
+        {
+            if (restoreKinematicSolverPose(body))
+                restoredSolverPoses.emplace_back(body);
+            auto target = _kinematicFrameTargets.end();
+            if (preparedStep)
+                target = std::find_if(_kinematicFrameTargets.begin(), _kinematicFrameTargets.end(), [body,this](const auto& item) {
+                    return item.body.get() == body && body->getWorld() == this && item.bodyID == body->internalHandle() &&
+                           !item.owner.expired() && item.owner.get() == body->getOwner();
+                });
+            if (target != _kinematicFrameTargets.end())
+                body->syncCapturedKinematicTarget(target->position, target->rotation, remainingTime);
+            else
+                body->syncKinematicNodeForStep(dt);
+        }
+        else
+            actor->preSimulate();
+    }
 
     _physicsSystem.Update(dt, 1, &_tempAllocator, &_jobSystem);
+
+    // The baseline is consumed only after real solver work returns, before
+    // queued user callbacks can edit ownership/pose or start another step.
+    std::erase_if(_kinematicSolverPoses, [&restoredSolverPoses](const auto& pose) {
+        return pose.body.expired() || std::any_of(restoredSolverPoses.begin(), restoredSolverPoses.end(),
+            [&pose](const auto& weak) { return weak.get() == pose.body.get(); });
+    });
+
+    if (preparedStep)
+        --_kinematicFrameStepsRemaining;
 
     dispatchQueuedEvents();
 
@@ -491,6 +708,14 @@ void PhysicsWorld3D::removePhysicsActor(PhysicsActor* actor)
 
 void PhysicsWorld3D::removePhysicsActorInternal(PhysicsActor* actor)
 {
+    // Detach/re-entry may happen during a dispatched contact callback. Do not
+    // let its new Jolt body inherit this frame's previous generation target.
+    std::erase_if(_kinematicFrameTargets, [actor](const auto& target) {
+        return target.body.expired() || target.body.get() == actor;
+    });
+    std::erase_if(_kinematicSolverPoses, [actor](const auto& pose) {
+        return pose.body.expired() || pose.owner.expired() || pose.body.get() == actor;
+    });
     auto& bodyInterface = _physicsSystem.GetBodyInterface();
     if (actor->getActorType() == PhysicsActor::kRigidbody)
     {

@@ -1,0 +1,527 @@
+{
+  "formatVersion": 1,
+  "language": "js",
+  "engine": "SpiderMonkey 33.1",
+  "module": "video",
+  "registrationName": "ax_video",
+  "targetNamespace": "ccui",
+  "conditionalExpression": "defined(AX_ENABLE_VIDEO)",
+  "classes": [
+    {
+      "nativeName": "VideoPlayer",
+      "qualifiedName": "ax::ui::VideoPlayer",
+      "jsName": "VideoPlayer",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::ui::Widget",
+        "ax::ProtectedNode",
+        "ax::Node",
+        "ax::Object",
+        "ax::ui::LayoutParameterProtocol"
+      ],
+      "methods": [
+        {
+          "nativeName": "addEventListener",
+          "jsName": "addEventListener",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "void",
+          "parameterTypes": [
+            "const std::function\u003Cvoid (ax::Object *, ax::ui::VideoPlayer::EventType)\u003E \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "ax::ui::VideoPlayer *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getCurrentTime",
+          "jsName": "getCurrentTime",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getDuration",
+          "jsName": "getDuration",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getFileName",
+          "jsName": "getFileName",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "std::string_view",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getState",
+          "jsName": "getState",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "ax::ui::VideoPlayer::State",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getURL",
+          "jsName": "getURL",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "std::string_view",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getVolume",
+          "jsName": "getVolume",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "double",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isFullscreen",
+          "jsName": "isFullscreen",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isKeepAspectRatio",
+          "jsName": "isKeepAspectRatio",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isLooping",
+          "jsName": "isLooping",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isPlaying",
+          "jsName": "isPlaying",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isUserInputEnabled",
+          "jsName": "isUserInputEnabled",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "onEnter",
+          "jsName": "onEnter",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "onExit",
+          "jsName": "onExit",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "onPlayEvent",
+          "jsName": "onPlayEvent",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::ui::VideoPlayer::EventType"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "pausePlayback",
+          "jsName": "pausePlayback",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "play",
+          "jsName": "play",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "resumePlayback",
+          "jsName": "resumePlayback",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "seekTo",
+          "jsName": "seekTo",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setFileName",
+          "jsName": "setFileName",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "void",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setFullscreen",
+          "jsName": "setFullscreen",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setKeepAspectRatio",
+          "jsName": "setKeepAspectRatio",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setLooping",
+          "jsName": "setLooping",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setPlayRate",
+          "jsName": "setPlayRate",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setStyle",
+          "jsName": "setStyle",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::ui::VideoPlayer::StyleType"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setURL",
+          "jsName": "setURL",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "void",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setUserInputEnabled",
+          "jsName": "setUserInputEnabled",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setVolume",
+          "jsName": "setVolume",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "bool",
+          "parameterTypes": [
+            "double"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "stop",
+          "jsName": "stop",
+          "declaringType": "ax::ui::VideoPlayer",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "getVideoController",
+          "returnType": "ax::ui::VideoController *",
+          "parameterTypes": []
+        },
+        {
+          "nativeName": "setVideoController",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::ui::VideoController *"
+          ]
+        }
+      ]
+    }
+  ],
+  "enums": [
+    {
+      "nativeName": "EventType",
+      "qualifiedName": "ax::ui::VideoPlayer::EventType",
+      "ownerQualifiedName": "ax::ui::VideoPlayer",
+      "values": [
+        {
+          "name": "PLAYING",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "PAUSED",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "STOPPED",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "COMPLETED",
+          "signedValue": 3,
+          "unsignedValue": 3,
+          "isUnsigned": false
+        },
+        {
+          "name": "ERROR",
+          "signedValue": 4,
+          "unsignedValue": 4,
+          "isUnsigned": false
+        },
+        {
+          "name": "FULLSCREEN_SWITCH",
+          "signedValue": 5,
+          "unsignedValue": 5,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "Source",
+      "qualifiedName": "ax::ui::VideoPlayer::Source",
+      "ownerQualifiedName": "ax::ui::VideoPlayer",
+      "values": [
+        {
+          "name": "FILENAME",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "URL",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "State",
+      "qualifiedName": "ax::ui::VideoPlayer::State",
+      "ownerQualifiedName": "ax::ui::VideoPlayer",
+      "values": [
+        {
+          "name": "CLOSED",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "LOADING",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "PLAYING",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "PAUSED",
+          "signedValue": 3,
+          "unsignedValue": 3,
+          "isUnsigned": false
+        },
+        {
+          "name": "STOPPED",
+          "signedValue": 4,
+          "unsignedValue": 4,
+          "isUnsigned": false
+        },
+        {
+          "name": "FINISHED",
+          "signedValue": 5,
+          "unsignedValue": 5,
+          "isUnsigned": false
+        },
+        {
+          "name": "ERROR",
+          "signedValue": 6,
+          "unsignedValue": 6,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "StyleType",
+      "qualifiedName": "ax::ui::VideoPlayer::StyleType",
+      "ownerQualifiedName": "ax::ui::VideoPlayer",
+      "values": [
+        {
+          "name": "DEFAULT",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "NONE",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        }
+      ]
+    }
+  ]
+}

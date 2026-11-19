@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
+// SPDX-License-Identifier: MIT
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.regex.Pattern
@@ -146,7 +148,8 @@ class AxmolUtils {
 
         def ninjaVer = translateVer(profiles['ninja'])
         def cmakeVer = translateVer(profiles['cmake'])
-        def ndkVer = translateNdkVer(profiles['ndk'])
+        def exactNdk = profiles['project_type'] == 'js'
+        def ndkVer = exactNdk ? '27.3.13750724' : translateNdkVer(profiles['ndk'])
 
         // cmakeVer should overwrite by command line
         if (project.properties.__1K_CMAKE_VERSION != null)
@@ -213,7 +216,7 @@ class AxmolUtils {
         }
 
         // ndkVer,ndkPath,cmakeVer,cmakeOptions(AX_USE_XXX, AX_ENABLE_XXX, AX_ENABLE_EXT_XXX),cmakeDir<nullable>
-        resolveNDK(sdkRoot, ndkVer, buildProfiles)
+        resolveNDK(sdkRoot, ndkVer, buildProfiles, exactNdk)
         resolveCMake(sdkRoot, cmakeVer, buildProfiles)
         resolveNinja(ninjaVer, buildProfiles)
         generateCMakeOptions(project, buildProfiles)
@@ -300,6 +303,7 @@ class AxmolUtils {
     }
 
     private static String translateNdkVer(ndkVer) {
+        if (ndkVer ==~ /\d+\.\d+\.\d+/) return ndkVer
         if (ndkVer.endsWith('+')) {
             ndkVer = ndkVer.substring(0, ndkVer.length() - 1);
         }
@@ -328,7 +332,7 @@ class AxmolUtils {
      * @param ndkVer The required ndk version for current project
      * @param buildProfiles
      */
-    private static void resolveNDK(sdkRoot, ndkVer, buildProfiles) {
+    private static void resolveNDK(sdkRoot, ndkVer, buildProfiles, boolean exactNdk = false) {
         if (ndkVer.endsWith('+')) {
             ndkVer = ndkVer.substring(0, ndkVer.length() - 1)
         }
@@ -355,7 +359,7 @@ class AxmolUtils {
 
         /* Find suitable ndk in dirs */
         for (ndkDir in ndkDirs) {
-            if (findNDKInDir(ndkVer, ndkDir, buildProfiles)) {
+            if (findNDKInDir(ndkVer, ndkDir, buildProfiles, exactNdk)) {
                 return
             }
         }
@@ -549,13 +553,13 @@ class AxmolUtils {
         return new VersionComparator().compare(ver1, ver2)
     }
 
-    private static boolean findNDKInDir(ndkVer, ndkDir, buildProfiles) {
+    private static boolean findNDKInDir(ndkVer, ndkDir, buildProfiles, boolean exactNdk = false) {
         def sourceProps = new Properties()
         File propertiesFile = new File("$ndkDir${File.separator}source.properties")
         try {
             propertiesFile.withInputStream { sourceProps.load(it) }
             def foundNdkVer = sourceProps['Pkg.Revision']
-            if (foundNdkVer.startsWith(ndkVer)) {
+            if (exactNdk ? foundNdkVer == ndkVer : foundNdkVer.startsWith(ndkVer)) {
                 println("[axmol] Using found ndk (revision=$foundNdkVer,path=$ndkDir), require=$ndkVer")
                 buildProfiles['ndkVer'] = foundNdkVer
                 buildProfiles['ndkPath'] = ndkDir

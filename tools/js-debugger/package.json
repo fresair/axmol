@@ -1,0 +1,66 @@
+{
+  "name": "axmol-js-debugger",
+  "displayName": "Axmol JavaScript Debugger",
+  "description": "Debug Axmol's SpiderMonkey 33.1 JavaScript runtime through the Debug Adapter Protocol.",
+  "version": "1.0.0",
+  "publisher": "axmol",
+  "license": "MIT",
+  "repository": { "type": "git", "url": "https://github.com/axmolengine/axmol" },
+  "engines": { "vscode": "^1.85.0", "node": ">=18" },
+  "categories": ["Debuggers"],
+  "main": "./src/extension.js",
+  "activationEvents": ["onDebug:axmol-js"],
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "package": "python3 package-vsix.py",
+    "package:vsce": "npx --yes @vscode/vsce package --no-dependencies",
+    "adapter": "node src/adapter.js"
+  },
+  "contributes": {
+    "debuggers": [{
+      "type": "axmol-js",
+      "label": "Axmol JavaScript (SpiderMonkey)",
+      "languages": ["javascript"],
+      "configurationAttributes": {
+        "attach": {
+          "properties": {
+            "host": { "type": "string", "default": "127.0.0.1", "description": "Debug server host; Android normally uses adb forward." },
+            "port": { "type": "number", "default": 5086 },
+            "sourceRoot": { "type": "string", "default": "${workspaceFolder}", "description": "Local directory containing main.js and src/." },
+            "remoteRoot": { "type": "string", "default": "", "description": "Target prefix if script filenames are absolute." },
+            "sourceMap": { "type": "object", "default": {}, "additionalProperties": { "type": "string" }, "description": "Target source directory to local directory mappings." },
+            "stopOnEntry": { "type": "boolean", "default": false },
+            "timeout": { "type": "number", "default": 15000 },
+            "requestTimeout": { "type": "number", "default": 30000 }
+          }
+        },
+        "launch": {
+          "required": ["program"],
+          "properties": {
+            "program": { "type": "string", "description": "Native macOS executable; not a JavaScript file." },
+            "args": { "type": "array", "items": { "type": "string" }, "default": [] },
+            "cwd": { "type": "string", "default": "${workspaceFolder}" },
+            "env": { "type": "object", "default": {}, "additionalProperties": { "type": "string" } },
+            "host": { "type": "string", "default": "127.0.0.1" },
+            "port": { "type": "number", "default": 5086 },
+            "sourceRoot": { "type": "string", "default": "${workspaceFolder}" },
+            "remoteRoot": { "type": "string", "default": "" },
+            "sourceMap": { "type": "object", "default": {}, "additionalProperties": { "type": "string" } },
+            "stopOnEntry": { "type": "boolean", "default": false },
+            "timeout": { "type": "number", "default": 15000 },
+            "requestTimeout": { "type": "number", "default": 30000 }
+          }
+        }
+      },
+      "initialConfigurations": [{
+        "type": "axmol-js", "request": "attach", "name": "Attach Axmol JavaScript",
+        "host": "127.0.0.1", "port": 5086, "sourceRoot": "${workspaceFolder}", "stopOnEntry": false
+      }],
+      "configurationSnippets": [{
+        "label": "Axmol JavaScript attach", "description": "Attach to SpiderMonkey on port 5086.",
+        "body": { "type": "axmol-js", "request": "attach", "name": "Attach Axmol JavaScript", "sourceRoot": "${workspaceFolder}", "port": 5086 }
+      }]
+    }],
+    "breakpoints": [{ "language": "javascript" }]
+  }
+}

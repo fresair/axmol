@@ -1,0 +1,8 @@
+{
+  "adapters": [
+    {
+      "path": "extensions/scripting/js-bindings/manual/",
+      "reason": "Legacy JS API, callback protocols, scoped native lifetimes, ownership-sensitive factories, browser-style networking, and native reflection are reviewed as explicit manual adapters. Generated code does not implement these policies."
+    }
+  ]
+}

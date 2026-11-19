@@ -6,6 +6,7 @@
  * http://yannickloriot.com
  *
  * Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+ * Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -515,7 +516,12 @@ void ControlButton::needsLayout()
 
     if (_titleLabel)
     {
-        _titleLabel->setColor(_currentTitleColor);
+        // State tint changes the title RGB independently of the opacity set on
+        // the button or label. Color3B's migration to Color32 must not reset that
+        // opacity whenever a state change triggers layout.
+        auto titleColor = _currentTitleColor;
+        titleColor.a    = _titleLabel->getOpacity();
+        _titleLabel->setColor(titleColor);
     }
     if (_titleLabel != nullptr)
     {

@@ -1,6 +1,7 @@
 /****************************************************************************
  Copyright (c) 2018-2019 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -8,6 +9,7 @@
  ****************************************************************************/
 
 #include "axmol/rhi/opengl/GraphicsContextGL.h"
+#include "axmol/platform/RenderViewCore.h"
 #include "axmol/rhi/opengl/BufferGL.h"
 #include "axmol/rhi/opengl/GraphicsPipelineGL.h"
 #include "axmol/rhi/opengl/TextureGL.h"
@@ -443,6 +445,32 @@ void GraphicsContextImpl::setScissorRect(bool enabled, float x, float y, float w
     {
         __state->disableScissor();
     }
+}
+
+bool GraphicsContextImpl::readPixelsSync(RenderTarget* rt, PixelBufferDesc& result)
+{
+    if (!rt)
+        return false;
+    if (rt->isDefaultRenderTarget())
+    {
+        auto* view = Director::getInstance()->getRenderView();
+        if (!view)
+            return false;
+        const auto size = view->getRenderSize();
+        if (size.width <= 0 || size.height <= 0)
+            return false;
+        const auto width = static_cast<uint32_t>(size.width);
+        const auto height = static_cast<uint32_t>(size.height);
+        readPixels(rt, 0, 0, width, height, width * 4, result);
+    }
+    else
+    {
+        auto* texture = rt->_color.empty() ? nullptr : rt->_color[0].texture;
+        if (!texture)
+            return false;
+        readPixels(rt, 0, 0, texture->getWidth(), texture->getHeight(), texture->getWidth() * 4, result);
+    }
+    return bool(result);
 }
 
 void GraphicsContextImpl::readPixels(RenderTarget* rt, std::function<void(const PixelBufferDesc&)> callback)

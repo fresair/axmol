@@ -1,8 +1,10 @@
+// Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
+// SPDX-License-Identifier: MIT
 #include "base.hlsli"
 
 struct PS_IN {
-    float2 v_texCoord : TEXCOORD0;
     float4 v_color : COLOR0;
+    float2 v_texCoord : TEXCOORD0;
 };
 
 Texture2D u_tex0;

@@ -1,6 +1,7 @@
 /****************************************************************************
  Copyright (c) 2018-2019 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -160,6 +161,30 @@ void Program::getUniformLocations(std::string_view name, UniformLocationVector& 
             .offset          = info.offset,
             .cpuOffset       = info.cpuOffset,
         });
+    }
+}
+
+bool Program::addUniformAlias(std::string_view alias, std::string_view reflectedName)
+{
+    auto source = _shortNameToIds.find(reflectedName);
+    if (alias.empty() || source == _shortNameToIds.end())
+        return false;
+    if (_shortNameToIds.contains(alias))
+        return true;
+    auto locations = source->second;
+    const auto [name, inserted] = _uniformAliasNames.emplace(alias);
+    AX_UNUSED_PARAM(inserted);
+    _shortNameToIds.emplace(std::string_view(*name), std::move(locations));
+    resolveBuiltinUniforms();
+    return true;
+}
+
+void Program::getActiveUniformNames(std::vector<std::string_view>& names) const
+{
+    for (const auto& [name, locations] : _shortNameToIds)
+    {
+        if (!locations.empty() && !_uniformAliasNames.contains(std::string(name)))
+            names.push_back(name);
     }
 }
 
@@ -354,8 +379,10 @@ void Program::reflectUniforms(SLCReflectContext* context)
             uniform.cpuOffset       = cpuOffset;
             uniform.varType         = varType;
 
-            const auto reflectedId = makeUniformNameKey(uniformFullName);
-            auto ret               = _activeUniformInfos.emplace(reflectedId, uniform);
+            auto reflectedId = makeUniformNameKey(uniformFullName);
+            if (_activeUniformInfos.contains(reflectedId))
+                reflectedId = tlx::hash64_str(uniformFullName, static_cast<uint64_t>(context->stage) + 2u);
+            auto ret = _activeUniformInfos.emplace(reflectedId, uniform);
             assert(ret.second);
 
             addShortNameMapping(name, reflectedId);
@@ -388,8 +415,10 @@ void Program::reflectSamplers(SLCReflectContext* context)
         if (samplerRef != axslc::kInvalidTextureSamplerRef)
             textureSamplerRefs.emplace_back(uniform.location, samplerRef);
 
-        const auto reflectedId = makeTextureNameKey(name);
-        auto ret               = _activeUniformInfos.emplace(reflectedId, uniform);
+        auto reflectedId = makeTextureNameKey(name);
+        if (_activeUniformInfos.contains(reflectedId))
+            reflectedId = tlx::hash64_str(name, static_cast<uint64_t>(context->stage) + 16u);
+        auto ret = _activeUniformInfos.emplace(reflectedId, uniform);
         assert(ret.second);
         addShortNameMapping(name, reflectedId);
 

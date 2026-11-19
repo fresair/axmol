@@ -1,0 +1,2375 @@
+{
+  "formatVersion": 1,
+  "language": "js",
+  "engine": "SpiderMonkey 33.1",
+  "module": "cocosbuilder",
+  "registrationName": "ax_cocosbuilder",
+  "targetNamespace": "cc",
+  "conditionalExpression": "defined(AX_ENABLE_EXT_COCOSBUILDER)",
+  "classes": [
+    {
+      "nativeName": "CCBAnimationManager",
+      "qualifiedName": "ax::ext::CCBAnimationManager",
+      "jsName": "CCBAnimationManager",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "actionForCallbackChannel",
+          "jsName": "actionForCallbackChannel",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "ax::Sequence *",
+          "parameterTypes": [
+            "ax::ext::CCBSequenceProperty *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "actionForSoundChannel",
+          "jsName": "actionForSoundChannel",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "ax::Sequence *",
+          "parameterTypes": [
+            "ax::ext::CCBSequenceProperty *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "addDocumentCallbackControlEvents",
+          "jsName": "addDocumentCallbackControlEvents",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::ext::Control::EventType"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "addDocumentCallbackName",
+          "jsName": "addDocumentCallbackName",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "void",
+          "parameterTypes": [
+            "const std::string \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "addDocumentCallbackNode",
+          "jsName": "addDocumentCallbackNode",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Node *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "addDocumentOutletName",
+          "jsName": "addDocumentOutletName",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "void",
+          "parameterTypes": [
+            "const std::string \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "addDocumentOutletNode",
+          "jsName": "addDocumentOutletNode",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Node *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "debug",
+          "jsName": "debug",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getAutoPlaySequenceId",
+          "jsName": "getAutoPlaySequenceId",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getContainerSize",
+          "jsName": "getContainerSize",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "const ax::Vec2 \u0026",
+          "parameterTypes": [
+            "ax::Node *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getDocumentCallbackControlEvents",
+          "jsName": "getDocumentCallbackControlEvents",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "std::vector\u003Cax::Value\u003E \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getDocumentCallbackNames",
+          "jsName": "getDocumentCallbackNames",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "std::vector\u003Cax::Value\u003E \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getDocumentCallbackNodes",
+          "jsName": "getDocumentCallbackNodes",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "ax::Vector\u003Cax::Node *\u003E \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getDocumentControllerName",
+          "jsName": "getDocumentControllerName",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "std::string",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getDocumentOutletNames",
+          "jsName": "getDocumentOutletNames",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "std::vector\u003Cax::Value\u003E \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getDocumentOutletNodes",
+          "jsName": "getDocumentOutletNodes",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "ax::Vector\u003Cax::Node *\u003E \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getKeyframeCallbacks",
+          "jsName": "getKeyframeCallbacks",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "std::vector\u003Cax::Value\u003E \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getLastCompletedSequenceName",
+          "jsName": "getLastCompletedSequenceName",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "std::string",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getRootContainerSize",
+          "jsName": "getRootContainerSize",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "const ax::Vec2 \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getRootNode",
+          "jsName": "getRootNode",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "ax::Node *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getRunningSequenceName",
+          "jsName": "getRunningSequenceName",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "const char *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getSequenceDuration",
+          "jsName": "getSequenceDuration",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "float",
+          "parameterTypes": [
+            "const char *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getSequenceId",
+          "jsName": "getSequenceId",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "int",
+          "parameterTypes": [
+            "const char *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getSequences",
+          "jsName": "getSequences",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "ax::Vector\u003Cax::ext::CCBSequence *\u003E \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "init",
+          "jsName": "init",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "moveAnimationsFromNode",
+          "jsName": "moveAnimationsFromNode",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Node *",
+            "ax::Node *"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "runAnimationsForSequenceIdTweenDuration",
+          "jsName": "runAnimationsForSequenceIdTweenDuration",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "void",
+          "parameterTypes": [
+            "int",
+            "float"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "runAnimationsForSequenceNamed",
+          "jsName": "runAnimationsForSequenceNamed",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "void",
+          "parameterTypes": [
+            "const char *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "runAnimationsForSequenceNamedTweenDuration",
+          "jsName": "runAnimationsForSequenceNamedTweenDuration",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "void",
+          "parameterTypes": [
+            "const char *",
+            "float"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setAutoPlaySequenceId",
+          "jsName": "setAutoPlaySequenceId",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "void",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setBaseValue",
+          "jsName": "setBaseValue",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Value \u0026",
+            "ax::Node *",
+            "const std::string \u0026"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setCallFunc",
+          "jsName": "setCallFunc",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::CallFunc *",
+            "const std::string \u0026"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setDocumentControllerName",
+          "jsName": "setDocumentControllerName",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "void",
+          "parameterTypes": [
+            "const std::string \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setObject",
+          "jsName": "setObject",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Object *",
+            "ax::Node *",
+            "const std::string \u0026"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setRootContainerSize",
+          "jsName": "setRootContainerSize",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setRootNode",
+          "jsName": "setRootNode",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Node *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setSequences",
+          "jsName": "setSequences",
+          "declaringType": "ax::ext::CCBAnimationManager",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vector\u003Cax::ext::CCBSequence *\u003E \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "getDelegate",
+          "returnType": "ax::ext::CCBAnimationManagerDelegate *",
+          "parameterTypes": []
+        },
+        {
+          "nativeName": "setDelegate",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::ext::CCBAnimationManagerDelegate *"
+          ]
+        }
+      ]
+    },
+    {
+      "nativeName": "CCBFile",
+      "qualifiedName": "ax::ext::CCBFile",
+      "jsName": "CCBFile",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::Node",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::ext::CCBFile",
+          "returnType": "ax::ext::CCBFile *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getCCBFileNode",
+          "jsName": "getCCBFileNode",
+          "declaringType": "ax::ext::CCBFile",
+          "returnType": "ax::Node *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setCCBFileNode",
+          "jsName": "setCCBFileNode",
+          "declaringType": "ax::ext::CCBFile",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Node *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "CCBKeyframe",
+      "qualifiedName": "ax::ext::CCBKeyframe",
+      "jsName": "CCBKeyframe",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "getEasingOpt",
+          "jsName": "getEasingOpt",
+          "declaringType": "ax::ext::CCBKeyframe",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getEasingType",
+          "jsName": "getEasingType",
+          "declaringType": "ax::ext::CCBKeyframe",
+          "returnType": "ax::ext::CCBKeyframe::EasingType",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getObject",
+          "jsName": "getObject",
+          "declaringType": "ax::ext::CCBKeyframe",
+          "returnType": "ax::Object *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getTime",
+          "jsName": "getTime",
+          "declaringType": "ax::ext::CCBKeyframe",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getValue",
+          "jsName": "getValue",
+          "declaringType": "ax::ext::CCBKeyframe",
+          "returnType": "const ax::Value \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "setEasingOpt",
+          "jsName": "setEasingOpt",
+          "declaringType": "ax::ext::CCBKeyframe",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setEasingType",
+          "jsName": "setEasingType",
+          "declaringType": "ax::ext::CCBKeyframe",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::ext::CCBKeyframe::EasingType"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setObject",
+          "jsName": "setObject",
+          "declaringType": "ax::ext::CCBKeyframe",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Object *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setTime",
+          "jsName": "setTime",
+          "declaringType": "ax::ext::CCBKeyframe",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setValue",
+          "jsName": "setValue",
+          "declaringType": "ax::ext::CCBKeyframe",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Value \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "CCBMemberVariableAssigner",
+      "qualifiedName": "ax::ext::CCBMemberVariableAssigner",
+      "jsName": "CCBMemberVariableAssigner",
+      "isAbstract": true,
+      "constructors": [],
+      "bases": [],
+      "methods": [
+        {
+          "nativeName": "onAssignCCBCustomProperty",
+          "jsName": "onAssignCCBCustomProperty",
+          "declaringType": "ax::ext::CCBMemberVariableAssigner",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::Object *",
+            "const char *",
+            "const ax::Value \u0026"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "onAssignCCBMemberVariable",
+          "jsName": "onAssignCCBMemberVariable",
+          "declaringType": "ax::ext::CCBMemberVariableAssigner",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::Object *",
+            "const char *",
+            "ax::Node *"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "CCBReader",
+      "qualifiedName": "ax::ext::CCBReader",
+      "jsName": "CCBReader",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [
+            "ax::ext::NodeLoaderLibrary *",
+            "ax::ext::CCBMemberVariableAssigner *",
+            "ax::ext::CCBSelectorResolver *",
+            "ax::ext::NodeLoaderListener *"
+          ],
+          "defaultValues": [
+            null,
+            "NULL",
+            "NULL",
+            "NULL"
+          ]
+        },
+        {
+          "parameterTypes": [
+            "ax::ext::CCBReader *"
+          ],
+          "defaultValues": [
+            null
+          ]
+        },
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "addDocumentCallbackControlEvents",
+          "jsName": "addDocumentCallbackControlEvents",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::ext::Control::EventType"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "addDocumentCallbackName",
+          "jsName": "addDocumentCallbackName",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "void",
+          "parameterTypes": [
+            "const std::string \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "addDocumentCallbackNode",
+          "jsName": "addDocumentCallbackNode",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Node *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "addOwnerCallbackControlEvents",
+          "jsName": "addOwnerCallbackControlEvents",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::ext::Control::EventType"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "addOwnerCallbackName",
+          "jsName": "addOwnerCallbackName",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "void",
+          "parameterTypes": [
+            "const std::string \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "addOwnerCallbackNode",
+          "jsName": "addOwnerCallbackNode",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Node *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "addOwnerOutletName",
+          "jsName": "addOwnerOutletName",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "void",
+          "parameterTypes": [
+            "const std::string \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "addOwnerOutletNode",
+          "jsName": "addOwnerOutletNode",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Node *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "applyNodeProperty",
+          "jsName": "applyNodeProperty",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Node *",
+            "std::string_view",
+            "const ax::Value \u0026"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "createSceneWithNodeGraphFromFile",
+          "jsName": "createSceneWithNodeGraphFromFile",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "ax::Scene *",
+          "parameterTypes": [
+            "const char *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "createSceneWithNodeGraphFromFile",
+          "jsName": "createSceneWithNodeGraphFromFile",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "ax::Scene *",
+          "parameterTypes": [
+            "const char *",
+            "ax::Object *"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "createSceneWithNodeGraphFromFile",
+          "jsName": "createSceneWithNodeGraphFromFile",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "ax::Scene *",
+          "parameterTypes": [
+            "const char *",
+            "ax::Object *",
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "deletePathExtension",
+          "jsName": "deletePathExtension",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "std::string",
+          "parameterTypes": [
+            "const char *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "endsWith",
+          "jsName": "endsWith",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "bool",
+          "parameterTypes": [
+            "const char *",
+            "const char *"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getAnimatedProperties",
+          "jsName": "getAnimatedProperties",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "std::set\u003Cstd::string\u003E *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getAnimationManager",
+          "jsName": "getAnimationManager",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "ax::ext::CCBAnimationManager *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getAnimationManagersForNodes",
+          "jsName": "getAnimationManagersForNodes",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "ax::Vector\u003Cax::ext::CCBAnimationManager *\u003E \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getCCBMemberVariableAssigner",
+          "jsName": "getCCBMemberVariableAssigner",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "ax::ext::CCBMemberVariableAssigner *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getCCBRootPath",
+          "jsName": "getCCBRootPath",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "const std::string \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getCCBSelectorResolver",
+          "jsName": "getCCBSelectorResolver",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "ax::ext::CCBSelectorResolver *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getLoadedSpriteSheet",
+          "jsName": "getLoadedSpriteSheet",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "std::set\u003Cstd::string\u003E \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getNodesWithAnimationManagers",
+          "jsName": "getNodesWithAnimationManagers",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "ax::Vector\u003Cax::Node *\u003E \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getOwner",
+          "jsName": "getOwner",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "ax::Object *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getOwnerCallbackControlEvents",
+          "jsName": "getOwnerCallbackControlEvents",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "std::vector\u003Cax::Value\u003E \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getOwnerCallbackNames",
+          "jsName": "getOwnerCallbackNames",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "std::vector\u003Cax::Value\u003E",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getOwnerCallbackNodes",
+          "jsName": "getOwnerCallbackNodes",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "ax::Vector\u003Cax::Node *\u003E \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getOwnerOutletNames",
+          "jsName": "getOwnerOutletNames",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "std::vector\u003Cax::Value\u003E",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getOwnerOutletNodes",
+          "jsName": "getOwnerOutletNodes",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "ax::Vector\u003Cax::Node *\u003E \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getResolutionScale",
+          "jsName": "getResolutionScale",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "isJSControlled",
+          "jsName": "isJSControlled",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "lastPathComponent",
+          "jsName": "lastPathComponent",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "std::string",
+          "parameterTypes": [
+            "const char *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "readBool",
+          "jsName": "readBool",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "readByte",
+          "jsName": "readByte",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "unsigned char",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "readCachedString",
+          "jsName": "readCachedString",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "std::string",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "readCallbackKeyframesForSeq",
+          "jsName": "readCallbackKeyframesForSeq",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::ext::CCBSequence *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "readFloat",
+          "jsName": "readFloat",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "readInt",
+          "jsName": "readInt",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "int",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "readNodeGraphFromFile",
+          "jsName": "readNodeGraphFromFile",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "ax::Node *",
+          "parameterTypes": [
+            "const char *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "readNodeGraphFromFile",
+          "jsName": "readNodeGraphFromFile",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "ax::Node *",
+          "parameterTypes": [
+            "const char *",
+            "ax::Object *"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "readNodeGraphFromFile",
+          "jsName": "readNodeGraphFromFile",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "ax::Node *",
+          "parameterTypes": [
+            "const char *",
+            "ax::Object *",
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "readSoundKeyframesForSeq",
+          "jsName": "readSoundKeyframesForSeq",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::ext::CCBSequence *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "readUTF8",
+          "jsName": "readUTF8",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "std::string",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setAnimationManager",
+          "jsName": "setAnimationManager",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::ext::CCBAnimationManager *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setCCBRootPath",
+          "jsName": "setCCBRootPath",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "void",
+          "parameterTypes": [
+            "const char *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setNodePropertyCallback",
+          "jsName": "setNodePropertyCallback",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "void",
+          "parameterTypes": [
+            "std::function\u003Cvoid (ax::Node *, std::string_view, const ax::Value \u0026)\u003E"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setResolutionScale",
+          "jsName": "setResolutionScale",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "toLowerCase",
+          "jsName": "toLowerCase",
+          "declaringType": "ax::ext::CCBReader",
+          "returnType": "std::string",
+          "parameterTypes": [
+            "const char *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "getAnimationManagers",
+          "returnType": "std::shared_ptr\u003Cax::Map\u003Cax::Node *, ax::ext::CCBAnimationManager *\u003E\u003E",
+          "parameterTypes": []
+        },
+        {
+          "nativeName": "readFileWithCleanUp",
+          "returnType": "ax::Node *",
+          "parameterTypes": [
+            "bool",
+            "const std::shared_ptr\u003Cax::Map\u003Cax::Node *, ax::ext::CCBAnimationManager *\u003E\u003E \u0026"
+          ]
+        },
+        {
+          "nativeName": "readNodeGraphFromData",
+          "returnType": "ax::Node *",
+          "parameterTypes": [
+            "std::shared_ptr\u003Cax::Data\u003E",
+            "ax::Object *",
+            "const ax::Vec2 \u0026"
+          ]
+        },
+        {
+          "nativeName": "setAnimationManagers",
+          "returnType": "void",
+          "parameterTypes": [
+            "const std::shared_ptr\u003Cax::Map\u003Cax::Node *, ax::ext::CCBAnimationManager *\u003E\u003E \u0026"
+          ]
+        }
+      ]
+    },
+    {
+      "nativeName": "CCBSelectorResolver",
+      "qualifiedName": "ax::ext::CCBSelectorResolver",
+      "jsName": "CCBSelectorResolver",
+      "isAbstract": true,
+      "constructors": [],
+      "bases": [],
+      "methods": [],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "onResolveCCBCCControlSelector",
+          "returnType": "void (ax::Object::*)(ax::Object *, ax::ext::Control::EventType)",
+          "parameterTypes": [
+            "ax::Object *",
+            "const char *"
+          ]
+        }
+      ]
+    },
+    {
+      "nativeName": "CCBSequence",
+      "qualifiedName": "ax::ext::CCBSequence",
+      "jsName": "CCBSequence",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "getCallbackChannel",
+          "jsName": "getCallbackChannel",
+          "declaringType": "ax::ext::CCBSequence",
+          "returnType": "ax::ext::CCBSequenceProperty *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getChainedSequenceId",
+          "jsName": "getChainedSequenceId",
+          "declaringType": "ax::ext::CCBSequence",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getDuration",
+          "jsName": "getDuration",
+          "declaringType": "ax::ext::CCBSequence",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getName",
+          "jsName": "getName",
+          "declaringType": "ax::ext::CCBSequence",
+          "returnType": "const char *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getSequenceId",
+          "jsName": "getSequenceId",
+          "declaringType": "ax::ext::CCBSequence",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getSoundChannel",
+          "jsName": "getSoundChannel",
+          "declaringType": "ax::ext::CCBSequence",
+          "returnType": "ax::ext::CCBSequenceProperty *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setCallbackChannel",
+          "jsName": "setCallbackChannel",
+          "declaringType": "ax::ext::CCBSequence",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::ext::CCBSequenceProperty *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setChainedSequenceId",
+          "jsName": "setChainedSequenceId",
+          "declaringType": "ax::ext::CCBSequence",
+          "returnType": "void",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setDuration",
+          "jsName": "setDuration",
+          "declaringType": "ax::ext::CCBSequence",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setName",
+          "jsName": "setName",
+          "declaringType": "ax::ext::CCBSequence",
+          "returnType": "void",
+          "parameterTypes": [
+            "const char *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setSequenceId",
+          "jsName": "setSequenceId",
+          "declaringType": "ax::ext::CCBSequence",
+          "returnType": "void",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setSoundChannel",
+          "jsName": "setSoundChannel",
+          "declaringType": "ax::ext::CCBSequence",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::ext::CCBSequenceProperty *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "CCBSequenceProperty",
+      "qualifiedName": "ax::ext::CCBSequenceProperty",
+      "jsName": "CCBSequenceProperty",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "getKeyframes",
+          "jsName": "getKeyframes",
+          "declaringType": "ax::ext::CCBSequenceProperty",
+          "returnType": "ax::Vector\u003Cax::ext::CCBKeyframe *\u003E \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getName",
+          "jsName": "getName",
+          "declaringType": "ax::ext::CCBSequenceProperty",
+          "returnType": "const char *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getType",
+          "jsName": "getType",
+          "declaringType": "ax::ext::CCBSequenceProperty",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "init",
+          "jsName": "init",
+          "declaringType": "ax::ext::CCBSequenceProperty",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setName",
+          "jsName": "setName",
+          "declaringType": "ax::ext::CCBSequenceProperty",
+          "returnType": "void",
+          "parameterTypes": [
+            "const char *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setType",
+          "jsName": "setType",
+          "declaringType": "ax::ext::CCBSequenceProperty",
+          "returnType": "void",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "NodeLoader",
+      "qualifiedName": "ax::ext::NodeLoader",
+      "jsName": "NodeLoader",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "loadNode",
+          "jsName": "loadNode",
+          "declaringType": "ax::ext::NodeLoader",
+          "returnType": "ax::Node *",
+          "parameterTypes": [
+            "ax::Node *",
+            "ax::ext::CCBReader *"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "loader",
+          "jsName": "loader",
+          "declaringType": "ax::ext::NodeLoader",
+          "returnType": "ax::ext::NodeLoader *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "parseProperties",
+          "jsName": "parseProperties",
+          "declaringType": "ax::ext::NodeLoader",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Node *",
+            "ax::Node *",
+            "ax::ext::CCBReader *"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "NodeLoaderLibrary",
+      "qualifiedName": "ax::ext::NodeLoaderLibrary",
+      "jsName": "NodeLoaderLibrary",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "destroyInstance",
+          "jsName": "destroyInstance",
+          "declaringType": "ax::ext::NodeLoaderLibrary",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getInstance",
+          "jsName": "getInstance",
+          "declaringType": "ax::ext::NodeLoaderLibrary",
+          "returnType": "ax::ext::NodeLoaderLibrary *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getNodeLoader",
+          "jsName": "getNodeLoader",
+          "declaringType": "ax::ext::NodeLoaderLibrary",
+          "returnType": "ax::ext::NodeLoader *",
+          "parameterTypes": [
+            "const char *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "library",
+          "jsName": "library",
+          "declaringType": "ax::ext::NodeLoaderLibrary",
+          "returnType": "ax::ext::NodeLoaderLibrary *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "newDefaultNodeLoaderLibrary",
+          "jsName": "newDefaultNodeLoaderLibrary",
+          "declaringType": "ax::ext::NodeLoaderLibrary",
+          "returnType": "ax::ext::NodeLoaderLibrary *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "purge",
+          "jsName": "purge",
+          "declaringType": "ax::ext::NodeLoaderLibrary",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "registerDefaultNodeLoaders",
+          "jsName": "registerDefaultNodeLoaders",
+          "declaringType": "ax::ext::NodeLoaderLibrary",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "registerNodeLoader",
+          "jsName": "registerNodeLoader",
+          "declaringType": "ax::ext::NodeLoaderLibrary",
+          "returnType": "void",
+          "parameterTypes": [
+            "const char *",
+            "ax::ext::NodeLoader *"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "unregisterNodeLoader",
+          "jsName": "unregisterNodeLoader",
+          "declaringType": "ax::ext::NodeLoaderLibrary",
+          "returnType": "void",
+          "parameterTypes": [
+            "const char *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "NodeLoaderListener",
+      "qualifiedName": "ax::ext::NodeLoaderListener",
+      "jsName": "NodeLoaderListener",
+      "isAbstract": true,
+      "constructors": [],
+      "bases": [],
+      "methods": [
+        {
+          "nativeName": "onNodeLoaded",
+          "jsName": "onNodeLoaded",
+          "declaringType": "ax::ext::NodeLoaderListener",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Node *",
+            "ax::ext::NodeLoader *"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    }
+  ],
+  "enums": [
+    {
+      "nativeName": "EasingType",
+      "qualifiedName": "ax::ext::CCBKeyframe::EasingType",
+      "ownerQualifiedName": "ax::ext::CCBKeyframe",
+      "values": [
+        {
+          "name": "INSTANT",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "LINEAR",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "CUBIC_IN",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "CUBIC_OUT",
+          "signedValue": 3,
+          "unsignedValue": 3,
+          "isUnsigned": false
+        },
+        {
+          "name": "CUBIC_INOUT",
+          "signedValue": 4,
+          "unsignedValue": 4,
+          "isUnsigned": false
+        },
+        {
+          "name": "ELASTIC_IN",
+          "signedValue": 5,
+          "unsignedValue": 5,
+          "isUnsigned": false
+        },
+        {
+          "name": "ELASTIC_OUT",
+          "signedValue": 6,
+          "unsignedValue": 6,
+          "isUnsigned": false
+        },
+        {
+          "name": "ELASTIC_INOUT",
+          "signedValue": 7,
+          "unsignedValue": 7,
+          "isUnsigned": false
+        },
+        {
+          "name": "BOUNCE_IN",
+          "signedValue": 8,
+          "unsignedValue": 8,
+          "isUnsigned": false
+        },
+        {
+          "name": "BOUNCE_OUT",
+          "signedValue": 9,
+          "unsignedValue": 9,
+          "isUnsigned": false
+        },
+        {
+          "name": "BOUNCE_INOUT",
+          "signedValue": 10,
+          "unsignedValue": 10,
+          "isUnsigned": false
+        },
+        {
+          "name": "BACK_IN",
+          "signedValue": 11,
+          "unsignedValue": 11,
+          "isUnsigned": false
+        },
+        {
+          "name": "BACK_OUT",
+          "signedValue": 12,
+          "unsignedValue": 12,
+          "isUnsigned": false
+        },
+        {
+          "name": "BACK_INOUT",
+          "signedValue": 13,
+          "unsignedValue": 13,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "FloatType",
+      "qualifiedName": "ax::ext::CCBReader::FloatType",
+      "ownerQualifiedName": "ax::ext::CCBReader",
+      "values": [
+        {
+          "name": "_0",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "_1",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "MINUS1",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "_05",
+          "signedValue": 3,
+          "unsignedValue": 3,
+          "isUnsigned": false
+        },
+        {
+          "name": "INTEGER",
+          "signedValue": 4,
+          "unsignedValue": 4,
+          "isUnsigned": false
+        },
+        {
+          "name": "FULL",
+          "signedValue": 5,
+          "unsignedValue": 5,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "PlatformType",
+      "qualifiedName": "ax::ext::CCBReader::PlatformType",
+      "ownerQualifiedName": "ax::ext::CCBReader",
+      "values": [
+        {
+          "name": "ALL",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "IOS",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "MAC",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "PositionType",
+      "qualifiedName": "ax::ext::CCBReader::PositionType",
+      "ownerQualifiedName": "ax::ext::CCBReader",
+      "values": [
+        {
+          "name": "RELATIVE_BOTTOM_LEFT",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "RELATIVE_TOP_LEFT",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "RELATIVE_TOP_RIGHT",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "RELATIVE_BOTTOM_RIGHT",
+          "signedValue": 3,
+          "unsignedValue": 3,
+          "isUnsigned": false
+        },
+        {
+          "name": "PERCENT",
+          "signedValue": 4,
+          "unsignedValue": 4,
+          "isUnsigned": false
+        },
+        {
+          "name": "MULTIPLY_RESOLUTION",
+          "signedValue": 5,
+          "unsignedValue": 5,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "PropertyType",
+      "qualifiedName": "ax::ext::CCBReader::PropertyType",
+      "ownerQualifiedName": "ax::ext::CCBReader",
+      "values": [
+        {
+          "name": "POSITION",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "SIZE",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "POINT",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "POINT_LOCK",
+          "signedValue": 3,
+          "unsignedValue": 3,
+          "isUnsigned": false
+        },
+        {
+          "name": "SCALE_LOCK",
+          "signedValue": 4,
+          "unsignedValue": 4,
+          "isUnsigned": false
+        },
+        {
+          "name": "DEGREES",
+          "signedValue": 5,
+          "unsignedValue": 5,
+          "isUnsigned": false
+        },
+        {
+          "name": "INTEGER",
+          "signedValue": 6,
+          "unsignedValue": 6,
+          "isUnsigned": false
+        },
+        {
+          "name": "FLOAT",
+          "signedValue": 7,
+          "unsignedValue": 7,
+          "isUnsigned": false
+        },
+        {
+          "name": "FLOAT_VAR",
+          "signedValue": 8,
+          "unsignedValue": 8,
+          "isUnsigned": false
+        },
+        {
+          "name": "CHECK",
+          "signedValue": 9,
+          "unsignedValue": 9,
+          "isUnsigned": false
+        },
+        {
+          "name": "SPRITEFRAME",
+          "signedValue": 10,
+          "unsignedValue": 10,
+          "isUnsigned": false
+        },
+        {
+          "name": "TEXTURE",
+          "signedValue": 11,
+          "unsignedValue": 11,
+          "isUnsigned": false
+        },
+        {
+          "name": "BYTE",
+          "signedValue": 12,
+          "unsignedValue": 12,
+          "isUnsigned": false
+        },
+        {
+          "name": "COLOR3",
+          "signedValue": 13,
+          "unsignedValue": 13,
+          "isUnsigned": false
+        },
+        {
+          "name": "COLOR4F_VAR",
+          "signedValue": 14,
+          "unsignedValue": 14,
+          "isUnsigned": false
+        },
+        {
+          "name": "FLIP",
+          "signedValue": 15,
+          "unsignedValue": 15,
+          "isUnsigned": false
+        },
+        {
+          "name": "BLEND_MODE",
+          "signedValue": 16,
+          "unsignedValue": 16,
+          "isUnsigned": false
+        },
+        {
+          "name": "FNT_FILE",
+          "signedValue": 17,
+          "unsignedValue": 17,
+          "isUnsigned": false
+        },
+        {
+          "name": "TEXT",
+          "signedValue": 18,
+          "unsignedValue": 18,
+          "isUnsigned": false
+        },
+        {
+          "name": "FONT_TTF",
+          "signedValue": 19,
+          "unsignedValue": 19,
+          "isUnsigned": false
+        },
+        {
+          "name": "INTEGER_LABELED",
+          "signedValue": 20,
+          "unsignedValue": 20,
+          "isUnsigned": false
+        },
+        {
+          "name": "BLOCK",
+          "signedValue": 21,
+          "unsignedValue": 21,
+          "isUnsigned": false
+        },
+        {
+          "name": "ANIMATION",
+          "signedValue": 22,
+          "unsignedValue": 22,
+          "isUnsigned": false
+        },
+        {
+          "name": "CCB_FILE",
+          "signedValue": 23,
+          "unsignedValue": 23,
+          "isUnsigned": false
+        },
+        {
+          "name": "STRING",
+          "signedValue": 24,
+          "unsignedValue": 24,
+          "isUnsigned": false
+        },
+        {
+          "name": "BLOCK_CONTROL",
+          "signedValue": 25,
+          "unsignedValue": 25,
+          "isUnsigned": false
+        },
+        {
+          "name": "FLOAT_SCALE",
+          "signedValue": 26,
+          "unsignedValue": 26,
+          "isUnsigned": false
+        },
+        {
+          "name": "FLOAT_XY",
+          "signedValue": 27,
+          "unsignedValue": 27,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "ScaleType",
+      "qualifiedName": "ax::ext::CCBReader::ScaleType",
+      "ownerQualifiedName": "ax::ext::CCBReader",
+      "values": [
+        {
+          "name": "ABSOLUTE",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "MULTIPLY_RESOLUTION",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "SizeType",
+      "qualifiedName": "ax::ext::CCBReader::SizeType",
+      "ownerQualifiedName": "ax::ext::CCBReader",
+      "values": [
+        {
+          "name": "ABSOLUTE",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "PERCENT",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "RELATIVE_CONTAINER",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "HORIZONTAL_PERCENT",
+          "signedValue": 3,
+          "unsignedValue": 3,
+          "isUnsigned": false
+        },
+        {
+          "name": "VERTICAL_PERCENT",
+          "signedValue": 4,
+          "unsignedValue": 4,
+          "isUnsigned": false
+        },
+        {
+          "name": "MULTIPLY_RESOLUTION",
+          "signedValue": 5,
+          "unsignedValue": 5,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "TargetType",
+      "qualifiedName": "ax::ext::CCBReader::TargetType",
+      "ownerQualifiedName": "ax::ext::CCBReader",
+      "values": [
+        {
+          "name": "NONE",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "DOCUMENT_ROOT",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "OWNER",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        }
+      ]
+    }
+  ]
+}

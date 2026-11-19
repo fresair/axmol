@@ -5,6 +5,7 @@ Copyright (c) 2011      Zynga Inc.
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -177,6 +178,22 @@ public:
     /** Creates the tiles. */
     void setupTiles();
 
+    /** Releases the CPU tile IDs after caching render quads.
+     * Tile lookup and editing are unavailable afterwards; already created
+     * tile sprites and the cached layer continue rendering. Tile animation
+     * tasks are stopped because they require the released IDs.
+     * @script{ignore}
+     */
+    void releaseMap();
+
+    /** Select the old JS TMX offset convention during initialization.
+     * Legacy ISO/ORTHO layers ignore tileset offsets; metadata and modern
+     * default rendering remain unchanged. Call before extracting tile sprites
+     * or releasing CPU tile IDs. Changing the policy returns false afterwards.
+     * @script{ignore}
+     */
+    bool setLegacyTilesetOffsetPolicy(bool legacy);
+
     /** Get the tile layer name.
      *
      * @return The tile layer name.
@@ -322,6 +339,8 @@ protected:
     void parseInternalProperties();
 
     Mat4 tileToNodeTransform();
+    Vec2 tilePosition(const Vec2& pos) const;
+    bool isStaggeredLayout() const;
     Rect tileBoundsForClipTransform(const Mat4& tileToClip);
 
     int getVertexZForPos(const Vec2& pos);
@@ -331,6 +350,8 @@ protected:
 
     //
     void updateTotalQuads();
+    void buildTileQuads();
+    Vec2 effectiveTilesetOffset(const TMXTilesetInfo* tileset) const;
 
     int getTileIndexByPos(int x, int y) const { return x + y * (int)_layerSize.width; }
 
@@ -392,6 +413,11 @@ protected:
     Vec2 _maxTileSize;
 
     float _alphaFuncValue = 0.f;
+
+    // A hex/staggered grid is not affine: alternate rows/columns have a half-tile shift.
+    int _hexSideLength = 0;
+    Vec2 _staggerTileOffset;
+    bool _legacyTilesetOffsetPolicy = false;
 };
 
 /** @brief TMXTileAnimTask represents the frame-tick task of an animated tile.

@@ -3,6 +3,7 @@ Copyright (c) 2010-2012 cocos2d-x.org
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -13,6 +14,7 @@ SPDX-License-Identifier: MIT
 #include <android/log.h>
 #include <jni.h>
 #include "axmol/base/Types.h"
+#include "axmol/platform/FileUtils.h"
 #include "axmol/platform/android/jni/JniHelper.h"
 
 static const char* deviceHelperClassName = "dev.axmol.lib.AxmolEngine";
@@ -71,6 +73,30 @@ void Device::setAccelerometerInterval(float interval)
     JniHelper::callStaticVoidMethod(deviceHelperClassName, "setAccelerometerInterval", interval);
 }
 
+static std::string resolveSystemFontName(std::string_view fontName)
+{
+    std::string resolved{fontName};
+    // Resolve an existing file through the normal search paths/aliases, as in
+    // v3. Unresolved Android family names keep their original spelling.
+    if (!fontName.empty())
+    {
+        auto* files = FileUtils::getInstance();
+        if (files->isFileExist(fontName))
+        {
+            auto fullPath = files->fullPathForFilename(fontName);
+            if (!fullPath.empty())
+            {
+                // AssetManager expects a path relative to the APK assets root;
+                // an OS absolute path must reach Typeface.createFromFile intact.
+                if (fullPath.starts_with("assets/"))
+                    fullPath.erase(0, sizeof("assets/") - 1);
+                resolved = std::move(fullPath);
+            }
+        }
+    }
+    return resolved;
+}
+
 class BitmapDC
 {
 public:
@@ -101,7 +127,8 @@ public:
         int count           = static_cast<int>(text.length());
         jbyteArray strArray = methodInfo.env->NewByteArray(count);
         methodInfo.env->SetByteArrayRegion(strArray, 0, count, reinterpret_cast<const jbyte*>(text.data()));
-        jstring jstrFont = methodInfo.env->NewStringUTF(textDefinition._fontName.c_str());
+        const auto fontName = resolveSystemFontName(textDefinition._fontName);
+        jstring jstrFont = methodInfo.env->NewStringUTF(fontName.c_str());
 
         if (!methodInfo.env->CallStaticBooleanMethod(
                 methodInfo.classID, methodInfo.methodID, strArray, jstrFont, textDefinition._fontSize,

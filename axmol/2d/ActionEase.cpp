@@ -4,6 +4,7 @@ Copyright (c) 2010-2012 cocos2d-x.org
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -78,7 +79,13 @@ void ActionEase::stop()
 
 void ActionEase::update(float time)
 {
-    _inner->update(time);
+    updateInner(time);
+}
+
+void ActionEase::updateInner(float time)
+{
+    if (!sendUpdateEventToScript(time, _inner))
+        _inner->update(time);
 }
 
 ActionInterval* ActionEase::getInnerAction()
@@ -138,7 +145,7 @@ bool EaseRateAction::initWithAction(ActionInterval* action, float rate)
     }                                                                \
     void CLASSNAME::update(float time)                               \
     {                                                                \
-        _inner->update(TWEEN_FUNC(time));                            \
+        updateInner(TWEEN_FUNC(time));                              \
     }                                                                \
     ActionEase* CLASSNAME::reverse() const                           \
     {                                                                \
@@ -195,7 +202,7 @@ EASE_TEMPLATE_IMPL(EaseCubicActionInOut, tweenfunc::cubicEaseInOut, EaseCubicAct
     }                                                                    \
     void CLASSNAME::update(float time)                                   \
     {                                                                    \
-        _inner->update(TWEEN_FUNC(time, _rate));                         \
+        updateInner(TWEEN_FUNC(time, _rate));                           \
     }                                                                    \
     EaseRateAction* CLASSNAME::reverse() const                           \
     {                                                                    \
@@ -244,7 +251,7 @@ bool EaseElastic::initWithAction(ActionInterval* action, float period /* = 0.3f*
     }                                                                                  \
     void CLASSNAME::update(float time)                                                 \
     {                                                                                  \
-        _inner->update(TWEEN_FUNC(time, _period));                                     \
+        updateInner(TWEEN_FUNC(time, _period));                                       \
     }                                                                                  \
     EaseElastic* CLASSNAME::reverse() const                                            \
     {                                                                                  \
@@ -298,7 +305,7 @@ EaseBezierAction* EaseBezierAction::clone() const
 
 void EaseBezierAction::update(float time)
 {
-    _inner->update(tweenfunc::bezieratFunction(_p0, _p1, _p2, _p3, time));
+    updateInner(tweenfunc::bezieratFunction(_p0, _p1, _p2, _p3, time));
 }
 
 EaseBezierAction* EaseBezierAction::reverse() const

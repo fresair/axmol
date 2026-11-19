@@ -3,6 +3,7 @@ Copyright (c) 2010-2012 cocos2d-x.org
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -108,8 +109,8 @@ bool FileUtilsAndroid::isFileExistInternal(std::string_view strFilePath) const
         const char* s = strFilePath.data();
 
         // Found "assets/" at the beginning of the path and we don't want it
-        if (strFilePath.find(_defaultResRootPath) == 0)
-            s += _defaultResRootPath.length();
+        if (strFilePath.starts_with(ASSETS_FOLDER_NAME))
+            s += ASSETS_FOLDER_NAME_LENGTH;
 
         if (obbfile && obbfile->fileExists(s))
         {
@@ -198,23 +199,27 @@ bool FileUtilsAndroid::isAbsolutePath(std::string_view strPath) const
     // 1) Files in APK, e.g. assets/path/path/file.png
     // 2) Files not in APK, e.g. /data/data/dev.axmol.hellocpp/cache/path/path/file.png, or
     // /sdcard/path/path/file.png. So these two situations need to be checked on Android.
-    return (strPath[0] == '/' || strPath.find(_defaultResRootPath) == 0);
+    return !strPath.empty() && (strPath[0] == '/' || strPath.starts_with(ASSETS_FOLDER_NAME));
 }
 
 int64_t FileUtilsAndroid::getFileSize(std::string_view filepath) const
 {
-    int64_t size = FileUtils::getFileSize(filepath);
+    if (filepath.empty())
+        return -1;
+    const std::string fullPath = fullPathForFilename(filepath);
+    if (fullPath.empty())
+        return -1;
+    int64_t size = FileUtils::getFileSize(fullPath);
     if (size != -1)
     {
         return size;
     }
 
-    if (FileUtilsAndroid::assetmanager)
+    if (FileUtilsAndroid::assetmanager && fullPath.front() != '/')
     {
-        if (tlx::starts_with(filepath, _defaultResRootPath))
-        {
-            filepath = filepath.substr(_defaultResRootPath.size());
-        }
+        filepath = fullPath;
+        if (filepath.starts_with(ASSETS_FOLDER_NAME))
+            filepath.remove_prefix(ASSETS_FOLDER_NAME_LENGTH);
 
         AAsset* asset = AAssetManager_open(FileUtilsAndroid::assetmanager, filepath.data(), AASSET_MODE_UNKNOWN);
         if (asset)

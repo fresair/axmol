@@ -6,6 +6,7 @@ Copyright (c) 2011      Zynga Inc.
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -17,6 +18,10 @@ SPDX-License-Identifier: MIT
 #include "axmol/2d/Action.h"
 #include "axmol/base/Scheduler.h"
 #include "axmol/base/Macros.h"
+#include "axmol/base/WeakPtr.h"
+#include <iterator>
+#include <utility>
+#include <vector>
 
 namespace ax
 {
@@ -29,7 +34,7 @@ ActionManager::ActionManager() : _currentTarget(nullptr), _currentTargetSalvaged
 ActionManager::~ActionManager()
 {
     AXLOGV("deallocing ActionManager: {}", fmt::ptr(this));
-
+    _destroying = true;
     removeAllActions();
 }
 
@@ -51,6 +56,10 @@ void ActionManager::removeActionAtIndex(ssize_t index,
                                         std::unordered_map<Node*, ActionHandle>::iterator actionIt)
 {
     Action* action = static_cast<Action*>(element.actions[index]);
+    // Vector::erase releases before erasing its slot. Keep the object alive
+    // until the slot/index bookkeeping is complete, before any destructor
+    // can reenter this manager.
+    action->retain();
 
     if (action == element.currentAction && (!element.currentActionSalvaged))
     {
@@ -58,6 +67,7 @@ void ActionManager::removeActionAtIndex(ssize_t index,
         element.currentActionSalvaged = true;
     }
 
+    element.actionRegistrations.erase(element.actionRegistrations.begin() + index);
     element.actions.erase(index);
 
     // update actionIndex in case we are in tick. looping over the actions
@@ -77,6 +87,7 @@ void ActionManager::removeActionAtIndex(ssize_t index,
             eraseTargetActionHandle(actionIt);
         }
     }
+    action->release();
 }
 // pause / resume
 
@@ -123,6 +134,10 @@ void ActionManager::resumeTargets(const Vector<Node*>& targetsToResume)
 
 void ActionManager::addAction(Action* action, Node* target, bool paused)
 {
+    // An action/target destructor may try to register work while this manager
+    // is draining its final snapshot. No new retain may escape destruction.
+    if (_destroying)
+        return;
     AXASSERT(action != nullptr, "action can't be nullptr!");
     AXASSERT(target != nullptr, "target can't be nullptr!");
     if (action == nullptr || target == nullptr)
@@ -133,6 +148,15 @@ void ActionManager::addAction(Action* action, Node* target, bool paused)
     {
         actionIt                = _targets.emplace(target, ActionHandle{}).first;
         actionIt->second.paused = paused;
+        auto* element           = &actionIt->second;
+        element->target         = target;
+        element->registration   = ++_nextTargetRegistration;
+        element->previous       = _lastRegisteredTarget;
+        if (_lastRegisteredTarget)
+            _lastRegisteredTarget->next = element;
+        else
+            _firstRegisteredTarget = element;
+        _lastRegisteredTarget = element;
         target->retain();
     }
 
@@ -141,6 +165,7 @@ void ActionManager::addAction(Action* action, Node* target, bool paused)
 
     AXASSERT(!actionHandle.actions.contains(action), "action already be added!");
     actionHandle.actions.pushBack(action);
+    actionHandle.actionRegistrations.push_back(++_nextActionRegistration);
 
     action->startWithTarget(target);
 }
@@ -149,8 +174,19 @@ void ActionManager::addAction(Action* action, Node* target, bool paused)
 
 void ActionManager::removeAllActions()
 {
-    for (auto actionIt = _targets.begin(); actionIt != _targets.end();)
-        removeTargetActionHandle(actionIt);
+    // Release/destructor callbacks may remove the successor, rehash, or
+    // re-register the same living target. Visit every entry present at entry
+    // once, without treating a new registration as that removed entry.
+    std::vector<std::pair<Node*, uint64_t>> registrations;
+    registrations.reserve(_targets.size());
+    for (const auto& [target, element] : _targets)
+        registrations.emplace_back(target, element.registration);
+    for (const auto& [target, registration] : registrations)
+    {
+        auto actionIt = _targets.find(target);
+        if (actionIt != _targets.end() && actionIt->second.registration == registration)
+            removeTargetActionHandle(actionIt);
+    }
 }
 
 void ActionManager::removeAllActionsFromTarget(Node* target)
@@ -175,10 +211,13 @@ void ActionManager::removeTargetActionHandle(std::unordered_map<Node*, ActionHan
         element.currentActionSalvaged = true;
     }
 
-    element.actions.clear();
     if (_currentTarget == &element)
     {
         _currentTargetSalvaged = true;
+        // Publish an empty live vector before releasing actions. Destructors
+        // may reenter the manager and append actions to the current target.
+        element.actionRegistrations.clear();
+        auto removedActions = std::move(element.actions);
         ++actionIt;
     }
     else
@@ -189,8 +228,27 @@ void ActionManager::removeTargetActionHandle(std::unordered_map<Node*, ActionHan
 
 void ActionManager::eraseTargetActionHandle(std::unordered_map<Node*, ActionHandle>::iterator& actionIt)
 {
-    actionIt->first->release();
-    actionIt = _targets.erase(actionIt);
+    auto* target  = actionIt->first;
+    auto& element = actionIt->second;
+    if (element.previous)
+        element.previous->next = element.next;
+    else
+        _firstRegisteredTarget = element.next;
+    if (element.next)
+        element.next->previous = element.previous;
+    else
+        _lastRegisteredTarget = element.previous;
+    if (_nextOrderedTarget == &element)
+        _nextOrderedTarget = element.next;
+
+    // Remove both indexes before releasing anything. In particular a target
+    // destructor may remove/re-add another target or force a map rehash.
+    auto next = std::next(actionIt);
+    auto* nextTarget = next == _targets.end() ? nullptr : next->first;
+    auto removed = _targets.extract(actionIt);
+    removed.mapped().actions.clear();
+    target->release();
+    actionIt = nextTarget ? _targets.find(nextTarget) : _targets.end();
 }
 
 void ActionManager::removeAction(Action* action)
@@ -244,64 +302,60 @@ void ActionManager::removeAllActionsByTag(int tag, Node* target)
 {
     AXASSERT(tag != Action::INVALID_TAG, "Invalid tag value!");
     AXASSERT(target != nullptr, "target can't be nullptr!");
-    if (target == nullptr)
-    {
-        return;
-    }
-
-    auto actionIt = _targets.find(target);
-    if (actionIt != _targets.end())
-    {
-        auto& element = actionIt->second;
-        auto limit    = element.actions.size();
-        for (int i = 0; i < limit;)
-        {
-            Action* action = static_cast<Action*>(element.actions[i]);
-
-            if (action->getTag() == (int)tag && action->getOriginalTarget() == target)
-            {
-                removeActionAtIndex(i, element, actionIt);
-                --limit;
-            }
-            else
-            {
-                ++i;
-            }
-        }
-    }
+    if (target)
+        removeActionsMatching(target, static_cast<uint32_t>(tag), true);
 }
 
 void ActionManager::removeActionsByFlags(unsigned int flags, Node* target)
 {
     if (flags == 0)
-    {
         return;
-    }
     AXASSERT(target != nullptr, "target can't be nullptr!");
-    if (target == nullptr)
-    {
-        return;
-    }
+    if (target)
+        removeActionsMatching(target, flags, false);
+}
 
-    auto actionIt = _targets.find(target);
-    if (actionIt != _targets.end())
+void ActionManager::removeActionsMatching(Node* target, uint32_t selector, bool byTag)
+{
+    struct Candidate
     {
-        auto& element = actionIt->second;
-        auto limit    = element.actions.size();
-        for (int i = 0; i < limit;)
+        WeakPtr<Action> action;
+        uint64_t registration;
+    };
+    uint64_t registration;
+    std::vector<Candidate> candidates;
+    {
+        auto entry = _targets.find(target);
+        if (entry == _targets.end())
+            return;
+        registration = entry->second.registration;
+        const auto& element = entry->second;
+        for (size_t index = 0; index < element.actions.size(); ++index)
         {
-            Action* action = static_cast<Action*>(element.actions[i]);
-
-            if ((action->getFlags() & flags) != 0 && action->getOriginalTarget() == target)
-            {
-                removeActionAtIndex(i, element, actionIt);
-                --limit;
-            }
-            else
-            {
-                ++i;
-            }
+            auto* action = element.actions[index];
+            const bool matches = byTag ? static_cast<uint32_t>(action->getTag()) == selector
+                                       : (action->getFlags() & selector) != 0;
+            if (matches && action->getOriginalTarget() == target)
+                candidates.push_back({WeakPtr<Action>(action), element.actionRegistrations[index]});
         }
+    }
+    // No strong snapshot retain: each removal must run its real destructor
+    // now, and its callbacks may erase/re-add targets or append new actions.
+    for (const auto& candidate : candidates)
+    {
+        auto it = _targets.find(target);
+        if (it == _targets.end() || it->second.registration != registration)
+            break;
+        auto* action = candidate.action.get();
+        if (!action)
+            continue;
+        const auto index = it->second.actions.getIndex(action);
+        const bool matches = byTag ? static_cast<uint32_t>(action->getTag()) == selector
+                                   : (action->getFlags() & selector) != 0;
+        if (index != AX_INVALID_INDEX && it->second.actionRegistrations[index] == candidate.registration &&
+            matches && action->getOriginalTarget() == target)
+            removeActionAtIndex(index, it->second, it);
+        // Never reuse it/element/limit after the final release above.
     }
 }
 
@@ -374,69 +428,85 @@ ssize_t ActionManager::getNumberOfRunningActions() const
 }
 
 // main loop
+void ActionManager::updateTarget(ActionHandle& element, float dt)
+{
+    _currentTarget = &element;
+    _currentTargetSalvaged = false;
+    if (element.paused)
+        return;
+
+    // Preserve v3 actionIndex and salvage semantics. Each virtual call may
+    // remove actions/targets, append actions, or stop a VM. Keep the action
+    // alive until all bookkeeping is published, including isDone/stop paths.
+    for (element.actionIndex = 0; element.actionIndex < element.actions.size(); ++element.actionIndex)
+    {
+        auto* action = static_cast<Action*>(element.actions[element.actionIndex]);
+        element.currentAction = action;
+        if (!action)
+            continue;
+        element.currentActionSalvaged = false;
+        action->retain();
+        action->step(dt);
+        if (!element.currentActionSalvaged)
+        {
+            const bool done = action->isDone();
+            if (!element.currentActionSalvaged && done)
+            {
+                action->stop();
+                if (!element.currentActionSalvaged)
+                {
+                    // Normal completion must not acquire a salvage retain.
+                    element.currentAction = nullptr;
+                    removeAction(action);
+                }
+            }
+        }
+        const bool salvaged = element.currentActionSalvaged;
+        element.currentAction = nullptr;
+        if (salvaged)
+            action->release();
+        // A destructor can now reenter, seeing no dangling currentAction.
+        action->release();
+    }
+}
+
 void ActionManager::update(float dt)
 {
     AX_PROFILER_ZONE_SCOPED;
-
-    for (auto actionIt = _targets.begin(); actionIt != _targets.end();)
+    // A VM may stop (and release its lease) during step(). Finish the whole
+    // frame using its entry policy, then observe the new policy next frame.
+    const bool ordered = _legacyTargetOrderLeases != 0;
+    if (ordered)
     {
-        auto elt               = &actionIt->second;
-        _currentTarget         = elt;
-        _currentTargetSalvaged = false;
-
-        if (!_currentTarget->paused)
+        auto* element = _firstRegisteredTarget;
+        while (element)
         {
-            // The 'actions' MutableArray may change while inside this loop.
-            for (_currentTarget->actionIndex = 0; _currentTarget->actionIndex < _currentTarget->actions.size();
-                 _currentTarget->actionIndex++)
+            _nextOrderedTarget = nullptr;
+            updateTarget(*element, dt);
+            // Read after callbacks: removed successors are already unlinked,
+            // and targets appended by the last step run in this same frame.
+            _nextOrderedTarget = element->next;
+            if ((_currentTargetSalvaged && element->actions.empty()) || element->target->getReferenceCount() == 1)
             {
-                _currentTarget->currentAction =
-                    static_cast<Action*>(_currentTarget->actions[_currentTarget->actionIndex]);
-                if (_currentTarget->currentAction == nullptr)
-                {
-                    continue;
-                }
-
-                _currentTarget->currentActionSalvaged = false;
-
-                _currentTarget->currentAction->step(dt);
-
-                if (_currentTarget->currentActionSalvaged)
-                {
-                    // The currentAction told the node to remove it. To prevent the action from
-                    // accidentally deallocating itself before finishing its step, we retained
-                    // it. Now that step is done, it's safe to release it.
-                    _currentTarget->currentAction->release();
-                }
-                else if (_currentTarget->currentAction->isDone())
-                {
-                    _currentTarget->currentAction->stop();
-
-                    Action* action = _currentTarget->currentAction;
-                    // Make currentAction nil to prevent removeAction from salvaging it.
-                    _currentTarget->currentAction = nullptr;
-                    removeAction(action);
-                }
-
-                _currentTarget->currentAction = nullptr;
+                auto it = _targets.find(element->target);
+                eraseTargetActionHandle(it);
             }
+            element = _nextOrderedTarget;
         }
-
-        // elt, at this moment, is still valid
-        // so it is safe to ask this here (issue #490)
-        // elt = (tHashElement*)(elt->hh.next);
-
-        // only delete currentTarget if no actions were scheduled during the cycle (issue #481)
-        // if some node reference 'target', it's reference count >= 2 (issues #14050)
-        if ((_currentTargetSalvaged && _currentTarget->actions.empty()) || actionIt->first->getReferenceCount() == 1)
-        {
-            eraseTargetActionHandle(actionIt);
-        }
-        else
-            ++actionIt;
+        _nextOrderedTarget = nullptr;
     }
-
-    // issue #635
+    else
+    {
+        // Preserve the modern default traversal policy.
+        for (auto actionIt = _targets.begin(); actionIt != _targets.end();)
+        {
+            updateTarget(actionIt->second, dt);
+            if ((_currentTargetSalvaged && _currentTarget->actions.empty()) || actionIt->first->getReferenceCount() == 1)
+                eraseTargetActionHandle(actionIt);
+            else
+                ++actionIt;
+        }
+    }
     _currentTarget = nullptr;
 }
 

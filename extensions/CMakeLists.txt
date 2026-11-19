@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
+# SPDX-License-Identifier: MIT
 
 
 if(BUILD_SHARED_LIBS)
@@ -105,6 +107,10 @@ if(AX_ENABLE_EXT_SCENEIO AND AX_ENABLE_EXT_SCENEEXT)
   add_subdirectory(sceneio)
 endif()
 
+if(AX_ENABLE_EXT_COCOSBUILDER)
+  add_subdirectory(cocosbuilder)
+endif()
+
 if(AX_ENABLE_EXT_LIVE2D)
   add_subdirectory(Live2D)
 endif()
@@ -115,6 +121,10 @@ endif()
 
 if(AX_ENABLE_EXT_LUA)
   add_subdirectory(scripting/lua-bindings)
+endif()
+
+if(AX_ENABLE_EXT_JS)
+  add_subdirectory(scripting/js-bindings)
 endif()
 
 if(AX_ENABLE_EXT_JSONDEFAULT)

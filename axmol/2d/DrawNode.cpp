@@ -3,6 +3,7 @@
  * Copyright (c) 2013-2016 Chukong Technologies Inc.
  * Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  * Copyright (c) 2019-present Simdsoft Limited.
+ * Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
  *
  * SPDX-License-Identifier: MIT
  */
@@ -57,6 +58,18 @@ static V2F_T2F_C4F* expandBufferAndGetPointer(tlx::pod_vector<V2F_T2F_C4F>& buff
     size_t oldSize = buffer.size();
     buffer.extend(count);
     return buffer.data() + oldSize;
+}
+
+bool DrawNode::appendLegacyTriangleVertices(std::span<const V2F_T2F_C4F> vertices)
+{
+    if (vertices.size() % 3 != 0)
+        return false;
+    if (vertices.empty())
+        return true;
+    auto* destination = expandBufferAndGetPointer(_triangles, vertices.size());
+    memcpy(destination, vertices.data(), vertices.size_bytes());
+    _trianglesDirty = true;
+    return true;
 }
 
 DrawNode::DrawNode()

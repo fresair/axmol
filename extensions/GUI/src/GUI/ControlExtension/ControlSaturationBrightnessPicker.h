@@ -9,6 +9,7 @@
  * http://yannickloriot.com
  *
  * Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+ * Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -77,6 +78,14 @@ public:
     static ControlSaturationBrightnessPicker* create(Node* target, Vec2 pos);
 
     void setEnabled(bool enabled) override;
+
+    /** Enables the v3 native picker contract for an explicit compatibility client.
+     * @script {ignore}
+     */
+    void setLegacyCompatibilityEnabled(bool enabled) { _legacyCompatibilityEnabled = enabled; }
+    /** @script {ignore} */
+    bool isLegacyCompatibilityEnabled() const { return _legacyCompatibilityEnabled; }
+
     /**
      * @lua NA
      */
@@ -87,11 +96,19 @@ public:
     virtual void updateDraggerWithHSV(HSV hsv);
 
 protected:
+    /** @script {ignore} */
+    bool onPointerHitTest(PointerEvent* event, Vec3* outHitPoint) override;
+    /** @script {ignore} */
+    bool containsSliderPosition(Vec2 location) const;
+
     void updateSliderPosition(Vec2 location);
     bool checkSliderPosition(Vec2 location);
 
     bool onPointerDown(PointerEvent* event) override;
     void onPointerMove(PointerEvent* event) override;
+
+private:
+    bool _legacyCompatibilityEnabled{false};
 };
 
 // end of GUI group

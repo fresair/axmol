@@ -1,6 +1,7 @@
 /****************************************************************************
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -183,7 +184,6 @@ WebSocket::WebSocket() : _isDestroyed(std::make_shared<std::atomic<bool>>(false)
     _service->set_option(yasio::YOPT_S_FORWARD_PACKET, 1);  // forward packet immediately when got data from OS kernel
     _service->set_option(yasio::YOPT_S_DNS_QUERIES_TIMEOUT, 3);
     _service->set_option(yasio::YOPT_S_DNS_QUERIES_TRIES, 1);
-    _service->start([this](yasio::event_ptr&& e) { handleNetworkEvent(e.get()); });
 
     std::shared_ptr<std::atomic<bool>> isDestroyed = _isDestroyed;
     _resetDirectorListener = Director::getInstance()->getEventDispatcher()->addCustomEventListener(
@@ -215,11 +215,37 @@ bool WebSocket::open(Delegate* delegate, std::string_view url, std::string_view 
 {
     _delegate    = delegate;
     _url         = url;
-    _caFilePath  = FileUtils::getInstance()->fullPathForFilename(caFilePath);
+    _caFilePath.clear();
     _requestUri  = Uri::parse(url);
     _protocols   = protocols;
+    _selectedProtocol.clear();
     _closeCode   = ws::detail::close_code::none;
     _closeReason = "";
+
+    _state = State::CONNECTING;
+    if (_requestUri.isSecure() && !caFilePath.empty())
+    {
+        // FileUtils resources can live inside an APK or another virtual
+        // filesystem. OpenSSL expects an ordinary native file, so materialize
+        // the requested trust bytes in an application-owned, content-addressed
+        // cache. Never turn a missing/unreadable explicit CA into unverified TLS.
+        auto* files = FileUtils::getInstance();
+        const auto pem = files->getStringFromFile(caFilePath);
+        const auto directory = files->getWritablePath() + ".axmol-tls-ca/";
+        if (pem.empty() || !files->createDirectories(directory))
+        {
+            _state = State::CLOSED;
+            _eventQueue.emplace_back(new ErrorEvent(ErrorCode::CONNECTION_FAILURE));
+            return true;  // Report through the same asynchronous error path as a TLS failure.
+        }
+        _caFilePath = directory + utils::computeDigest(pem, "sha256"sv) + ".pem";
+        if (files->getStringFromFile(_caFilePath) != pem && !files->writeStringToFile(pem, _caFilePath))
+        {
+            _state = State::CLOSED;
+            _eventQueue.emplace_back(new ErrorEvent(ErrorCode::CONNECTION_FAILURE));
+            return true;
+        }
+    }
 
     setupParsers();
     generateHandshakeSecKey();
@@ -229,7 +255,11 @@ bool WebSocket::open(Delegate* delegate, std::string_view url, std::string_view 
 
     _service->set_option(YOPT_C_REMOTE_ENDPOINT, 0, _requestUri.getHost().data(), (int)_requestUri.getPort());
 
-    _state = State::CONNECTING;
+    // yasio initializes its client SSL context when its worker starts. Starting
+    // in the constructor races this CA option and can permanently select an
+    // unverified context before open() has read an APK certificate.
+    _service->start([this](yasio::event_ptr&& e) { handleNetworkEvent(e.get()); });
+
     if (_requestUri.isSecure())
         _service->open(0, YCK_SSL_CLIENT);
     else
@@ -377,7 +407,8 @@ int WebSocket::on_frame_end(websocket_parser* parser)
                     ws->_closeCode = ((uint16_t)ws->_receivedData.data()[0]) << 8 | ws->_receivedData.data()[1];
 
                 if (ws->_receivedData.size() > 2 && ws->_closeReason.empty())
-                    ws->_closeReason = std::string(ws->_receivedData.data()[3], ws->_receivedData.size() - 2);
+                    ws->_closeReason = std::string(reinterpret_cast<const char*>(ws->_receivedData.data() + 2),
+                                                  ws->_receivedData.size() - 2);
             }
             break;
         case WS_OP_PING:
@@ -474,16 +505,53 @@ void WebSocket::close(uint16_t code, std::string_view reason)
  */
 void WebSocket::closeAsync(uint16_t code, std::string_view reason)
 {
-    if (_state < State::CLOSING)
+    if (_state >= State::CLOSING)
+        return;
+
+    const bool wasOpen = _state == State::OPEN;
+    _closeCode         = code;
+    _closeReason       = reason;
+    _state             = State::CLOSING;
+
+    if (wasOpen && _transport && _service->is_open(0))
     {
-        if (_service->is_open(0))
-        {
-            _state = State::CLOSING;
-            _service->close(0);
-        }
-        else
-            _state = State::CLOSED;
+        // RFC 6455 control frames are limited to 125 bytes, including the
+        // two-byte status code. JS validates this before calling native code.
+        size_t reasonLength = (std::min)(reason.size(), size_t{123});
+        while (reasonLength < reason.size() && reasonLength &&
+               (static_cast<unsigned char>(reason[reasonLength]) & 0xc0) == 0x80)
+            --reasonLength;
+        _closeReason.assign(reason.substr(0, reasonLength));
+
+        std::string payload;
+        payload.push_back(static_cast<char>(code >> 8));
+        payload.push_back(static_cast<char>(code & 0xff));
+        payload += _closeReason;
+        const auto flags = static_cast<websocket_flags>(WS_FIN | WS_HAS_MASK | WS_OP_CLOSE);
+        const uint32_t key = ax::random();
+        const char mask[] = {static_cast<char>(key), static_cast<char>(key >> 8),
+                             static_cast<char>(key >> 16), static_cast<char>(key >> 24)};
+        tlx::byte_buffer frame;
+        frame.resize(websocket_calc_frame_size(flags, payload.size()));
+        websocket_build_frame(frame.as_chars().data(), flags, mask, payload.data(), payload.size());
+
+        // Close after the queued frame has been written. Capturing the service
+        // and destruction flag keeps this worker callback independent of the
+        // WebSocket delegate and avoids a wait on the owner thread.
+        auto* service = _service;
+        auto destroyed = _isDestroyed;
+        if (service->write(_transport, std::move(frame), [service, destroyed](int, size_t) {
+                if (!*destroyed)
+                    service->close(0);
+            }) >= 0)
+            return;
     }
+
+    // This also cancels an OPEN operation that is still connecting. No
+    // WebSocket control frame may be sent before the handshake completes.
+    _service->close(0);
+    if (!_service->is_open(0))
+        _state = State::CLOSED;
 }
 
 void WebSocket::generateHandshakeSecKey()
@@ -530,11 +598,53 @@ void WebSocket::handleNetworkEvent(yasio::io_event* event)
 
                 if (error == ErrorCode::OK)
                 {
+                    auto selected = _responseHeaders.find("sec-websocket-protocol");
+                    if (selected != _responseHeaders.end())
+                    {
+                        bool offered = false;
+                        std::string_view protocols = _protocols;
+                        while (!protocols.empty())
+                        {
+                            const auto comma = protocols.find(',');
+                            auto candidate   = protocols.substr(0, comma);
+                            while (!candidate.empty() && candidate.front() == ' ')
+                                candidate.remove_prefix(1);
+                            while (!candidate.empty() && candidate.back() == ' ')
+                                candidate.remove_suffix(1);
+                            if (candidate == selected->second)
+                                offered = true;
+                            if (comma == std::string_view::npos)
+                                break;
+                            protocols.remove_prefix(comma + 1);
+                        }
+                        if (offered)
+                            _selectedProtocol = selected->second;
+                        else
+                            error = ErrorCode::UPGRADE_FAILURE;
+                    }
+                }
+
+                if (error == ErrorCode::OK)
+                {
                     _state             = State::OPEN;
                     auto& timerForRead = channel->get_user_timer();
                     timerForRead.cancel();
                     _transport = event->transport();
                     _eventQueue.emplace_back(new WsOpenEvent());
+
+                    // A server can send its first WebSocket frames in the
+                    // same TCP packet as HTTP 101. llhttp pauses at the upgrade
+                    // boundary; preserve all bytes after that boundary rather
+                    // than waiting for the next packet and losing those frames.
+                    if (llhttp_get_errno(&_context) == HPE_PAUSED_UPGRADE)
+                    {
+                        const auto* begin = reinterpret_cast<const char*>(pkt.data());
+                        const auto* end = begin + pkt.size();
+                        const auto* remaining = llhttp_get_error_pos(&_context);
+                        if (remaining && remaining >= begin && remaining < end)
+                            websocket_parser_execute(&_wsParser, &_wsParserSettings, remaining,
+                                                     static_cast<size_t>(end - remaining));
+                    }
 
                     // WebSocketProtocol::sendPing(*this);
 

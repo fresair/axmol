@@ -18,3 +18,7 @@
 *.PDF	 diff=astextplain
 *.rtf	 diff=astextplain
 *.RTF	 diff=astextplain
+
+# Preserve upstream license bytes recorded for the bundled Spine compatibility assets.
+tests/js-tests/Content/legacy-compat/spine/LICENSE_goblins.txt -text
+tests/js-tests/Content/legacy-compat/spine/LICENSE_spineboy.txt -text

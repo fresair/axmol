@@ -4,6 +4,7 @@
  Copyright (c) 2011      Zynga Inc.
  Copyright (c) 2013-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -29,6 +30,7 @@
 #include "axmol/2d/ActionInstant.h"
 #include "axmol/scene/Node.h"
 #include "axmol/2d/Sprite.h"
+#include "axmol/base/ScriptSupport.h"
 
 namespace ax
 {
@@ -49,6 +51,15 @@ bool ActionInstant::isDone() const
 void ActionInstant::step(float /*dt*/)
 {
     float updateDt = 1;
+#if AX_ENABLE_SCRIPT_BINDING
+    if (hasScriptBindingExposure())
+        if (auto* engine = ScriptEngineManager::getScriptEngineIfExists();
+            engine && engine->dispatchActionUpdate(this, updateDt))
+        {
+            _done = true;
+            return;
+        }
+#endif
     update(updateDt);
 }
 

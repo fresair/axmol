@@ -1,6 +1,7 @@
 /****************************************************************************
  Copyright (c) 2018-2019 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -141,6 +142,11 @@ public:
      * Get the program object.
      */
     rhi::Program* getProgram() const { return _program; }
+
+    /** Optional state-local vertex declaration used by native 3D mesh draws. @script{ignore} */
+    void setVertexLayoutOverride(VertexLayout* layout);
+    /** @script{ignore} */
+    VertexLayout* getVertexLayoutOverride() const { return _vertexLayoutOverride; }
 
     /**
      * Specify the value of a uniform variable for the current program state object.
@@ -364,6 +370,7 @@ protected:
 #endif
 
     bool _isBatchable = false;
+    VertexLayout* _vertexLayoutOverride = nullptr;
 };
 
 // end of _rhi group

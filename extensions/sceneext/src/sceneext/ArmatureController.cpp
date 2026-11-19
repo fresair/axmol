@@ -1,6 +1,7 @@
 /****************************************************************************
 Copyright (c) 2013-2017 Chukong Technologies Inc.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -23,7 +24,7 @@ ArmatureController* ArmatureController::obtain(Armature* armature)
     ArmatureController* armatureController = new ArmatureController();
     if (armatureController->init(armature))
         return armatureController;
-    AX_SAFE_DELETE(armatureController);
+    AX_SAFE_RELEASE_NULL(armatureController);
     return nullptr;
 }
 

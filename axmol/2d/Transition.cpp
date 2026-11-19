@@ -5,6 +5,7 @@ Copyright (c) 2011      Zynga Inc.
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -316,7 +317,9 @@ void TransitionJumpZoom::onEnter()
     ActionInterval* scaleOut = ScaleTo::create(_duration / 4, 0.5f);
 
     auto jumpZoomOut = Sequence::create(scaleOut, jump, nullptr);
-    auto jumpZoomIn  = Sequence::create(jump, scaleIn, nullptr);
+    // The scenes can be updated in either order. A shared JumpBy would let the
+    // outgoing sequence finish or stop the incoming scene's active jump.
+    auto jumpZoomIn  = Sequence::create(jump->clone(), scaleIn, nullptr);
 
     ActionInterval* delay = DelayTime::create(_duration / 2);
 

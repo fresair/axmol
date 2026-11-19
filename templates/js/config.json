@@ -1,0 +1,10 @@
+{
+    "init_cfg": {
+        "isLandscape": true,
+        "isWindowTop": false,
+        "name": "Dummy",
+        "width": 960,
+        "height": 640,
+        "entry": "main.js"
+    }
+}

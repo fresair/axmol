@@ -9,6 +9,7 @@
  * http://yannickloriot.com
  *
  * Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+ * Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,6 +33,7 @@
  */
 
 #include "ControlHuePicker.h"
+#include "LegacyControlTouchHitTest.h"
 
 NS_AX_EXT_BEGIN
 
@@ -47,9 +49,13 @@ ControlHuePicker::~ControlHuePicker()
 ControlHuePicker* ControlHuePicker::create(Node* target, Vec2 pos)
 {
     ControlHuePicker* pRet = new ControlHuePicker();
-    pRet->initWithTargetAndPos(target, pos);
-    pRet->autorelease();
-    return pRet;
+    if (pRet->initWithTargetAndPos(target, pos))
+    {
+        pRet->autorelease();
+        return pRet;
+    }
+    delete pRet;
+    return nullptr;
 }
 
 bool ControlHuePicker::initWithTargetAndPos(Node* target, Vec2 pos)
@@ -61,6 +67,8 @@ bool ControlHuePicker::initWithTargetAndPos(Node* target, Vec2 pos)
             ControlUtils::addSpriteToTargetWithPosAndAnchor("huePickerBackground.png", target, pos, Vec2(0.0f, 0.0f)));
         this->setSlider(
             ControlUtils::addSpriteToTargetWithPosAndAnchor("colourPicker.png", target, pos, Vec2(0.5f, 0.5f)));
+        if (!_background || !_slider)
+            return false;
 
         _slider->setPosition(pos.x, pos.y + _background->getBoundingBox().size.height * 0.5f);
         _startPos = pos;
@@ -144,13 +152,28 @@ void ControlHuePicker::updateSliderPosition(Vec2 location)
     sendActionsForControlEvents(Control::EventType::VALUE_CHANGED);
 }
 
-bool ControlHuePicker::checkSliderPosition(Vec2 location)
+bool ControlHuePicker::onPointerHitTest(PointerEvent* event, Vec3* outHitPoint)
+{
+    if (!_legacyCompatibilityEnabled)
+        return Control::onPointerHitTest(event, outHitPoint);
+    if (!_background || !_slider)
+        return false;
+    return detail::legacyControlTouchHitTest(
+        this, event, outHitPoint, [this](Vec2 location) { return containsSliderPosition(location); });
+}
+
+bool ControlHuePicker::containsSliderPosition(Vec2 location) const
 {
     // compute the distance between the current location and the center
     double distance = sqrt(pow(location.x + 10, 2) + pow(location.y, 2));
 
     // check that the touch location is within the circle
-    if (80 > distance && distance > 59)
+    return 80 > distance && distance > 59;
+}
+
+bool ControlHuePicker::checkSliderPosition(Vec2 location)
+{
+    if (containsSliderPosition(location))
     {
         updateSliderPosition(location);
         return true;

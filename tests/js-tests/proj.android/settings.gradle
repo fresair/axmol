@@ -1,0 +1,21 @@
+// Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
+// SPDX-License-Identifier: MIT
+// Prefer the engine selected by the invoking CLI or Android Studio process.
+// The validated relative candidates also preserve in-tree and local-engine projects.
+def engineCandidates = [System.getProperty('AX_ROOT'), System.getenv('AX_ROOT'),
+    new File(settingsDir, '../axmol').path, new File(settingsDir, '../../..').path]
+def engineRoot = engineCandidates.findResult { candidate ->
+    if (!candidate) return null
+    def directory = new File(candidate).canonicalFile
+    new File(directory, 'axmol/platform/android/libaxmol/build.gradle').isFile() ? directory : null
+}
+if (engineRoot == null) {
+    throw new GradleException('Set AX_ROOT to the Axmol engine checkout before opening this test project')
+}
+System.setProperty('AX_ROOT', engineRoot.path)
+
+include ':libaxmol'
+project(':libaxmol').projectDir = new File(engineRoot, 'axmol/platform/android/libaxmol')
+include ':app'
+project(':app').projectDir = new File(settingsDir, 'app')
+rootProject.name = "js-tests"

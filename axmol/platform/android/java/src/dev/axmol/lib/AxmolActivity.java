@@ -2,6 +2,7 @@
  Copyright (c) 2010-2013 cocos2d-x.org
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -19,14 +20,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.PowerManager;
+import android.os.SystemClock;
 import android.preference.PreferenceManager.OnActivityResultListener;
 import android.util.Log;
 import android.view.HapticFeedbackConstants;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.activity.OnBackPressedCallback;
 
 import dev.axmol.lib.AxmolEngine.AxmolEngineListener;
 
@@ -45,6 +49,37 @@ public abstract class AxmolActivity extends AppCompatActivity implements AxmolEn
     private AxmolHandler mHandler = null;
     private static AxmolActivity sContext = null;
     private boolean showVirtualButton = false;
+
+    // Android's committed Back callback has no original hardware KeyEvent. Route
+    // its equivalent down/up pair through the existing player entry points, so
+    // native listeners retain ownership of Back behavior. Gesture cancellation
+    // does not call this method. Use the normal lifecycle dispatcher, preserving
+    // system IME priority and the legacy View key path.
+    private final class PlayerBackCallback extends OnBackPressedCallback {
+        private int committedBackLogs;
+
+        PlayerBackCallback() { super(true); }
+
+        @Override
+        public void handleOnBackPressed() {
+            AxmolPlayer player = mPlayer;
+            if (player == null) return;
+            long downTime = SystemClock.uptimeMillis();
+            KeyEvent down = new KeyEvent(downTime, downTime, KeyEvent.ACTION_DOWN,
+                KeyEvent.KEYCODE_BACK, 0);
+            boolean downHandled = player.onKeyDown(KeyEvent.KEYCODE_BACK, down);
+            long upTime = SystemClock.uptimeMillis();
+            KeyEvent up = new KeyEvent(downTime, upTime, KeyEvent.ACTION_UP,
+                KeyEvent.KEYCODE_BACK, 0);
+            boolean upHandled = player.onKeyUp(KeyEvent.KEYCODE_BACK, up);
+            if (committedBackLogs < 3) {
+                ++committedBackLogs;
+                Log.d(TAG, "CommittedBack key=" + KeyEvent.KEYCODE_BACK
+                    + " down_ms=" + downTime + " up_ms=" + upTime
+                    + " downHandled=" + downHandled + " upHandled=" + upHandled);
+            }
+        }
+    }
 
     public AxmolPlayer getPlayer(){
         return  mPlayer;
@@ -157,6 +192,7 @@ public abstract class AxmolActivity extends AppCompatActivity implements AxmolEn
 
         mPlayer = new AxmolPlayer(this);
         setContentView(mPlayer);
+        getOnBackPressedDispatcher().addCallback(this, new PlayerBackCallback());
 
         // Audio configuration
         this.setVolumeControlStream(AudioManager.STREAM_MUSIC);

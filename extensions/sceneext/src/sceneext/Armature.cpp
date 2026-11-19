@@ -1,6 +1,7 @@
 /****************************************************************************
 Copyright (c) 2013-2017 Chukong Technologies Inc.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -71,7 +72,7 @@ Armature::~Armature()
     _boneDic.clear();
     _topBoneList.clear();
 
-    AX_SAFE_DELETE(_animationController);
+    AX_SAFE_RELEASE_NULL(_animationController);
 }
 
 bool Armature::init()
@@ -86,7 +87,7 @@ bool Armature::init(std::string_view name)
     {
         removeAllChildren();
 
-        AX_SAFE_DELETE(_animationController);
+        AX_SAFE_RELEASE_NULL(_animationController);
         _animationController = ArmatureController::obtain(this);
 
         _boneDic.clear();

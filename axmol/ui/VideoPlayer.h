@@ -2,6 +2,7 @@
  Copyright (c) 2014-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -34,9 +35,11 @@ namespace ui
 {
 
 class VideoPlayer;
+class LegacyVideoFullscreen;
 
 class AX_GUI_DLL VideoController : public ax::ui::Widget
 {
+    friend class VideoPlayer;
 public:
     enum class Orientation
     {
@@ -337,6 +340,9 @@ public:
      */
     virtual void setFullscreen(bool fullscreen);
 
+    /** Opt in to the v3 screen presentation contract without changing this node's layout. @script{ignore} */
+    void setLegacyFullscreen(bool fullscreen);
+
     /**
      * Indicates whether the video player is in full-screen mode.
      *
@@ -379,6 +385,11 @@ public:
     ~VideoPlayer() override;
 
 protected:
+    friend class LegacyVideoFullscreen;
+    void requestLegacyFullscreenAttachment();
+    void attachLegacyFullscreen();
+    void detachLegacyFullscreen();
+    void updateVideoFrame(const Vec2& targetSize, uint32_t flags);
     ax::ui::Widget* createCloneInstance() override;
     void copySpecialProperties(Widget* model) override;
     virtual void updateVideoController();
@@ -401,6 +412,8 @@ protected:
     bool _fullscreen       = false;
     bool _keepAspectRatio  = false;
     bool _userInputEnabled = false;
+    bool _legacyFullscreenMode = false;
+    LegacyVideoFullscreen* _legacyFullscreenOverlay = nullptr;
 
     StyleType _styleType = StyleType::DEFAULT;
 

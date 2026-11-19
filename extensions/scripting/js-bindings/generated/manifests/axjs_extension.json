@@ -1,0 +1,3467 @@
+{
+  "formatVersion": 1,
+  "language": "js",
+  "engine": "SpiderMonkey 33.1",
+  "module": "extension",
+  "registrationName": "ax_extension",
+  "targetNamespace": "cc",
+  "conditionalExpression": null,
+  "classes": [
+    {
+      "nativeName": "Control",
+      "qualifiedName": "ax::ext::Control",
+      "jsName": "Control",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::Layer",
+        "ax::Node",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::ext::Control",
+          "returnType": "ax::ext::Control *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getState",
+          "jsName": "getState",
+          "declaringType": "ax::ext::Control",
+          "returnType": "ax::ext::Control::State",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getTouchLocation",
+          "jsName": "getTouchLocation",
+          "declaringType": "ax::ext::Control",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [
+            "ax::PointerEvent *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "hasVisibleParents",
+          "jsName": "hasVisibleParents",
+          "declaringType": "ax::ext::Control",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isEnabled",
+          "jsName": "isEnabled",
+          "declaringType": "ax::ext::Control",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isHighlighted",
+          "jsName": "isHighlighted",
+          "declaringType": "ax::ext::Control",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isSelected",
+          "jsName": "isSelected",
+          "declaringType": "ax::ext::Control",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isTouchInside",
+          "jsName": "isTouchInside",
+          "declaringType": "ax::ext::Control",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::PointerEvent *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "needsLayout",
+          "jsName": "needsLayout",
+          "declaringType": "ax::ext::Control",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "onPointerCancel",
+          "jsName": "onPointerCancel",
+          "declaringType": "ax::ext::Control",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::PointerEvent *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "onPointerDown",
+          "jsName": "onPointerDown",
+          "declaringType": "ax::ext::Control",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::PointerEvent *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "onPointerMove",
+          "jsName": "onPointerMove",
+          "declaringType": "ax::ext::Control",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::PointerEvent *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "onPointerUp",
+          "jsName": "onPointerUp",
+          "declaringType": "ax::ext::Control",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::PointerEvent *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "sendActionsForControlEvents",
+          "jsName": "sendActionsForControlEvents",
+          "declaringType": "ax::ext::Control",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::ext::Control::EventType"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setEnabled",
+          "jsName": "setEnabled",
+          "declaringType": "ax::ext::Control",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setHighlighted",
+          "jsName": "setHighlighted",
+          "declaringType": "ax::ext::Control",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setSelected",
+          "jsName": "setSelected",
+          "declaringType": "ax::ext::Control",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "addTargetWithActionForControlEvents",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Object *",
+            "void (ax::Object::*)(ax::Object *, ax::ext::Control::EventType)",
+            "ax::ext::Control::EventType"
+          ]
+        },
+        {
+          "nativeName": "removeTargetWithActionForControlEvents",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Object *",
+            "void (ax::Object::*)(ax::Object *, ax::ext::Control::EventType)",
+            "ax::ext::Control::EventType"
+          ]
+        }
+      ]
+    },
+    {
+      "nativeName": "ControlButton",
+      "qualifiedName": "ax::ext::ControlButton",
+      "jsName": "ControlButton",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::ext::Control",
+        "ax::Layer",
+        "ax::Node",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "ax::ext::ControlButton *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "ax::ext::ControlButton *",
+          "parameterTypes": [
+            "ax::ui::Scale9Sprite *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "ax::ext::ControlButton *",
+          "parameterTypes": [
+            "ax::Node *",
+            "ax::ui::Scale9Sprite *"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "ax::ext::ControlButton *",
+          "parameterTypes": [
+            "std::string_view",
+            "std::string_view",
+            "float"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "ax::ext::ControlButton *",
+          "parameterTypes": [
+            "ax::Node *",
+            "ax::ui::Scale9Sprite *",
+            "bool"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "doesAdjustBackgroundImage",
+          "jsName": "doesAdjustBackgroundImage",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getBackgroundSprite",
+          "jsName": "getBackgroundSprite",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "ax::ui::Scale9Sprite *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getBackgroundSpriteForState",
+          "jsName": "getBackgroundSpriteForState",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "ax::ui::Scale9Sprite *",
+          "parameterTypes": [
+            "ax::ext::Control::State"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getCurrentTitle",
+          "jsName": "getCurrentTitle",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "std::string_view",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getCurrentTitle",
+          "jsName": "getCurrentTitle",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "std::string",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getCurrentTitleColor",
+          "jsName": "getCurrentTitleColor",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "const ax::Color32 \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getHorizontalOrigin",
+          "jsName": "getHorizontalOrigin",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getLabelAnchorPoint",
+          "jsName": "getLabelAnchorPoint",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "const ax::Vec2 \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getPreferredSize",
+          "jsName": "getPreferredSize",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "const ax::Vec2 \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getScaleRatio",
+          "jsName": "getScaleRatio",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getTitleBMFontForState",
+          "jsName": "getTitleBMFontForState",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "std::string_view",
+          "parameterTypes": [
+            "ax::ext::Control::State"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getTitleColorForState",
+          "jsName": "getTitleColorForState",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "ax::Color32",
+          "parameterTypes": [
+            "ax::ext::Control::State"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getTitleForState",
+          "jsName": "getTitleForState",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "std::string",
+          "parameterTypes": [
+            "ax::ext::Control::State"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getTitleLabel",
+          "jsName": "getTitleLabel",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "ax::Node *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getTitleLabelForState",
+          "jsName": "getTitleLabelForState",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "ax::Node *",
+          "parameterTypes": [
+            "ax::ext::Control::State"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getTitleTTFForState",
+          "jsName": "getTitleTTFForState",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "std::string_view",
+          "parameterTypes": [
+            "ax::ext::Control::State"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getTitleTTFSizeForState",
+          "jsName": "getTitleTTFSizeForState",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "float",
+          "parameterTypes": [
+            "ax::ext::Control::State"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getVerticalMargin",
+          "jsName": "getVerticalMargin",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getZoomOnTouchDown",
+          "jsName": "getZoomOnTouchDown",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "initWithBackgroundSprite",
+          "jsName": "initWithBackgroundSprite",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::ui::Scale9Sprite *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "initWithLabelAndBackgroundSprite",
+          "jsName": "initWithLabelAndBackgroundSprite",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::Node *",
+            "ax::ui::Scale9Sprite *",
+            "bool"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "initWithTitleAndFontNameAndFontSize",
+          "jsName": "initWithTitleAndFontNameAndFontSize",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "bool",
+          "parameterTypes": [
+            "std::string_view",
+            "std::string_view",
+            "float"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "isPushed",
+          "jsName": "isPushed",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "setAdjustBackgroundImage",
+          "jsName": "setAdjustBackgroundImage",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setBackgroundSprite",
+          "jsName": "setBackgroundSprite",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::ui::Scale9Sprite *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setBackgroundSpriteForState",
+          "jsName": "setBackgroundSpriteForState",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::ui::Scale9Sprite *",
+            "ax::ext::Control::State"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setBackgroundSpriteFrameForState",
+          "jsName": "setBackgroundSpriteFrameForState",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::SpriteFrame *",
+            "ax::ext::Control::State"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setLabelAnchorPoint",
+          "jsName": "setLabelAnchorPoint",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMargins",
+          "jsName": "setMargins",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "void",
+          "parameterTypes": [
+            "int",
+            "int"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setPreferredSize",
+          "jsName": "setPreferredSize",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setScaleRatio",
+          "jsName": "setScaleRatio",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setTitleBMFontForState",
+          "jsName": "setTitleBMFontForState",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "void",
+          "parameterTypes": [
+            "std::string_view",
+            "ax::ext::Control::State"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setTitleColorForState",
+          "jsName": "setTitleColorForState",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Color32 \u0026",
+            "ax::ext::Control::State"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setTitleForState",
+          "jsName": "setTitleForState",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "void",
+          "parameterTypes": [
+            "std::string_view",
+            "ax::ext::Control::State"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setTitleLabel",
+          "jsName": "setTitleLabel",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Node *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setTitleLabelForState",
+          "jsName": "setTitleLabelForState",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Node *",
+            "ax::ext::Control::State"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setTitleTTFForState",
+          "jsName": "setTitleTTFForState",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "void",
+          "parameterTypes": [
+            "std::string_view",
+            "ax::ext::Control::State"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setTitleTTFSizeForState",
+          "jsName": "setTitleTTFSizeForState",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "void",
+          "parameterTypes": [
+            "float",
+            "ax::ext::Control::State"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setZoomOnTouchDown",
+          "jsName": "setZoomOnTouchDown",
+          "declaringType": "ax::ext::ControlButton",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "ControlColourPicker",
+      "qualifiedName": "ax::ext::ControlColourPicker",
+      "jsName": "ControlColourPicker",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::ext::Control",
+        "ax::Layer",
+        "ax::Node",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "colourSliderValueChanged",
+          "jsName": "colourSliderValueChanged",
+          "declaringType": "ax::ext::ControlColourPicker",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Object *",
+            "ax::ext::Control::EventType"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::ext::ControlColourPicker",
+          "returnType": "ax::ext::ControlColourPicker *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getBackground",
+          "jsName": "getBackground",
+          "declaringType": "ax::ext::ControlColourPicker",
+          "returnType": "ax::Sprite *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getHuePicker",
+          "jsName": "getHuePicker",
+          "declaringType": "ax::ext::ControlColourPicker",
+          "returnType": "ax::ext::ControlHuePicker *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getcolourPicker",
+          "jsName": "getcolourPicker",
+          "declaringType": "ax::ext::ControlColourPicker",
+          "returnType": "ax::ext::ControlSaturationBrightnessPicker *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "hueSliderValueChanged",
+          "jsName": "hueSliderValueChanged",
+          "declaringType": "ax::ext::ControlColourPicker",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Object *",
+            "ax::ext::Control::EventType"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setBackground",
+          "jsName": "setBackground",
+          "declaringType": "ax::ext::ControlColourPicker",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Sprite *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setHuePicker",
+          "jsName": "setHuePicker",
+          "declaringType": "ax::ext::ControlColourPicker",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::ext::ControlHuePicker *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setcolourPicker",
+          "jsName": "setcolourPicker",
+          "declaringType": "ax::ext::ControlColourPicker",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::ext::ControlSaturationBrightnessPicker *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "ControlHuePicker",
+      "qualifiedName": "ax::ext::ControlHuePicker",
+      "jsName": "ControlHuePicker",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::ext::Control",
+        "ax::Layer",
+        "ax::Node",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::ext::ControlHuePicker",
+          "returnType": "ax::ext::ControlHuePicker *",
+          "parameterTypes": [
+            "ax::Node *",
+            "ax::Vec2"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getBackground",
+          "jsName": "getBackground",
+          "declaringType": "ax::ext::ControlHuePicker",
+          "returnType": "ax::Sprite *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getHue",
+          "jsName": "getHue",
+          "declaringType": "ax::ext::ControlHuePicker",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getHuePercentage",
+          "jsName": "getHuePercentage",
+          "declaringType": "ax::ext::ControlHuePicker",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getSlider",
+          "jsName": "getSlider",
+          "declaringType": "ax::ext::ControlHuePicker",
+          "returnType": "ax::Sprite *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getStartPos",
+          "jsName": "getStartPos",
+          "declaringType": "ax::ext::ControlHuePicker",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "initWithTargetAndPos",
+          "jsName": "initWithTargetAndPos",
+          "declaringType": "ax::ext::ControlHuePicker",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::Node *",
+            "ax::Vec2"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setBackground",
+          "jsName": "setBackground",
+          "declaringType": "ax::ext::ControlHuePicker",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Sprite *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setHue",
+          "jsName": "setHue",
+          "declaringType": "ax::ext::ControlHuePicker",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setHuePercentage",
+          "jsName": "setHuePercentage",
+          "declaringType": "ax::ext::ControlHuePicker",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setSlider",
+          "jsName": "setSlider",
+          "declaringType": "ax::ext::ControlHuePicker",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Sprite *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "ControlPotentiometer",
+      "qualifiedName": "ax::ext::ControlPotentiometer",
+      "jsName": "ControlPotentiometer",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::ext::Control",
+        "ax::Layer",
+        "ax::Node",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "angleInDegreesBetweenLineFromPoint_toPoint_toLineFromPoint_toPoint",
+          "jsName": "angleInDegreesBetweenLineFromPoint_toPoint_toLineFromPoint_toPoint",
+          "declaringType": "ax::ext::ControlPotentiometer",
+          "returnType": "float",
+          "parameterTypes": [
+            "ax::Vec2",
+            "ax::Vec2",
+            "ax::Vec2",
+            "ax::Vec2"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::ext::ControlPotentiometer",
+          "returnType": "ax::ext::ControlPotentiometer *",
+          "parameterTypes": [
+            "const char *",
+            "const char *",
+            "const char *"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "distanceBetweenPointAndPoint",
+          "jsName": "distanceBetweenPointAndPoint",
+          "declaringType": "ax::ext::ControlPotentiometer",
+          "returnType": "float",
+          "parameterTypes": [
+            "ax::Vec2",
+            "ax::Vec2"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getMaximumValue",
+          "jsName": "getMaximumValue",
+          "declaringType": "ax::ext::ControlPotentiometer",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getMinimumValue",
+          "jsName": "getMinimumValue",
+          "declaringType": "ax::ext::ControlPotentiometer",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getPreviousLocation",
+          "jsName": "getPreviousLocation",
+          "declaringType": "ax::ext::ControlPotentiometer",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getProgressTimer",
+          "jsName": "getProgressTimer",
+          "declaringType": "ax::ext::ControlPotentiometer",
+          "returnType": "ax::ProgressTimer *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getThumbSprite",
+          "jsName": "getThumbSprite",
+          "declaringType": "ax::ext::ControlPotentiometer",
+          "returnType": "ax::Sprite *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getValue",
+          "jsName": "getValue",
+          "declaringType": "ax::ext::ControlPotentiometer",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "initWithTrackSprite_ProgressTimer_ThumbSprite",
+          "jsName": "initWithTrackSprite_ProgressTimer_ThumbSprite",
+          "declaringType": "ax::ext::ControlPotentiometer",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::Sprite *",
+            "ax::ProgressTimer *",
+            "ax::Sprite *"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "potentiometerBegan",
+          "jsName": "potentiometerBegan",
+          "declaringType": "ax::ext::ControlPotentiometer",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Vec2"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "potentiometerEnded",
+          "jsName": "potentiometerEnded",
+          "declaringType": "ax::ext::ControlPotentiometer",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Vec2"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "potentiometerMoved",
+          "jsName": "potentiometerMoved",
+          "declaringType": "ax::ext::ControlPotentiometer",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Vec2"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMaximumValue",
+          "jsName": "setMaximumValue",
+          "declaringType": "ax::ext::ControlPotentiometer",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMinimumValue",
+          "jsName": "setMinimumValue",
+          "declaringType": "ax::ext::ControlPotentiometer",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setPreviousLocation",
+          "jsName": "setPreviousLocation",
+          "declaringType": "ax::ext::ControlPotentiometer",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Vec2"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setProgressTimer",
+          "jsName": "setProgressTimer",
+          "declaringType": "ax::ext::ControlPotentiometer",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::ProgressTimer *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setThumbSprite",
+          "jsName": "setThumbSprite",
+          "declaringType": "ax::ext::ControlPotentiometer",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Sprite *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setValue",
+          "jsName": "setValue",
+          "declaringType": "ax::ext::ControlPotentiometer",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "ControlSaturationBrightnessPicker",
+      "qualifiedName": "ax::ext::ControlSaturationBrightnessPicker",
+      "jsName": "ControlSaturationBrightnessPicker",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::ext::Control",
+        "ax::Layer",
+        "ax::Node",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::ext::ControlSaturationBrightnessPicker",
+          "returnType": "ax::ext::ControlSaturationBrightnessPicker *",
+          "parameterTypes": [
+            "ax::Node *",
+            "ax::Vec2"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getBackground",
+          "jsName": "getBackground",
+          "declaringType": "ax::ext::ControlSaturationBrightnessPicker",
+          "returnType": "ax::Sprite *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getBrightness",
+          "jsName": "getBrightness",
+          "declaringType": "ax::ext::ControlSaturationBrightnessPicker",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getOverlay",
+          "jsName": "getOverlay",
+          "declaringType": "ax::ext::ControlSaturationBrightnessPicker",
+          "returnType": "ax::Sprite *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getSaturation",
+          "jsName": "getSaturation",
+          "declaringType": "ax::ext::ControlSaturationBrightnessPicker",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getShadow",
+          "jsName": "getShadow",
+          "declaringType": "ax::ext::ControlSaturationBrightnessPicker",
+          "returnType": "ax::Sprite *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getSlider",
+          "jsName": "getSlider",
+          "declaringType": "ax::ext::ControlSaturationBrightnessPicker",
+          "returnType": "ax::Sprite *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getStartPos",
+          "jsName": "getStartPos",
+          "declaringType": "ax::ext::ControlSaturationBrightnessPicker",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "initWithTargetAndPos",
+          "jsName": "initWithTargetAndPos",
+          "declaringType": "ax::ext::ControlSaturationBrightnessPicker",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::Node *",
+            "ax::Vec2"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "updateDraggerWithHSV",
+          "returnType": "void",
+          "parameterTypes": [
+            "struct struct struct struct struct struct struct struct ax::ext::HSV"
+          ]
+        },
+        {
+          "nativeName": "updateWithHSV",
+          "returnType": "void",
+          "parameterTypes": [
+            "struct struct struct struct struct struct struct struct ax::ext::HSV"
+          ]
+        }
+      ]
+    },
+    {
+      "nativeName": "ControlSlider",
+      "qualifiedName": "ax::ext::ControlSlider",
+      "jsName": "ControlSlider",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::ext::Control",
+        "ax::Layer",
+        "ax::Node",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::ext::ControlSlider",
+          "returnType": "ax::ext::ControlSlider *",
+          "parameterTypes": [
+            "const char *",
+            "const char *",
+            "const char *"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::ext::ControlSlider",
+          "returnType": "ax::ext::ControlSlider *",
+          "parameterTypes": [
+            "ax::Sprite *",
+            "ax::Sprite *",
+            "ax::Sprite *"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::ext::ControlSlider",
+          "returnType": "ax::ext::ControlSlider *",
+          "parameterTypes": [
+            "const char *",
+            "const char *",
+            "const char *",
+            "const char *"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::ext::ControlSlider",
+          "returnType": "ax::ext::ControlSlider *",
+          "parameterTypes": [
+            "ax::Sprite *",
+            "ax::Sprite *",
+            "ax::Sprite *",
+            "ax::Sprite *"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getBackgroundSprite",
+          "jsName": "getBackgroundSprite",
+          "declaringType": "ax::ext::ControlSlider",
+          "returnType": "ax::Sprite *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMaximumAllowedValue",
+          "jsName": "getMaximumAllowedValue",
+          "declaringType": "ax::ext::ControlSlider",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMaximumValue",
+          "jsName": "getMaximumValue",
+          "declaringType": "ax::ext::ControlSlider",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMinimumAllowedValue",
+          "jsName": "getMinimumAllowedValue",
+          "declaringType": "ax::ext::ControlSlider",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMinimumValue",
+          "jsName": "getMinimumValue",
+          "declaringType": "ax::ext::ControlSlider",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getProgressSprite",
+          "jsName": "getProgressSprite",
+          "declaringType": "ax::ext::ControlSlider",
+          "returnType": "ax::Sprite *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getSelectedThumbSprite",
+          "jsName": "getSelectedThumbSprite",
+          "declaringType": "ax::ext::ControlSlider",
+          "returnType": "ax::Sprite *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getThumbSprite",
+          "jsName": "getThumbSprite",
+          "declaringType": "ax::ext::ControlSlider",
+          "returnType": "ax::Sprite *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getValue",
+          "jsName": "getValue",
+          "declaringType": "ax::ext::ControlSlider",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "initWithSprites",
+          "jsName": "initWithSprites",
+          "declaringType": "ax::ext::ControlSlider",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::Sprite *",
+            "ax::Sprite *",
+            "ax::Sprite *"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "initWithSprites",
+          "jsName": "initWithSprites",
+          "declaringType": "ax::ext::ControlSlider",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::Sprite *",
+            "ax::Sprite *",
+            "ax::Sprite *",
+            "ax::Sprite *"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "locationFromTouch",
+          "jsName": "locationFromTouch",
+          "declaringType": "ax::ext::ControlSlider",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [
+            "ax::PointerEvent *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setBackgroundSprite",
+          "jsName": "setBackgroundSprite",
+          "declaringType": "ax::ext::ControlSlider",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Sprite *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMaximumAllowedValue",
+          "jsName": "setMaximumAllowedValue",
+          "declaringType": "ax::ext::ControlSlider",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMaximumValue",
+          "jsName": "setMaximumValue",
+          "declaringType": "ax::ext::ControlSlider",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMinimumAllowedValue",
+          "jsName": "setMinimumAllowedValue",
+          "declaringType": "ax::ext::ControlSlider",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMinimumValue",
+          "jsName": "setMinimumValue",
+          "declaringType": "ax::ext::ControlSlider",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setProgressSprite",
+          "jsName": "setProgressSprite",
+          "declaringType": "ax::ext::ControlSlider",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Sprite *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setSelectedThumbSprite",
+          "jsName": "setSelectedThumbSprite",
+          "declaringType": "ax::ext::ControlSlider",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Sprite *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setThumbSprite",
+          "jsName": "setThumbSprite",
+          "declaringType": "ax::ext::ControlSlider",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Sprite *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setValue",
+          "jsName": "setValue",
+          "declaringType": "ax::ext::ControlSlider",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "ControlStepper",
+      "qualifiedName": "ax::ext::ControlStepper",
+      "jsName": "ControlStepper",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::ext::Control",
+        "ax::Layer",
+        "ax::Node",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::ext::ControlStepper",
+          "returnType": "ax::ext::ControlStepper *",
+          "parameterTypes": [
+            "ax::Sprite *",
+            "ax::Sprite *"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getMinusLabel",
+          "jsName": "getMinusLabel",
+          "declaringType": "ax::ext::ControlStepper",
+          "returnType": "ax::Label *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMinusSprite",
+          "jsName": "getMinusSprite",
+          "declaringType": "ax::ext::ControlStepper",
+          "returnType": "ax::Sprite *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getPlusLabel",
+          "jsName": "getPlusLabel",
+          "declaringType": "ax::ext::ControlStepper",
+          "returnType": "ax::Label *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getPlusSprite",
+          "jsName": "getPlusSprite",
+          "declaringType": "ax::ext::ControlStepper",
+          "returnType": "ax::Sprite *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getValue",
+          "jsName": "getValue",
+          "declaringType": "ax::ext::ControlStepper",
+          "returnType": "double",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "initWithMinusSpriteAndPlusSprite",
+          "jsName": "initWithMinusSpriteAndPlusSprite",
+          "declaringType": "ax::ext::ControlStepper",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::Sprite *",
+            "ax::Sprite *"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "isContinuous",
+          "jsName": "isContinuous",
+          "declaringType": "ax::ext::ControlStepper",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "setMaximumValue",
+          "jsName": "setMaximumValue",
+          "declaringType": "ax::ext::ControlStepper",
+          "returnType": "void",
+          "parameterTypes": [
+            "double"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMinimumValue",
+          "jsName": "setMinimumValue",
+          "declaringType": "ax::ext::ControlStepper",
+          "returnType": "void",
+          "parameterTypes": [
+            "double"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMinusLabel",
+          "jsName": "setMinusLabel",
+          "declaringType": "ax::ext::ControlStepper",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Label *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMinusSprite",
+          "jsName": "setMinusSprite",
+          "declaringType": "ax::ext::ControlStepper",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Sprite *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setPlusLabel",
+          "jsName": "setPlusLabel",
+          "declaringType": "ax::ext::ControlStepper",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Label *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setPlusSprite",
+          "jsName": "setPlusSprite",
+          "declaringType": "ax::ext::ControlStepper",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Sprite *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setStepValue",
+          "jsName": "setStepValue",
+          "declaringType": "ax::ext::ControlStepper",
+          "returnType": "void",
+          "parameterTypes": [
+            "double"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setValue",
+          "jsName": "setValue",
+          "declaringType": "ax::ext::ControlStepper",
+          "returnType": "void",
+          "parameterTypes": [
+            "double"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setValueWithSendingEvent",
+          "jsName": "setValueWithSendingEvent",
+          "declaringType": "ax::ext::ControlStepper",
+          "returnType": "void",
+          "parameterTypes": [
+            "double",
+            "bool"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setWraps",
+          "jsName": "setWraps",
+          "declaringType": "ax::ext::ControlStepper",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "startAutorepeat",
+          "jsName": "startAutorepeat",
+          "declaringType": "ax::ext::ControlStepper",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "stopAutorepeat",
+          "jsName": "stopAutorepeat",
+          "declaringType": "ax::ext::ControlStepper",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "updateLayoutUsingTouchLocation",
+          "jsName": "updateLayoutUsingTouchLocation",
+          "declaringType": "ax::ext::ControlStepper",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Vec2"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "ControlSwitch",
+      "qualifiedName": "ax::ext::ControlSwitch",
+      "jsName": "ControlSwitch",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::ext::Control",
+        "ax::Layer",
+        "ax::Node",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::ext::ControlSwitch",
+          "returnType": "ax::ext::ControlSwitch *",
+          "parameterTypes": [
+            "ax::Sprite *",
+            "ax::Sprite *",
+            "ax::Sprite *",
+            "ax::Sprite *"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::ext::ControlSwitch",
+          "returnType": "ax::ext::ControlSwitch *",
+          "parameterTypes": [
+            "ax::Sprite *",
+            "ax::Sprite *",
+            "ax::Sprite *",
+            "ax::Sprite *",
+            "ax::Label *",
+            "ax::Label *"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "hasMoved",
+          "jsName": "hasMoved",
+          "declaringType": "ax::ext::ControlSwitch",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "initWithMaskSprite",
+          "jsName": "initWithMaskSprite",
+          "declaringType": "ax::ext::ControlSwitch",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::Sprite *",
+            "ax::Sprite *",
+            "ax::Sprite *",
+            "ax::Sprite *"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "initWithMaskSprite",
+          "jsName": "initWithMaskSprite",
+          "declaringType": "ax::ext::ControlSwitch",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::Sprite *",
+            "ax::Sprite *",
+            "ax::Sprite *",
+            "ax::Sprite *",
+            "ax::Label *",
+            "ax::Label *"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "isOn",
+          "jsName": "isOn",
+          "declaringType": "ax::ext::ControlSwitch",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "locationFromTouch",
+          "jsName": "locationFromTouch",
+          "declaringType": "ax::ext::ControlSwitch",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [
+            "ax::PointerEvent *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setOn",
+          "jsName": "setOn",
+          "declaringType": "ax::ext::ControlSwitch",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setOn",
+          "jsName": "setOn",
+          "declaringType": "ax::ext::ControlSwitch",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool",
+            "bool"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "ScrollView",
+      "qualifiedName": "ax::ext::ScrollView",
+      "jsName": "ScrollView",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::Layer",
+        "ax::Node",
+        "ax::Object",
+        "ax::ActionTweenDelegate"
+      ],
+      "methods": [
+        {
+          "nativeName": "addChild",
+          "jsName": "addChild",
+          "declaringType": "ax::Node",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Node *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "addChild",
+          "jsName": "addChild",
+          "declaringType": "ax::Node",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Node *",
+            "int"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "addChild",
+          "jsName": "addChild",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Node *",
+            "int",
+            "int"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "addChild",
+          "jsName": "addChild",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Node *",
+            "int",
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "ax::ext::ScrollView *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "ax::ext::ScrollView *",
+          "parameterTypes": [
+            "ax::Vec2",
+            "ax::Node *"
+          ],
+          "defaultValues": [
+            null,
+            "NULL"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getContainer",
+          "jsName": "getContainer",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "ax::Node *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getContentOffset",
+          "jsName": "getContentOffset",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getDirection",
+          "jsName": "getDirection",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "ax::ext::ScrollView::Direction",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getViewSize",
+          "jsName": "getViewSize",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getZoomScale",
+          "jsName": "getZoomScale",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "hasVisibleParents",
+          "jsName": "hasVisibleParents",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "initWithViewSize",
+          "jsName": "initWithViewSize",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::Vec2",
+            "ax::Node *"
+          ],
+          "defaultValues": [
+            null,
+            "NULL"
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "isBounceable",
+          "jsName": "isBounceable",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isClippingToBounds",
+          "jsName": "isClippingToBounds",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "isDragging",
+          "jsName": "isDragging",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isNodeVisible",
+          "jsName": "isNodeVisible",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::Node *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "isTouchEnabled",
+          "jsName": "isTouchEnabled",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isTouchMoved",
+          "jsName": "isTouchMoved",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "maxContainerOffset",
+          "jsName": "maxContainerOffset",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "minContainerOffset",
+          "jsName": "minContainerOffset",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "onPointerCancel",
+          "jsName": "onPointerCancel",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::PointerEvent *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "onPointerDown",
+          "jsName": "onPointerDown",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::PointerEvent *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "onPointerMove",
+          "jsName": "onPointerMove",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::PointerEvent *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "onPointerScroll",
+          "jsName": "onPointerScroll",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::PointerEvent *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "onPointerUp",
+          "jsName": "onPointerUp",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::PointerEvent *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "pause",
+          "jsName": "pause",
+          "declaringType": "ax::Node",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "pause",
+          "jsName": "pause",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Object *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "removeAllChildrenWithCleanup",
+          "jsName": "removeAllChildrenWithCleanup",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "resume",
+          "jsName": "resume",
+          "declaringType": "ax::Node",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "resume",
+          "jsName": "resume",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Object *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setBounceable",
+          "jsName": "setBounceable",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setClippingToBounds",
+          "jsName": "setClippingToBounds",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setContainer",
+          "jsName": "setContainer",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Node *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setContentOffset",
+          "jsName": "setContentOffset",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Vec2",
+            "bool"
+          ],
+          "defaultValues": [
+            null,
+            "false"
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setContentOffsetInDuration",
+          "jsName": "setContentOffsetInDuration",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Vec2",
+            "float"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setDirection",
+          "jsName": "setDirection",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::ext::ScrollView::Direction"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMaxScale",
+          "jsName": "setMaxScale",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMinScale",
+          "jsName": "setMinScale",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setTouchEnabled",
+          "jsName": "setTouchEnabled",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setViewSize",
+          "jsName": "setViewSize",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Vec2"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setZoomScale",
+          "jsName": "setZoomScale",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setZoomScale",
+          "jsName": "setZoomScale",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "void",
+          "parameterTypes": [
+            "float",
+            "bool"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setZoomScaleInDuration",
+          "jsName": "setZoomScaleInDuration",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "void",
+          "parameterTypes": [
+            "float",
+            "float"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "stopAnimatedContentOffset",
+          "jsName": "stopAnimatedContentOffset",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "updateInset",
+          "jsName": "updateInset",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "updateTweenAction",
+          "jsName": "updateTweenAction",
+          "declaringType": "ax::ext::ScrollView",
+          "returnType": "void",
+          "parameterTypes": [
+            "float",
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "TableView",
+      "qualifiedName": "ax::ext::TableView",
+      "jsName": "TableView",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::ext::ScrollView",
+        "ax::Layer",
+        "ax::Node",
+        "ax::Object",
+        "ax::ActionTweenDelegate",
+        "ax::ext::ScrollViewDelegate"
+      ],
+      "methods": [
+        {
+          "nativeName": "_updateContentSize",
+          "jsName": "_updateContentSize",
+          "declaringType": "ax::ext::TableView",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "cellAtIndex",
+          "jsName": "cellAtIndex",
+          "declaringType": "ax::ext::TableView",
+          "returnType": "ax::ext::TableViewCell *",
+          "parameterTypes": [
+            "ssize_t"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "dequeueCell",
+          "jsName": "dequeueCell",
+          "declaringType": "ax::ext::TableView",
+          "returnType": "ax::ext::TableViewCell *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getVerticalFillOrder",
+          "jsName": "getVerticalFillOrder",
+          "declaringType": "ax::ext::TableView",
+          "returnType": "ax::ext::TableView::VerticalFillOrder",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "initWithViewSize",
+          "jsName": "initWithViewSize",
+          "declaringType": "ax::ext::TableView",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::Vec2",
+            "ax::Node *"
+          ],
+          "defaultValues": [
+            null,
+            "NULL"
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "insertCellAtIndex",
+          "jsName": "insertCellAtIndex",
+          "declaringType": "ax::ext::TableView",
+          "returnType": "void",
+          "parameterTypes": [
+            "ssize_t"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "reloadData",
+          "jsName": "reloadData",
+          "declaringType": "ax::ext::TableView",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "removeCellAtIndex",
+          "jsName": "removeCellAtIndex",
+          "declaringType": "ax::ext::TableView",
+          "returnType": "void",
+          "parameterTypes": [
+            "ssize_t"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "scrollViewDidScroll",
+          "jsName": "scrollViewDidScroll",
+          "declaringType": "ax::ext::TableView",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::ext::ScrollView *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "scrollViewDidZoom",
+          "jsName": "scrollViewDidZoom",
+          "declaringType": "ax::ext::TableView",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::ext::ScrollView *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setVerticalFillOrder",
+          "jsName": "setVerticalFillOrder",
+          "declaringType": "ax::ext::TableView",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::ext::TableView::VerticalFillOrder"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "updateCellAtIndex",
+          "jsName": "updateCellAtIndex",
+          "declaringType": "ax::ext::TableView",
+          "returnType": "void",
+          "parameterTypes": [
+            "ssize_t"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "TableViewCell",
+      "qualifiedName": "ax::ext::TableViewCell",
+      "jsName": "TableViewCell",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::Node",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::ext::TableViewCell",
+          "returnType": "ax::ext::TableViewCell *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getIdx",
+          "jsName": "getIdx",
+          "declaringType": "ax::ext::TableViewCell",
+          "returnType": "ssize_t",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "reset",
+          "jsName": "reset",
+          "declaringType": "ax::ext::TableViewCell",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setIdx",
+          "jsName": "setIdx",
+          "declaringType": "ax::ext::TableViewCell",
+          "returnType": "void",
+          "parameterTypes": [
+            "ssize_t"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    }
+  ],
+  "enums": [
+    {
+      "nativeName": "EventType",
+      "qualifiedName": "ax::ext::Control::EventType",
+      "ownerQualifiedName": "ax::ext::Control",
+      "values": [
+        {
+          "name": "TOUCH_DOWN",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "DRAG_INSIDE",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "DRAG_OUTSIDE",
+          "signedValue": 4,
+          "unsignedValue": 4,
+          "isUnsigned": false
+        },
+        {
+          "name": "DRAG_ENTER",
+          "signedValue": 8,
+          "unsignedValue": 8,
+          "isUnsigned": false
+        },
+        {
+          "name": "DRAG_EXIT",
+          "signedValue": 16,
+          "unsignedValue": 16,
+          "isUnsigned": false
+        },
+        {
+          "name": "TOUCH_UP_INSIDE",
+          "signedValue": 32,
+          "unsignedValue": 32,
+          "isUnsigned": false
+        },
+        {
+          "name": "TOUCH_UP_OUTSIDE",
+          "signedValue": 64,
+          "unsignedValue": 64,
+          "isUnsigned": false
+        },
+        {
+          "name": "TOUCH_CANCEL",
+          "signedValue": 128,
+          "unsignedValue": 128,
+          "isUnsigned": false
+        },
+        {
+          "name": "VALUE_CHANGED",
+          "signedValue": 256,
+          "unsignedValue": 256,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "State",
+      "qualifiedName": "ax::ext::Control::State",
+      "ownerQualifiedName": "ax::ext::Control",
+      "values": [
+        {
+          "name": "NORMAL",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "HIGH_LIGHTED",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "DISABLED",
+          "signedValue": 4,
+          "unsignedValue": 4,
+          "isUnsigned": false
+        },
+        {
+          "name": "SELECTED",
+          "signedValue": 8,
+          "unsignedValue": 8,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "Part",
+      "qualifiedName": "ax::ext::ControlStepper::Part",
+      "ownerQualifiedName": "ax::ext::ControlStepper",
+      "values": [
+        {
+          "name": "MINUS",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "PLUS",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "NONE",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "Direction",
+      "qualifiedName": "ax::ext::ScrollView::Direction",
+      "ownerQualifiedName": "ax::ext::ScrollView",
+      "values": [
+        {
+          "name": "NONE",
+          "signedValue": -1,
+          "unsignedValue": 4294967295,
+          "isUnsigned": false
+        },
+        {
+          "name": "HORIZONTAL",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "VERTICAL",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "BOTH",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "VerticalFillOrder",
+      "qualifiedName": "ax::ext::TableView::VerticalFillOrder",
+      "ownerQualifiedName": "ax::ext::TableView",
+      "values": [
+        {
+          "name": "TOP_DOWN",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "BOTTOM_UP",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        }
+      ]
+    }
+  ]
+}

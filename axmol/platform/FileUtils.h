@@ -3,6 +3,7 @@ Copyright (c) 2010-2013 cocos2d-x.org
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -116,6 +117,15 @@ public:
      *  Purges full path caches.
      */
     virtual void purgeCachedEntries();
+
+    /** Load legacy resource aliases from a version-1 filename lookup plist.
+     * Changes apply to subsequent resource loads through fullPathForFilename.
+     * Like search paths, aliases must be configured on the main thread.
+     */
+    /** @script{ignore} Bound manually by the legacy JS adapter. */
+    void loadFilenameLookup(std::string_view filename);
+    /** @script{ignore} Bound manually by the legacy JS adapter. */
+    void setFilenameLookupDictionary(const ValueMap& filenames);
 
     /**
      *  Gets string from a file.
@@ -694,6 +704,7 @@ protected:
      *  This variable is used for improving the performance of file search.
      */
     mutable tlx::string_map<std::string> _fullPathCache;
+    tlx::string_map<std::string> _filenameLookup;
 
     /**
      *  The full path cache for directories. When a diretory is found, it will be added into this cache.

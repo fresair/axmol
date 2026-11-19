@@ -1,5 +1,6 @@
 /****************************************************************************
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -45,6 +46,20 @@ public class AxmolSurfaceViewVK extends SurfaceView implements AxmolRenderHost, 
     // Player that implements native hooks (must be provided)
     private AxmolPlayer mPlayer;
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // The render surface owns focus; forward the player's supported keys
+        // through its existing engine-thread dispatch.
+        if (mPlayer != null && mPlayer.onKeyDown(keyCode, event)) return true;
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (mPlayer != null && mPlayer.onKeyUp(keyCode, event)) return true;
+        return super.onKeyUp(keyCode, event);
+    }
+
     // Track detach/attach state similar to GLSurfaceView
     private boolean mDetached = false;
 
@@ -61,6 +76,8 @@ public class AxmolSurfaceViewVK extends SurfaceView implements AxmolRenderHost, 
         // Enable touch events
         setFocusable(true);
         setFocusableInTouchMode(true);
+        // Keep the first navigation key from being consumed to establish focus.
+        requestFocus();
         // Set surface holder callback
         getHolder().addCallback(this);
 

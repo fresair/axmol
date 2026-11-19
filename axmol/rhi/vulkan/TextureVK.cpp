@@ -1,5 +1,6 @@
 /****************************************************************************
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -292,6 +293,7 @@ void TextureImpl::setKnownLayout(VkImageLayout layout)
 void TextureImpl::updateSamplerDesc(const SamplerDesc& sampler)
 {
     _desc.samplerDesc = sampler;
+    Texture::_desc.samplerDesc = sampler;
 
     _sampler = static_cast<VkSampler>(SamplerRegistry::getInstance()->getSampler(sampler));
     assert(_sampler && "Gets vkCreateSampler failed");

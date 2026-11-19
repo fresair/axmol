@@ -1,28 +1,35 @@
 # Copyright (c) 2019-present Simdsoft Limited.
+# Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 #
 #   https://axmol.dev/
 #
 # SPDX-License-Identifier: MIT
 # requires -Version 7.4
 param(
+    [Alias('l')]
+    [ValidateSet('lua', 'js')]
+    [string]$Language = 'lua',
     [switch]$Verify,
+    [switch]$HostHeaders,
     [string]$ClangSharpRoot = $env:AXMOL_CLANGSHARP_ROOT,
     [string]$LibClangRoot = $env:AXMOL_LIBCLANG_ROOT,
+    [string]$ClangResourceDirectory = $env:AXMOL_CLANG_RESOURCE_DIR,
     [string]$GeneratorAssembly = $env:AXMOL_LUA_GENERATOR_ASSEMBLY,
     [Alias('m')]
     [string]$Module = 'all',
     [string]$OutputDirectory,
     [string[]]$ExtraClangArguments = @(),
     [string]$NdkRoot = $env:ANDROID_NDK,
-    [string]$TargetTriple = $(if ($env:AXMOL_CLANG_TARGET) { $env:AXMOL_CLANG_TARGET } else { 'armv7-none-linux-androideabi' }),
-    [int]$AndroidApi = $(if ($env:AXMOL_ANDROID_API) { [int]$env:AXMOL_ANDROID_API } else { 21 })
+    [string]$TargetTriple = $(if ($env:AXMOL_CLANG_TARGET) { $env:AXMOL_CLANG_TARGET } elseif ($Language -eq 'js') { 'aarch64-none-linux-android' } else { 'armv7-none-linux-androideabi' }),
+    [int]$AndroidApi = $(if ($env:AXMOL_ANDROID_API) { [int]$env:AXMOL_ANDROID_API } elseif ($Language -eq 'js') { 23 } else { 21 })
 )
 
 $ErrorActionPreference = 'Stop'
 $axmolRoot = (Resolve-Path (Join-Path $PSScriptRoot '../../..')).Path
-$OutputDirectory = if ($OutputDirectory) { (New-Item -ItemType Directory -Force -Path $OutputDirectory).FullName } else { Join-Path $axmolRoot 'extensions/scripting/lua-bindings/generated' }
+$bindingDirectory = if ($Language -eq 'js') { 'js-bindings' } else { 'lua-bindings' }
+$OutputDirectory = if ($OutputDirectory) { [IO.Path]::GetFullPath($OutputDirectory) } else { Join-Path $axmolRoot "extensions/scripting/$bindingDirectory/generated" }
 $generatorRoot = Join-Path $axmolRoot 'tools/bindings-generator'
-$adapterAllowlistPath = Join-Path $axmolRoot 'tools/lua-bindings/manual-adapters.json'
+$adapterAllowlistPath = Join-Path $axmolRoot "tools/$bindingDirectory/manual-adapters.json"
 
 function Get-PlatformLibClangName {
     if ($IsWindows) { return 'libclang.dll' }
@@ -173,7 +180,7 @@ function Build-GeneratorAssemblyWithPowerShell([string]$OutputPath, [System.IO.F
     $temporaryOutput = Join-Path ([IO.Path]::GetTempPath()) "Axmol.LuaBindings.Generator.$PID.dll"
     if (Test-Path $temporaryOutput -PathType Leaf) { Remove-Item -LiteralPath $temporaryOutput -Force }
     $references = @(Get-PowerShellReferenceAssemblies) + @($interopAssembly)
-    Write-Host 'Axmol Lua binding generator: compiling C# sources with PowerShell Add-Type'
+    Write-Host "Axmol $Language binding generator: compiling C# sources with PowerShell Add-Type"
     try {
         $sourcePaths = @($Sources | Where-Object Extension -EQ '.cs' | ForEach-Object FullName)
         Add-Type -Path $sourcePaths `
@@ -258,6 +265,23 @@ function Configure-ClangRuntime([string]$Root) {
 
 $libClangLibrary = Configure-ClangRuntime $LibClangRoot
 
+# libclang's builtin headers must match the parser, not a different compiler
+# bundled inside the NDK. In particular ARM64 Neon signatures changed between
+# LLVM releases. Leave Lua's established include order intact; JS can discover
+# resources beside a complete LLVM install or accept an explicit resource root.
+if ($Language -eq 'js' -and -not $ClangResourceDirectory) {
+    $resourceRoot = Join-Path (Split-Path $libClangLibrary -Parent) 'clang'
+    if (Test-Path $resourceRoot -PathType Container) {
+        $resource = Get-ChildItem $resourceRoot -Directory | Sort-Object Name -Descending |
+            Where-Object { Test-Path (Join-Path $_.FullName 'include/stdarg.h') -PathType Leaf } |
+            Select-Object -First 1
+        if ($resource) { $ClangResourceDirectory = $resource.FullName }
+    }
+}
+if ($ClangResourceDirectory -and -not (Test-Path (Join-Path $ClangResourceDirectory 'include/stdarg.h') -PathType Leaf)) {
+    throw "ClangResourceDirectory must contain matching Clang builtin headers under include/: $ClangResourceDirectory"
+}
+
 if (-not (Test-Path $GeneratorAssembly -PathType Leaf)) {
     throw "Generator assembly was not found: $GeneratorAssembly"
 }
@@ -273,19 +297,43 @@ if ($libClangLibrary) {
     $generatorType::ConfigureLibClang($libClangLibrary)
 }
 
-Write-Host "Axmol Lua binding generator loaded from $GeneratorAssembly"
-Write-Host "Verify=$Verify Module=$Module"
+Write-Host "Axmol $Language binding generator loaded from $GeneratorAssembly"
+Write-Host "Verify=$Verify Module=$Module HostHeaders=$HostHeaders"
+
+. (Join-Path $axmolRoot '1k/android-ndk.ps1')
 
 function Resolve-Ndk([string]$Root) {
+    if ($Language -eq 'js' -and $Root) {
+        if (-not (Test-Path $Root -PathType Container)) { throw "Explicit JS Android NDK directory does not exist: $Root" }
+        $revision = Get-AndroidNdkRevision $Root
+        if ($revision -ne '27.3.13750724') {
+            throw "JS bindings require Android NDK r27d (27.3.13750724); explicit NdkRoot/ANDROID_NDK '$Root' has revision '$revision'."
+        }
+        return (Resolve-Path $Root).Path
+    }
     if ($Root -and (Test-Path $Root -PathType Container)) { return (Resolve-Path $Root).Path }
-    $sdkRoots = @($env:ANDROID_HOME, $env:ANDROID_SDK_ROOT,
+    # Include the SDK selected by the normal setup/build flow, even in a new shell.
+    $configuredSdk = $null
+    $environmentFile = Join-Path $axmolRoot '1k/.env'
+    if (Test-Path $environmentFile -PathType Leaf) {
+        $match = Select-String -LiteralPath $environmentFile -Pattern '^android_sdk_root=(.*)$' | Select-Object -First 1
+        if ($match) { $configuredSdk = $match.Matches[0].Groups[1].Value.Trim() }
+    }
+    $sdkRoots = @($env:ANDROID_HOME, $env:ANDROID_SDK_ROOT, $configuredSdk,
         (Join-Path $axmolRoot 'tools/external/android-sdk')) |
         Where-Object { $_ -and (Test-Path $_ -PathType Container) } |
         Select-Object -Unique
     foreach ($sdkRoot in $sdkRoots) {
-        $candidate = Get-ChildItem (Join-Path $sdkRoot 'ndk') -Directory -ErrorAction SilentlyContinue |
-            Sort-Object Name -Descending | Select-Object -First 1
-        if ($candidate) { return $candidate.FullName }
+        if ($Language -eq 'js') {
+            $candidate = Find-AndroidNdk $sdkRoot 'r27d' -Exact
+            if ($candidate) { return $candidate }
+        }
+        else {
+            # Preserve Lua's existing NDK selection policy.
+            $candidate = Get-ChildItem (Join-Path $sdkRoot 'ndk') -Directory -ErrorAction SilentlyContinue |
+                Sort-Object Name -Descending | Select-Object -First 1
+            if ($candidate) { return $candidate.FullName }
+        }
     }
     return $null
 }
@@ -299,7 +347,8 @@ function Ensure-Ndk {
         throw "Axmol setup script was not found: $setupScript"
     }
     Write-Host 'Android NDK was not found; invoking setup.ps1 -p android.'
-    &$setupScript -p android
+    if ($Language -eq 'js') { &$setupScript -p android -exactNdk }
+    else { &$setupScript -p android }
     if ($LASTEXITCODE -ne 0) {
         throw "Axmol Android toolchain setup failed with exit code $LASTEXITCODE."
     }
@@ -344,9 +393,12 @@ function Ensure-AxmolConfiguration {
     }
 }
 
-    $ndk = Ensure-Ndk
     Ensure-AxmolConfiguration
-    $llvm = Find-LlvmInclude $ndk
+    $llvm = $null
+    if (-not $HostHeaders) {
+        $ndk = Ensure-Ndk
+        $llvm = Find-LlvmInclude $ndk
+    }
     $includeRoots = @(
         $axmolRoot,
         (Join-Path $axmolRoot 'platform/android'),
@@ -358,6 +410,7 @@ function Ensure-AxmolConfiguration {
         (Join-Path $axmolRoot '3rdparty/robin-map/include'),
         (Join-Path $axmolRoot '3rdparty/jni.hpp/include'),
         (Join-Path $axmolRoot '3rdparty/glad/include'),
+        (Join-Path $axmolRoot '3rdparty/glfw/include'),
         (Join-Path $axmolRoot '3rdparty/box2d/include'),
         (Join-Path $axmolRoot 'extensions/Particle3D/src'),
         (Join-Path $axmolRoot 'extensions/spine/runtime/include'),
@@ -373,18 +426,31 @@ function Ensure-AxmolConfiguration {
         (Join-Path $axmolRoot '3rdparty/llhttp/include'),
         (Join-Path $axmolRoot '3rdparty/websocket-parser'),
         (Join-Path $axmolRoot '3rdparty/bullet'),
-        (Join-Path $axmolRoot '3rdparty/jolt'),
-        (Join-Path $llvm.Root 'sysroot/usr/include/c++/v1'),
-        $llvm.Builtin,
-        (Join-Path $llvm.Root 'sysroot/usr/include'),
-        (Join-Path $llvm.Root 'sysroot/usr/include/arm-linux-androideabi')
+        (Join-Path $axmolRoot '3rdparty/jolt')
     )
+    if ($llvm) {
+        $targetInclude = if ($TargetTriple -match '^(aarch64|arm64)') { 'aarch64-linux-android' } elseif ($TargetTriple -match '^x86_64') { 'x86_64-linux-android' } else { 'arm-linux-androideabi' }
+        $builtin = if ($ClangResourceDirectory) { Join-Path $ClangResourceDirectory 'include' } else { $llvm.Builtin }
+        $includeRoots += @((Join-Path $llvm.Root 'sysroot/usr/include/c++/v1'), $builtin,
+            (Join-Path $llvm.Root 'sysroot/usr/include'), (Join-Path $llvm.Root "sysroot/usr/include/$targetInclude"))
+    }
     $clangArguments = [System.Collections.Generic.List[string]]::new()
+    if ($ClangResourceDirectory) { $clangArguments.AddRange([string[]]@('-resource-dir', $ClangResourceDirectory)) }
     $clangArguments.AddRange([string[]]@(
-        '-nostdinc', '-x', 'c++', '-std=c++23', '-fsigned-char', '-target', $TargetTriple,
+        '-x', 'c++', '-std=c++23', '-fsigned-char',
         '-Wno-pragma-once-outside-header', '-Wno-unknown-attributes'))
+    if ($HostHeaders) {
+        if ($IsMacOS) {
+            $sdk = (& xcrun --show-sdk-path).Trim()
+            $toolchain = (& xcrun --find clang++).Trim()
+            $clangArguments.AddRange([string[]]@('-isysroot', $sdk, '-isystem', (Join-Path (Split-Path (Split-Path $toolchain -Parent) -Parent) 'include/c++/v1')))
+        }
+    }
+    else {
+        $clangArguments.AddRange([string[]]@('-nostdinc', '-target', $TargetTriple, '-DANDROID', "-D__ANDROID_API__=$AndroidApi"))
+    }
     $clangArguments.AddRange([string[]]@(
-        '-D_LIBCPP_DISABLE_VISIBILITY_ANNOTATIONS', '-DANDROID', "-D__ANDROID_API__=$AndroidApi",
+        '-D_LIBCPP_DISABLE_VISIBILITY_ANNOTATIONS',
         '-DAX_ENABLE_MEDIA=1', '-D_AX_GEN_SCRIPT_BINDINGS=1', '-D__cpp_coroutines=201703',
         '-D__builtin_neon_vbslq_f16(...)=(float16x8_t{})',
         '-D__builtin_neon_vbsl_f16(...)=(float16x4_t{})',
@@ -405,8 +471,9 @@ function Ensure-AxmolConfiguration {
     foreach ($includeRoot in $includeRoots) { $clangArguments.Add('-isystem'); $clangArguments.Add($includeRoot) }
 
 $batchRequest = [Axmol.LuaBindings.BatchGenerationRequest]::new()
+$batchRequest.Language = $Language.ToLowerInvariant()
 $batchRequest.RepositoryRoot = $axmolRoot
-$batchRequest.ConfigurationDirectory = Join-Path $axmolRoot 'tools/lua-bindings'
+$batchRequest.ConfigurationDirectory = Join-Path $axmolRoot "tools/$bindingDirectory"
 $batchRequest.OutputDirectory = $OutputDirectory
 $batchRequest.AdapterAllowlistPath = $adapterAllowlistPath
 $batchRequest.Module = $Module
@@ -425,5 +492,5 @@ foreach ($diagnostic in $batchResult.Diagnostics | Where-Object Severity -eq 'er
     Write-Host "error: $($diagnostic.Message)"
 }
 if (@($batchResult.Diagnostics | Where-Object Severity -eq 'error').Count -gt 0) {
-    throw 'Lua binding generation failed. Existing generated files were not used as a fallback.'
+    throw "$Language binding generation failed. Existing generated files were not used as a fallback."
 }

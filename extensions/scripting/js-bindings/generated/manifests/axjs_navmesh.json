@@ -1,0 +1,740 @@
+{
+  "formatVersion": 1,
+  "language": "js",
+  "engine": "SpiderMonkey 33.1",
+  "module": "navmesh",
+  "registrationName": "ax_navmesh",
+  "targetNamespace": "cc",
+  "conditionalExpression": "defined(AX_ENABLE_NAVMESH)",
+  "classes": [
+    {
+      "nativeName": "NavMesh",
+      "qualifiedName": "ax::NavMesh",
+      "jsName": "NavMesh",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "addNavMeshAgent",
+          "jsName": "addNavMeshAgent",
+          "declaringType": "ax::NavMesh",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::NavMeshAgent *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "addNavMeshObstacle",
+          "jsName": "addNavMeshObstacle",
+          "declaringType": "ax::NavMesh",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::NavMeshObstacle *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::NavMesh",
+          "returnType": "ax::NavMesh *",
+          "parameterTypes": [
+            "std::string_view",
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "isDebugDrawEnabled",
+          "jsName": "isDebugDrawEnabled",
+          "declaringType": "ax::NavMesh",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "removeNavMeshAgent",
+          "jsName": "removeNavMeshAgent",
+          "declaringType": "ax::NavMesh",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::NavMeshAgent *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "removeNavMeshObstacle",
+          "jsName": "removeNavMeshObstacle",
+          "declaringType": "ax::NavMesh",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::NavMeshObstacle *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setDebugDrawEnabled",
+          "jsName": "setDebugDrawEnabled",
+          "declaringType": "ax::NavMesh",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "update",
+          "jsName": "update",
+          "declaringType": "ax::NavMesh",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "NavMeshAgent",
+      "qualifiedName": "ax::NavMeshAgent",
+      "jsName": "NavMeshAgent",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "completeOffMeshLink",
+          "jsName": "completeOffMeshLink",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "ax::NavMeshAgent *",
+          "parameterTypes": [
+            "const ax::NavMeshAgentParam \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getCurrentOffMeshLinkData",
+          "jsName": "getCurrentOffMeshLinkData",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "ax::OffMeshLinkData",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getCurrentVelocity",
+          "jsName": "getCurrentVelocity",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "ax::Vec3",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getHeight",
+          "jsName": "getHeight",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMaxAcceleration",
+          "jsName": "getMaxAcceleration",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMaxSpeed",
+          "jsName": "getMaxSpeed",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getNavMeshAgentComponentName",
+          "jsName": "getNavMeshAgentComponentName",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "std::string_view",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getObstacleAvoidanceType",
+          "jsName": "getObstacleAvoidanceType",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "unsigned char",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getRadius",
+          "jsName": "getRadius",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getSeparationWeight",
+          "jsName": "getSeparationWeight",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getSyncFlag",
+          "jsName": "getSyncFlag",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "ax::NavMeshAgent::NavMeshAgentSyncFlag",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getVelocity",
+          "jsName": "getVelocity",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "ax::Vec3",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isOnOffMeshLink",
+          "jsName": "isOnOffMeshLink",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "move",
+          "jsName": "move",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026",
+            "const std::function\u003Cvoid (ax::NavMeshAgent *, float)\u003E \u0026"
+          ],
+          "defaultValues": [
+            null,
+            "nullptr"
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "onEnter",
+          "jsName": "onEnter",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "onExit",
+          "jsName": "onExit",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "pause",
+          "jsName": "pause",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "resume",
+          "jsName": "resume",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setAutoOrientation",
+          "jsName": "setAutoOrientation",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setAutoTraverseOffMeshLink",
+          "jsName": "setAutoTraverseOffMeshLink",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setHeight",
+          "jsName": "setHeight",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMaxAcceleration",
+          "jsName": "setMaxAcceleration",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMaxSpeed",
+          "jsName": "setMaxSpeed",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setObstacleAvoidanceType",
+          "jsName": "setObstacleAvoidanceType",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "void",
+          "parameterTypes": [
+            "unsigned char"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setOrientationRefAxes",
+          "jsName": "setOrientationRefAxes",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setRadius",
+          "jsName": "setRadius",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setSeparationWeight",
+          "jsName": "setSeparationWeight",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setSyncFlag",
+          "jsName": "setSyncFlag",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::NavMeshAgent::NavMeshAgentSyncFlag \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "stop",
+          "jsName": "stop",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "syncToAgent",
+          "jsName": "syncToAgent",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "syncToNode",
+          "jsName": "syncToNode",
+          "declaringType": "ax::NavMeshAgent",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "NavMeshObstacle",
+      "qualifiedName": "ax::NavMeshObstacle",
+      "jsName": "NavMeshObstacle",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::NavMeshObstacle",
+          "returnType": "ax::NavMeshObstacle *",
+          "parameterTypes": [
+            "float",
+            "float"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getHeight",
+          "jsName": "getHeight",
+          "declaringType": "ax::NavMeshObstacle",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getNavMeshObstacleComponentName",
+          "jsName": "getNavMeshObstacleComponentName",
+          "declaringType": "ax::NavMeshObstacle",
+          "returnType": "std::string_view",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getRadius",
+          "jsName": "getRadius",
+          "declaringType": "ax::NavMeshObstacle",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getSyncFlag",
+          "jsName": "getSyncFlag",
+          "declaringType": "ax::NavMeshObstacle",
+          "returnType": "ax::NavMeshObstacle::NavMeshObstacleSyncFlag",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "initWith",
+          "jsName": "initWith",
+          "declaringType": "ax::NavMeshObstacle",
+          "returnType": "bool",
+          "parameterTypes": [
+            "float",
+            "float"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "onEnter",
+          "jsName": "onEnter",
+          "declaringType": "ax::NavMeshObstacle",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "onExit",
+          "jsName": "onExit",
+          "declaringType": "ax::NavMeshObstacle",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setSyncFlag",
+          "jsName": "setSyncFlag",
+          "declaringType": "ax::NavMeshObstacle",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::NavMeshObstacle::NavMeshObstacleSyncFlag \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "syncToNode",
+          "jsName": "syncToNode",
+          "declaringType": "ax::NavMeshObstacle",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "syncToObstacle",
+          "jsName": "syncToObstacle",
+          "declaringType": "ax::NavMeshObstacle",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    }
+  ],
+  "enums": [
+    {
+      "nativeName": "NavMeshAgentSyncFlag",
+      "qualifiedName": "ax::NavMeshAgent::NavMeshAgentSyncFlag",
+      "ownerQualifiedName": "ax::NavMeshAgent",
+      "values": [
+        {
+          "name": "NONE",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "NODE_TO_AGENT",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "AGENT_TO_NODE",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "NODE_AND_NODE",
+          "signedValue": 3,
+          "unsignedValue": 3,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "NavMeshObstacleSyncFlag",
+      "qualifiedName": "ax::NavMeshObstacle::NavMeshObstacleSyncFlag",
+      "ownerQualifiedName": "ax::NavMeshObstacle",
+      "values": [
+        {
+          "name": "NONE",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "NODE_TO_OBSTACLE",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "OBSTACLE_TO_NODE",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "NODE_AND_NODE",
+          "signedValue": 3,
+          "unsignedValue": 3,
+          "isUnsigned": false
+        }
+      ]
+    }
+  ]
+}

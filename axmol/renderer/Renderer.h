@@ -2,6 +2,7 @@
  Copyright (c) 2013-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -118,6 +119,7 @@ Whenever possible prefer to use `TrianglesCommand` objects since the renderer wi
 class AX_DLL Renderer
 {
     friend class RenderViewCore;
+    friend class StencilStateManager;
 
 public:
     /**The max number of vertices in a vertex buffer object.*/
@@ -229,6 +231,11 @@ public:
      * @param value true means enable depth test, otherwise false.
      */
     void setDepthTest(bool value);
+
+    /** Persistent legacy 2D queue depth policy. @script{ignore} */
+    void setDepthTestFor2D(bool value) { _isDepthTestFor2D = value; }
+    /** @script{ignore} */
+    bool getDepthTestFor2D() const { return _isDepthTestFor2D; }
 
     /**
      *  Enable/disable to update depth buffer.
@@ -402,6 +409,15 @@ public:
     /** read pixels from RenderTarget or screen framebuffer */
     void readPixels(rhi::RenderTarget* rt, std::function<void(const rhi::PixelBufferDesc&)> callback);
 
+    /** Synchronously read an already rendered target before presentation. */
+    /** @script{ignore} */
+    bool readPixelsSync(rhi::RenderTarget* rt, rhi::PixelBufferDesc& result);
+
+    /** Acquire a context-scoped legacy readback lease. The runtime must release
+     * it on that same context (which may outlive a Renderer/surface replacement).
+     * @script{ignore} */
+    rhi::GraphicsContext* acquireLegacyDefaultFramebufferReadback();
+
     uint64_t getCompletedFenceValue() const;
 
     void beginRenderPass();  /// Begin a render pass.
@@ -414,6 +430,7 @@ public:
 protected:
     friend class Director;
     friend class GroupCommand;
+    friend class RenderTexturePass;
 
     /**
      * Create and reuse vertex and index buffer for triangleCommand.
@@ -458,6 +475,7 @@ protected:
     void drawBatchedTriangles();
     void drawCustomCommand(RenderCommand* command);
     void drawMeshCommand(RenderCommand* command);
+    void updateDrawPipelineState(const RenderCommand* command, rhi::PrimitiveType primitiveType);
 
     bool beginFrame();  /// Indicate the begining of a frame
     void endFrame();    /// Finish a frame.
@@ -567,6 +585,16 @@ protected:
     };
 
     LinearStack<StateBlock> _stateBlockStack;
+
+    // Internal clipping raster policy. Commands keep their own blend masks;
+    // the current mask is intersected only when dispatching a draw.
+    rhi::ColorWriteMask _stencilColorWriteMask = rhi::ColorWriteMask::ALL;
+    bool _stencilDepthOverride = false;
+
+    // Opted-in Grid captures accumulate coverage alpha independently of the
+    // source RGB factor. RenderTexturePass changes this only at execution-time
+    // pass boundaries; ordinary render targets keep their command descriptors.
+    bool _gridCaptureSourceOverAlpha = false;
 };
 
 }  // namespace ax

@@ -1,0 +1,83 @@
+{
+  "version": "1.6.0.0",
+  "nodeTree": {
+    "classname": "Panel",
+    "options": {
+      "name": "old-widget-root",
+      "tag": 110,
+      "width": 100,
+      "height": 50,
+      "x": 0,
+      "y": 0,
+      "visible": true,
+      "touchAble": false,
+      "actiontag": 61,
+      "backGroundScale9Enable": false,
+      "bgColorR": 255,
+      "bgColorG": 255,
+      "bgColorB": 255,
+      "bgStartColorR": 255,
+      "bgStartColorG": 255,
+      "bgStartColorB": 255,
+      "bgEndColorR": 255,
+      "bgEndColorG": 255,
+      "bgEndColorB": 255,
+      "actionTag": 31
+    },
+    "children": [
+      {
+        "classname": "Node",
+        "options": {
+          "name": "old-child",
+          "tag": 101,
+          "actionTag": 12,
+          "width": 80,
+          "height": 40,
+          "x": 9,
+          "y": 13,
+          "visible": true,
+          "ZOrder": 3,
+          "colorR": 123,
+          "colorG": 190,
+          "colorB": 220
+        },
+        "children": []
+      }
+    ]
+  },
+  "action": {
+    "duration": 60,
+    "speed": 1,
+    "timelines": [
+      {
+        "frameType": "PositionFrame",
+        "actionTag": 12,
+        "frames": [
+          {
+            "frameIndex": 0,
+            "x": 9,
+            "y": 13,
+            "tween": true
+          },
+          {
+            "frameIndex": 60,
+            "x": 69,
+            "y": 43,
+            "tween": true
+          }
+        ]
+      },
+      {
+        "frameType": "EventFrame",
+        "actionTag": 12,
+        "frames": [
+          {
+            "frameIndex": 30,
+            "value": "midpoint",
+            "tween": false
+          }
+        ]
+      }
+    ]
+  }
+}

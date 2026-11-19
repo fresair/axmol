@@ -1,5 +1,6 @@
 /****************************************************************************
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -135,15 +136,18 @@ void RenderTexturePass::begin(const Camera* camera)
     // Begin callback: save current render target / viewport, set new ones
     auto beginCmd = _renderer->nextCallbackCommand();
     beginCmd->init(RT_PASS_BEGIN_ORDER);
-    beginCmd->func = [target = _renderTarget, vp = _viewport, self = RefPtr<RenderTexturePass>(this), this]() {
+    beginCmd->func = [target = _renderTarget, vp = _viewport, gridAlpha = _gridCaptureSourceOverAlpha,
+                      self = RefPtr<RenderTexturePass>(this), this]() {
         SavedState state;
         state.renderTarget = _renderer->getRenderTarget();
+        state.gridCaptureSourceOverAlpha = _renderer->_gridCaptureSourceOverAlpha;
         if (vp.has_value())
         {
             state.viewport = _renderer->getViewport();
             _renderer->setViewport(vp->x, vp->y, vp->width, vp->height);
         }
         _renderer->setRenderTarget(target);
+        _renderer->_gridCaptureSourceOverAlpha = gridAlpha;
         _savedStates.push_back(state);
     };
     _renderer->addCommand(beginCmd);
@@ -174,6 +178,7 @@ void RenderTexturePass::end()
         auto state = _savedStates.back();
         _savedStates.pop_back();
         _renderer->setRenderTarget(state.renderTarget);
+        _renderer->_gridCaptureSourceOverAlpha = state.gridCaptureSourceOverAlpha;
         if (state.viewport.has_value())
         {
             _renderer->setViewport(state.viewport->x, state.viewport->y, state.viewport->width, state.viewport->height);

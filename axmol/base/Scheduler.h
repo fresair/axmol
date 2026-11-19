@@ -5,6 +5,7 @@ Copyright (c) 2011      Zynga Inc.
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -307,6 +308,36 @@ public:
     void scheduleUpdate(T* target, int priority, bool paused)
     {
         this->schedulePerFrame([target](float dt) { target->update(dt); }, target, priority, paused);
+    }
+
+    /** Schedule a callback in the update priority queue using its actual owner.
+     * Unlike an interval timer, this preserves update ordering and allows the
+     * owner's normal pause/resume/cleanup to control the callback.
+     * @script{ignore}
+     */
+    void scheduleUpdate(const SchedulerFunc& callback, void* target, int priority, bool paused)
+    {
+        schedulePerFrame(callback, target, priority, paused);
+    }
+
+    /** Borrow the current callback to verify ownership before cancellation.
+     * The pointer is invalidated by scheduling mutations. @script{ignore}
+     */
+    const SchedulerFunc* getScheduledUpdateCallback(void* target) const
+    {
+        auto found = _schedIndexMap.find(target);
+        return found == _schedIndexMap.end() ? nullptr : &found->second->callback;
+    }
+
+    /** Borrow the current keyed callback. @script{ignore} */
+    const SchedulerFunc* getScheduledCallback(std::string_view key, void* target) const
+    {
+        auto found = _timersMap.find(target);
+        if (found == _timersMap.end()) return nullptr;
+        for (const auto* entry : found->second.timers)
+            if (const auto* timer = dynamic_cast<const TimerTargetCallback*>(entry); timer && timer->getKey() == key)
+                return &timer->getCallback();
+        return nullptr;
     }
 
 #if AX_ENABLE_SCRIPT_BINDING

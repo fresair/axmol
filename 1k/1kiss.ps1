@@ -40,6 +40,8 @@ param(
     [switch]$setupOnly,
     [switch]$forceConfig,
     [switch]$ndkOnly,
+    [switch]$checkOnly,
+    [switch]$exactNdk,
     [switch]$rebuild
 )
 
@@ -51,6 +53,7 @@ $HOST_MAC = 2 # targets: android,ios,osx(macos),tvos,watchos
 
 # import VersionEx and others
 . (Join-Path $PSScriptRoot 'extensions.ps1')
+. (Join-Path $PSScriptRoot 'android-ndk.ps1')
 
 if ($IsWin) { $HOST_OS_INT = $HOST_WIN }
 else {
@@ -465,11 +468,11 @@ if ($1k.isfile($Global:__1k_android_local_profile)) {
 }
 
 $install_prefix = if ($options.prefix) { $options.prefix } else { Join-Path $HOME '.1kiss' }
-if (!$1k.isdir($install_prefix)) {
+if (!$checkOnly -and !$1k.isdir($install_prefix)) {
     $1k.mkdirs($install_prefix)
 }
 if ($Global:download_path) {
-    $1k.mkdirs($Global:download_path)
+    if (!$checkOnly) { $1k.mkdirs($Global:download_path) }
 }
 else {
     $Global:download_path = $install_prefix
@@ -489,7 +492,7 @@ else {
         'android_sdk_root' = ''
     }
     $1k_env_str = Global:ConvertTo-Props $Script:1k_env
-    [System.IO.File]::WriteAllText($1k_env_file, $1k_env_str)
+    if (!$checkOnly) { [System.IO.File]::WriteAllText($1k_env_file, $1k_env_str) }
 }
 
 $sources_conf_file = Join-Path $PSScriptRoot 'sources.json'
@@ -978,6 +981,37 @@ function setup_nuget() {
 # google gclient require python3.exe, on windows 10/11 will locate to
 # a dummy C:\Users\halx99\AppData\Local\Microsoft\WindowsApps\python3.exe cause
 # shit strange error
+# JS runtime source builds need host tools before CMake prepares its isolated Python 2.
+# Reuse find_prog for discovery/version handling; this does not install global tools.
+function check_js_prerequisites([switch]$Required) {
+    if (!$IsMacOS -and !$IsLinux) { return }
+    $missing = @()
+    $savedPythonRequirement = $manifest['python']
+    $manifest['python'] = '3.9.0+'
+    try {
+        $python, $_ = find_prog -name 'python' -cmd 'python3' -silent $true
+        if (!$python) { $python, $_ = find_prog -name 'python' -cmd 'python' -silent $true }
+        if (!$python) {
+            $missing += 'Python 3.9 or newer on PATH (python3 or python). The existing 1kiss Python layer has no managed Python installer; install/select Python 3.9+ before building JS. Python 2 is prepared privately by the SpiderMonkey component.'
+        }
+        else { $1k.println("JS prerequisite Python: $python") }
+    }
+    finally { $manifest['python'] = $savedPythonRequirement }
+    foreach ($command in @('clang', 'make', 'patch', 'curl')) {
+        $toolName = "js-$command"
+        $manifest[$toolName] = '*'
+        try { $program, $_ = find_prog -name $toolName -cmd $command -silent $true }
+        finally { $manifest.Remove($toolName) }
+        if (!$program) { $missing += "'$command' on PATH. Install/select the host developer tools before building JS." }
+        else { $1k.println("JS prerequisite ${command}: $program") }
+    }
+    if ($missing) {
+        $message = "JavaScript source-build prerequisites missing: " + ($missing -join ' ')
+        if ($Required) { throw $message }
+        Write-Warning $message
+    }
+}
+
 function setup_python3() {
     if (!$manifest['python']) { return $null }
     $python_prog, $python_ver = find_prog -name 'python'
@@ -1286,6 +1320,10 @@ function setup_android_sdk() {
     }
 
 
+    $jsExactNdk = $exactNdk -or ($manifest['project_type'] -eq 'js')
+    if ($jsExactNdk -and ($ndk_ver -notin @('r27d', '27.3.13750724') -or $IsGraterThan)) {
+        throw "JavaScript requires Android NDK r27d (27.3.13750724); requested $ndk_ver$IsGraterThan."
+    }
     $ndk_minor_base = [int][char]'a'
 
     # looking up require ndk installed in exists sdk roots
@@ -1316,56 +1354,8 @@ function setup_android_sdk() {
     $sdk_root = $selected_sdk_root
     $1k.mkdirs($sdk_root)
 
-    $find_ndk_in = {
-        param($sdk_dir)
-        if (!$sdk_dir -or !$1k.isdir($sdk_dir)) {
-            return $null
-        }
-        $1k.println("Looking require android ndk $ndk_ver$IsGraterThan in $sdk_dir")
-
-        $ndk_major = ($ndk_ver -replace '[^0-9]', '')
-        $ndk_minor_off = "$ndk_major".Length + 1
-        $ndk_minor = if ($ndk_minor_off -lt $ndk_ver.Length) { "$([int][char]$ndk_ver.Substring($ndk_minor_off) - $ndk_minor_base)" } else { '0' }
-        $ndk_rev_base = "$ndk_major.$ndk_minor"
-
-        $ndk_parent = Join-Path $sdk_dir 'ndk'
-        if (!$1k.isdir($ndk_parent)) {
-            return $null
-        }
-
-        # find ndk in sdk
-        $ndks = [ordered]@{}
-        $ndk_rev_max = '0.0'
-        foreach ($item in $(Get-ChildItem -Path "$ndk_parent")) {
-            $ndkDir = $item.FullName
-            $sourceProps = "$ndkDir/source.properties"
-            if ($1k.isfile($sourceProps)) {
-                $verLine = $(Get-Content $sourceProps | Select-Object -Index 1)
-                $ndk_rev = $($verLine -split '=').Trim()[1].split('.')[0..1] -join '.'
-                $ndks.Add($ndk_rev, $ndkDir)
-                if ($ndk_rev_max -le $ndk_rev) {
-                    $ndk_rev_max = $ndk_rev
-                }
-            }
-        }
-
-        $ndk_dir = $null
-        if ($IsGraterThan) {
-            if ($ndk_rev_max -ge $ndk_rev_base) {
-                $ndk_dir = $ndks[$ndk_rev_max]
-            }
-        }
-        else {
-            $ndk_dir = $ndks[$ndk_rev_base]
-        }
-
-        if ($null -ne $ndk_dir) {
-            $1k.println("Found $ndk_dir in $sdk_dir ...")
-            return $ndk_dir
-        }
-    }
-
-    $ndk_root = &$find_ndk_in $selected_sdk_root
+    $ndk_requirement = Get-AndroidNdkRequirement "$ndk_ver$IsGraterThan" -Exact:$jsExactNdk
+    $ndk_root = Find-AndroidNdk $selected_sdk_root "$ndk_ver$IsGraterThan" -Exact:$jsExactNdk
 
     $sdk_comps = @()
 
@@ -1419,28 +1409,34 @@ function setup_android_sdk() {
         else {
             $1k.println("Not found suitable android ndk, installing ndk-$ndk_ver by sdkmanager ...")
 
-            $matchInfos = (exec_prog -prog $sdkmanager_prog -params "--sdk_root=$sdk_root", '--list' | Select-String 'ndk;')
-            if ($null -ne $matchInfos -and $matchInfos.Count -gt 0) {
-                $ndks = @{}
-                foreach ($matchInfo in $matchInfos) {
-                    $fullVer = $matchInfo.Line.Trim().Split(' ')[0] # "ndk;23.2.8568313"
-                    $verNums = $fullVer.Split(';')[1].Split('.')
-                    $ndkVer = 'r'
-                    $ndkVer += $verNums[0]
+            if ($jsExactNdk) {
+                $ndk_root = Join-Path $ndk_prefix $ndk_requirement
+                $sdk_comps += "ndk;$ndk_requirement"
+            }
+            else {
+                $matchInfos = (exec_prog -prog $sdkmanager_prog -params "--sdk_root=$sdk_root", '--list' | Select-String 'ndk;')
+                if ($null -ne $matchInfos -and $matchInfos.Count -gt 0) {
+                    $ndks = @{}
+                    foreach ($matchInfo in $matchInfos) {
+                        $fullVer = $matchInfo.Line.Trim().Split(' ')[0] # "ndk;23.2.8568313"
+                        $verNums = $fullVer.Split(';')[1].Split('.')
+                        $ndkVer = 'r'
+                        $ndkVer += $verNums[0]
 
-                    $ndk_minor = [int]$verNums[1]
-                    if ($ndk_minor -gt 0) {
-                        $ndkVer += [char]($ndk_minor_base + $ndk_minor)
+                        $ndk_minor = [int]$verNums[1]
+                        if ($ndk_minor -gt 0) {
+                            $ndkVer += [char]($ndk_minor_base + $ndk_minor)
+                        }
+                        if (!$ndks.Contains($ndkVer)) {
+                            $ndks.Add($ndkVer, $fullVer)
+                        }
                     }
-                    if (!$ndks.Contains($ndkVer)) {
-                        $ndks.Add($ndkVer, $fullVer)
-                    }
+
+                    $ndkFullVer = $ndks[$ndk_ver]
+                    $full_ver = $ndkFullVer.Split(';')[1]
+                    $ndk_root = Join-Path $ndk_prefix $full_ver
+                    $sdk_comps += $ndkFullVer
                 }
-
-                $ndkFullVer = $ndks[$ndk_ver]
-                $full_ver = $ndkFullVer.Split(';')[1]
-                $ndk_root = Join-Path $ndk_prefix $full_ver
-                $sdk_comps += $ndkFullVer
             }
         }
     }
@@ -1466,6 +1462,11 @@ function setup_android_sdk() {
         $sdk_cmdline_args += $sdk_comps
         ((1..10 | ForEach-Object { "yes"; Start-Sleep -Milliseconds 100 }) | . $sdkmanager_prog --licenses --sdk_root=$sdk_root) | Out-Host
         exec_prog -prog $sdkmanager_prog -params $sdk_cmdline_args | Out-Host
+    }
+
+    $actual_ndk_revision = Get-AndroidNdkRevision $ndk_root
+    if (!$actual_ndk_revision -or ($jsExactNdk -and $actual_ndk_revision -ne $ndk_requirement)) {
+        throw "Android NDK setup did not provide required revision $ndk_requirement at $ndk_root."
     }
 
     return $sdk_root, $ndk_root
@@ -1853,6 +1854,15 @@ $preprocessTable = @{
 }
 
 validHostAndToolchain
+if ($setupOnly -or $checkOnly) {
+    # Cold-build tools are checked again by CMake when it has to build the VM.
+    # A project with a complete runtime package can skip this bootstrap entirely.
+    check_js_prerequisites -Required:($checkOnly -and $exactNdk)
+}
+if ($checkOnly) {
+    $1k.println('Prerequisite check complete; no packages installed or profiles written.')
+    return
+}
 
 ########## setup build tools if not installed #######
 setup_unzip
@@ -2195,7 +2205,21 @@ if (!$setupOnly) {
                     $CONFIG_ALL_OPTIONS += '-B', $BUILD_DIR, "-DCMAKE_INSTALL_PREFIX:PATH=$INST_DIR"
                     if ($SOURCE_DIR) { $CONFIG_ALL_OPTIONS += '-S', $SOURCE_DIR }
                     $1k.println("CMake config command: $config_cmd $CONFIG_ALL_OPTIONS")
-                    &$config_cmd @CONFIG_ALL_OPTIONS | Out-Host
+                    try {
+                        &$config_cmd @CONFIG_ALL_OPTIONS | Out-Host
+                        if ($LASTEXITCODE -ne 0) {
+                            throw "CMake configuration failed with exit code $LASTEXITCODE."
+                        }
+                    }
+                    catch {
+                        # A failed configure may leave CMakeCache.txt but no generated
+                        # build system. Never let an older success stamp skip its retry.
+                        if (Test-Path -LiteralPath $tempFile -PathType Leaf) {
+                            Remove-Item -LiteralPath $tempFile -Force
+                        }
+                        Set-Location -LiteralPath $stored_cwd
+                        throw
+                    }
                     Set-Content $tempFile $hashValue -NoNewline
                 }
 

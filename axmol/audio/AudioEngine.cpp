@@ -2,6 +2,7 @@
  Copyright (c) 2014-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -26,25 +27,34 @@
 
 namespace ax
 {
+namespace
+{
+uint64_t profileGeneration = 0;
+bool endingAudioEngine = false;
+}
 
 float AudioPlayerSettings::distanceScale = 1.f;
 
 // audio file path,audio IDs
 tlx::string_map<std::list<AudioId>> AudioEngine::_audioPathIDMap;
 // profileName,ProfileHelper
-tlx::string_map<AudioEngine::ProfileHelper> AudioEngine::_audioPathProfileHelperMap;
+tlx::stl_string_map<AudioEngine::ProfileHelper> AudioEngine::_audioPathProfileHelperMap;
 AudioEngineSettings AudioEngine::_settings;
 AudioEngine::ProfileHelper* AudioEngine::_defaultProfileHelper = nullptr;
 std::unordered_map<AudioId, AudioEngine::AudioInfo> AudioEngine::_audioIDInfoMap;
 AudioEngineImpl* AudioEngine::_audioEngineImpl = nullptr;
 AudioEngine::AudioInfo::AudioInfo()
-    : profileHelper(nullptr), volume(1.0f), loop(false), duration(TIME_UNKNOWN), state(AudioState::INITIALIZING)
+    : profileHelper(nullptr), volume(1.0f), pitch(1.0f), loop(false), duration(TIME_UNKNOWN), state(AudioState::INITIALIZING)
 {}
 
 AudioEngine::AudioInfo::~AudioInfo() {}
 
 void AudioEngine::end()
 {
+    if (endingAudioEngine)
+        return;
+    endingAudioEngine = true;
+    ++profileGeneration;
     // make sure everythings cleanup before delete audio engine
     // fix #127
     uncacheAll();
@@ -53,6 +63,27 @@ void AudioEngine::end()
 
     delete _defaultProfileHelper;
     _defaultProfileHelper = nullptr;
+    // A getter reentered during teardown must not create a lease valid in the
+    // next engine generation, including for the retained named-profile map.
+    ++profileGeneration;
+    endingAudioEngine = false;
+}
+
+uint64_t AudioEngine::getProfileGeneration()
+{
+    return profileGeneration;
+}
+
+bool AudioEngine::isProfileValid(const AudioProfile* profile, uint64_t generation)
+{
+    if (!profile || endingAudioEngine || generation != profileGeneration)
+        return false;
+    if (_defaultProfileHelper && profile == &_defaultProfileHelper->profile)
+        return true;
+    for (const auto& entry : _audioPathProfileHelperMap)
+        if (profile == &entry.second.profile)
+            return true;
+    return false;
 }
 
 bool AudioEngine::lazyInit()
@@ -97,7 +128,7 @@ AudioId AudioEngine::play2d(std::string_view filePath, const AudioPlayerSettings
         }
 
         auto profileHelper = _defaultProfileHelper;
-        if (profile && profile != &profileHelper->profile)
+        if (profile && (!profileHelper || profile != &profileHelper->profile))
         {
             AX_ASSERT(!profile->name.empty());
             profileHelper          = &_audioPathProfileHelperMap[profile->name];
@@ -193,7 +224,7 @@ AudioId AudioEngine::play3d(std::string_view filePath, const AudioPlayerSettings
         }
 
         auto profileHelper = _defaultProfileHelper;
-        if (profile && profile != &profileHelper->profile)
+        if (profile && (!profileHelper || profile != &profileHelper->profile))
         {
             AX_ASSERT(!profile->name.empty());
             profileHelper          = &_audioPathProfileHelperMap[profile->name];
@@ -542,7 +573,7 @@ AudioEngine::AudioState AudioEngine::getState(AudioId audioID)
 AudioProfile* AudioEngine::getProfile(AudioId audioID)
 {
     auto it = _audioIDInfoMap.find(audioID);
-    if (it != _audioIDInfoMap.end())
+    if (it != _audioIDInfoMap.end() && it->second.profileHelper)
     {
         return &it->second.profileHelper->profile;
     }

@@ -1,0 +1,35 @@
+--- a/src/cpHastySpace.c
++++ b/src/cpHastySpace.c
+@@ -6,7 +6,11 @@
+ 
+ #include <pthread.h>
+ //#include <sys/param.h >
++#if defined(__APPLE__)
+ #include <sys/sysctl.h>
++#else
++#include <unistd.h>
++#endif
+ 
+ #include "chipmunk/chipmunk_private.h"
+ #include "chipmunk/cpHastySpace.h"
+@@ -314,14 +318,15 @@
+ 	cpHastySpace *hasty = (cpHastySpace *)space;
+ 	HaltThreads(hasty);
+ 	
+-#ifdef __APPLE__
+ 	if(threads == 0){
++		#if defined(__APPLE__)
+ 		size_t size = sizeof(threads);
+ 		sysctlbyname("hw.ncpu", &threads, &size, NULL, 0);
+-	}
+-#else
+-	if(threads == 0) threads = 1;
+-#endif
++		#else
++		long available = sysconf(_SC_NPROCESSORS_ONLN);
++		threads = (available > 0 ? (unsigned long)available : 1);
++		#endif
++	}
+ 	
+ 	hasty->num_threads = (threads < MAX_THREADS ? threads : MAX_THREADS);
+ 	hasty->num_working = hasty->num_threads - 1;

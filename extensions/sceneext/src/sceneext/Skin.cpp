@@ -1,6 +1,7 @@
 /****************************************************************************
 Copyright (c) 2013-2017 Chukong Technologies Inc.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -210,6 +211,9 @@ Mat4 Skin::getNodeToWorldTransformAR() const
 
 void Skin::draw(const SceneRenderState& state, const Mat4& transform, uint32_t flags)
 {
+    // Skin submits its own quad instead of calling Sprite::draw. Its vertices
+    // still need the current camera projection in the sprite program state.
+    setMVPMatrixUniform(state);
     _quadCommand.setWeakPSVL(_programState, _vertexLayout);
 
     // TODO: implement z order

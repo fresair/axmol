@@ -1,0 +1,75 @@
+{
+  "version": "1.6.0.0",
+  "nodeTree": {
+    "classname": "Node",
+    "options": {
+      "name": "old-root",
+      "tag": 100,
+      "actionTag": 11,
+      "width": 80,
+      "height": 40,
+      "x": 5,
+      "y": 8,
+      "visible": true,
+      "ZOrder": 3,
+      "colorR": 123,
+      "colorG": 190,
+      "colorB": 220
+    },
+    "children": [
+      {
+        "classname": "Node",
+        "options": {
+          "name": "old-child",
+          "tag": 101,
+          "actionTag": 12,
+          "width": 80,
+          "height": 40,
+          "x": 9,
+          "y": 13,
+          "visible": true,
+          "ZOrder": 3,
+          "colorR": 123,
+          "colorG": 190,
+          "colorB": 220
+        },
+        "children": []
+      }
+    ]
+  },
+  "action": {
+    "duration": 60,
+    "speed": 1,
+    "timelines": [
+      {
+        "frameType": "PositionFrame",
+        "actionTag": 12,
+        "frames": [
+          {
+            "frameIndex": 0,
+            "x": 9,
+            "y": 13,
+            "tween": true
+          },
+          {
+            "frameIndex": 60,
+            "x": 69,
+            "y": 43,
+            "tween": true
+          }
+        ]
+      },
+      {
+        "frameType": "EventFrame",
+        "actionTag": 12,
+        "frames": [
+          {
+            "frameIndex": 30,
+            "value": "midpoint",
+            "tween": false
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -5,6 +5,7 @@ Copyright (c) 2011      Zynga Inc.
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -280,6 +281,21 @@ void Scene::tick(float deltaTime)
 
         // accumulate time
         _fixedAccumulator += deltaTime;
+
+#    if defined(AX_ENABLE_PHYSICS_3D)
+        // Preview exactly the original repeated double -= float operation.
+        // Division/floor would choose a different N at floating boundaries.
+        int plannedPhysicsSteps = 0;
+        double previewAccumulator = _fixedAccumulator;
+        while (previewAccumulator >= _fixedDeltaTime && plannedPhysicsSteps < _maxFixedStepsPerFrame)
+        {
+            previewAccumulator -= _fixedDeltaTime;
+            ++plannedPhysicsSteps;
+        }
+        auto kinematicFrame = _physicsWorld3D && _physicsWorld3D->isAutoStep()
+            ? PhysicsWorld3D::KinematicFrameScope(_physicsWorld3D, plannedPhysicsSteps, _fixedDeltaTime)
+            : PhysicsWorld3D::KinematicFrameScope{};
+#    endif
 
         int steps = 0;
         while (_fixedAccumulator >= _fixedDeltaTime && steps < _maxFixedStepsPerFrame)

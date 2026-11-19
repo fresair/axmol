@@ -2,6 +2,7 @@
 Copyright (c) 2014-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2019 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -412,6 +413,19 @@ public:
         return isWorldPointInRect(pt, w2l, rect, nullptr);
     }
 
+    /**
+     * Configure the Classic 2D calibrated view for a given canvas size.
+     *
+     * Unlike configureClassic(), this also updates the Camera Node transform
+     * to keep the view centered on the canvas.
+     *
+     * May be called more than once (e.g. on canvas resize).
+     *
+     * @param canvasSize The logical canvas size in points.
+     * @script{ignore}
+     */
+    void configureClassicView(const Vec2& canvasSize);
+
 protected:
     static Viewport _defaultViewport;
 
@@ -427,18 +441,6 @@ protected:
      * @param farPlane The far plane distance.
      */
     void configureClassic(float aspectRatio, float nearPlane, float farPlane);
-
-    /**
-     * Configure the Classic 2D calibrated view for a given canvas size.
-     *
-     * Unlike configureClassic(), this also updates the Camera Node transform
-     * to keep the view centered on the canvas.
-     *
-     * May be called more than once (e.g. on canvas resize).
-     *
-     * @param canvasSize The logical canvas size in points.
-     */
-    void configureClassicView(const Vec2& canvasSize);
 
     /**
      * Rebuilds the projection matrix from the Camera's current configuration.

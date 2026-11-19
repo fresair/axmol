@@ -6,6 +6,7 @@
  * http://yannickloriot.com
  *
  * Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+ * Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -454,6 +455,8 @@ void ControlSwitch::onPointerCancel(PointerEvent* pTouch)
     {
         setOn(!_on, true);
     }
+
+    _isPressed = false;
 }
 
 NS_AX_EXT_END

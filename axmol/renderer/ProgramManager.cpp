@@ -1,6 +1,7 @@
 /****************************************************************************
  Copyright (c) 2018-2019 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -240,6 +241,9 @@ Program* ProgramManager::loadProgram(std::string_view vsName,
     else
     {
         AXLOGE("Load program: {} {}, {} fail", progId, vsName, fsName);
+        // createProgram returns an owned object even when compilation fails.
+        // Only valid programs enter the cache or escape to a ProgramState.
+        AX_SAFE_RELEASE_NULL(program);
         AXASSERT(false, "Load program fail");
     }
     return program;

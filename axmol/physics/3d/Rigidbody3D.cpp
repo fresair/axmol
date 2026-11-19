@@ -1,5 +1,6 @@
 /****************************************************************************
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -13,6 +14,7 @@
 #    include "axmol/physics/3d/Joint3D.h"
 #    include "axmol/physics/3d/PhysicsUtility3D.h"
 #    include "axmol/physics/3d/PhysicsWorld3D.h"
+#    include "axmol/physics/PhysicsConsts.h"
 #    include "axmol/scene/Node.h"
 #    include "axmol/scene/Scene.h"
 
@@ -55,6 +57,18 @@ static bool withBodyWriteLock(const Rigidbody3D* body, const std::function<void(
 
     fn(lock.GetBody());
     return true;
+}
+
+static void setMasslessMotionProperties(JPH::MotionProperties& motion, JPH::EAllowedDOFs dofs)
+{
+    // Jolt validates finite initialization data when changing allowed DOFs.
+    // The actual Kinematic/Static native inverse fields stay genuinely zero.
+    JPH::MassProperties initialization;
+    initialization.mMass    = 1.0f;
+    initialization.mInertia = JPH::Mat44::sIdentity();
+    motion.SetMassProperties(dofs, initialization);
+    motion.SetInverseMass(0.0f);
+    motion.SetInverseInertia(JPH::Vec3::sZero(), JPH::Quat::sIdentity());
 }
 
 static bool validateInertia(const Vec3& inertia)
@@ -139,6 +153,7 @@ Rigidbody3D::Rigidbody3D() : _allowedDOFs((uint32_t)JPH::EAllowedDOFs::All)
 
 Rigidbody3D::~Rigidbody3D()
 {
+    setKinematicZeroStepSyncEnabled(false);
     detachFromWorld();
     if (_collider)
     {
@@ -175,6 +190,27 @@ bool Rigidbody3D::init(Collider3D* collider, float mass)
 
     setTransformInPhysics(Vec3::zero, Quat::identity);
     return true;
+}
+
+void Rigidbody3D::setKinematicZeroStepSyncEnabled(bool enabled)
+{
+    if (_kinematicZeroStepSyncEnabled == enabled)
+        return;
+    if (isAttached())
+        _world->invalidateKinematicFrameTarget(this);
+    _kinematicZeroStepSyncEnabled = enabled;
+}
+
+bool Rigidbody3D::isKinematicZeroStepSyncEnabled() const
+{
+    return _kinematicZeroStepSyncEnabled;
+}
+
+void Rigidbody3D::setOwner(Node* owner)
+{
+    if (_owner != owner && isAttached())
+        _world->invalidateKinematicFrameTarget(this);
+    Component::setOwner(owner);
 }
 
 void Rigidbody3D::setEnabled(bool enabled)
@@ -246,11 +282,18 @@ bool Rigidbody3D::attachToWorld(PhysicsWorld3D* world)
 
     if (_motionType == MotionType::Unspec)
         _motionType = _mass > phconsts::LowerBound ? MotionType::Dynamic : MotionType::Static;
-    else if (_motionType != MotionType::Static && _mass < phconsts::LowerBound)
+    else if (_motionType == MotionType::Dynamic && _mass < phconsts::LowerBound)
     {
-        AXLOGW("Invalid configuration: Dynamic/Kinematic body requires positive mass. Forcing motionType=Static.");
+        AXLOGW("Invalid configuration: Dynamic body requires positive mass. Forcing motionType=Static.");
         _motionType = MotionType::Static;
     }
+
+    // An explicitly kinematic body has infinite simulated mass. Jolt requires
+    // valid finite mass properties while allocating MotionProperties, but its
+    // public inverse-mass/inertia setters permit the real massless state below.
+    // Leave unspecified mass-zero bodies static and preserve their allocation.
+    const bool masslessMotionProperties = _mass == 0.0f &&
+                                          (_motionType == MotionType::Kinematic || _preserveKinematicMotionProperties);
 
     // Choose object layer based on sensor flag and motion type
     const auto objectLayer = _collider && _collider->isSensor()
@@ -267,9 +310,15 @@ bool Rigidbody3D::attachToWorld(PhysicsWorld3D* world)
     settings.mAllowSleeping                = _allowSleeping;
     settings.mMotionQuality                = toJoltMotionQuality(_collisionDetection);
     settings.mCollideKinematicVsNonDynamic = isKinematic();
-    settings.mAllowDynamicOrKinematic      = _mass > phconsts::LowerBound;
+    settings.mAllowDynamicOrKinematic      = _mass > phconsts::LowerBound || masslessMotionProperties;
 
-    if (_motionType != MotionType::Static)
+    if (masslessMotionProperties)
+    {
+        settings.mOverrideMassProperties          = JPH::EOverrideMassProperties::MassAndInertiaProvided;
+        settings.mMassPropertiesOverride.mMass    = 1.0f;
+        settings.mMassPropertiesOverride.mInertia = JPH::Mat44::sIdentity();
+    }
+    else if (_motionType != MotionType::Static)
     {
         if (validateInertia(_inertia))
         {
@@ -317,6 +366,14 @@ bool Rigidbody3D::attachToWorld(PhysicsWorld3D* world)
     world->addPhysicsActor(this);
     _world = world;
 
+    if (masslessMotionProperties)
+    {
+        withBodyWriteLock(this, [this](JPH::Body& body) {
+            auto* motion = body.GetMotionPropertiesUnchecked();
+            setMasslessMotionProperties(*motion, static_cast<JPH::EAllowedDOFs>(_allowedDOFs));
+        });
+    }
+
     // If we have a collider, attach it to the created body
     if (_collider)
         _collider->setAttachedBody(this);
@@ -351,6 +408,8 @@ void Rigidbody3D::invalidate()
 
 void Rigidbody3D::setTransformInPhysics(const Vec3& translateInPhysics, const Quat& rotInPhysics)
 {
+    if (isAttached())
+        _world->invalidateKinematicFrameTarget(this);
     Mat4::createRotation(rotInPhysics, &_transformInPhysics);
     _transformInPhysics.m[12] = translateInPhysics.x;
     _transformInPhysics.m[13] = translateInPhysics.y;
@@ -384,6 +443,7 @@ void Rigidbody3D::syncNodeToPhysics()
 {
     if (!_owner || !isAttached())
         return;
+    _world->invalidateKinematicFrameTarget(this);
 
     auto mat = _owner->getNodeToWorldTransform();
     jphutil::stripScaleFromTransform(mat);
@@ -398,21 +458,47 @@ void Rigidbody3D::syncNodeToPhysics()
                                                                        jphutil::cast(quat), JPH::EActivation::Activate);
 }
 
+void Rigidbody3D::syncKinematicNodeForStep(float dt)
+{
+    Vec3 translation;
+    Quat rotation;
+    if (captureKinematicNodeTarget(translation, rotation))
+        syncCapturedKinematicTarget(translation, rotation, dt);
+}
+
+bool Rigidbody3D::captureKinematicNodeTarget(Vec3& translation, Quat& rotation) const
+{
+    if (!_owner || !isAttached())
+        return false;
+    auto mat = _owner->getNodeToWorldTransform();
+    jphutil::stripScaleFromTransform(mat);
+    mat *= _invTransformInPhysics;
+    Vec3 scale;
+    mat.decompose(&scale, &rotation, &translation);
+    rotation.normalize();
+    return true;
+}
+
+void Rigidbody3D::syncCapturedKinematicTarget(const Vec3& translation, const Quat& rotation, float remainingTime)
+{
+    if (!_owner || !isAttached() || !isKinematic() || remainingTime <= 0.0f)
+        return;
+    // The target belongs to the whole Scene frame. Jolt integrates one actual
+    // fixed step after deriving velocity over the remaining simulation budget.
+    _world->internalHandle().GetBodyInterface().MoveKinematic(
+        _bodyID, jphutil::cast(translation), jphutil::cast(rotation), remainingTime);
+}
+
 void Rigidbody3D::setPosition(const Vec3& point, bool teleport)
 {
     if (!isAttached())
         return;
-
-    // Preserve current rotation
-    JPH::BodyLockRead lock(_world->internalHandle().GetBodyLockInterface(), _bodyID);
-    if (!lock.Succeeded())
-        return;
-
-    JPH::Quat currentRotation = lock.GetBody().GetRotation();
+    _world->invalidateKinematicFrameTarget(this);
 
     auto activation = teleport ? JPH::EActivation::Activate : JPH::EActivation::DontActivate;
-    _world->internalHandle().GetBodyInterface().SetPositionAndRotation(_bodyID, jphutil::cast(point), currentRotation,
-                                                                       activation);
+    // Jolt preserves rotation under its own write lock. Holding a read lock
+    // while requesting that write lock would deadlock this public entry.
+    _world->internalHandle().GetBodyInterface().SetPosition(_bodyID, jphutil::cast(point), activation);
 }
 
 Vec3 Rigidbody3D::getPosition() const
@@ -427,17 +513,11 @@ void Rigidbody3D::setRotation(const Quat& rot, bool teleport)
 {
     if (!isAttached())
         return;
-
-    // Preserve current position
-    JPH::BodyLockRead lock(_world->internalHandle().GetBodyLockInterface(), _bodyID);
-    if (!lock.Succeeded())
-        return;
-
-    JPH::RVec3 currentPosition = lock.GetBody().GetPosition();
+    _world->invalidateKinematicFrameTarget(this);
 
     auto activation = teleport ? JPH::EActivation::Activate : JPH::EActivation::DontActivate;
-    _world->internalHandle().GetBodyInterface().SetPositionAndRotation(_bodyID, currentPosition, jphutil::cast(rot),
-                                                                       activation);
+    // Jolt preserves position under the same write lock as the rotation edit.
+    _world->internalHandle().GetBodyInterface().SetRotation(_bodyID, jphutil::cast(rot), activation);
 }
 
 Quat Rigidbody3D::getRotation() const
@@ -615,8 +695,7 @@ Vec3 Rigidbody3D::local2World(const Vec3& point)
 
 void Rigidbody3D::setInertia(const Vec3& inertia)
 {
-    _inertia = inertia;
-    setMassData(_mass, _inertia);
+    setMassData(_mass, inertia);
 }
 
 Vec3 Rigidbody3D::getInertia() const
@@ -627,7 +706,20 @@ Vec3 Rigidbody3D::getInertia() const
     Vec3 inverseInertia;
     withBodyReadLock(this, [&inverseInertia](const JPH::Body& body) {
         if (auto motion = body.GetMotionPropertiesUnchecked())
-            inverseInertia = jphutil::cast(motion->GetInverseInertiaDiagonal());
+        {
+            if (body.IsDynamic())
+                inverseInertia = jphutil::cast(motion->GetInverseInertiaDiagonal());
+            else
+            {
+                // Read the actual native tensor; the diagonal-only Jolt getter
+                // requires Dynamic and cannot be used for Kinematic or Static.
+                const auto tensor = motion->GetLocalSpaceInverseInertiaUnchecked();
+                const auto axes = JPH::Mat44::sRotation(motion->GetInertiaRotation());
+                inverseInertia = Vec3{axes.GetAxisX().Dot(tensor.Multiply3x3(axes.GetAxisX())),
+                                      axes.GetAxisY().Dot(tensor.Multiply3x3(axes.GetAxisY())),
+                                      axes.GetAxisZ().Dot(tensor.Multiply3x3(axes.GetAxisZ()))};
+            }
+        }
     });
 
     return Vec3{(inverseInertia.x != 0.0f) ? 1.0f / inverseInertia.x : 0.0f,
@@ -655,6 +747,45 @@ float Rigidbody3D::getMass() const
 
 void Rigidbody3D::setMassData(float mass, const Vec3& inertia)
 {
+
+    // A previously massless Kinematic has real zero MotionProperties. Apply
+    // a new valid configuration transactionally before exposing cached data.
+    if (isAttached() && (_preserveKinematicMotionProperties || _motionType == MotionType::Kinematic))
+    {
+        float nextMass = mass;
+        Vec3 nextInertia = inertia;
+        clampMassData(nextMass, nextInertia);
+        if (nextMass == 0.0f && _motionType == MotionType::Dynamic)
+        {
+            AXLOGW("setMassData rejected: Dynamic body cannot have zero inverse mass.");
+            return;
+        }
+        JPH::MassProperties properties;
+        if (nextMass > 0.0f && !tryBuildMassProperties(_collider, nextMass, nextInertia, properties))
+        {
+            AXLOGW("setMassData rejected: native mass properties could not be calculated.");
+            return;
+        }
+        bool updated = false;
+        withBodyWriteLock(this, [&](JPH::Body& body) {
+            auto* motion = body.GetMotionPropertiesUnchecked();
+            if (!motion)
+                return;
+            if (nextMass == 0.0f)
+                setMasslessMotionProperties(*motion, motion->GetAllowedDOFs());
+            else
+                motion->SetMassProperties(motion->GetAllowedDOFs(), properties);
+            updated = true;
+        });
+        if (!updated)
+            return;
+        _mass = nextMass;
+        _inertia = nextInertia;
+        _world->invalidateKinematicFrameTarget(this);
+        if (_mass == 0.0f && _motionType == MotionType::Kinematic)
+            _preserveKinematicMotionProperties = true;
+        return;
+    }
 
     _mass    = mass;
     _inertia = inertia;
@@ -720,12 +851,30 @@ void Rigidbody3D::setMotionType(MotionType motionType)
     if (!_collider)
         return;
 
-    // rigidbody with zero mass not allow modify motion Type when motionType is Static
-    if (_motionType == MotionType::Static && _mass <= 0.0f)
+    // Mass-zero bodies can be explicitly kinematic, but never dynamic. An
+    // already attached static body must have MotionProperties allocated before
+    // Jolt can change its type; a prior kinematic->static transition keeps them.
+    if (_mass <= 0.0f && motionType == MotionType::Dynamic)
         return;
+    if (_motionType == MotionType::Static && _mass <= 0.0f && isAttached() &&
+        motionType == MotionType::Kinematic)
+    {
+        bool canChange = false;
+        withBodyReadLock(this, [&canChange](const JPH::Body& body) {
+            canChange = body.CanBeKinematicOrDynamic();
+        });
+        if (!canChange)
+            return;
+    }
+
+    if (motionType == MotionType::Kinematic && _mass == 0.0f)
+        _preserveKinematicMotionProperties = true;
 
     if (_motionType == motionType)
         return;
+
+    if (isAttached())
+        _world->invalidateKinematicFrameTarget(this);
 
     _motionType = motionType;
 
@@ -734,6 +883,9 @@ void Rigidbody3D::setMotionType(MotionType motionType)
 
     _world->internalHandle().GetBodyInterface().SetMotionType(_bodyID, (JPH::EMotionType)_motionType,
                                                               JPH::EActivation::Activate);
+    _world->internalHandle().GetBodyInterface().SetObjectLayer(
+        _bodyID, _collider->isSensor() ? detail::kSensorLayer :
+                     (_motionType == MotionType::Static ? detail::kStaticLayer : detail::kDynamicLayer));
     bool kinematic = _motionType == MotionType::Kinematic;
     withBodyWriteLock(this, [kinematic](JPH::Body& body) { body.SetCollideKinematicVsNonDynamic(kinematic); });
 }
@@ -792,6 +944,11 @@ void Rigidbody3D::setRotationEnabled(bvec3 axes)
         if (!motion)
             return;
 
+        if (_mass == 0.0f && _preserveKinematicMotionProperties)
+        {
+            setMasslessMotionProperties(*motion, static_cast<JPH::EAllowedDOFs>(_allowedDOFs));
+            return;
+        }
         JPH::MassProperties massProperties;
         if (!tryBuildMassProperties(_collider, _mass, _inertia, massProperties))
             return;

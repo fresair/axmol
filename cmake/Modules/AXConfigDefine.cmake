@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
+# SPDX-License-Identifier: MIT
 include(${_AX_ROOT}/1k/platforms.cmake)
 
 # custom target property for lua/js link
@@ -5,6 +7,12 @@ define_property(TARGET
   PROPERTY AX_LUA_DEPEND
   BRIEF_DOCS "axmol lua depend libs"
   FULL_DOCS "use to save depend libs of axmol lua project"
+)
+
+define_property(TARGET
+  PROPERTY AX_JS_DEPEND
+  BRIEF_DOCS "axmol JavaScript dependency libraries"
+  FULL_DOCS "Libraries explicitly linked by JavaScript applications; not part of the core dependency interface"
 )
 
 if(WINDOWS)

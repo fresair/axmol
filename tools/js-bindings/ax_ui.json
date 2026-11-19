@@ -1,0 +1,94 @@
+{
+  "module": "ax_ui",
+  "target_namespace": "ccui",
+  "cpp_namespace": "ax::ui",
+  "cpp_chunks": 4,
+  "macro_judgement": null,
+  "headers": [
+    "%(axdir)s/axmol/ui/CocosGUI.h"
+  ],
+  "clang_flags": [
+    "-DAX_ENABLE_3D=0",
+    "-DAX_ENABLE_PHYSICS_2D=0"
+  ],
+  "classes": [
+    "Helper",
+    "Widget",
+    "LayoutGroup",
+    "Button",
+    "CheckBox",
+    "ImageView",
+    "Text",
+    "TextAtlas",
+    "TextBMFont",
+    "LoadingBar",
+    "Slider",
+    "TextField",
+    "ScrollView",
+    "ListView",
+    "PageView",
+    "LayoutParameter",
+    "LinearLayoutParameter",
+    "RelativeLayoutParameter",
+    "Rich.*",
+    "HBox",
+    "VBox",
+    "RelativeBox",
+    "Scale9Sprite",
+    "EditBox",
+    "LayoutComponent",
+    "AbstractCheckButton",
+    "RadioButton",
+    "RadioButtonGroup",
+    "InputField",
+    "TabView",
+    "TabHeader",
+    "Layout"
+  ],
+  "abstract_classes": [
+    "Helper",
+    "AbstractCheckButton"
+  ],
+  "classes_have_no_parents": [
+    "Helper"
+  ],
+  "base_classes_to_skip": [],
+  "skip": [
+    {
+      "class": "*",
+      "methods": [
+        "^visit$",
+        "onEnter.*",
+        "onExit.*",
+        "(g|s)etDelegate"
+      ]
+    },
+    {
+      "class": "Widget",
+      "methods": [
+        "addCCSEventListener"
+      ]
+    },
+    {
+      "class": "LayoutParameter",
+      "methods": [
+        "(s|g)etMargin"
+      ]
+    },
+    {
+      "class": "RichText",
+      "methods": [
+        "setTagDescription",
+        "removeTagDescription"
+      ]
+    },
+    {
+      "class": "Helper",
+      "methods": [
+        "get*"
+      ]
+    }
+  ],
+  "rename_functions": [],
+  "rename_classes": []
+}

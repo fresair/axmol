@@ -1,5 +1,6 @@
 /****************************************************************************
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -71,6 +72,41 @@ public class AxmolPlayer extends FrameLayout {
 
     private static Handler sHandler;
     private static WeakReference<AxmolPlayer> sInstance;
+    private IMEState mIMEState = new IMEState("", 0, 0, 0, false, false, false, 0);
+    private AxmolInputConnection mInputConnection;
+
+    // Prepared by the native owner thread before opening the OS keyboard.
+    // Selection is in code points here; the real Editable uses UTF-16 offsets.
+    static final class IMEState {
+        final String text;
+        final int selectionStart, selectionEnd, charLimit;
+        final boolean legacyEditing, multiline, password;
+        final long generation;
+        IMEState(String text, int start, int end, int limit, boolean legacy, boolean multiline,
+                 boolean password, long generation) {
+            this.text = text;
+            selectionStart = start; selectionEnd = end; charLimit = limit;
+            legacyEditing = legacy; this.multiline = multiline; this.password = password;
+            this.generation = generation;
+        }
+        int utf16(int codePoints) {
+            return text.offsetByCodePoints(0, Math.max(0, Math.min(codePoints, text.codePointCount(0, text.length()))));
+        }
+    }
+
+    static void recordIMEState(AxmolInputConnection connection, long generation, String[] actual) {
+        AxmolPlayer player = sInstance == null ? null : sInstance.get();
+        if (player == null || player.mInputConnection != connection ||
+                player.mIMEState.generation != generation || actual.length != 3) return;
+        IMEState state = player.mIMEState;
+        player.mIMEState = new IMEState(actual[0], Integer.parseInt(actual[1]), Integer.parseInt(actual[2]),
+                state.charLimit, state.legacyEditing, state.multiline, state.password, generation);
+    }
+
+    static IMEState currentIMEState() {
+        AxmolPlayer player = sInstance == null ? null : sInstance.get();
+        return player == null ? new IMEState("", 0, 0, 0, false, false, false, 0) : player.mIMEState;
+    }
 
     private static boolean sNativeInitialized = false;
 
@@ -170,17 +206,22 @@ public class AxmolPlayer extends FrameLayout {
             View hostView = (View) mRenderHost;
             switch (msg.what) {
                 case IMM_OPEN_IME_KEYBOARD:
+                    if (mInputConnection != null) mInputConnection.closeConnection();
+                    if (msg.obj instanceof IMEState) mIMEState = (IMEState)msg.obj;
                     hostView.setFocusable(true);
                     hostView.setFocusableInTouchMode(true);
                     hostView.requestFocus();
 
                     if (imm != null) {
+                        imm.restartInput(hostView);
                         // Target the showSoftInput directly onto the active rendering surface view
                         imm.showSoftInput(hostView, InputMethodManager.SHOW_IMPLICIT);
                         Log.d(TAG, "showSoftInput successfully bounded to mRenderHost surface");
                     }
                     break;
                 case IMM_CLOSE_IME_KEYBOARD:
+                    if (mInputConnection != null) mInputConnection.closeConnection();
+                    mInputConnection = null;
                     if (imm != null) {
                         imm.hideSoftInputFromWindow(getWindowToken(), 0);
                         Log.d(TAG, "HideSoftInput from AxmolPlayer");
@@ -256,9 +297,11 @@ public class AxmolPlayer extends FrameLayout {
 
         // Modern IMEs require valid selection bounds to activate text input streaming.
         // Without these, the IME might assume the field is un-editable and refuse to call commitText.
-        outAttrs.initialSelStart = 0;
-        outAttrs.initialSelEnd = 0;
+        outAttrs.initialSelStart = mIMEState.utf16(mIMEState.selectionStart);
+        outAttrs.initialSelEnd = mIMEState.utf16(mIMEState.selectionEnd);
         outAttrs.initialCapsMode = 0;
+        if (mIMEState.password) outAttrs.inputType = EditorInfo.TYPE_CLASS_TEXT | EditorInfo.TYPE_TEXT_VARIATION_PASSWORD;
+        if (mIMEState.multiline) outAttrs.inputType |= EditorInfo.TYPE_TEXT_FLAG_MULTI_LINE;
 
         // Disable Extract Mode (fullscreen keyboard) in landscape orientation
         if (isHideNativeInputBar()) {
@@ -271,7 +314,9 @@ public class AxmolPlayer extends FrameLayout {
         }
 
         // Return the clean custom connection channel
-        return new AxmolInputConnection(targetView, false);
+        if (mInputConnection != null) mInputConnection.closeConnection();
+        mInputConnection = new AxmolInputConnection(targetView, mIMEState);
+        return mInputConnection;
     }
 
     // ===========================================================
@@ -347,8 +392,16 @@ public class AxmolPlayer extends FrameLayout {
 
     @SuppressWarnings("unused")
     public static void openIMEKeyboard() {
+        openIMEKeyboard("", 0, 0, 0, false, false, false, 0);
+    }
+
+    @SuppressWarnings("unused")
+    public static void openIMEKeyboard(String text, int selectionStart, int selectionEnd, int charLimit,
+                                       boolean legacy, boolean multiline, boolean password, long generation) {
+        if (sHandler == null) return;
         final Message msg = Message.obtain();
         msg.what = IMM_OPEN_IME_KEYBOARD;
+        msg.obj = new IMEState(text, selectionStart, selectionEnd, charLimit, legacy, multiline, password, generation);
         sHandler.sendMessage(msg);
     }
 
@@ -748,6 +801,8 @@ public class AxmolPlayer extends FrameLayout {
     public static native void nativeSoftInputHide(float duration);
 
     public static native void nativeInsertText(String text);
+    public static native String[] nativeUpdateIME(long generation, int operation, String document,
+            int selectionStart, int selectionEnd, String payload, int deleteBefore, int preeditCaret);
 
     public static native void nativeDeleteBackward(int numChars);
 

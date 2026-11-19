@@ -2,6 +2,7 @@
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -291,6 +292,16 @@ public:
 
     void setTouchEnabled(bool enable) { setPointerEnabled(enable); }
     bool isTouchEnabled() const { return isPointerEnabled(); }
+
+    /**
+     * Controls whether a pointer press stops dispatch to widgets behind this
+     * widget. This is independent of propagation to parent widgets and defaults
+     * to true. A press callback may change the setting for the current press.
+     * @script{ignore}
+     */
+    void setSwallowPointerEvents(bool swallow) { _swallowPointerEvents = swallow; }
+    /** @script{ignore} */
+    bool isSwallowPointerEvents() const { return _swallowPointerEvents; }
 
     /**
      * Changes the position (x,y) of the widget in OpenGL coordinates
@@ -818,6 +829,7 @@ protected:
     bool _flippedY;
     bool _focused;
     bool _focusEnabled;
+    bool _swallowPointerEvents;
 
     BrightStyle _brightStyle;
     SizeType _sizeType;

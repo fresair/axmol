@@ -5,6 +5,7 @@ Copyright (c) 2011      Zynga Inc.
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -1424,7 +1425,18 @@ void Director::renderFrame()
     if (!_paused)
     {
         _eventDispatcher->dispatchEvent(_eventBeforeUpdate);
+#if AX_ENABLE_SCRIPT_BINDING
+        // Scheduler scales its delta at tick entry. A timer may change
+        // that scale during this tick, so preserve the same input here.
+        const float scriptDelta = _deltaTime * _scheduler->getTimeScale();
+#endif
         _scheduler->update(_deltaTime);
+#if AX_ENABLE_SCRIPT_BINDING
+        // A timer may stop, restart or replace the backend. Resolve it
+        // after Scheduler::update, without creating a script singleton.
+        if (auto* scriptEngine = ScriptEngineManager::getScriptEngineIfExists())
+            scriptEngine->updateFrame(scriptDelta);
+#endif
         performFrameTasks(_nextUpdateTasks);
         _eventDispatcher->dispatchEvent(_eventAfterUpdate);
     }

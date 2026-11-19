@@ -1,0 +1,1762 @@
+{
+  "formatVersion": 1,
+  "language": "js",
+  "engine": "SpiderMonkey 33.1",
+  "module": "rhi",
+  "registrationName": "ax_rhi",
+  "targetNamespace": "cc.rhi",
+  "conditionalExpression": null,
+  "classes": [
+    {
+      "nativeName": "GraphicsCore",
+      "qualifiedName": "ax::rhi::GraphicsCore",
+      "jsName": "GraphicsCore",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [],
+      "methods": [
+        {
+          "nativeName": "activate",
+          "jsName": "activate",
+          "declaringType": "ax::rhi::GraphicsCore",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "backend",
+          "jsName": "backend",
+          "declaringType": "ax::rhi::GraphicsCore",
+          "returnType": "ax::rhi::GraphicsBackend",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "device",
+          "jsName": "device",
+          "declaringType": "ax::rhi::GraphicsCore",
+          "returnType": "ax::rhi::GraphicsDevice *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getBackendPriority",
+          "jsName": "getBackendPriority",
+          "declaringType": "ax::rhi::GraphicsCore",
+          "returnType": "int",
+          "parameterTypes": [
+            "ax::rhi::GraphicsBackend"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "initialize",
+          "jsName": "initialize",
+          "declaringType": "ax::rhi::GraphicsCore",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "isD3D11",
+          "jsName": "isD3D11",
+          "declaringType": "ax::rhi::GraphicsCore",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "isD3D12",
+          "jsName": "isD3D12",
+          "declaringType": "ax::rhi::GraphicsCore",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "isMetal",
+          "jsName": "isMetal",
+          "declaringType": "ax::rhi::GraphicsCore",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "isOpenGL",
+          "jsName": "isOpenGL",
+          "declaringType": "ax::rhi::GraphicsCore",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "isVulkan",
+          "jsName": "isVulkan",
+          "declaringType": "ax::rhi::GraphicsCore",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "setBackendPriority",
+          "jsName": "setBackendPriority",
+          "declaringType": "ax::rhi::GraphicsCore",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::rhi::GraphicsBackend",
+            "int"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "setPreferredBackend",
+          "jsName": "setPreferredBackend",
+          "declaringType": "ax::rhi::GraphicsCore",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::rhi::GraphicsBackend"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "setShaderILProfile",
+          "jsName": "setShaderILProfile",
+          "declaringType": "ax::rhi::GraphicsCore",
+          "returnType": "void",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "setVulkanMinAndroidApiLevel",
+          "jsName": "setVulkanMinAndroidApiLevel",
+          "declaringType": "ax::rhi::GraphicsCore",
+          "returnType": "void",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "shaderILProfile",
+          "jsName": "shaderILProfile",
+          "declaringType": "ax::rhi::GraphicsCore",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "shaderLanguage",
+          "jsName": "shaderLanguage",
+          "declaringType": "ax::rhi::GraphicsCore",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "shaderProfile",
+          "jsName": "shaderProfile",
+          "declaringType": "ax::rhi::GraphicsCore",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "shutdown",
+          "jsName": "shutdown",
+          "declaringType": "ax::rhi::GraphicsCore",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "GraphicsDevice",
+      "qualifiedName": "ax::rhi::GraphicsDevice",
+      "jsName": "GraphicsDevice",
+      "isAbstract": true,
+      "constructors": [],
+      "bases": [],
+      "methods": [
+        {
+          "nativeName": "checkForFeatureSupported",
+          "jsName": "checkForFeatureSupported",
+          "declaringType": "ax::rhi::GraphicsDevice",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::rhi::FeatureType"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "destroyStaleResources",
+          "jsName": "destroyStaleResources",
+          "declaringType": "ax::rhi::GraphicsDevice",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "dumpExtensions",
+          "jsName": "dumpExtensions",
+          "declaringType": "ax::rhi::GraphicsDevice",
+          "returnType": "std::string",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMaxAttributes",
+          "jsName": "getMaxAttributes",
+          "declaringType": "ax::rhi::GraphicsDevice",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMaxSamplesAllowed",
+          "jsName": "getMaxSamplesAllowed",
+          "declaringType": "ax::rhi::GraphicsDevice",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMaxTexture3DSize",
+          "jsName": "getMaxTexture3DSize",
+          "declaringType": "ax::rhi::GraphicsDevice",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMaxTextureSize",
+          "jsName": "getMaxTextureSize",
+          "declaringType": "ax::rhi::GraphicsDevice",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMaxTextureUnits",
+          "jsName": "getMaxTextureUnits",
+          "declaringType": "ax::rhi::GraphicsDevice",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getRenderer",
+          "jsName": "getRenderer",
+          "declaringType": "ax::rhi::GraphicsDevice",
+          "returnType": "std::string",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getShaderVersion",
+          "jsName": "getShaderVersion",
+          "declaringType": "ax::rhi::GraphicsDevice",
+          "returnType": "std::string",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getVendor",
+          "jsName": "getVendor",
+          "declaringType": "ax::rhi::GraphicsDevice",
+          "returnType": "std::string",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getVersion",
+          "jsName": "getVersion",
+          "declaringType": "ax::rhi::GraphicsDevice",
+          "returnType": "std::string",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "hasExtension",
+          "jsName": "hasExtension",
+          "declaringType": "ax::rhi::GraphicsDevice",
+          "returnType": "bool",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "resetState",
+          "jsName": "resetState",
+          "declaringType": "ax::rhi::GraphicsDevice",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "waitForGPU",
+          "jsName": "waitForGPU",
+          "declaringType": "ax::rhi::GraphicsDevice",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "getCaps",
+          "returnType": "const ax::rhi::DriverCaps \u0026",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "nativeName": "Program",
+      "qualifiedName": "ax::rhi::Program",
+      "jsName": "Program",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "getComputeLocalSize",
+          "jsName": "getComputeLocalSize",
+          "declaringType": "ax::rhi::Program",
+          "returnType": "const std::array\u003Cint, 3\u003E \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getProgramId",
+          "jsName": "getProgramId",
+          "declaringType": "ax::rhi::Program",
+          "returnType": "uint64_t",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getProgramType",
+          "jsName": "getProgramType",
+          "declaringType": "ax::rhi::Program",
+          "returnType": "uint32_t",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getUniformBufferSize",
+          "jsName": "getUniformBufferSize",
+          "declaringType": "ax::rhi::Program",
+          "returnType": "size_t",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isValid",
+          "jsName": "isValid",
+          "declaringType": "ax::rhi::Program",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "getActiveStorageBufferInfos",
+          "returnType": "const std::vector\u003Cax::rhi::StorageBufferInfo\u003E \u0026",
+          "parameterTypes": []
+        },
+        {
+          "nativeName": "getCSModule",
+          "returnType": "ax::rhi::ShaderModule *",
+          "parameterTypes": []
+        },
+        {
+          "nativeName": "getFSModule",
+          "returnType": "ax::rhi::ShaderModule *",
+          "parameterTypes": []
+        },
+        {
+          "nativeName": "getSamplerLocation",
+          "returnType": "ax::rhi::SamplerLocation",
+          "parameterTypes": [
+            "std::string_view"
+          ]
+        },
+        {
+          "nativeName": "getUniformLocation",
+          "returnType": "ax::rhi::UniformLocation",
+          "parameterTypes": [
+            "std::string_view"
+          ]
+        },
+        {
+          "nativeName": "getUniformLocation",
+          "returnType": "ax::rhi::UniformLocation",
+          "parameterTypes": [
+            "ax::rhi::Uniform"
+          ]
+        },
+        {
+          "nativeName": "getVSModule",
+          "returnType": "ax::rhi::ShaderModule *",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "nativeName": "ProgramState",
+      "qualifiedName": "ax::rhi::ProgramState",
+      "jsName": "ProgramState",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [
+            "ax::rhi::Program *"
+          ],
+          "defaultValues": [
+            null
+          ]
+        }
+      ],
+      "bases": [
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "clone",
+          "jsName": "clone",
+          "declaringType": "ax::rhi::ProgramState",
+          "returnType": "ax::rhi::ProgramState *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getBatchId",
+          "jsName": "getBatchId",
+          "declaringType": "ax::rhi::ProgramState",
+          "returnType": "uint64_t",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getProgram",
+          "jsName": "getProgram",
+          "declaringType": "ax::rhi::ProgramState",
+          "returnType": "ax::rhi::Program *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isBatchable",
+          "jsName": "isBatchable",
+          "declaringType": "ax::rhi::ProgramState",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "setParameterAutoBinding",
+          "jsName": "setParameterAutoBinding",
+          "declaringType": "ax::rhi::ProgramState",
+          "returnType": "void",
+          "parameterTypes": [
+            "std::string_view",
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setTexture",
+          "jsName": "setTexture",
+          "declaringType": "ax::rhi::ProgramState",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::rhi::Texture *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "updateBatchId",
+          "jsName": "updateBatchId",
+          "declaringType": "ax::rhi::ProgramState",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "getSamplerOverride",
+          "returnType": "ax::rhi::SamplerId",
+          "parameterTypes": [
+            "int"
+          ]
+        },
+        {
+          "nativeName": "setSampler",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::rhi::SamplerLocation \u0026",
+            "const ax::rhi::SamplerDesc \u0026"
+          ]
+        },
+        {
+          "nativeName": "setSampler",
+          "returnType": "void",
+          "parameterTypes": [
+            "std::string_view",
+            "const ax::rhi::SamplerDesc \u0026"
+          ]
+        },
+        {
+          "nativeName": "setStorageBuffer",
+          "returnType": "void",
+          "parameterTypes": [
+            "int",
+            "ax::rhi::Buffer *",
+            "ax::rhi::BufferAccess"
+          ]
+        },
+        {
+          "nativeName": "setTexture",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::rhi::UniformLocation \u0026",
+            "int",
+            "ax::rhi::Texture *"
+          ]
+        }
+      ]
+    },
+    {
+      "nativeName": "ShaderCache",
+      "qualifiedName": "ax::rhi::ShaderCache",
+      "jsName": "ShaderCache",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [],
+      "methods": [
+        {
+          "nativeName": "getInstance",
+          "jsName": "getInstance",
+          "declaringType": "ax::rhi::ShaderCache",
+          "returnType": "ax::rhi::ShaderCache *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "removeAllShaders",
+          "jsName": "removeAllShaders",
+          "declaringType": "ax::rhi::ShaderCache",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "removeUnusedShader",
+          "jsName": "removeUnusedShader",
+          "declaringType": "ax::rhi::ShaderCache",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "acquireComputeShaderModule",
+          "returnType": "ax::rhi::ShaderModule *",
+          "parameterTypes": [
+            "ax::Data \u0026"
+          ]
+        },
+        {
+          "nativeName": "acquireFragmentShaderModule",
+          "returnType": "ax::rhi::ShaderModule *",
+          "parameterTypes": [
+            "ax::Data \u0026"
+          ]
+        },
+        {
+          "nativeName": "acquireVertexShaderModule",
+          "returnType": "ax::rhi::ShaderModule *",
+          "parameterTypes": [
+            "ax::Data \u0026"
+          ]
+        }
+      ]
+    },
+    {
+      "nativeName": "Texture",
+      "qualifiedName": "ax::rhi::Texture",
+      "jsName": "Texture",
+      "isAbstract": true,
+      "constructors": [],
+      "bases": [
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "getArraySize",
+          "jsName": "getArraySize",
+          "declaringType": "ax::rhi::Texture",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getDepth",
+          "jsName": "getDepth",
+          "declaringType": "ax::rhi::Texture",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getHeight",
+          "jsName": "getHeight",
+          "declaringType": "ax::rhi::Texture",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMipLevels",
+          "jsName": "getMipLevels",
+          "declaringType": "ax::rhi::Texture",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getPixelFormat",
+          "jsName": "getPixelFormat",
+          "declaringType": "ax::rhi::Texture",
+          "returnType": "ax::rhi::PixelFormat",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getTextureType",
+          "jsName": "getTextureType",
+          "declaringType": "ax::rhi::Texture",
+          "returnType": "ax::rhi::TextureType",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getTextureUsage",
+          "jsName": "getTextureUsage",
+          "declaringType": "ax::rhi::Texture",
+          "returnType": "ax::rhi::TextureUsage",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getWidth",
+          "jsName": "getWidth",
+          "declaringType": "ax::rhi::Texture",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "hasMipmaps",
+          "jsName": "hasMipmaps",
+          "declaringType": "ax::rhi::Texture",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "shouldGenMipmaps",
+          "jsName": "shouldGenMipmaps",
+          "declaringType": "ax::rhi::Texture",
+          "returnType": "bool",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            "0"
+          ],
+          "isStatic": false,
+          "isConst": true
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "updateSamplerDesc",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::rhi::SamplerDesc \u0026"
+          ]
+        }
+      ]
+    },
+    {
+      "nativeName": "UniformInfo",
+      "qualifiedName": "ax::rhi::UniformInfo",
+      "jsName": "UniformInfo",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [],
+      "methods": [],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "UniformLocation",
+      "qualifiedName": "ax::rhi::UniformLocation",
+      "jsName": "UniformLocation",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [],
+      "methods": [
+        {
+          "nativeName": "reset",
+          "jsName": "reset",
+          "declaringType": "ax::rhi::UniformLocation",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "VertexLayout",
+      "qualifiedName": "ax::rhi::VertexLayout",
+      "jsName": "VertexLayout",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "getBuiltinId",
+          "jsName": "getBuiltinId",
+          "declaringType": "ax::rhi::VertexLayout",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getHash",
+          "jsName": "getHash",
+          "declaringType": "ax::rhi::VertexLayout",
+          "returnType": "uint32_t",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getInstanceStride",
+          "jsName": "getInstanceStride",
+          "declaringType": "ax::rhi::VertexLayout",
+          "returnType": "uint32_t",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getStride",
+          "jsName": "getStride",
+          "declaringType": "ax::rhi::VertexLayout",
+          "returnType": "uint32_t",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    }
+  ],
+  "enums": [
+    {
+      "nativeName": "BlendFactor",
+      "qualifiedName": "ax::rhi::BlendFactor",
+      "ownerQualifiedName": null,
+      "values": [
+        {
+          "name": "ZERO",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "ONE",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "SRC_COLOR",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "ONE_MINUS_SRC_COLOR",
+          "signedValue": 3,
+          "unsignedValue": 3,
+          "isUnsigned": false
+        },
+        {
+          "name": "SRC_ALPHA",
+          "signedValue": 4,
+          "unsignedValue": 4,
+          "isUnsigned": false
+        },
+        {
+          "name": "ONE_MINUS_SRC_ALPHA",
+          "signedValue": 5,
+          "unsignedValue": 5,
+          "isUnsigned": false
+        },
+        {
+          "name": "DST_COLOR",
+          "signedValue": 6,
+          "unsignedValue": 6,
+          "isUnsigned": false
+        },
+        {
+          "name": "ONE_MINUS_DST_COLOR",
+          "signedValue": 7,
+          "unsignedValue": 7,
+          "isUnsigned": false
+        },
+        {
+          "name": "DST_ALPHA",
+          "signedValue": 8,
+          "unsignedValue": 8,
+          "isUnsigned": false
+        },
+        {
+          "name": "ONE_MINUS_DST_ALPHA",
+          "signedValue": 9,
+          "unsignedValue": 9,
+          "isUnsigned": false
+        },
+        {
+          "name": "CONSTANT_ALPHA",
+          "signedValue": 10,
+          "unsignedValue": 10,
+          "isUnsigned": false
+        },
+        {
+          "name": "SRC_ALPHA_SATURATE",
+          "signedValue": 11,
+          "unsignedValue": 11,
+          "isUnsigned": false
+        },
+        {
+          "name": "ONE_MINUS_CONSTANT_ALPHA",
+          "signedValue": 12,
+          "unsignedValue": 12,
+          "isUnsigned": false
+        },
+        {
+          "name": "BLEND_COLOR",
+          "signedValue": 13,
+          "unsignedValue": 13,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "BufferType",
+      "qualifiedName": "ax::rhi::BufferType",
+      "ownerQualifiedName": null,
+      "values": [
+        {
+          "name": "ARRAY_BUFFER",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "ELEMENT_ARRAY_BUFFER",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "UNIFORM_BUFFER",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "PIXEL_PACK_BUFFER",
+          "signedValue": 3,
+          "unsignedValue": 3,
+          "isUnsigned": false
+        },
+        {
+          "name": "STORAGE_BUFFER",
+          "signedValue": 4,
+          "unsignedValue": 4,
+          "isUnsigned": false
+        },
+        {
+          "name": "COUNT",
+          "signedValue": 5,
+          "unsignedValue": 5,
+          "isUnsigned": false
+        },
+        {
+          "name": "VERTEX",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "INDEX",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "UNIFORM",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "STORAGE",
+          "signedValue": 4,
+          "unsignedValue": 4,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "BufferUsage",
+      "qualifiedName": "ax::rhi::BufferUsage",
+      "ownerQualifiedName": null,
+      "values": [
+        {
+          "name": "STATIC",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "DYNAMIC",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "IMMUTABLE",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "ColorWriteMask",
+      "qualifiedName": "ax::rhi::ColorWriteMask",
+      "ownerQualifiedName": null,
+      "values": [
+        {
+          "name": "RED_BIT",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "GREEN_BIT",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "BLUE_BIT",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "ALPHA_BIT",
+          "signedValue": 3,
+          "unsignedValue": 3,
+          "isUnsigned": false
+        },
+        {
+          "name": "NONE",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "RED",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "GREEN",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "BLUE",
+          "signedValue": 4,
+          "unsignedValue": 4,
+          "isUnsigned": false
+        },
+        {
+          "name": "ALPHA",
+          "signedValue": 8,
+          "unsignedValue": 8,
+          "isUnsigned": false
+        },
+        {
+          "name": "ALL",
+          "signedValue": 15,
+          "unsignedValue": 15,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "CullMode",
+      "qualifiedName": "ax::rhi::CullMode",
+      "ownerQualifiedName": null,
+      "values": [
+        {
+          "name": "NONE",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "BACK",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "FRONT",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "IndexFormat",
+      "qualifiedName": "ax::rhi::IndexFormat",
+      "ownerQualifiedName": null,
+      "values": [
+        {
+          "name": "U_SHORT",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "U_INT",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "PixelFormat",
+      "qualifiedName": "ax::rhi::PixelFormat",
+      "ownerQualifiedName": null,
+      "values": [
+        {
+          "name": "PVRTC4",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "PVRTC4A",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "PVRTC2",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "PVRTC2A",
+          "signedValue": 3,
+          "unsignedValue": 3,
+          "isUnsigned": false
+        },
+        {
+          "name": "ETC1",
+          "signedValue": 4,
+          "unsignedValue": 4,
+          "isUnsigned": false
+        },
+        {
+          "name": "ETC2_RGB",
+          "signedValue": 5,
+          "unsignedValue": 5,
+          "isUnsigned": false
+        },
+        {
+          "name": "ETC2_RGBA",
+          "signedValue": 6,
+          "unsignedValue": 6,
+          "isUnsigned": false
+        },
+        {
+          "name": "S3TC_DXT1",
+          "signedValue": 7,
+          "unsignedValue": 7,
+          "isUnsigned": false
+        },
+        {
+          "name": "S3TC_DXT3",
+          "signedValue": 8,
+          "unsignedValue": 8,
+          "isUnsigned": false
+        },
+        {
+          "name": "S3TC_DXT5",
+          "signedValue": 9,
+          "unsignedValue": 9,
+          "isUnsigned": false
+        },
+        {
+          "name": "ATC_RGB",
+          "signedValue": 10,
+          "unsignedValue": 10,
+          "isUnsigned": false
+        },
+        {
+          "name": "ATC_EXPLICIT_ALPHA",
+          "signedValue": 11,
+          "unsignedValue": 11,
+          "isUnsigned": false
+        },
+        {
+          "name": "ATC_INTERPOLATED_ALPHA",
+          "signedValue": 12,
+          "unsignedValue": 12,
+          "isUnsigned": false
+        },
+        {
+          "name": "ASTC4x4",
+          "signedValue": 13,
+          "unsignedValue": 13,
+          "isUnsigned": false
+        },
+        {
+          "name": "ASTC5x4",
+          "signedValue": 14,
+          "unsignedValue": 14,
+          "isUnsigned": false
+        },
+        {
+          "name": "ASTC5x5",
+          "signedValue": 15,
+          "unsignedValue": 15,
+          "isUnsigned": false
+        },
+        {
+          "name": "ASTC6x5",
+          "signedValue": 16,
+          "unsignedValue": 16,
+          "isUnsigned": false
+        },
+        {
+          "name": "ASTC6x6",
+          "signedValue": 17,
+          "unsignedValue": 17,
+          "isUnsigned": false
+        },
+        {
+          "name": "ASTC8x5",
+          "signedValue": 18,
+          "unsignedValue": 18,
+          "isUnsigned": false
+        },
+        {
+          "name": "ASTC8x6",
+          "signedValue": 19,
+          "unsignedValue": 19,
+          "isUnsigned": false
+        },
+        {
+          "name": "ASTC8x8",
+          "signedValue": 20,
+          "unsignedValue": 20,
+          "isUnsigned": false
+        },
+        {
+          "name": "ASTC10x5",
+          "signedValue": 21,
+          "unsignedValue": 21,
+          "isUnsigned": false
+        },
+        {
+          "name": "ASTC10x6",
+          "signedValue": 22,
+          "unsignedValue": 22,
+          "isUnsigned": false
+        },
+        {
+          "name": "ASTC10x8",
+          "signedValue": 23,
+          "unsignedValue": 23,
+          "isUnsigned": false
+        },
+        {
+          "name": "ASTC10x10",
+          "signedValue": 24,
+          "unsignedValue": 24,
+          "isUnsigned": false
+        },
+        {
+          "name": "ASTC12x10",
+          "signedValue": 25,
+          "unsignedValue": 25,
+          "isUnsigned": false
+        },
+        {
+          "name": "ASTC12x12",
+          "signedValue": 26,
+          "unsignedValue": 26,
+          "isUnsigned": false
+        },
+        {
+          "name": "RGBA8",
+          "signedValue": 27,
+          "unsignedValue": 27,
+          "isUnsigned": false
+        },
+        {
+          "name": "BGRA8",
+          "signedValue": 28,
+          "unsignedValue": 28,
+          "isUnsigned": false
+        },
+        {
+          "name": "RGB8",
+          "signedValue": 29,
+          "unsignedValue": 29,
+          "isUnsigned": false
+        },
+        {
+          "name": "RGB565",
+          "signedValue": 30,
+          "unsignedValue": 30,
+          "isUnsigned": false
+        },
+        {
+          "name": "RGBA4",
+          "signedValue": 31,
+          "unsignedValue": 31,
+          "isUnsigned": false
+        },
+        {
+          "name": "RGB5A1",
+          "signedValue": 32,
+          "unsignedValue": 32,
+          "isUnsigned": false
+        },
+        {
+          "name": "R8",
+          "signedValue": 33,
+          "unsignedValue": 33,
+          "isUnsigned": false
+        },
+        {
+          "name": "RG8",
+          "signedValue": 34,
+          "unsignedValue": 34,
+          "isUnsigned": false
+        },
+        {
+          "name": "RGBA32F",
+          "signedValue": 35,
+          "unsignedValue": 35,
+          "isUnsigned": false
+        },
+        {
+          "name": "D24S8",
+          "signedValue": 36,
+          "unsignedValue": 36,
+          "isUnsigned": false
+        },
+        {
+          "name": "COUNT",
+          "signedValue": 37,
+          "unsignedValue": 37,
+          "isUnsigned": false
+        },
+        {
+          "name": "NONE",
+          "signedValue": -1,
+          "unsignedValue": 255,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "PrimitiveType",
+      "qualifiedName": "ax::rhi::PrimitiveType",
+      "ownerQualifiedName": null,
+      "values": [
+        {
+          "name": "POINT",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "LINE",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "LINE_LOOP",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "LINE_STRIP",
+          "signedValue": 3,
+          "unsignedValue": 3,
+          "isUnsigned": false
+        },
+        {
+          "name": "TRIANGLE",
+          "signedValue": 4,
+          "unsignedValue": 4,
+          "isUnsigned": false
+        },
+        {
+          "name": "TRIANGLE_STRIP",
+          "signedValue": 5,
+          "unsignedValue": 5,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "SamplerAddressMode",
+      "qualifiedName": "ax::rhi::SamplerAddressMode",
+      "ownerQualifiedName": null,
+      "values": [
+        {
+          "name": "REPEAT",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "MIRROR",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "CLAMP",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "BORDER",
+          "signedValue": 3,
+          "unsignedValue": 3,
+          "isUnsigned": false
+        },
+        {
+          "name": "CLAMP_TO_EDGE",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "SamplerFilter",
+      "qualifiedName": "ax::rhi::SamplerFilter",
+      "ownerQualifiedName": null,
+      "values": [
+        {
+          "name": "MIN_NEAREST",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "MIN_LINEAR",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "MIN_ANISOTROPIC",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "MAG_NEAREST",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "MAG_LINEAR",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "MIP_NEAREST",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "MIP_LINEAR",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "MIP_DEFAULT",
+          "signedValue": 3,
+          "unsignedValue": 3,
+          "isUnsigned": false
+        },
+        {
+          "name": "NEAREST",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "LINEAR",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "ShaderStage",
+      "qualifiedName": "ax::rhi::ShaderStage",
+      "ownerQualifiedName": null,
+      "values": [
+        {
+          "name": "UNKNOWN",
+          "signedValue": -1,
+          "unsignedValue": 65535,
+          "isUnsigned": false
+        },
+        {
+          "name": "FRAGMENT",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "VERTEX",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "COMPUTE",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "DEFAULT",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "TextureCubeFace",
+      "qualifiedName": "ax::rhi::TextureCubeFace",
+      "ownerQualifiedName": null,
+      "values": [
+        {
+          "name": "POSITIVE_X",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "NEGATIVE_X",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "POSITIVE_Y",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "NEGATIVE_Y",
+          "signedValue": 3,
+          "unsignedValue": 3,
+          "isUnsigned": false
+        },
+        {
+          "name": "POSITIVE_Z",
+          "signedValue": 4,
+          "unsignedValue": 4,
+          "isUnsigned": false
+        },
+        {
+          "name": "NEGATIVE_Z",
+          "signedValue": 5,
+          "unsignedValue": 5,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "TextureType",
+      "qualifiedName": "ax::rhi::TextureType",
+      "ownerQualifiedName": null,
+      "values": [
+        {
+          "name": "TEXTURE_2D",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "TEXTURE_CUBE",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "TEXTURE_3D",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "TextureUsage",
+      "qualifiedName": "ax::rhi::TextureUsage",
+      "ownerQualifiedName": null,
+      "values": [
+        {
+          "name": "READ",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "WRITE",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "RENDER_TARGET",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "Winding",
+      "qualifiedName": "ax::rhi::Winding",
+      "ownerQualifiedName": null,
+      "values": [
+        {
+          "name": "CLOCK_WISE",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "COUNTER_CLOCK_WISE",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        }
+      ]
+    }
+  ]
+}

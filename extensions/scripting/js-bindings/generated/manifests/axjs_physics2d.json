@@ -1,0 +1,3722 @@
+{
+  "formatVersion": 1,
+  "language": "js",
+  "engine": "SpiderMonkey 33.1",
+  "module": "physics2d",
+  "registrationName": "ax_physics2d",
+  "targetNamespace": "cc",
+  "conditionalExpression": "defined(AX_ENABLE_PHYSICS_2D)",
+  "classes": [
+    {
+      "nativeName": "BoxCollider2D",
+      "qualifiedName": "ax::BoxCollider2D",
+      "jsName": "BoxCollider2D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Collider2D",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::BoxCollider2D",
+          "returnType": "ax::BoxCollider2D *",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026",
+            "const ax::PhysicsMaterial2D \u0026",
+            "const ax::Vec2 \u0026",
+            "float"
+          ],
+          "defaultValues": [
+            null,
+            "ax::PHYSICS_MATERIAL_2D_DEFAULT",
+            "ax::Vec2::zero",
+            "0.0f"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getSize",
+          "jsName": "getSize",
+          "declaringType": "ax::BoxCollider2D",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "CircleCollider2D",
+      "qualifiedName": "ax::CircleCollider2D",
+      "jsName": "CircleCollider2D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Collider2D",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::CircleCollider2D",
+          "returnType": "ax::CircleCollider2D *",
+          "parameterTypes": [
+            "float",
+            "const ax::PhysicsMaterial2D \u0026",
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null,
+            "ax::PHYSICS_MATERIAL_2D_DEFAULT",
+            "ax::Vec2(0.0f, 0.0f)"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getRadius",
+          "jsName": "getRadius",
+          "declaringType": "ax::CircleCollider2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "Collider2D",
+      "qualifiedName": "ax::Collider2D",
+      "jsName": "Collider2D",
+      "isAbstract": true,
+      "constructors": [],
+      "bases": [
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "containsPoint",
+          "jsName": "containsPoint",
+          "declaringType": "ax::Collider2D",
+          "returnType": "bool",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "deatchFromBody",
+          "jsName": "deatchFromBody",
+          "declaringType": "ax::Collider2D",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getAttachedBody",
+          "jsName": "getAttachedBody",
+          "declaringType": "ax::Collider2D",
+          "returnType": "ax::Rigidbody2D *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getCategoryBits",
+          "jsName": "getCategoryBits",
+          "declaringType": "ax::Collider2D",
+          "returnType": "uint64_t",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getCenter",
+          "jsName": "getCenter",
+          "declaringType": "ax::Collider2D",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getDensity",
+          "jsName": "getDensity",
+          "declaringType": "ax::Collider2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getFriction",
+          "jsName": "getFriction",
+          "declaringType": "ax::Collider2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getGroup",
+          "jsName": "getGroup",
+          "declaringType": "ax::Collider2D",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMaskBits",
+          "jsName": "getMaskBits",
+          "declaringType": "ax::Collider2D",
+          "returnType": "uint64_t",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMaterial",
+          "jsName": "getMaterial",
+          "declaringType": "ax::Collider2D",
+          "returnType": "const ax::PhysicsMaterial2D \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getOffset",
+          "jsName": "getOffset",
+          "declaringType": "ax::Collider2D",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getRestitution",
+          "jsName": "getRestitution",
+          "declaringType": "ax::Collider2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getTag",
+          "jsName": "getTag",
+          "declaringType": "ax::Collider2D",
+          "returnType": "unsigned int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getType",
+          "jsName": "getType",
+          "declaringType": "ax::Collider2D",
+          "returnType": "ax::Collider2D::Type",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isAttached",
+          "jsName": "isAttached",
+          "declaringType": "ax::Collider2D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isEventEnabled",
+          "jsName": "isEventEnabled",
+          "declaringType": "ax::Collider2D",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::ContactEventBits"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isSensor",
+          "jsName": "isSensor",
+          "declaringType": "ax::Collider2D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "setCategoryBits",
+          "jsName": "setCategoryBits",
+          "declaringType": "ax::Collider2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "uint64_t"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setDensity",
+          "jsName": "setDensity",
+          "declaringType": "ax::Collider2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float",
+            "bool"
+          ],
+          "defaultValues": [
+            null,
+            "true"
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setEventEnabled",
+          "jsName": "setEventEnabled",
+          "declaringType": "ax::Collider2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::ContactEventBits",
+            "bool"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setFriction",
+          "jsName": "setFriction",
+          "declaringType": "ax::Collider2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float",
+            "bool"
+          ],
+          "defaultValues": [
+            null,
+            "true"
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setGroup",
+          "jsName": "setGroup",
+          "declaringType": "ax::Collider2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMaskBits",
+          "jsName": "setMaskBits",
+          "declaringType": "ax::Collider2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "uint64_t"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMaterial",
+          "jsName": "setMaterial",
+          "declaringType": "ax::Collider2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::PhysicsMaterial2D \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setRestitution",
+          "jsName": "setRestitution",
+          "declaringType": "ax::Collider2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float",
+            "bool"
+          ],
+          "defaultValues": [
+            null,
+            "true"
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setSensor",
+          "jsName": "setSensor",
+          "declaringType": "ax::Collider2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setTag",
+          "jsName": "setTag",
+          "declaringType": "ax::Collider2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "unsigned int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "ContactEvent2D",
+      "qualifiedName": "ax::ContactEvent2D",
+      "jsName": "ContactEvent2D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::CustomEvent",
+        "ax::Event",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "getColliderA",
+          "jsName": "getColliderA",
+          "declaringType": "ax::ContactEvent2D",
+          "returnType": "ax::Collider2D *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getColliderB",
+          "jsName": "getColliderB",
+          "declaringType": "ax::ContactEvent2D",
+          "returnType": "ax::Collider2D *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getEventCode",
+          "jsName": "getEventCode",
+          "declaringType": "ax::ContactEvent2D",
+          "returnType": "ax::ContactEvent2D::EventCode",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "ContactEventListener2D",
+      "qualifiedName": "ax::ContactEventListener2D",
+      "jsName": "ContactEventListener2D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::CustomEventListener",
+        "ax::EventListener",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::ContactEventListener2D",
+          "returnType": "ax::ContactEventListener2D *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::ContactEventListener2D",
+          "returnType": "ax::ContactEventListener2D *",
+          "parameterTypes": [
+            "ax::Rigidbody2D *",
+            "ax::Rigidbody2D *"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        }
+      ],
+      "fields": [
+        {
+          "nativeName": "onCollisionHit",
+          "jsName": "onCollisionHit",
+          "fieldType": "std::function\u003Cvoid (ax::ContactEvent2D *)\u003E"
+        },
+        {
+          "nativeName": "onContactBegin",
+          "jsName": "onContactBegin",
+          "fieldType": "std::function\u003Cvoid (ax::ContactEvent2D *)\u003E"
+        },
+        {
+          "nativeName": "onContactEnd",
+          "jsName": "onContactEnd",
+          "fieldType": "std::function\u003Cvoid (ax::ContactEvent2D *)\u003E"
+        },
+        {
+          "nativeName": "onContactFilter",
+          "jsName": "onContactFilter",
+          "fieldType": "std::function\u003Cbool (ax::ContactEvent2D *)\u003E"
+        },
+        {
+          "nativeName": "onSensorBegin",
+          "jsName": "onSensorBegin",
+          "fieldType": "std::function\u003Cvoid (ax::ContactEvent2D *)\u003E"
+        },
+        {
+          "nativeName": "onSensorEnd",
+          "jsName": "onSensorEnd",
+          "fieldType": "std::function\u003Cvoid (ax::ContactEvent2D *)\u003E"
+        }
+      ],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "DistanceJoint2D",
+      "qualifiedName": "ax::DistanceJoint2D",
+      "jsName": "DistanceJoint2D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Joint2D",
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::DistanceJoint2D",
+          "returnType": "ax::DistanceJoint2D *",
+          "parameterTypes": [
+            "ax::Rigidbody2D *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getDamping",
+          "jsName": "getDamping",
+          "declaringType": "ax::DistanceJoint2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getLength",
+          "jsName": "getLength",
+          "declaringType": "ax::DistanceJoint2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getLimits",
+          "jsName": "getLimits",
+          "declaringType": "ax::DistanceJoint2D",
+          "returnType": "const ax::Vec2 \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isUseLimits",
+          "jsName": "isUseLimits",
+          "declaringType": "ax::DistanceJoint2D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "setDamping",
+          "jsName": "setDamping",
+          "declaringType": "ax::DistanceJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setLength",
+          "jsName": "setLength",
+          "declaringType": "ax::DistanceJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setLimits",
+          "jsName": "setLimits",
+          "declaringType": "ax::DistanceJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setUseLimits",
+          "jsName": "setUseLimits",
+          "declaringType": "ax::DistanceJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "EdgeBoxCollider2D",
+      "qualifiedName": "ax::EdgeBoxCollider2D",
+      "jsName": "EdgeBoxCollider2D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Collider2D",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::EdgeBoxCollider2D",
+          "returnType": "ax::EdgeBoxCollider2D *",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026",
+            "const ax::PhysicsMaterial2D \u0026",
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null,
+            "ax::PHYSICS_MATERIAL_2D_DEFAULT",
+            "ax::Vec2::zero"
+          ],
+          "isStatic": true,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "EdgeChainCollider2D",
+      "qualifiedName": "ax::EdgeChainCollider2D",
+      "jsName": "EdgeChainCollider2D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Collider2D",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::EdgeChainCollider2D",
+          "returnType": "ax::EdgeChainCollider2D *",
+          "parameterTypes": [
+            "std::span\u003Cconst ax::Vec2\u003E",
+            "const ax::PhysicsMaterial2D \u0026"
+          ],
+          "defaultValues": [
+            null,
+            "ax::PHYSICS_MATERIAL_2D_DEFAULT"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getPointsCount",
+          "jsName": "getPointsCount",
+          "declaringType": "ax::EdgeChainCollider2D",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "EdgePolygonCollider2D",
+      "qualifiedName": "ax::EdgePolygonCollider2D",
+      "jsName": "EdgePolygonCollider2D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Collider2D",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::EdgePolygonCollider2D",
+          "returnType": "ax::EdgePolygonCollider2D *",
+          "parameterTypes": [
+            "std::span\u003Cconst ax::Vec2\u003E",
+            "const ax::PhysicsMaterial2D \u0026"
+          ],
+          "defaultValues": [
+            null,
+            "ax::PHYSICS_MATERIAL_2D_DEFAULT"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getPointsCount",
+          "jsName": "getPointsCount",
+          "declaringType": "ax::EdgePolygonCollider2D",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "EdgeSegmentCollider2D",
+      "qualifiedName": "ax::EdgeSegmentCollider2D",
+      "jsName": "EdgeSegmentCollider2D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Collider2D",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::EdgeSegmentCollider2D",
+          "returnType": "ax::EdgeSegmentCollider2D *",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026",
+            "const ax::Vec2 \u0026",
+            "const ax::PhysicsMaterial2D \u0026"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            "ax::PHYSICS_MATERIAL_2D_DEFAULT"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getPointA",
+          "jsName": "getPointA",
+          "declaringType": "ax::EdgeSegmentCollider2D",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getPointB",
+          "jsName": "getPointB",
+          "declaringType": "ax::EdgeSegmentCollider2D",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "FilterJoint2D",
+      "qualifiedName": "ax::FilterJoint2D",
+      "jsName": "FilterJoint2D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Joint2D",
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::FilterJoint2D",
+          "returnType": "ax::FilterJoint2D *",
+          "parameterTypes": [
+            "ax::Rigidbody2D *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "FixedJoint2D",
+      "qualifiedName": "ax::FixedJoint2D",
+      "jsName": "FixedJoint2D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Joint2D",
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::FixedJoint2D",
+          "returnType": "ax::FixedJoint2D *",
+          "parameterTypes": [
+            "ax::Rigidbody2D *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getDamping",
+          "jsName": "getDamping",
+          "declaringType": "ax::FixedJoint2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getFrequency",
+          "jsName": "getFrequency",
+          "declaringType": "ax::FixedJoint2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "setDamping",
+          "jsName": "setDamping",
+          "declaringType": "ax::FixedJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setFrequency",
+          "jsName": "setFrequency",
+          "declaringType": "ax::FixedJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "Joint2D",
+      "qualifiedName": "ax::Joint2D",
+      "jsName": "Joint2D",
+      "isAbstract": true,
+      "constructors": [],
+      "bases": [
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "getAnchor",
+          "jsName": "getAnchor",
+          "declaringType": "ax::Joint2D",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getAnchorSpace",
+          "jsName": "getAnchorSpace",
+          "declaringType": "ax::Joint2D",
+          "returnType": "ax::Joint2D::AnchorSpace",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getAttachedBody",
+          "jsName": "getAttachedBody",
+          "declaringType": "ax::Joint2D",
+          "returnType": "ax::Rigidbody2D *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getConnectedAnchor",
+          "jsName": "getConnectedAnchor",
+          "declaringType": "ax::Joint2D",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getConnectedBody",
+          "jsName": "getConnectedBody",
+          "declaringType": "ax::Joint2D",
+          "returnType": "ax::Rigidbody2D *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getTag",
+          "jsName": "getTag",
+          "declaringType": "ax::Joint2D",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getWorld",
+          "jsName": "getWorld",
+          "declaringType": "ax::Joint2D",
+          "returnType": "ax::PhysicsWorld2D *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isAttached",
+          "jsName": "isAttached",
+          "declaringType": "ax::Joint2D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isAutoConfigureConnectedAnchor",
+          "jsName": "isAutoConfigureConnectedAnchor",
+          "declaringType": "ax::Joint2D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isCollisionEnabled",
+          "jsName": "isCollisionEnabled",
+          "declaringType": "ax::Joint2D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "setAnchor",
+          "jsName": "setAnchor",
+          "declaringType": "ax::Joint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setAnchorSpace",
+          "jsName": "setAnchorSpace",
+          "declaringType": "ax::Joint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Joint2D::AnchorSpace"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setAnchors",
+          "jsName": "setAnchors",
+          "declaringType": "ax::Joint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026",
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setAnchorsInWorldSpace",
+          "jsName": "setAnchorsInWorldSpace",
+          "declaringType": "ax::Joint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setAutoConfigureConnectedAnchor",
+          "jsName": "setAutoConfigureConnectedAnchor",
+          "declaringType": "ax::Joint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setCollisionEnabled",
+          "jsName": "setCollisionEnabled",
+          "declaringType": "ax::Joint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setConnectedAnchor",
+          "jsName": "setConnectedAnchor",
+          "declaringType": "ax::Joint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setConnectedBody",
+          "jsName": "setConnectedBody",
+          "declaringType": "ax::Joint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Rigidbody2D *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setDrawScale",
+          "jsName": "setDrawScale",
+          "declaringType": "ax::Joint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setTag",
+          "jsName": "setTag",
+          "declaringType": "ax::Joint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "MotorJoint2D",
+      "qualifiedName": "ax::MotorJoint2D",
+      "jsName": "MotorJoint2D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Joint2D",
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::MotorJoint2D",
+          "returnType": "ax::MotorJoint2D *",
+          "parameterTypes": [
+            "ax::Rigidbody2D *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getAngularDamping",
+          "jsName": "getAngularDamping",
+          "declaringType": "ax::MotorJoint2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getAngularFrequency",
+          "jsName": "getAngularFrequency",
+          "declaringType": "ax::MotorJoint2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getAngularVelocity",
+          "jsName": "getAngularVelocity",
+          "declaringType": "ax::MotorJoint2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getLinearDamping",
+          "jsName": "getLinearDamping",
+          "declaringType": "ax::MotorJoint2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getLinearFrequency",
+          "jsName": "getLinearFrequency",
+          "declaringType": "ax::MotorJoint2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getLinearVelocity",
+          "jsName": "getLinearVelocity",
+          "declaringType": "ax::MotorJoint2D",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "setAngularDamping",
+          "jsName": "setAngularDamping",
+          "declaringType": "ax::MotorJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setAngularFrequency",
+          "jsName": "setAngularFrequency",
+          "declaringType": "ax::MotorJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setAngularVelocity",
+          "jsName": "setAngularVelocity",
+          "declaringType": "ax::MotorJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setLinearDamping",
+          "jsName": "setLinearDamping",
+          "declaringType": "ax::MotorJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setLinearFrequency",
+          "jsName": "setLinearFrequency",
+          "declaringType": "ax::MotorJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setLinearVelocity",
+          "jsName": "setLinearVelocity",
+          "declaringType": "ax::MotorJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "PhysicsWorld2D",
+      "qualifiedName": "ax::PhysicsWorld2D",
+      "jsName": "PhysicsWorld2D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [],
+      "methods": [
+        {
+          "nativeName": "getGravity",
+          "jsName": "getGravity",
+          "declaringType": "ax::PhysicsWorld2D",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getSpeed",
+          "jsName": "getSpeed",
+          "declaringType": "ax::PhysicsWorld2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getSubsteps",
+          "jsName": "getSubsteps",
+          "declaringType": "ax::PhysicsWorld2D",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isAutoStep",
+          "jsName": "isAutoStep",
+          "declaringType": "ax::PhysicsWorld2D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "isGlobalEventEnabled",
+          "jsName": "isGlobalEventEnabled",
+          "declaringType": "ax::PhysicsWorld2D",
+          "returnType": "bool",
+          "parameterTypes": [
+            "ax::ContactEventBits"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "overlapBox",
+          "jsName": "overlapBox",
+          "declaringType": "ax::PhysicsWorld2D",
+          "returnType": "ax::Collider2D *",
+          "parameterTypes": [
+            "const ax::Rect \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "overlapBoxAll",
+          "jsName": "overlapBoxAll",
+          "declaringType": "ax::PhysicsWorld2D",
+          "returnType": "ax::Vector\u003Cax::Collider2D *\u003E",
+          "parameterTypes": [
+            "const ax::Rect \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "overlapPoint",
+          "jsName": "overlapPoint",
+          "declaringType": "ax::PhysicsWorld2D",
+          "returnType": "ax::Collider2D *",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "overlapPointAll",
+          "jsName": "overlapPointAll",
+          "declaringType": "ax::PhysicsWorld2D",
+          "returnType": "ax::Vector\u003Cax::Collider2D *\u003E",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "setAutoStep",
+          "jsName": "setAutoStep",
+          "declaringType": "ax::PhysicsWorld2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setGlobalEventEnabled",
+          "jsName": "setGlobalEventEnabled",
+          "declaringType": "ax::PhysicsWorld2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::ContactEventBits",
+            "bool"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setGravity",
+          "jsName": "setGravity",
+          "declaringType": "ax::PhysicsWorld2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setPostUpdateCallback",
+          "jsName": "setPostUpdateCallback",
+          "declaringType": "ax::PhysicsWorld2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const std::function\u003Cvoid ()\u003E \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setPreUpdateCallback",
+          "jsName": "setPreUpdateCallback",
+          "declaringType": "ax::PhysicsWorld2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const std::function\u003Cvoid ()\u003E \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setSpeed",
+          "jsName": "setSpeed",
+          "declaringType": "ax::PhysicsWorld2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setSubsteps",
+          "jsName": "setSubsteps",
+          "declaringType": "ax::PhysicsWorld2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "stepSimulation",
+          "jsName": "stepSimulation",
+          "declaringType": "ax::PhysicsWorld2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "PinJoint2D",
+      "qualifiedName": "ax::PinJoint2D",
+      "jsName": "PinJoint2D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::PivotJoint2D",
+        "ax::Joint2D",
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::PinJoint2D",
+          "returnType": "ax::PinJoint2D *",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026",
+            "ax::Rigidbody2D *"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "PivotJoint2D",
+      "qualifiedName": "ax::PivotJoint2D",
+      "jsName": "PivotJoint2D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Joint2D",
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::PivotJoint2D",
+          "returnType": "ax::PivotJoint2D *",
+          "parameterTypes": [
+            "ax::Rigidbody2D *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getLimits",
+          "jsName": "getLimits",
+          "declaringType": "ax::PivotJoint2D",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMotor",
+          "jsName": "getMotor",
+          "declaringType": "ax::PivotJoint2D",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMotorTorque",
+          "jsName": "getMotorTorque",
+          "declaringType": "ax::PivotJoint2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getReferenceAngle",
+          "jsName": "getReferenceAngle",
+          "declaringType": "ax::PivotJoint2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getSpringDamping",
+          "jsName": "getSpringDamping",
+          "declaringType": "ax::PivotJoint2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getSpringFrequency",
+          "jsName": "getSpringFrequency",
+          "declaringType": "ax::PivotJoint2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isUseLimits",
+          "jsName": "isUseLimits",
+          "declaringType": "ax::PivotJoint2D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isUseMotor",
+          "jsName": "isUseMotor",
+          "declaringType": "ax::PivotJoint2D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isUseSpring",
+          "jsName": "isUseSpring",
+          "declaringType": "ax::PivotJoint2D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "setLimits",
+          "jsName": "setLimits",
+          "declaringType": "ax::PivotJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMotor",
+          "jsName": "setMotor",
+          "declaringType": "ax::PivotJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setSpringDamping",
+          "jsName": "setSpringDamping",
+          "declaringType": "ax::PivotJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setSpringFrequency",
+          "jsName": "setSpringFrequency",
+          "declaringType": "ax::PivotJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setUseLimits",
+          "jsName": "setUseLimits",
+          "declaringType": "ax::PivotJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setUseMotor",
+          "jsName": "setUseMotor",
+          "declaringType": "ax::PivotJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setUseSpring",
+          "jsName": "setUseSpring",
+          "declaringType": "ax::PivotJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "PolygonCollider2D",
+      "qualifiedName": "ax::PolygonCollider2D",
+      "jsName": "PolygonCollider2D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Collider2D",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::PolygonCollider2D",
+          "returnType": "ax::PolygonCollider2D *",
+          "parameterTypes": [
+            "std::span\u003Cconst ax::Vec2\u003E",
+            "const ax::PhysicsMaterial2D \u0026",
+            "const ax::Vec2 \u0026",
+            "float"
+          ],
+          "defaultValues": [
+            null,
+            "ax::PHYSICS_MATERIAL_2D_DEFAULT",
+            "ax::Vec2::zero",
+            "0.0f"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getPoint",
+          "jsName": "getPoint",
+          "declaringType": "ax::PolygonCollider2D",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getPointsCount",
+          "jsName": "getPointsCount",
+          "declaringType": "ax::PolygonCollider2D",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "Rigidbody2D",
+      "qualifiedName": "ax::Rigidbody2D",
+      "jsName": "Rigidbody2D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "addCollider",
+          "jsName": "addCollider",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "ax::Collider2D *",
+          "parameterTypes": [
+            "ax::Collider2D *",
+            "bool"
+          ],
+          "defaultValues": [
+            null,
+            "true"
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "applyForce",
+          "jsName": "applyForce",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026",
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null,
+            "ax::Vec2::zero"
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "applyImpulse",
+          "jsName": "applyImpulse",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026",
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null,
+            "ax::Vec2::zero"
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "applyTorque",
+          "jsName": "applyTorque",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "ax::Rigidbody2D *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "createBox",
+          "jsName": "createBox",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "ax::Rigidbody2D *",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026",
+            "const ax::PhysicsMaterial2D \u0026",
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null,
+            "ax::PHYSICS_MATERIAL_2D_DEFAULT",
+            "ax::Vec2::zero"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "createCircle",
+          "jsName": "createCircle",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "ax::Rigidbody2D *",
+          "parameterTypes": [
+            "float",
+            "const ax::PhysicsMaterial2D \u0026",
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null,
+            "ax::PHYSICS_MATERIAL_2D_DEFAULT",
+            "ax::Vec2::zero"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "createEdgeBox",
+          "jsName": "createEdgeBox",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "ax::Rigidbody2D *",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026",
+            "const ax::PhysicsMaterial2D \u0026",
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null,
+            "ax::PHYSICS_MATERIAL_2D_DEFAULT",
+            "ax::Vec2::zero"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "createEdgeChain",
+          "jsName": "createEdgeChain",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "ax::Rigidbody2D *",
+          "parameterTypes": [
+            "std::span\u003Cconst ax::Vec2\u003E",
+            "const ax::PhysicsMaterial2D \u0026"
+          ],
+          "defaultValues": [
+            null,
+            "ax::PHYSICS_MATERIAL_2D_DEFAULT"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "createEdgePolygon",
+          "jsName": "createEdgePolygon",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "ax::Rigidbody2D *",
+          "parameterTypes": [
+            "std::span\u003Cconst ax::Vec2\u003E",
+            "const ax::PhysicsMaterial2D \u0026"
+          ],
+          "defaultValues": [
+            null,
+            "ax::PHYSICS_MATERIAL_2D_DEFAULT"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "createEdgeSegment",
+          "jsName": "createEdgeSegment",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "ax::Rigidbody2D *",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026",
+            "const ax::Vec2 \u0026",
+            "const ax::PhysicsMaterial2D \u0026"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            "ax::PHYSICS_MATERIAL_2D_DEFAULT"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "createPolygon",
+          "jsName": "createPolygon",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "ax::Rigidbody2D *",
+          "parameterTypes": [
+            "std::span\u003Cconst ax::Vec2\u003E",
+            "const ax::PhysicsMaterial2D \u0026",
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null,
+            "ax::PHYSICS_MATERIAL_2D_DEFAULT",
+            "ax::Vec2::zero"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getAngleRadians",
+          "jsName": "getAngleRadians",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getAngularDamping",
+          "jsName": "getAngularDamping",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getAngularVelocity",
+          "jsName": "getAngularVelocity",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getAngularVelocityLimit",
+          "jsName": "getAngularVelocityLimit",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getBodyType",
+          "jsName": "getBodyType",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getCategoryBits",
+          "jsName": "getCategoryBits",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "uint64_t",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getCollider",
+          "jsName": "getCollider",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "ax::Collider2D *",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getColliders",
+          "jsName": "getColliders",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "const ax::Vector\u003Cax::Collider2D *\u003E \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getCollisionDetectionMode",
+          "jsName": "getCollisionDetectionMode",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "ax::Rigidbody2D::CollisionDetectionMode",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getCollisionMaskBits",
+          "jsName": "getCollisionMaskBits",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getFirstCollider",
+          "jsName": "getFirstCollider",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "ax::Collider2D *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getGravityScale",
+          "jsName": "getGravityScale",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getGroup",
+          "jsName": "getGroup",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getLinearDamping",
+          "jsName": "getLinearDamping",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMass",
+          "jsName": "getMass",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMoment",
+          "jsName": "getMoment",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getPosition",
+          "jsName": "getPosition",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getPositionOffset",
+          "jsName": "getPositionOffset",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "const ax::Vec2 \u0026",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getRotation",
+          "jsName": "getRotation",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getRotationOffset",
+          "jsName": "getRotationOffset",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getTag",
+          "jsName": "getTag",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "unsigned int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getVelocity",
+          "jsName": "getVelocity",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getVelocityAtLocalPoint",
+          "jsName": "getVelocityAtLocalPoint",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getVelocityAtWorldPoint",
+          "jsName": "getVelocityAtWorldPoint",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getVelocityLimit",
+          "jsName": "getVelocityLimit",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "getWorld",
+          "jsName": "getWorld",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "ax::PhysicsWorld2D *",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isAttached",
+          "jsName": "isAttached",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isAutoMass",
+          "jsName": "isAutoMass",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isDynamic",
+          "jsName": "isDynamic",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isGravityEnabled",
+          "jsName": "isGravityEnabled",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isKinematic",
+          "jsName": "isKinematic",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isRotationEnabled",
+          "jsName": "isRotationEnabled",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isSleeping",
+          "jsName": "isSleeping",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "local2World",
+          "jsName": "local2World",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "removeAllColliders",
+          "jsName": "removeAllColliders",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            "true"
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "removeCollider",
+          "jsName": "removeCollider",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Collider2D *",
+            "bool"
+          ],
+          "defaultValues": [
+            null,
+            "true"
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "removeCollider",
+          "jsName": "removeCollider",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "int",
+            "bool"
+          ],
+          "defaultValues": [
+            null,
+            "true"
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "removeFromWorld",
+          "jsName": "removeFromWorld",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "resetForces",
+          "jsName": "resetForces",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setAngularDamping",
+          "jsName": "setAngularDamping",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setAngularVelocity",
+          "jsName": "setAngularVelocity",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setAngularVelocityLimit",
+          "jsName": "setAngularVelocityLimit",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setAutoMass",
+          "jsName": "setAutoMass",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setBodyType",
+          "jsName": "setBodyType",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Rigidbody2D::BodyType"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setCategoryBits",
+          "jsName": "setCategoryBits",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "uint64_t"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setCollisionDetectionMode",
+          "jsName": "setCollisionDetectionMode",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::Rigidbody2D::CollisionDetectionMode"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setCollisionMaskBits",
+          "jsName": "setCollisionMaskBits",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setDynamic",
+          "jsName": "setDynamic",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setEventEnabled",
+          "jsName": "setEventEnabled",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "ax::ContactEventBits",
+            "bool"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setGravityEnabled",
+          "jsName": "setGravityEnabled",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setGravityScale",
+          "jsName": "setGravityScale",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setGroup",
+          "jsName": "setGroup",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setKinematic",
+          "jsName": "setKinematic",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setLinearDamping",
+          "jsName": "setLinearDamping",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMass",
+          "jsName": "setMass",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMoment",
+          "jsName": "setMoment",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setPositionOffset",
+          "jsName": "setPositionOffset",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setRotationEnabled",
+          "jsName": "setRotationEnabled",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setRotationOffset",
+          "jsName": "setRotationOffset",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setSleeping",
+          "jsName": "setSleeping",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setTag",
+          "jsName": "setTag",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "unsigned int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setVelocity",
+          "jsName": "setVelocity",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setVelocityLimit",
+          "jsName": "setVelocityLimit",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "world2Local",
+          "jsName": "world2Local",
+          "declaringType": "ax::Rigidbody2D",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "SliderJoint2D",
+      "qualifiedName": "ax::SliderJoint2D",
+      "jsName": "SliderJoint2D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Joint2D",
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "GetLimits",
+          "jsName": "GetLimits",
+          "declaringType": "ax::SliderJoint2D",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::SliderJoint2D",
+          "returnType": "ax::SliderJoint2D *",
+          "parameterTypes": [
+            "ax::Rigidbody2D *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getAngle",
+          "jsName": "getAngle",
+          "declaringType": "ax::SliderJoint2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getJointSpeed",
+          "jsName": "getJointSpeed",
+          "declaringType": "ax::SliderJoint2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getJointTranslation",
+          "jsName": "getJointTranslation",
+          "declaringType": "ax::SliderJoint2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMotor",
+          "jsName": "getMotor",
+          "declaringType": "ax::SliderJoint2D",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMotorForce",
+          "jsName": "getMotorForce",
+          "declaringType": "ax::SliderJoint2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isUseLimits",
+          "jsName": "isUseLimits",
+          "declaringType": "ax::SliderJoint2D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isUseMotor",
+          "jsName": "isUseMotor",
+          "declaringType": "ax::SliderJoint2D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "setAngle",
+          "jsName": "setAngle",
+          "declaringType": "ax::SliderJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setAngleInRadians",
+          "jsName": "setAngleInRadians",
+          "declaringType": "ax::SliderJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setLimits",
+          "jsName": "setLimits",
+          "declaringType": "ax::SliderJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMotor",
+          "jsName": "setMotor",
+          "declaringType": "ax::SliderJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setUseLimits",
+          "jsName": "setUseLimits",
+          "declaringType": "ax::SliderJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setUseMotor",
+          "jsName": "setUseMotor",
+          "declaringType": "ax::SliderJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "SpringJoint2D",
+      "qualifiedName": "ax::SpringJoint2D",
+      "jsName": "SpringJoint2D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Joint2D",
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::SpringJoint2D",
+          "returnType": "ax::SpringJoint2D *",
+          "parameterTypes": [
+            "float",
+            "float",
+            "ax::Rigidbody2D *"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getDamping",
+          "jsName": "getDamping",
+          "declaringType": "ax::SpringJoint2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getRestLength",
+          "jsName": "getRestLength",
+          "declaringType": "ax::SpringJoint2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getStiffness",
+          "jsName": "getStiffness",
+          "declaringType": "ax::SpringJoint2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "setDamping",
+          "jsName": "setDamping",
+          "declaringType": "ax::SpringJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setRestLength",
+          "jsName": "setRestLength",
+          "declaringType": "ax::SpringJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setStiffness",
+          "jsName": "setStiffness",
+          "declaringType": "ax::SpringJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "TargetJoint2D",
+      "qualifiedName": "ax::TargetJoint2D",
+      "jsName": "TargetJoint2D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Joint2D",
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::TargetJoint2D",
+          "returnType": "ax::TargetJoint2D *",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026",
+            "ax::Rigidbody2D *"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getDamping",
+          "jsName": "getDamping",
+          "declaringType": "ax::TargetJoint2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getFrequency",
+          "jsName": "getFrequency",
+          "declaringType": "ax::TargetJoint2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMaxForce",
+          "jsName": "getMaxForce",
+          "declaringType": "ax::TargetJoint2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMaxForceScale",
+          "jsName": "getMaxForceScale",
+          "declaringType": "ax::TargetJoint2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "setDamping",
+          "jsName": "setDamping",
+          "declaringType": "ax::TargetJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setFrequency",
+          "jsName": "setFrequency",
+          "declaringType": "ax::TargetJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMaxForceScale",
+          "jsName": "setMaxForceScale",
+          "declaringType": "ax::TargetJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    },
+    {
+      "nativeName": "WheelJoint2D",
+      "qualifiedName": "ax::WheelJoint2D",
+      "jsName": "WheelJoint2D",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [
+        "ax::Joint2D",
+        "ax::Component",
+        "ax::Object"
+      ],
+      "methods": [
+        {
+          "nativeName": "create",
+          "jsName": "create",
+          "declaringType": "ax::WheelJoint2D",
+          "returnType": "ax::WheelJoint2D *",
+          "parameterTypes": [
+            "ax::Rigidbody2D *"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getDamping",
+          "jsName": "getDamping",
+          "declaringType": "ax::WheelJoint2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getLimits",
+          "jsName": "getLimits",
+          "declaringType": "ax::WheelJoint2D",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMotor",
+          "jsName": "getMotor",
+          "declaringType": "ax::WheelJoint2D",
+          "returnType": "ax::Vec2",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getMotorTorque",
+          "jsName": "getMotorTorque",
+          "declaringType": "ax::WheelJoint2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "getStiffness",
+          "jsName": "getStiffness",
+          "declaringType": "ax::WheelJoint2D",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isUseLimits",
+          "jsName": "isUseLimits",
+          "declaringType": "ax::WheelJoint2D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "isUseMotor",
+          "jsName": "isUseMotor",
+          "declaringType": "ax::WheelJoint2D",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": false,
+          "isConst": true
+        },
+        {
+          "nativeName": "setDamping",
+          "jsName": "setDamping",
+          "declaringType": "ax::WheelJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setLimits",
+          "jsName": "setLimits",
+          "declaringType": "ax::WheelJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMotor",
+          "jsName": "setMotor",
+          "declaringType": "ax::WheelJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec2 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setStiffness",
+          "jsName": "setStiffness",
+          "declaringType": "ax::WheelJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setUseLimits",
+          "jsName": "setUseLimits",
+          "declaringType": "ax::WheelJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        },
+        {
+          "nativeName": "setUseMotor",
+          "jsName": "setUseMotor",
+          "declaringType": "ax::WheelJoint2D",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": false,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": []
+    }
+  ],
+  "enums": [
+    {
+      "nativeName": "CategoryBits",
+      "qualifiedName": "ax::Collider2D::CategoryBits",
+      "ownerQualifiedName": "ax::Collider2D",
+      "values": [
+        {
+          "name": "kStaticBit",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "kDynamicBit",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "kDebrisBit",
+          "signedValue": 4,
+          "unsignedValue": 4,
+          "isUnsigned": false
+        },
+        {
+          "name": "kPlayerBit",
+          "signedValue": 8,
+          "unsignedValue": 8,
+          "isUnsigned": false
+        },
+        {
+          "name": "kAllCategoryBits",
+          "signedValue": -1,
+          "unsignedValue": 18446744073709551615,
+          "isUnsigned": true
+        }
+      ]
+    },
+    {
+      "nativeName": "Type",
+      "qualifiedName": "ax::Collider2D::Type",
+      "ownerQualifiedName": "ax::Collider2D",
+      "values": [
+        {
+          "name": "UNKNOWN",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "CIRCLE",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "BOX",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "POLYGON",
+          "signedValue": 3,
+          "unsignedValue": 3,
+          "isUnsigned": false
+        },
+        {
+          "name": "EDGESEGMENT",
+          "signedValue": 4,
+          "unsignedValue": 4,
+          "isUnsigned": false
+        },
+        {
+          "name": "EDGEBOX",
+          "signedValue": 5,
+          "unsignedValue": 5,
+          "isUnsigned": false
+        },
+        {
+          "name": "EDGEPOLYGON",
+          "signedValue": 6,
+          "unsignedValue": 6,
+          "isUnsigned": false
+        },
+        {
+          "name": "EDGECHAIN",
+          "signedValue": 7,
+          "unsignedValue": 7,
+          "isUnsigned": false
+        },
+        {
+          "name": "POLYGEN",
+          "signedValue": 3,
+          "unsignedValue": 3,
+          "isUnsigned": false
+        },
+        {
+          "name": "EDGEPOLYGEN",
+          "signedValue": 6,
+          "unsignedValue": 6,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "EventCode",
+      "qualifiedName": "ax::ContactEvent2D::EventCode",
+      "ownerQualifiedName": "ax::ContactEvent2D",
+      "values": [
+        {
+          "name": "None",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "ContactBegin",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "ContactEnd",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "CollisionHit",
+          "signedValue": 3,
+          "unsignedValue": 3,
+          "isUnsigned": false
+        },
+        {
+          "name": "SensorBegin",
+          "signedValue": 4,
+          "unsignedValue": 4,
+          "isUnsigned": false
+        },
+        {
+          "name": "SensorEnd",
+          "signedValue": 5,
+          "unsignedValue": 5,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "AnchorSpace",
+      "qualifiedName": "ax::Joint2D::AnchorSpace",
+      "ownerQualifiedName": "ax::Joint2D",
+      "values": [
+        {
+          "name": "Local",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "World",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "BodyType",
+      "qualifiedName": "ax::Rigidbody2D::BodyType",
+      "ownerQualifiedName": "ax::Rigidbody2D",
+      "values": [
+        {
+          "name": "StaticBody",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "DynamicBody",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        },
+        {
+          "name": "KinematicBody",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        }
+      ]
+    },
+    {
+      "nativeName": "CollisionDetectionMode",
+      "qualifiedName": "ax::Rigidbody2D::CollisionDetectionMode",
+      "ownerQualifiedName": "ax::Rigidbody2D",
+      "values": [
+        {
+          "name": "Discrete",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "Continuous",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        }
+      ]
+    }
+  ]
+}

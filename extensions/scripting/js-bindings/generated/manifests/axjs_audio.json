@@ -1,0 +1,679 @@
+{
+  "formatVersion": 1,
+  "language": "js",
+  "engine": "SpiderMonkey 33.1",
+  "module": "audio",
+  "registrationName": "ax_audio",
+  "targetNamespace": "cc",
+  "conditionalExpression": "defined(AX_ENABLE_AUDIO) \u0026\u0026 (AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID || AX_TARGET_PLATFORM == AX_PLATFORM_IOS || AX_TARGET_PLATFORM == AX_PLATFORM_MAC || defined(_WIN32) || AX_TARGET_PLATFORM == AX_PLATFORM_LINUX || AX_TARGET_PLATFORM == AX_PLATFORM_WASM)",
+  "classes": [
+    {
+      "nativeName": "AudioEngine",
+      "qualifiedName": "ax::AudioEngine",
+      "jsName": "AudioEngine",
+      "isAbstract": false,
+      "constructors": [],
+      "bases": [],
+      "methods": [
+        {
+          "nativeName": "end",
+          "jsName": "end",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getCurrentTime",
+          "jsName": "getCurrentTime",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "float",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getDistanceScale",
+          "jsName": "getDistanceScale",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "float",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getDuration",
+          "jsName": "getDuration",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "float",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getListenerPosition",
+          "jsName": "getListenerPosition",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "ax::Vec3",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getMaxAudioInstance",
+          "jsName": "getMaxAudioInstance",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getPan",
+          "jsName": "getPan",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "float",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getPitch",
+          "jsName": "getPitch",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "float",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getPlayingAudioCount",
+          "jsName": "getPlayingAudioCount",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "int",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getProfile",
+          "jsName": "getProfile",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "ax::AudioProfile *",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getProfile",
+          "jsName": "getProfile",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "ax::AudioProfile *",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getSourcePosition",
+          "jsName": "getSourcePosition",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "ax::Vec3",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getState",
+          "jsName": "getState",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "ax::AudioEngine::AudioState",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "getVolume",
+          "jsName": "getVolume",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "float",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "isEnabled",
+          "jsName": "isEnabled",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "isHRTFEnabled",
+          "jsName": "isHRTFEnabled",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "isLoop",
+          "jsName": "isLoop",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "bool",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "lazyInit",
+          "jsName": "lazyInit",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "bool",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "pause",
+          "jsName": "pause",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "void",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "pauseAll",
+          "jsName": "pauseAll",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "play2d",
+          "jsName": "play2d",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "int",
+          "parameterTypes": [
+            "std::string_view",
+            "bool",
+            "float",
+            "const ax::AudioProfile *"
+          ],
+          "defaultValues": [
+            null,
+            "false",
+            "1.0f",
+            "nullptr"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "play3d",
+          "jsName": "play3d",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "int",
+          "parameterTypes": [
+            "std::string_view",
+            "const ax::Vec3 \u0026",
+            "bool",
+            "float",
+            "const ax::AudioProfile *"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            "false",
+            "1.0f",
+            "nullptr"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "preload",
+          "jsName": "preload",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "void",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "preload",
+          "jsName": "preload",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "void",
+          "parameterTypes": [
+            "std::string_view",
+            "std::function\u003Cvoid (bool)\u003E"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "resume",
+          "jsName": "resume",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "void",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "resumeAll",
+          "jsName": "resumeAll",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "setCurrentTime",
+          "jsName": "setCurrentTime",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "bool",
+          "parameterTypes": [
+            "int",
+            "float"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "setDistanceScale",
+          "jsName": "setDistanceScale",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "void",
+          "parameterTypes": [
+            "float"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "setEnabled",
+          "jsName": "setEnabled",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "setFinishCallback",
+          "jsName": "setFinishCallback",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "void",
+          "parameterTypes": [
+            "int",
+            "const std::function\u003Cvoid (int, std::string_view)\u003E \u0026"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "setHRTFEnabled",
+          "jsName": "setHRTFEnabled",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "void",
+          "parameterTypes": [
+            "bool"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "setListenerPosition",
+          "jsName": "setListenerPosition",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "void",
+          "parameterTypes": [
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "setLoop",
+          "jsName": "setLoop",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "void",
+          "parameterTypes": [
+            "int",
+            "bool"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "setMaxAudioInstance",
+          "jsName": "setMaxAudioInstance",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "bool",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "setPan",
+          "jsName": "setPan",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "void",
+          "parameterTypes": [
+            "int",
+            "float",
+            "float"
+          ],
+          "defaultValues": [
+            null,
+            null,
+            "-0.5f"
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "setPitch",
+          "jsName": "setPitch",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "void",
+          "parameterTypes": [
+            "int",
+            "float"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "setSourcePosition",
+          "jsName": "setSourcePosition",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "void",
+          "parameterTypes": [
+            "int",
+            "const ax::Vec3 \u0026"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "setVolume",
+          "jsName": "setVolume",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "void",
+          "parameterTypes": [
+            "int",
+            "float"
+          ],
+          "defaultValues": [
+            null,
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "stop",
+          "jsName": "stop",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "void",
+          "parameterTypes": [
+            "int"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "stopAll",
+          "jsName": "stopAll",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "uncache",
+          "jsName": "uncache",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "void",
+          "parameterTypes": [
+            "std::string_view"
+          ],
+          "defaultValues": [
+            null
+          ],
+          "isStatic": true,
+          "isConst": false
+        },
+        {
+          "nativeName": "uncacheAll",
+          "jsName": "uncacheAll",
+          "declaringType": "ax::AudioEngine",
+          "returnType": "void",
+          "parameterTypes": [],
+          "defaultValues": [],
+          "isStatic": true,
+          "isConst": false
+        }
+      ],
+      "fields": [],
+      "requiresManualAdapter": [
+        {
+          "nativeName": "play2d",
+          "returnType": "int",
+          "parameterTypes": [
+            "std::string_view",
+            "const ax::AudioPlayerSettings \u0026",
+            "const ax::AudioProfile *"
+          ]
+        },
+        {
+          "nativeName": "play3d",
+          "returnType": "int",
+          "parameterTypes": [
+            "std::string_view",
+            "const ax::AudioPlayerSettings \u0026",
+            "const ax::AudioProfile *"
+          ]
+        }
+      ]
+    },
+    {
+      "nativeName": "AudioProfile",
+      "qualifiedName": "ax::AudioProfile",
+      "jsName": "AudioProfile",
+      "isAbstract": false,
+      "constructors": [
+        {
+          "parameterTypes": [],
+          "defaultValues": []
+        }
+      ],
+      "bases": [],
+      "methods": [],
+      "fields": [
+        {
+          "nativeName": "maxInstances",
+          "jsName": "maxInstances",
+          "fieldType": "unsigned int"
+        },
+        {
+          "nativeName": "minDelay",
+          "jsName": "minDelay",
+          "fieldType": "double"
+        },
+        {
+          "nativeName": "name",
+          "jsName": "name",
+          "fieldType": "std::string"
+        }
+      ],
+      "requiresManualAdapter": []
+    }
+  ],
+  "enums": [
+    {
+      "nativeName": "AudioState",
+      "qualifiedName": "ax::AudioEngine::AudioState",
+      "ownerQualifiedName": "ax::AudioEngine",
+      "values": [
+        {
+          "name": "ERROR",
+          "signedValue": -1,
+          "unsignedValue": 4294967295,
+          "isUnsigned": false
+        },
+        {
+          "name": "INITIALIZING",
+          "signedValue": 0,
+          "unsignedValue": 0,
+          "isUnsigned": false
+        },
+        {
+          "name": "PLAYING",
+          "signedValue": 1,
+          "unsignedValue": 1,
+          "isUnsigned": false
+        },
+        {
+          "name": "PAUSED",
+          "signedValue": 2,
+          "unsignedValue": 2,
+          "isUnsigned": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
+# SPDX-License-Identifier: MIT
 # This script easy to build win32, linux, winuwp(winrt), ios, tvos, osx, android depends on $AX_ROOT/1k/1kiss.ps1
 # usage: pwsh build.ps1 -p <targetPlatform> -a <arch>
 # options
@@ -137,6 +139,8 @@ if ($is_axmol_engine -and $is_android) {
             'fairygui-tests' = 'tests/fairygui-tests'
             'live2d-tests'   = 'tests/live2d-tests'
             'unit-tests'     = 'tests/unit-tests'
+            'lua-tests'      = 'tests/lua-tests'
+            'js-tests'       = 'tests/js-tests'
         }
         if (!$builtin_projects.Contains($cmake_target)) {
             throw "Unknown builtin project '$cmake_target' for Android."
@@ -146,6 +150,10 @@ if ($is_axmol_engine -and $is_android) {
         if ($target_dir) {
             $source_proj_dir = Join-Path $AX_ROOT $builtin_projects[$cmake_target]
         }
+    }
+    $builtin_profile = Join-Path $source_proj_dir '.axproj'
+    if (Test-Path $builtin_profile -PathType Leaf) {
+        $Global:__1k_user_profile = $builtin_profile
     }
 }
 

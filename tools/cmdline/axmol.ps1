@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
+# SPDX-License-Identifier: MIT
 param(
     [switch]$help,
     [switch]$wait
@@ -16,6 +18,7 @@ function println($message) { Write-Host "axmol: $message" }
 
 # parse engine version
 $AX_ROOT = (Resolve-Path $PSScriptRoot/../..).Path
+$env:AX_ROOT = $AX_ROOT
 $axver_file = (Resolve-Path $AX_ROOT/axmol/axmolver.h.in).Path
 $content = $(Get-Content -Path $axver_file)
 
@@ -52,7 +55,7 @@ Available commands:
         run          Compiles, deploy and run project on the target.
         source-lint  Lint axmol source files (UTF-8 BOM & cstd headers).
         clang-format Format source files using clang-format.
-        genbindings  Generate Lua bindings for axmol engine.
+        genbindings  Generate Lua or JavaScript bindings for axmol engine.
         build-docs   Build axmol documentation.
         publish      Publish axmol release.
 
@@ -342,8 +345,8 @@ options:
                         [optional] Set a package name for project, default is dev.axmol.demo.
     -d DIRECTORY
                         [optional] Set the path where to place the new project, default is current directory.
-    -l {cpp,lua}
-                        [optional] Major programming language you want to use, should be [cpp | lua], default is cpp.
+    -l {cpp,lua,js}
+                        [optional] Major programming language you want to use, should be [cpp | lua | js], default is cpp.
     -m {classic,2d,3d}
                         [optional] Starter scene template: classic, 2d (orthographic camera) or 3d (perspective
                         camera), default is classic. Only effective for cpp projects.
@@ -461,21 +464,26 @@ options:
     genbindings = @{
         proc  = (Join-Path $PSScriptRoot 'plugins/genbindings.ps1');
         usage = @"
-usage: axmol genbindings [-m <module>]
+usage: axmol genbindings [-l lua|js] [-m <module>]
 
-Generate Lua bindings for axmol engine.
+Generate Lua or SpiderMonkey JavaScript bindings for axmol engine.
 
 options:
+  -l <language>    Binding language: lua (default) or js.
   -m <module>      Generate one module; default is all. Use -m all to generate all modules.
                    Both short names (base) and configured names (ax_base) are accepted.
   -Verify          Parse and validate without writing generated files.
+  -HostHeaders     Use host SDK headers instead of the Android NDK when parsing bindings.
   -ClangSharpRoot  Local ClangSharp checkout (optional).
   -LibClangRoot    Directory containing the libclang runtime downloaded by 1kiss.
+  -ClangResourceDirectory Matching clang builtin headers (optional).
   -GeneratorAssembly Prebuilt C# generator DLL (or AXMOL_LUA_GENERATOR_ASSEMBLY).
   -ExtraClangArguments Additional target/platform defines, e.g. -DAX_ENABLE_VIDEO=1 or -DANDROID=1.
   -OutputDirectory  Override generated-file directory for staged verification.
   -NdkRoot         Android NDK root; defaults to ANDROID_NDK. If omitted,
                    genbindings invokes setup.ps1 -p android as the legacy flow did.
+  -TargetTriple    Override the parsing target (JS default: aarch64-none-linux-android).
+  -AndroidApi      Override the parsing API level (JS default: 23).
   -h               Show this help message.
 "@
     };

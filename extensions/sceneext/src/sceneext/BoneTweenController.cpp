@@ -1,6 +1,7 @@
 /****************************************************************************
 Copyright (c) 2013-2017 Chukong Technologies Inc.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -48,8 +49,8 @@ BoneTweenController::BoneTweenController()
 
 BoneTweenController::~BoneTweenController(void)
 {
-    AX_SAFE_DELETE(_from);
-    AX_SAFE_DELETE(_between);
+    AX_SAFE_RELEASE_NULL(_from);
+    AX_SAFE_RELEASE_NULL(_between);
 }
 
 bool BoneTweenController::init(Bone* bone)

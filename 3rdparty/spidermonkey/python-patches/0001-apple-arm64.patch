@@ -1,0 +1,28 @@
+--- a/configure
++++ b/configure
+@@ -8468,7 +8468,10 @@
+     	esac
+     else
+     	case `/usr/bin/arch` in
+-    	i386)
++        arm64)
++            MACOSX_DEFAULT_ARCH="arm64"
++            ;;
++    	i386|x86_64)
+     		MACOSX_DEFAULT_ARCH="x86_64"
+     		;;
+     	ppc)
+--- a/configure.ac
++++ b/configure.ac
+@@ -2060,7 +2060,10 @@
+     	esac
+     else
+     	case `/usr/bin/arch` in
+-    	i386) 
++        arm64)
++            MACOSX_DEFAULT_ARCH="arm64"
++            ;;
++    	i386|x86_64) 
+     		MACOSX_DEFAULT_ARCH="x86_64" 
+     		;;
+     	ppc) 

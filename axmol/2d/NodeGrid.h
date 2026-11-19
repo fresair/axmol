@@ -1,6 +1,7 @@
 /****************************************************************************
  Copyright (c) 2013-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -46,6 +47,21 @@ class TransitionFadeTR;
 class AX_DLL NodeGrid : public Node
 {
 public:
+    // Native defaults keep the modern visiting-camera capture and ortho blit.
+    // The JS compatibility layer explicitly selects the old Director mode.
+    /** @script{ignore} */
+    enum class LegacyProjectionMode
+    {
+        Disabled,
+        Ortho,
+        Perspective
+    };
+
+    /** @script{ignore} */
+    void setLegacyProjectionMode(LegacyProjectionMode mode);
+    /** @script{ignore} */
+    LegacyProjectionMode getLegacyProjectionMode() const { return _legacyProjectionMode; }
+
     /** Create a Grid Node.
      *
      * @return An autorelease Grid Node.
@@ -101,8 +117,8 @@ protected:
      */
     void setProjectGridBlitToVisitingCamera(bool enabled) { _projectGridBlitToVisitingCamera = enabled; }
 
-    void onGridBeginDraw();
-    void onGridEndDraw(const SceneRenderState& state);
+    void onGridBeginDraw(GridBase* grid, bool sourceOverAlpha);
+    void onGridEndDraw(GridBase* grid, const SceneRenderState& state);
     Camera* getGridCamera(const Camera* currentCamera);
 
     Node* _gridTarget   = nullptr;
@@ -114,6 +130,7 @@ protected:
     Rect _gridRect = Rect::zero;
 
     bool _projectGridBlitToVisitingCamera = false;
+    LegacyProjectionMode _legacyProjectionMode = LegacyProjectionMode::Disabled;
 
 private:
     AX_DISALLOW_COPY_AND_ASSIGN(NodeGrid);

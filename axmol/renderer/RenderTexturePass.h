@@ -1,5 +1,6 @@
 /****************************************************************************
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -203,6 +204,12 @@ public:
     bool isCameraOverrideEnabled() const { return _cameraOverrideEnabled; }
 
 private:
+    friend class GridBase;
+
+    // Internal legacy Grid policy. Deliberately opt-in: an ordinary pass nested
+    // inside a Grid capture still uses its own unmodified blend descriptors.
+    void setGridCaptureSourceOverAlpha(bool enabled) { _gridCaptureSourceOverAlpha = enabled; }
+
     RenderTexturePass();
     RenderTexturePass(RenderTexture* renderTexture);
     virtual ~RenderTexturePass() override;
@@ -211,6 +218,7 @@ private:
     {
         rhi::RenderTarget* renderTarget = nullptr;
         std::optional<Viewport> viewport;
+        bool gridCaptureSourceOverAlpha = false;
     };
 
     void updateViewport();
@@ -219,6 +227,7 @@ private:
     rhi::RenderTarget* _renderTarget{nullptr};  // weak ref
     bool _active{false};
     bool _autoFlipY{true};
+    bool _gridCaptureSourceOverAlpha{false};
 
     // When enabled, begin() applies backend-specific projection adjustments when
     // needed. Advanced renderers can disable this and manage camera state explicitly.

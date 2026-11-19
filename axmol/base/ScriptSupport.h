@@ -2,6 +2,7 @@
  Copyright (c) 2010-2012 cocos2d-x.org
  Copyright (c) 2013-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -50,6 +51,7 @@ namespace ax
 {
 
 class TimerScriptHandler;
+class Node;
 class Layer;
 class MenuItem;
 class CallFunc;
@@ -60,6 +62,7 @@ enum ccScriptType
 {
     kScriptTypeNone = 0,
     kScriptTypeLua,
+    kScriptTypeJavascript,
 };
 
 /**
@@ -515,6 +518,12 @@ public:
      */
     virtual ccScriptType getScriptType() { return kScriptTypeNone; }
 
+    // Returning true means that a script override handled this invocation.
+    // Backends must guard calls back into the native base implementation.
+    virtual bool dispatchNodeLifecycle(Node*, const char*) { return false; }
+    virtual bool dispatchNodeUpdate(Node*, float) { return false; }
+    virtual bool dispatchActionUpdate(Action*, float) { return false; }
+
     /**
      * Reflect the retain relationship to script scope
      */
@@ -669,6 +678,13 @@ public:
 
     /** Triggers the garbage collector */
     virtual void garbageCollect() {}
+
+    /** Engine housekeeping after an unpaused Scheduler tick.
+     * Independent of business timers and EventDispatcher enablement.
+     * @script{ignore}
+     * @lua NA
+     */
+    virtual void updateFrame(float /*delta*/) {}
 };
 
 class Node;

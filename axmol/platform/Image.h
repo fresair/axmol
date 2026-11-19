@@ -3,6 +3,7 @@ Copyright (c) 2010-2012 cocos2d-x.org
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2019-present Simdsoft Limited.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -77,7 +78,11 @@ public:
         //! Raw Data
         RAW_DATA,
         //! Unknown format
-        UNKNOWN
+        UNKNOWN,
+#if AX_WITH_TIFF
+        // Append optional formats to preserve every existing format value.
+        TIFF
+#endif
     };
 
     struct CompressedImagePMAFlag
@@ -176,6 +181,9 @@ protected:
     bool initWithPngData(uint8_t* data, ssize_t dataLen);
     bool initWithBmpData(uint8_t* data, ssize_t dataLen);
     bool initWithWebpData(uint8_t* data, ssize_t dataLen);
+#if AX_WITH_TIFF
+    bool initWithTiffData(const uint8_t* data, ssize_t dataLen);
+#endif
     bool initWithTGAData(tImageTGA* tgaData);
 
     // All internal init function have chance to own the data for fast forward data to hardware decoder

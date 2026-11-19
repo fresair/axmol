@@ -1,6 +1,7 @@
 /****************************************************************************
  Copyright (c) 2018-2019 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -22,6 +23,7 @@
 #include <functional>
 #include <unordered_map>
 #include <vector>
+#include <set>
 
 namespace ax
 {
@@ -161,6 +163,11 @@ public:
      */
     void getUniformLocations(std::string_view name, UniformLocationVector& out) const;
 
+    /** Add another name for an existing reflected uniform. The alias has the
+     * same locations and storage; existing source names are never replaced. */
+    /** @script{ignore} */
+    bool addUniformAlias(std::string_view alias, std::string_view reflectedName);
+
     /**
      * Get uniform buffer size in bytes that can hold all the uniforms.
      * @param stage Specifies the shader stage. The symbolic constant can be either VERTEX or FRAGMENT.
@@ -204,6 +211,9 @@ public:
      * @return The uniformInfos.
      */
     const UniformMap& getActiveUniformInfos() const { return _activeUniformInfos; }
+
+    /** Append names from native reflection, excluding compatibility aliases. @script{ignore} */
+    void getActiveUniformNames(std::vector<std::string_view>& names) const;
 
     const std::vector<UniformBlockInfo>& getActiveUniformBlockInfos() const { return _activeUniformBlockInfos; }
 
@@ -252,6 +262,7 @@ protected:
     UniformMap _activeUniformInfos;
 
     tlx::hash_map<std::string_view, tlx::pod_vector<uint64_t>> _shortNameToIds;
+    std::set<std::string> _uniformAliasNames;
 
     // unstable textures reflection, we need copy and update runtimeLocation after link program every time
     std::vector<TextureUniformEntry> _activeTextureInfos;

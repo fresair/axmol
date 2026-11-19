@@ -11,6 +11,11 @@ MIT-licensed Axmol project.
 GitHub usernames are indicated in parentheses, or as sole entry when no other
 name is available.
 
+## axmol-js derivative contributions
+
+Ye Liangqi — original contributions and modifications for the axmol-js derivative
+project (2026). Upstream Axmol authorship and third-party credits remain unchanged.
+
 ## Maintaining Organization
 
 ```

@@ -1,8 +1,11 @@
+# Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
+# SPDX-License-Identifier: MIT
 
 project(3rdparty)
 
 option(AX_WITH_JPEG "Build with internal jpeg support" ON)
 option(AX_WITH_WEBP "Build with internal webp support" ON)
+option(AX_WITH_TIFF "Build TIFF image decoding for legacy particle resources" OFF)
 option(AX_WITH_CLIPPER2 "Build with internal Clipper2 support" ON)
 option(AX_WITH_POLY2TRI "Build with internal poly2tri support" ON)
 option(AX_WITH_FASTLZ "Build with internal fastlz support" ON)
@@ -210,6 +213,11 @@ if(AX_WITH_JPEG AND NOT WINRT AND NOT EMSCRIPTEN)
   ax_add_3rd(jpeg-turbo)
 endif()
 
+if(AX_WITH_TIFF)
+  ax_add_3rd(tiff)
+endif()
+target_compile_definitions(3rdparty INTERFACE AX_WITH_TIFF=$<BOOL:${AX_WITH_TIFF}>)
+
 ax_add_3rd(openssl TARGETS OpenSSL::SSL OpenSSL::Crypto)
 
 if(AX_WITH_WEBP)
@@ -249,6 +257,12 @@ if(AX_ENABLE_EXT_LUA)
   if(AX_USE_LUAJIT)
     target_compile_definitions(lua-cjson PRIVATE USING_LUAJIT=1)
   endif()
+endif()
+
+if(AX_ENABLE_EXT_JS)
+  add_subdirectory(spidermonkey)
+  add_subdirectory(chipmunk)
+  set_property(TARGET 3rdparty APPEND PROPERTY AX_JS_DEPEND axmol::spidermonkey axmol::chipmunk)
 endif()
 
 if(AX_WITH_CURL AND NOT EMSCRIPTEN)

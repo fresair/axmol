@@ -2,6 +2,7 @@
  Copyright (c) 2014-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -11,6 +12,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <memory>
 
 #include "axmol/base/Vector.h"
 #include "axmol/base/Types.h"
@@ -34,6 +36,7 @@ namespace ax
 
 class Mesh;
 class Texture2D;
+struct CancellationState;
 class MeshSkin;
 class AttachNode;
 struct NodeData;
@@ -75,6 +78,18 @@ public:
                             std::string_view texturePath,
                             const std::function<void(MeshRenderer*, void*)>& callback,
                             void* callbackparam);
+
+    /** Cancelable asynchronous mesh load. Cancellation skips queued parsing and
+     * suppresses material/cache construction and the callback after an in-flight
+     * parse. Temporary data is always disposed on the Axmol thread.
+     * @note This native cancellation token is not a script binding type.
+     * @script{ignore}
+     */
+    static void createAsync(std::string_view modelPath,
+                            std::string_view texturePath,
+                            const std::function<void(MeshRenderer*, void*)>& callback,
+                            void* callbackparam,
+                            const std::shared_ptr<CancellationState>& cancellation);
 
     /** set diffuse texture, set the first mesh's texture if multiple textures exist */
     void setTexture(std::string_view texFile);

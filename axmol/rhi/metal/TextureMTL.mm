@@ -1,6 +1,7 @@
 /****************************************************************************
  Copyright (c) 2018-2019 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -77,6 +78,7 @@ TextureImpl::~TextureImpl() {}
 
 void TextureImpl::updateSamplerDesc(const SamplerDesc& desc)
 {
+    _desc.samplerDesc = desc;
     const auto sampler = SamplerRegistry::getInstance()->getSampler(desc);
     _mtlSamplerState   = (__bridge id<MTLSamplerState>)sampler.ptr;
 }

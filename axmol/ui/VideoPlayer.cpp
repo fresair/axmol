@@ -2,6 +2,7 @@
  Copyright (c) 2014-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -19,6 +20,17 @@
 #    include <string>
 #    include "axmol/base/Director.h"
 #    include "axmol/base/KeyboardEventListener.h"
+#    include "axmol/base/EventDispatcher.h"
+#    include "axmol/base/PointerEvent.h"
+#    include "axmol/scene/Scene.h"
+#    include "axmol/2d/Layer.h"
+#    include "axmol/renderer/Renderer.h"
+#    include "axmol/renderer/CallbackCommand.h"
+#    include "axmol/renderer/GroupCommand.h"
+#    include "axmol/rhi/GraphicsCore.h"
+#    include <limits>
+#    include <memory>
+#    include <vector>
 #    include "axmol/platform/FileUtils.h"
 #    include "axmol/ui/UIHelper.h"
 #    include "axmol/media/MediaEngine.h"
@@ -269,12 +281,11 @@ struct PrivateVideoContext
             _renderFrameFunc(const_cast<MEVideoFrame&>(frame));
     }
 
-    void rescaleTo(VideoPlayer* videoView)
+    void rescaleTo(VideoPlayer* videoView, Vec2 viewSize)
     {
         auto& videoSize = _vrender->getContentSize();
         if (videoSize.x > 0 && videoSize.y > 0)
         {  // rescale video to view node
-            auto viewSize = videoView->getContentSize();
             if (viewSize.x > 0 && viewSize.y > 0)
             {
                 if (_vpixelDesc._rotation % 180 != 0)
@@ -524,6 +535,199 @@ static void createVideoControlTexture()
 
 }  // namespace
 
+namespace ax::ui
+{
+namespace
+{
+constexpr int VIDEO_CONTROLLER_OPACITY_ACTION_TAG = 0x56434644;
+
+void runControllerOpacityAction(Node* node, FiniteTimeAction* action)
+{
+    node->stopActionByTag(VIDEO_CONTROLLER_OPACITY_ACTION_TAG);
+    action->setTag(VIDEO_CONTROLLER_OPACITY_ACTION_TAG);
+    node->runAction(action);
+}
+}  // namespace
+
+// Scene-owned presentation. It has no strong reference to the business node and
+// does not rely on its draw override, ancestors, actions or Scheduler entries.
+class LegacyVideoFullscreen final : public Widget
+{
+public:
+    explicit LegacyVideoFullscreen(VideoPlayer* owner) : _owner(owner) {}
+
+    bool init() override
+    {
+        if (!Widget::init())
+            return false;
+        setPointerEnabled(true);
+        setSwallowPointerEvents(true);
+        setGlobalZOrder(std::numeric_limits<float>::max());
+        _background = LayerColor::create(Color32::black);
+        addChild(_background, -1);
+        auto keyboard = KeyboardEventListener::create();
+        keyboard->onKeyPressed = [this](KeyboardEvent* event) {
+            if (isVisible() && event->getKeyCode() == KeyboardEvent::KeyCode::KEY_ESCAPE)
+                event->stopPropagation();
+        };
+        keyboard->onKeyReleased = [this](KeyboardEvent* event) {
+            if (isVisible() && event->getKeyCode() == KeyboardEvent::KeyCode::KEY_ESCAPE)
+            {
+                event->stopPropagation();
+                if (auto* owner = _owner.get())
+                    owner->setLegacyFullscreen(false);
+            }
+        };
+        _eventDispatcher->addEventListenerWithSceneGraphPriority(keyboard, this);
+        return true;
+    }
+
+    void deactivate()
+    {
+        _owner = nullptr;
+        setVisible(false);
+        // Children have already returned to the player. No inactive overlay
+        // listener may consume input while the deferred unlink is pending.
+        _eventDispatcher->removeEventListenersForTarget(this, true);
+    }
+
+    void liftController(Node* node)
+    {
+        // Capture before a controller's setGlobalZOrder propagates to its
+        // children. The equal top priority preserves native child-first input.
+        captureControllerOrder(node);
+        for (auto& item : _controllerOrder)
+            if (auto* child = item.first.get())
+                child->setGlobalZOrder(std::numeric_limits<float>::max());
+    }
+
+    void restoreControllerOrder()
+    {
+        for (auto& item : _controllerOrder)
+            if (auto* child = item.first.get())
+                child->setGlobalZOrder(item.second);
+        _controllerOrder.clear();
+    }
+
+    void visit(const SceneRenderState& state, const Mat4& parentTransform, uint32_t flags) override
+    {
+        auto* owner = _owner.get();
+        auto* camera = Camera::getDefaultCamera();
+        if (!isVisible() || !owner || !owner->isRunning() || state.getCamera() != camera || !camera)
+            return;
+        const auto frame = _director->getTotalFrames();
+        if (_lastFrame == frame)
+            return;
+        _lastFrame = frame;
+
+        const auto surface = _director->getRenderView()->getRenderSize();
+        const auto viewport = _director->getRenderView()->getViewportRect();
+        if (surface.x <= 0 || surface.y <= 0 || viewport.size.x <= 0 || viewport.size.y <= 0)
+            return;
+        // Use canvas-height units, with the actual surface aspect ratio. Black
+        // bars belong to this presentation, independently of the design policy.
+        const float height = _director->getCanvasSize().y;
+        if (height <= 0)
+            return;
+        const Vec2 size(height * surface.x / surface.y, height);
+        setContentSize(size);
+        _background->setContentSize(size);
+
+        // The real controller remains in the default camera's world for native
+        // ray hit testing. Construct an affine plane through screen corners;
+        // the plane also cancels any transform on the containing Scene.
+        // deprojectScreenToWorld maps depth through 2*z-1. Non-GL projection
+        // matrices use NDC [0,1], so 0.5 would place this plane on the near clip
+        // boundary; float rounding can clip the entire presentation. Choose
+        // the midpoint of the active clip range, including when depth is off.
+        const float screenDepth = rhi::GraphicsCore::isOpenGL() ? 0.5f : 0.75f;
+        const auto origin = camera->deprojectScreenToWorld(Vec3(0, surface.y, screenDepth));
+        const auto right = camera->deprojectScreenToWorld(Vec3(surface.x, surface.y, screenDepth));
+        const auto top = camera->deprojectScreenToWorld(Vec3(0, 0, screenDepth));
+        const auto x = (right - origin) / size.x;
+        const auto y = (top - origin) / size.y;
+        auto z = x;
+        z.cross(y);
+        z.normalize();
+        Mat4 world(x.x, y.x, z.x, origin.x,
+                   x.y, y.y, z.y, origin.y,
+                   x.z, y.z, z.z, origin.z,
+                   0, 0, 0, 1);
+        setNodeToParentTransform(getParent()->getWorldToNodeTransform() * world);
+        owner->updateVideoFrame(size, FLAGS_TRANSFORM_DIRTY);
+        if (auto* controller = owner->getVideoController())
+            liftController(controller); // includes lazily created native controls
+
+        // The default viewport may have letterboxing. Rebase its clip space to
+        // the full surface while preserving the same screen/world mapping used
+        // by input. No global camera/projection state is changed.
+        Mat4 rebase;
+        rebase.m[0] = viewport.size.x / surface.x;
+        rebase.m[5] = viewport.size.y / surface.y;
+        rebase.m[12] = (2 * viewport.origin.x + viewport.size.x) / surface.x - 1;
+        rebase.m[13] = (2 * viewport.origin.y + viewport.size.y) / surface.y - 1;
+        SceneRenderState presentation(state.getRenderer(), camera,
+            SceneViewData::fromMatrices(camera->getViewMatrix(), rebase * camera->getProjectionMatrix(),
+                                        camera->getPosition3D()));
+
+        auto* renderer = state.getRenderer();
+        auto* group = renderer->getNextGroupCommand();
+        group->init(std::numeric_limits<float>::max());
+        renderer->addCommand(group);
+        renderer->pushGroup(group->getRenderQueueID());
+        struct SavedState
+        {
+            Viewport viewport;
+            bool depthTest, depthWrite, scissor, stencil;
+        };
+        auto saved = std::make_shared<SavedState>();
+        auto before = renderer->nextCallbackCommand();
+        before->init(-std::numeric_limits<float>::max());
+        before->func = [renderer, saved, surface] {
+            *saved = {renderer->getViewport(), renderer->getDepthTest(), renderer->getDepthWrite(),
+                      renderer->getScissorTest(), renderer->getStencilTest()};
+            renderer->setViewport(0, 0, static_cast<unsigned>(surface.x), static_cast<unsigned>(surface.y));
+            renderer->setDepthTest(false);
+            renderer->setDepthWrite(false);
+            renderer->setScissorTest(false);
+            renderer->setStencilTest(false);
+        };
+        renderer->addCommand(before);
+        Widget::visit(presentation, parentTransform, flags | FLAGS_TRANSFORM_DIRTY);
+        auto after = renderer->nextCallbackCommand();
+        after->init(std::numeric_limits<float>::max());
+        after->func = [renderer, saved] {
+            const auto& vp = saved->viewport;
+            renderer->setViewport(vp.x, vp.y, vp.width, vp.height);
+            renderer->setDepthTest(saved->depthTest);
+            renderer->setDepthWrite(saved->depthWrite);
+            renderer->setScissorTest(saved->scissor);
+            renderer->setStencilTest(saved->stencil);
+        };
+        renderer->addCommand(after);
+        renderer->popGroup();
+    }
+
+private:
+    void captureControllerOrder(Node* node)
+    {
+        if (std::none_of(_controllerOrder.begin(), _controllerOrder.end(),
+                         [node](const auto& item) { return item.first.get() == node; }))
+            _controllerOrder.emplace_back(WeakPtr<Node>(node), node->getGlobalZOrder());
+        for (auto* child : node->getChildren())
+            captureControllerOrder(child);
+        if (auto* protectedNode = dynamic_cast<ProtectedNode*>(node))
+            for (auto* child : protectedNode->getProtectedChildren())
+                captureControllerOrder(child);
+    }
+
+    WeakPtr<VideoPlayer> _owner;
+    LayerColor* _background = nullptr;
+    unsigned _lastFrame = std::numeric_limits<unsigned>::max();
+    std::vector<std::pair<WeakPtr<Node>, float>> _controllerOrder;
+};
+}  // namespace ax::ui
+
 static const float ZOOM_ACTION_TIME_STEP = 0.05f;
 
 void VideoController::setOrientation(Orientation orientation)
@@ -693,8 +897,10 @@ void DefaultVideoController::initRenderNode()
     // when being created such places as a button click event handler
     // on Apple platforms/Metal renderer backend
     scheduleOnce([this](float) {
+        if (!_videoPlayer)
+            return;
         createControls();
-        updateControlsForContentSize(_videoPlayer->getContentSize());
+        updateControlsForContentSize(getContentSize());
         updateControllerState();
     }, 0.f, "__create_video_controls"sv);
 }
@@ -703,15 +909,15 @@ void DefaultVideoController::onPressStateChangedToPressed()
 {
     _lastTouch = std::chrono::steady_clock::now();
 
-    if (!_controlsReady || _controlPanel->getOpacity() == 255)
-    {
+    if (!_controlsReady)
         return;
-    }
 
-    updateControllerState();
-
-    _mediaOverlay->runAction(Sequence::create(FadeTo::create(0.5f, 150), nullptr));
-    _controlPanel->runAction(Sequence::create(FadeIn::create(0.5f), CallFunc::create([this] {
+    // A fader can have queued FadeOut while the panel is still fully opaque.
+    // Cancel only our own opacity actions before the opaque fast path, and
+    // re-arm its timer if that outgoing fade had already unscheduled it.
+    _controlPanel->stopActionByTag(VIDEO_CONTROLLER_OPACITY_ACTION_TAG);
+    _mediaOverlay->stopActionByTag(VIDEO_CONTROLLER_OPACITY_ACTION_TAG);
+    const auto armFader = [this] {
         if (_controlPanel->isScheduled("__video_controller_fader"sv))
             return;
 
@@ -721,12 +927,23 @@ void DefaultVideoController::onPressStateChangedToPressed()
             if (deltaTime > std::chrono::milliseconds{2500})
             {
                 _controlPanel->unschedule("__video_controller_fader"sv);
-                _controlPanel->runAction(Sequence::create(FadeOut::create(0.5f), nullptr));
-                _mediaOverlay->runAction(Sequence::create(FadeOut::create(0.5f), nullptr));
+                runControllerOpacityAction(_controlPanel, Sequence::create(FadeOut::create(0.5f), nullptr));
+                runControllerOpacityAction(_mediaOverlay, Sequence::create(FadeOut::create(0.5f), nullptr));
             }
         }, 1.f, "__video_controller_fader"sv);
-    }),
-                                              nullptr));
+    };
+
+    if (_controlPanel->getOpacity() == 255)
+    {
+        armFader();
+        return;
+    }
+
+    updateControllerState();
+
+    runControllerOpacityAction(_mediaOverlay, Sequence::create(FadeTo::create(0.5f, 150), nullptr));
+    runControllerOpacityAction(_controlPanel,
+                               Sequence::create(FadeIn::create(0.5f), CallFunc::create(armFader), nullptr));
 }
 
 void DefaultVideoController::setContentSize(const Vec2& contentSize)
@@ -739,6 +956,9 @@ void DefaultVideoController::setContentSize(const Vec2& contentSize)
 void DefaultVideoController::update(float delta)
 {
     Widget::update(delta);
+    // Backend controls complete asynchronously; request-time refreshes can see
+    // the previous state. Synchronize buttons on this scheduled owner frame.
+    updateControllerState();
     updateControls();
 }
 
@@ -848,7 +1068,7 @@ void DefaultVideoController::createControls()
     _playButton = VideoPlayerControl::create(SpriteFrame::createWithTexture(
         g_mediaControlsTexture, g_mediaControlTextureRegions[VideoControlButtonId::Play]));
     _playButton->addClickEventListener([this](Object* ref) {
-        if (_controlPanel->getOpacity() <= 50)
+        if (!_videoPlayer || _controlPanel->getOpacity() <= 50)
             return;
         _playRate = 1.f;
         _videoPlayer->setPlayRate(_playRate);
@@ -863,7 +1083,7 @@ void DefaultVideoController::createControls()
     _stopButton = VideoPlayerControl::create(SpriteFrame::createWithTexture(
         g_mediaControlsTexture, g_mediaControlTextureRegions[VideoControlButtonId::Stop]));
     _stopButton->addClickEventListener([this](Object* ref) {
-        if (_controlPanel->getOpacity() <= 50)
+        if (!_videoPlayer || _controlPanel->getOpacity() <= 50)
             return;
         _playRate = 1.f;
         _videoPlayer->setPlayRate(_playRate);
@@ -878,7 +1098,7 @@ void DefaultVideoController::createControls()
     _pauseButton = VideoPlayerControl::create(SpriteFrame::createWithTexture(
         g_mediaControlsTexture, g_mediaControlTextureRegions[VideoControlButtonId::Pause]));
     _pauseButton->addClickEventListener([this](Object* ref) {
-        if (_controlPanel->getOpacity() <= 50)
+        if (!_videoPlayer || _controlPanel->getOpacity() <= 50)
             return;
         _playRate = 1.f;
         _videoPlayer->setPlayRate(_playRate);
@@ -893,7 +1113,7 @@ void DefaultVideoController::createControls()
     _fullscreenEnterButton = VideoPlayerControl::create(SpriteFrame::createWithTexture(
         g_mediaControlsTexture, g_mediaControlTextureRegions[VideoControlButtonId::EnterFullscreen]));
     _fullscreenEnterButton->addClickEventListener([this](Object* ref) {
-        if (_controlPanel->getOpacity() <= 50)
+        if (!_videoPlayer || _controlPanel->getOpacity() <= 50)
             return;
         _videoPlayer->setFullscreen(true);
         updateControllerState();
@@ -908,7 +1128,7 @@ void DefaultVideoController::createControls()
     _fullscreenExitButton = VideoPlayerControl::create(SpriteFrame::createWithTexture(
         g_mediaControlsTexture, g_mediaControlTextureRegions[VideoControlButtonId::ExitFullscreen]));
     _fullscreenExitButton->addClickEventListener([this](Object* ref) {
-        if (_controlPanel->getOpacity() <= 50)
+        if (!_videoPlayer || _controlPanel->getOpacity() <= 50)
             return;
         _videoPlayer->setFullscreen(false);
         updateControllerState();
@@ -950,6 +1170,8 @@ void DefaultVideoController::createControls()
 
     _timelineTouchListener                = PointerEventListener::create();
     _timelineTouchListener->onPointerDown = [this](PointerEvent* event) -> bool {
+        if (!_videoPlayer)
+            return false;
         auto target               = event->getCurrentTarget();
         const auto locationInNode = target->convertToNodeSpace(event->getWorldPoint());
         const auto& size          = target->getContentSize();
@@ -969,6 +1191,8 @@ void DefaultVideoController::createControls()
         return false;
     };
     _timelineTouchListener->onPointerMove = [this](PointerEvent* event) {
+        if (!_videoPlayer)
+            return true;
         auto target               = event->getCurrentTarget();
         const auto locationInNode = target->convertToNodeSpace(event->getWorldPoint());
         const auto& size          = target->getContentSize();
@@ -1096,6 +1320,9 @@ VideoPlayer::VideoPlayer()
 
 VideoPlayer::~VideoPlayer()
 {
+    detachLegacyFullscreen();
+    if (_videoController)
+        _videoController->_videoPlayer = nullptr;
     auto pvd = reinterpret_cast<PrivateVideoContext*>(_videoContext);
 
     removeAllProtectedChildren();
@@ -1193,18 +1420,8 @@ void VideoPlayer::draw(const SceneRenderState& state, const Mat4& transform, uin
 {
     ax::ui::Widget::draw(state, transform, flags);
 
-    auto pvd     = reinterpret_cast<PrivateVideoContext*>(_videoContext);
-    auto vrender = pvd->_vrender;
-    auto engine  = pvd->_engine;
-    if (!vrender || !engine)
-        return;
-
-    if (isPlaying())
-    {  // render 1 video sample if avaiable
-        engine->transferVideoFrame();
-    }
-    if (pvd->_scaleDirty || (flags & FLAGS_TRANSFORM_DIRTY))
-        pvd->rescaleTo(this);
+    if (!_legacyFullscreenOverlay)
+        updateVideoFrame(getContentSize(), flags);
 
 #    if AX_VIDEOPLAYER_DEBUG_DRAW
     _debugDrawNode->clear();
@@ -1214,13 +1431,30 @@ void VideoPlayer::draw(const SceneRenderState& state, const Mat4& transform, uin
 #    endif
 }
 
+void VideoPlayer::updateVideoFrame(const Vec2& targetSize, uint32_t flags)
+{
+    auto pvd     = reinterpret_cast<PrivateVideoContext*>(_videoContext);
+    auto vrender = pvd->_vrender;
+    auto engine  = pvd->_engine;
+    if (!vrender || !engine)
+        return;
+
+    if (isPlaying() || engine->getState() == MEMediaState::Paused)
+    {  // render 1 video sample if avaiable
+        engine->transferVideoFrame();
+    }
+    if (pvd->_scaleDirty || (flags & FLAGS_TRANSFORM_DIRTY))
+        pvd->rescaleTo(this, targetSize);
+}
+
 void VideoPlayer::setContentSize(const Size& contentSize)
 {
     Widget::setContentSize(contentSize);
     auto videoContext               = reinterpret_cast<PrivateVideoContext*>(_videoContext);
     videoContext->_originalViewSize = contentSize;
-    if (_videoController)
+    if (_videoController && !_legacyFullscreenOverlay)
         _videoController->setContentSize(contentSize);
+    videoContext->_scaleDirty = true;
 }
 
 VideoPlayer::State VideoPlayer::getState() const
@@ -1253,24 +1487,48 @@ VideoPlayer::State VideoPlayer::getState() const
 
 void VideoPlayer::setVideoController(VideoController* controller)
 {
+    if (_videoController == controller)
+        return;
+    // A replacement may already be retained only by its current parent.
+    RefPtr<VideoController> guard(controller);
     if (_videoController)
     {
-        removeProtectedChild(_videoController, true);
+        if (_legacyFullscreenOverlay)
+        {
+            _legacyFullscreenOverlay->removeChild(_videoController, true);
+            _legacyFullscreenOverlay->restoreControllerOrder();
+        }
+        else
+            removeProtectedChild(_videoController, true);
+        _videoController->_videoPlayer = nullptr;
         AX_SAFE_RELEASE(_videoController);
     }
     _videoController = controller;
     if (_videoController)
     {
         AX_SAFE_RETAIN(_videoController);
+        _videoController->_videoPlayer = this;
         _videoController->setPositionNormalized(Vec2(0.5f, 0.5f));
         _videoController->setAnchorPoint(Anchors::center);
         _videoController->setEnabled(_userInputEnabled);
-        addProtectedChild(_videoController, 1);
+        if (_legacyFullscreenOverlay)
+        {
+            _legacyFullscreenOverlay->liftController(_videoController);
+            _legacyFullscreenOverlay->addChild(_videoController, 1);
+        }
+        else
+            addProtectedChild(_videoController, 1);
+        reinterpret_cast<PrivateVideoContext*>(_videoContext)->_scaleDirty = true;
     }
 }
 
 void VideoPlayer::setFullscreen(bool enabled)
 {
+    if (_legacyFullscreenMode)
+    {
+        setLegacyFullscreen(enabled);
+        return;
+    }
     if (_fullscreen != enabled)
     {
         _fullscreen = enabled;
@@ -1286,6 +1544,92 @@ void VideoPlayer::setFullscreen(bool enabled)
 
         postEvent(EventType::FULLSCREEN_SWITCH);
     }
+}
+
+void VideoPlayer::setLegacyFullscreen(bool enabled)
+{
+    // Opt-in persists for this player so its real controller uses the same
+    // contract on subsequent fullscreen entry/exit.
+    if (!_legacyFullscreenMode && _fullscreen)
+        setFullscreen(false);
+    _legacyFullscreenMode = true;
+    if (_fullscreen == enabled)
+        return;
+    _fullscreen = enabled;
+    if (enabled)
+        requestLegacyFullscreenAttachment();
+    else
+        detachLegacyFullscreen();
+    updateVideoController();
+    postEvent(EventType::FULLSCREEN_SWITCH);
+}
+
+void VideoPlayer::requestLegacyFullscreenAttachment()
+{
+    // Public setters can run from JS onEnter/draw overrides while Scene is
+    // iterating its children. Always defer the sibling insertion, regardless
+    // of whether this player is already running at the call site.
+    WeakPtr<VideoPlayer> pending(this);
+    _director->postTask([pending] {
+        if (auto* owner = pending.get())
+            owner->attachLegacyFullscreen(); // rechecks flags, running, Scene and overlay
+    });
+}
+
+void VideoPlayer::attachLegacyFullscreen()
+{
+    if (!_legacyFullscreenMode || !_fullscreen || _legacyFullscreenOverlay || !isRunning() || !getScene())
+        return;
+    auto overlay = new LegacyVideoFullscreen(this);
+    if (!overlay->init())
+    {
+        overlay->release();
+        _fullscreen = false;
+        return;
+    }
+    _legacyFullscreenOverlay = overlay; // owner's reference, plus Scene's child reference
+    overlay->setVisible(isVisible());
+    auto pvd = reinterpret_cast<PrivateVideoContext*>(_videoContext);
+    if (auto* render = pvd->_vrender)
+    {
+        removeProtectedChild(render, false); // pvd independently retains render
+        overlay->addChild(render);
+    }
+    if (_videoController)
+    {
+        removeProtectedChild(_videoController, false); // owner independently retains controller
+        overlay->liftController(_videoController);
+        overlay->addChild(_videoController, 1);
+    }
+    getScene()->addChild(overlay, std::numeric_limits<int>::max());
+    pvd->_scaleDirty = true;
+}
+
+void VideoPlayer::detachLegacyFullscreen()
+{
+    auto* overlay = _legacyFullscreenOverlay;
+    if (!overlay)
+        return;
+    _legacyFullscreenOverlay = nullptr;
+    auto pvd = reinterpret_cast<PrivateVideoContext*>(_videoContext);
+    if (auto* render = pvd->_vrender)
+    {
+        overlay->removeChild(render, false);
+        addProtectedChild(render);
+    }
+    if (_videoController)
+    {
+        overlay->removeChild(_videoController, false);
+        addProtectedChild(_videoController, 1);
+        overlay->restoreControllerOrder();
+    }
+    overlay->deactivate();
+    // Owner onExit can be called while Scene is traversing its children.
+    // Hide and disable immediately; unlink the sibling outside that traversal.
+    RefPtr<LegacyVideoFullscreen> pending(overlay);
+    _director->postTask([pending] { pending->removeFromParentAndCleanup(false); });
+    overlay->release();
+    pvd->_scaleDirty = true;
 }
 
 bool VideoPlayer::isFullscreen() const
@@ -1359,7 +1703,11 @@ void VideoPlayer::pause()
 
 void VideoPlayer::resume()
 {
-    resumePlayback();
+    // Node::onEnter resumes targets before setting _running. An explicit Stop
+    // must survive entering (or re-entering) a Scene; paused playback can resume.
+    // Explicit playback operations on an active node retain their usual behavior.
+    if (isRunning() || getState() != State::STOPPED)
+        resumePlayback();
     Widget::resume();
 }
 
@@ -1385,6 +1733,9 @@ void VideoPlayer::resumePlayback()
         {
             switch (engine->getState())
             {
+#    if AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID
+            case MEMediaState::Preparing:
+#    endif
             case MEMediaState::Stopped:
             case MEMediaState::Paused:
                 engine->play();
@@ -1469,16 +1820,27 @@ bool VideoPlayer::isUserInputEnabled() const
 void VideoPlayer::setVisible(bool visible)
 {
     ax::ui::Widget::setVisible(visible);
+    if (_legacyFullscreenOverlay)
+        _legacyFullscreenOverlay->setVisible(visible);
 }
 
 void VideoPlayer::onEnter()
 {
     Widget::onEnter();
+    if (_legacyFullscreenMode && _fullscreen)
+        requestLegacyFullscreenAttachment();
 }
 
 void VideoPlayer::onExit()
 {
     _eventCallback = nullptr;
+    // Also invalidate an enable request whose deferred attachment has not run.
+    if (_legacyFullscreenMode)
+        _fullscreen = false;
+    if (_legacyFullscreenOverlay)
+    {
+        detachLegacyFullscreen();
+    }
     Widget::onExit();
 }
 
@@ -1521,7 +1883,9 @@ void VideoPlayer::copySpecialProperties(Widget* widget)
         _volume           = player->_volume;
         _userInputEnabled = player->_userInputEnabled;
         _styleType        = player->_styleType;
-        _fullscreen       = player->_fullscreen;
+        _legacyFullscreenMode = player->_legacyFullscreenMode;
+        // A clone has no Scene presentation to share with its source.
+        _fullscreen       = _legacyFullscreenMode ? false : player->_fullscreen;
         _fullscreenDirty  = player->_fullscreenDirty;
         _videoURL         = player->_videoURL;
         _keepAspectRatio  = player->_keepAspectRatio;

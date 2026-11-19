@@ -1,0 +1,224 @@
+{
+  "repository": "https://github.com/cocos2d/cocos2d-x",
+  "commit": "e4b6a5ef8fcdc99a7ebea606312b67fe4c534b9f",
+  "files": [
+    {
+      "path": "cocos/scripting/js-bindings/script/jsb_cocos2d.js",
+      "sha256": "9f7cfeb03dce182440b2d131ca78c517935b936599e776ab185f2760cc8d96e4",
+      "lineRanges": [
+        [
+          611,
+          1284
+        ],
+        [
+          1660,
+          1776
+        ],
+        [
+          2240,
+          2497
+        ],
+        [
+          1285,
+          1305
+        ]
+      ]
+    },
+    {
+      "path": "cocos/scripting/js-bindings/script/3d/jsb_cocos2d_3d.js",
+      "sha256": "ffa34a5967e551094b40cd2f560c76213a787a8a94edc79ecdc696dc60db70d3",
+      "lineRanges": [
+        [
+          136,
+          254
+        ]
+      ]
+    },
+    {
+      "path": "cocos/scripting/js-bindings/script/jsb_boot.js",
+      "sha256": "a773c1ac4b477a592d60f1cc6490d9cf5faaad0469b04cf8405866f951766484",
+      "lineRanges": [
+        [
+          28,
+          770
+        ],
+        [
+          836,
+          863
+        ]
+      ]
+    },
+    {
+      "path": "cocos/scripting/js-bindings/script/jsb_loaders.js",
+      "sha256": "a215d650c9797137e1cff68e5f10018655b0d23a0563953c80b2f78831a1983a",
+      "lineRanges": [
+        [
+          1,
+          187
+        ]
+      ]
+    },
+    {
+      "path": "cocos/scripting/js-bindings/script/jsb_property_apis.js",
+      "sha256": "bdd0c6c1db8192a519ee85eda405b0406c616d040c92de23934701efa2afbc39",
+      "adaptation": "Extracted class/property/getter/setter metadata; install only native methods available in the selected build."
+    },
+    {
+      "path": "cocos/scripting/js-bindings/script/jsb_cocos2d_constants.js",
+      "sha256": "bb4c1a1c19964e4f5ef05c3f30b7abd866d256023075d78af16bf0cda970e704",
+      "adaptation": "Original constants retained verbatim."
+    },
+    {
+      "path": "cocos/scripting/js-bindings/script/jsb_cocos2d.js",
+      "sha256": "9f7cfeb03dce182440b2d131ca78c517935b936599e776ab185f2760cc8d96e4",
+      "lineRanges": [
+        [
+          2006,
+          2054
+        ],
+        [
+          2178,
+          2239
+        ]
+      ],
+      "output": "jsb_legacy_actions.js",
+      "adaptation": "Save generated Speed getters as _getSpeed/_setSpeed before installing original fluent methods."
+    },
+    {
+      "path": "cocos/scripting/js-bindings/script/jsb_cocos2d.js",
+      "sha256": "9f7cfeb03dce182440b2d131ca78c517935b936599e776ab185f2760cc8d96e4",
+      "lineRanges": [
+        [
+          1781,
+          1915
+        ]
+      ],
+      "output": "jsb_legacy_draw.js",
+      "adaptation": "Keep interpolation and parameter semantics; install on real native prototype with per-instance state; retain real release ownership."
+    },
+    {
+      "path": "cocos/scripting/js-bindings/script/navmesh/jsb_navmesh.js",
+      "sha256": "71707b605835d9e84bcd7bbd7b046042e3d2c9fadd9d8eedb4758b581e3ea57d",
+      "adaptation": "Original public helpers enabled when the native NavMesh module is built."
+    },
+    {
+      "path": "cocos/scripting/js-bindings/script/jsb_prepare.js",
+      "sha256": "27d11326bf4b47de76872817ba2b94b6c81bd57b604d4162e4d0e5d151a385cc",
+      "lineRanges": [
+        [
+          174,
+          218
+        ]
+      ],
+      "output": "jsb_legacy_helpers.js"
+    },
+    {
+      "path": "cocos/scripting/js-bindings/script/jsb_cocos2d.js",
+      "sha256": "9f7cfeb03dce182440b2d131ca78c517935b936599e776ab185f2760cc8d96e4",
+      "lineRanges": [
+        [
+          1473,
+          1484
+        ]
+      ],
+      "output": "jsb_legacy.js / jsb_legacy_input.js",
+      "adaptation": "Restore custom-event JS-owned _userData on the canonical native wrapper, retain native scoped dispatch data and live checks, and expose the real Device.getDPI."
+    },
+    {
+      "path": "cocos/scripting/js-bindings/script/jsb_create_apis.js",
+      "sha256": "962f282955227e5de966b841bc660fcbff5a2593df201dd7b745ffb385e6d596",
+      "lineRanges": [
+        [
+          799,
+          812
+        ]
+      ],
+      "output": "jsb_legacy_label.js",
+      "adaptation": "Restore FontDefinition versus positional LabelTTF constructor semantics through current native Label font, bounds, alignment, text color, outline and shadow methods; native getters remain authoritative."
+    },
+    {
+      "path": "cocos/scripting/js-bindings/manual/js_manual_conversions.cpp",
+      "sha256": "04d628792857cf6138451e18148e066e5b60056335a7404a709cfb8f6027e958",
+      "lineRanges": [
+        [
+          563,
+          580
+        ]
+      ],
+      "output": "jsb_legacy_label.js",
+      "adaptation": "Primitive text conversion contract; do not coerce objects or alter unrelated overload selection."
+    },
+    {
+      "path": "cocos/2d/CCLabelBMFont.cpp",
+      "sha256": "a4580b110ccb3c072670e109632be901e8129e55df2dac9d2236b8c1a340b5d1",
+      "lineRanges": [
+        [
+          80,
+          95
+        ],
+        [
+          161,
+          177
+        ],
+        [
+          196,
+          204
+        ]
+      ],
+      "output": "jsb_legacy_native.js",
+      "adaptation": "Bitmap-font image offset uses real native subtexture rectangle; getChildByTag resolves actual Label.getLetter glyph."
+    },
+    {
+      "path": "cocos/scripting/js-bindings/manual/cocos2d_specifics.cpp",
+      "sha256": "5c87dac8f72eff967d84145d126acdf96e9c0f4262cfcd2bfb1050824949abcb",
+      "lineRanges": [
+        [
+          5143,
+          5166
+        ]
+      ],
+      "output": "jsb_legacy_input.js",
+      "adaptation": "EventKeyboard constructor preserves parseKeyCode and truthiness, mapped to real native KeyDown/KeyUp phases."
+    },
+    {
+      "path": "cocos/scripting/js-bindings/script/jsb_prepare.js",
+      "sha256": "27d11326bf4b47de76872817ba2b94b6c81bd57b604d4162e4d0e5d151a385cc",
+      "lineRanges": [
+        [
+          166,
+          166
+        ]
+      ],
+      "output": "jsb_boot.js",
+      "adaptation": "The original retained associateWithNative as a no-op after automatic binding. Preserve existing actual native identity; the explicit unbound receiver path uses the runtime native association and real allocation."
+    },
+    {
+      "path": "cocos/scripting/js-bindings/script/jsb_boot.js",
+      "sha256": "a773c1ac4b477a592d60f1cc6490d9cf5faaad0469b04cf8405866f951766484",
+      "lineRanges": [
+        [
+          796,
+          806
+        ]
+      ],
+      "output": "jsb_legacy_native.js",
+      "adaptation": "Refresh visibleRect from the actual native Director after applying the native resolution policy; retain Axmol winSize live getter. Restore setRealPixelResolution and setResolutionPolicy public entry points."
+    },
+    {
+      "path": "cocos/scripting/js-bindings/auto/jsb_cocos2dx_auto.cpp",
+      "sha256": "cf99a971482a9d721cca661cad6963f71fe1e9366a018d4b3dfe10557989c0d8",
+      "lineRanges": [
+        [
+          39027,
+          39072
+        ],
+        [
+          39208,
+          39208
+        ]
+      ],
+      "output": "jsb_legacy_native.js",
+      "adaptation": "Expose LayerColor.init as its actual native initWithColor overloads, including the one-color form used by original SceneTestLayer3."
+    }
+  ]
+}

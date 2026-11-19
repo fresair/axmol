@@ -1,6 +1,7 @@
 /****************************************************************************
 Copyright (c) 2010 cocos2d-x.org
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
 https://axmol.dev/
 
@@ -356,6 +357,34 @@ JNIEXPORT void JNICALL Java_dev_axmol_lib_AxmolPlayer_nativeInsertText(JNIEnv* e
 JNIEXPORT void JNICALL Java_dev_axmol_lib_AxmolPlayer_nativeDeleteBackward(JNIEnv*, jclass, jint numChars)
 {
     ax::InputSystem::getInstance()->dispatchDeleteBackward(static_cast<unsigned int>(numChars));
+}
+
+JNIEXPORT jobjectArray JNICALL Java_dev_axmol_lib_AxmolPlayer_nativeUpdateIME(
+    JNIEnv* env, jclass, jlong generation, jint operation, jstring document,
+    jint selectionStart, jint selectionEnd, jstring payload, jint deleteBefore, jint preeditCaret)
+{
+    if (!document || !payload || deleteBefore < 0)
+        return nullptr;
+    const auto text = ax::text_utils::getStringUTFCharsJNI(env, document);
+    const auto eventText = ax::text_utils::getStringUTFCharsJNI(env, payload);
+    ax::IMETextState actual;
+    if (!ax::InputSystem::getInstance()->dispatchIMEEdit(static_cast<int64_t>(generation), operation, text,
+            selectionStart, selectionEnd, eventText, static_cast<unsigned>(deleteBefore), preeditCaret, actual))
+        return nullptr;
+    auto stringClass = env->FindClass("java/lang/String");
+    if (!stringClass) return nullptr;
+    auto result = env->NewObjectArray(3, stringClass, nullptr);
+    env->DeleteLocalRef(stringClass);
+    if (!result) return nullptr;
+    const std::string values[] = {actual.text, std::to_string(actual.selectionStart), std::to_string(actual.selectionEnd)};
+    for (int i = 0; i < 3; ++i)
+    {
+        auto value = ax::text_utils::newStringUTFJNI(env, values[i]);
+        if (!value) { env->DeleteLocalRef(result); return nullptr; }
+        env->SetObjectArrayElement(result, i, value);
+        env->DeleteLocalRef(value);
+    }
+    return result;
 }
 
 JNIEXPORT void JNICALL Java_dev_axmol_lib_AxmolPlayer_nativeSoftInputShow(JNIEnv* env,

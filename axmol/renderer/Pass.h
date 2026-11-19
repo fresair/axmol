@@ -1,6 +1,7 @@
 /****************************************************************************
  Copyright (c) 2015-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
 
  https://axmol.dev/
 
@@ -107,6 +108,12 @@ public:
     void setTechnique(Technique* technique);
 
     void updateMVPUniform(MeshCommand* command, const Mat4& modelView);
+
+    /** Controls the automatic mesh diffuse texture binding for this pass.
+     * Explicit named material samplers keep their own texture binding when disabled.
+     * @script{ignore}
+     */
+    void setAutomaticDiffuseTextureBindingEnabled(bool enabled);
 
     void setUniformTexture(uint32_t slot, rhi::Texture*);      // u_tex0
     void setUniformNormTexture(uint32_t slot, rhi::Texture*);  // u_normalTex

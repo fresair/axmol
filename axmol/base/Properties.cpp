@@ -3,6 +3,8 @@
  Copyright (c) 2015-2017 Chukong Technologies
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
  Copyright (c) 2019-present Simdsoft Limited.
+ Copyright (c) 2026 Ye Liangqi (axmol-js contributions and modifications).
+ Modified for axmol-js by Ye Liangqi in 2026.
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -118,7 +120,7 @@ Properties::Properties(const Properties& copy)
     , _id(copy._id)
     , _parentID(copy._parentID)
     , _properties(copy._properties)
-    , _variables(nullptr)
+    , _variables(copy._variables ? new std::vector<Property>(*copy._variables) : nullptr)
     , _dirPath(nullptr)
     , _parent(copy._parent)
 
@@ -127,7 +129,9 @@ Properties::Properties(const Properties& copy)
 
     for (const auto space : copy._namespaces)
     {
-        _namespaces.emplace_back(new Properties(*space));
+        auto* child = new Properties(*space);
+        child->_parent = this;
+        _namespaces.emplace_back(child);
     }
     rewind();
 }
@@ -494,7 +498,9 @@ void Properties::resolveInheritance(std::string_view id)
                 std::vector<Properties*>::const_iterator itt;
                 for (const auto space : parent->_namespaces)
                 {
-                    derived->_namespaces.emplace_back(new Properties(*space));
+                    auto* child = new Properties(*space);
+                    child->_parent = derived;
+                    derived->_namespaces.emplace_back(child);
                 }
                 derived->rewind();
 
@@ -559,6 +565,7 @@ void Properties::mergeWith(Properties* overrides)
         {
             // Add this new namespace.
             Properties* newNamespace = new Properties(*overridesNamespace);
+            newNamespace->_parent = this;
 
             this->_namespaces.emplace_back(newNamespace);
             this->_namespacesItr = this->_namespaces.end();
@@ -992,27 +999,34 @@ void Properties::setVariable(std::string_view name, std::string_view value)
     }
 }
 
-Properties* Properties::clone()
+Properties* Properties::clone() const
 {
-    Properties* p = new Properties();
+    auto* copy = new Properties(*this);
+    copy->_parent = nullptr;
 
-    p->_namespace     = _namespace;
-    p->_id            = _id;
-    p->_parentID      = _parentID;
-    p->_properties    = _properties;
-    p->_propertiesItr = p->_properties.end();
-    p->setDirectoryPath(_dirPath);
-
-    for (size_t i = 0, count = _namespaces.size(); i < count; i++)
+    // A selected namespace is detached from its source tree. Capture ancestor
+    // variables in nearest-first order without replacing this namespace's own
+    // values. Descendants point at the copied parents, never at the source.
+    for (auto* parent = _parent; parent; parent = parent->_parent)
     {
-        AXASSERT(_namespaces[i], "Invalid namespace");
-        Properties* child = _namespaces[i]->clone();
-        p->_namespaces.emplace_back(child);
-        child->_parent = p;
+        if (!parent->_variables)
+            continue;
+        if (!copy->_variables)
+            copy->_variables = new std::vector<Property>();
+        for (const auto& variable : *parent->_variables)
+        {
+            bool present = false;
+            for (const auto& own : *copy->_variables)
+                if (own.name == variable.name)
+                {
+                    present = true;
+                    break;
+                }
+            if (!present)
+                copy->_variables->push_back(variable);
+        }
     }
-    p->_namespacesItr = p->_namespaces.end();
-
-    return p;
+    return copy;
 }
 
 void Properties::setDirectoryPath(const std::string* path)
