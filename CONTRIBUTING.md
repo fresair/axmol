@@ -1,13 +1,13 @@
 # Contributing to axmol-js
 
-Open pull requests for the JavaScript runtime, bindings, debugger, templates and v3 compatibility tests against **`fresair/axmol:axmol-js`**. [Pull requests](https://github.com/fresair/axmol/pulls)
+Open pull requests for the JavaScript runtime, bindings, debugger, templates and v3 compatibility tests against **`fresair/axmol-js:axmol-js`**. [Pull requests](https://github.com/fresair/axmol-js/pulls)
 
 ## Submit a change
 
 1. Create a personal fork or copy and clone it as `origin`. Add this repository as `upstream`, then start a topic branch from `axmol-js`.
 
    ```sh
-   git remote add upstream https://github.com/fresair/axmol.git
+   git remote add upstream https://github.com/fresair/axmol-js.git
    git fetch upstream axmol-js
    git switch --no-track -c my-js-change upstream/axmol-js
    ```

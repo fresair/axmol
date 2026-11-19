@@ -9,8 +9,8 @@
 先安装 PowerShell 7、支持 C++23 的编译器和目标平台的工具链。Android 构建使用 NDK r27d。克隆 JS 分支，然后在引擎目录运行安装脚本。[平台环境配置](docs/DevSetup.md)
 
 ```sh
-git clone --branch axmol-js https://github.com/fresair/axmol.git
-cd axmol
+git clone --branch axmol-js https://github.com/fresair/axmol-js.git
+cd axmol-js
 pwsh ./setup.ps1
 ```
 
